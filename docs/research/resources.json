@@ -1,8 +1,11 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "checked_at": "2026-11-11",
   "scope": "中文竖排古籍OCR、物理/逻辑版式、阅读顺序",
   "report": "2026-11-11-中文竖排古籍OCR调研.md",
+  "supplementary_reports": [
+    "2026-11-11-古籍酷与RGD论文补充调研.md"
+  ],
   "limitations": [
     "未安装或运行模型",
     "未下载完整数据集或模型权重",
@@ -21,8 +24,8 @@
         "homepage": "https://github.com/HCIILAB/TKH_MTH_Datasets_Release"
       },
       "license": "仅非商业研究",
-      "verification": "作者 README 已读；未下载完整数据",
-      "notes": "TKH 1000页；MTH约500页。",
+      "verification": "作者 README、IEEE论文全文与表1/4/5已读；未下载完整数据",
+      "notes": "表1：TKH 1000页、23471行、323491字、1471字类；MTH 500页、17178行、197886字、3664字类。MTH实验保证单行输入，不代表完整复杂版式已解决；未确认完整RGD训练代码及权重。",
       "checked_at": "2026-11-11"
     },
     {
@@ -162,8 +165,10 @@
         "paper": "https://aclanthology.org/2026.findings-acl.1438/"
       },
       "license": "数据发布者声明CC0-1.0",
-      "verification": "作者 README、HF卡、正式论文已读；未下载完整数据",
-      "notes": "2973页、约百部书、14类文献；LLM预标注加人工修订；正式论文发表于2026，预印本2025。不是语义版式检测训练集。",
+      "verification": "作者 README、HF卡、正式论文已读；已核对完整文件树、下载label.csv及两张问题样例；未下载全图集",
+      "notes": "论文/卡2973页；当前14类135书目主目录2980图，另有455条重复图片路径。label.csv共2584条，2580条非空OCR。两张定向样例确认错误/遗漏，使用前审校；不能以博客33.99%差异推定全库标注错误率。不是语义版式检测训练集。",
+      "evidence": "evidence/2026-11-11-ancientdoc-spotcheck.json",
+      "label_sha256": "4dc642a7b2ed1d6c156f2392ca8807bacef44e8ae821c2707cb79ed6cd3b74ca",
       "checked_at": "2026-11-11"
     },
     {
@@ -379,8 +384,8 @@
       "related_resource_ids": [
         "tkh_mth"
       ],
-      "reading_priority": "C",
-      "verification": "作者数据仓库引用、HisDoc1B参考文献",
+      "reading_priority": "B",
+      "verification": "IEEE论文全文、Crossref书目与作者仓库表1/4/5已核对；未复现实验",
       "checked_at": "2026-11-11"
     },
     {

@@ -1,0 +1,70 @@
+{
+  "checked_at": "2026-11-11",
+  "purpose": "Targeted verification of two known examples cited by GJ.cool; not a random audit or a corpus error-rate estimate.",
+  "sources": {
+    "critique": "https://ocr.gj.cool/article/2026-02-04-ancient-doc-criticize",
+    "dataset": "https://huggingface.co/datasets/ByteDance/AncientDoc",
+    "original_dataset": "https://huggingface.co/datasets/yuchuan123/AncientDoc",
+    "label": "https://huggingface.co/datasets/ByteDance/AncientDoc/resolve/main/label.csv",
+    "tree_api": "https://huggingface.co/api/datasets/ByteDance/AncientDoc/tree/main/imgs?recursive=true&limit=1000"
+  },
+  "method": "Parse label.csv with UTF-8-SIG and csv.DictReader. Follow Link next pagination for the recursive HF tree. Compare LFS SHA256 values for duplicates. Download and visually inspect only the two cited images.",
+  "label": {
+    "size_bytes": 11415472,
+    "sha256": "4dc642a7b2ed1d6c156f2392ca8807bacef44e8ae821c2707cb79ed6cd3b74ca",
+    "records": 2584,
+    "nonempty_ocr": 2580,
+    "unique_type_name_pairs": 2584,
+    "records_matched_to_main_image_paths": 2584
+  },
+  "repository_comparison": {
+    "label_lfs_sha256_equal": true,
+    "imgs_tree_oid_equal": true,
+    "imgs_tree_oid": "6fe93300bd25ebf59c8d54b8f438904d34d467e5",
+    "limitation": "Current main trees only; not historical proof of the February release."
+  },
+  "images": {
+    "all_png_paths": 3435,
+    "main_category_png_paths": 2980,
+    "main_unique_lfs_hashes": 2980,
+    "main_categories": 14,
+    "main_book_directories": 135,
+    "nested_imgs_png_paths": 455,
+    "nested_hashes_already_in_main": 455,
+    "published_page_count": 2973,
+    "limitation": "The reason for the difference between the published 2973 and the main image directories 2980 was not confirmed."
+  },
+  "samples": [
+    {
+      "path": "imgs/兵家类/金湯借箸十二籌/page_21.png",
+      "url": "https://huggingface.co/datasets/ByteDance/AncientDoc/blob/main/imgs/兵家类/金湯借箸十二籌/page_21.png",
+      "label_record_number_1_based": 1768,
+      "image_sha256": "634f28d438db19db55d1bbbdf60f3262e9ae005fb3aabd317a29ff8eda892ed1",
+      "matches_lfs_sha256": true,
+      "released_ocr": "弩牌鎗砲銃鑑笵甲清水泉清竹木清硝磺鉛鐵清什物安鄉氏一事權和衆志編丁壯弩箭刀筅棒鎗甲弩牌鑑銃笵清五穀清芻草清野第⑤清屋宇清油蠟清地面筹方略第⑥分信地擇賢能汎守具",
+      "visual_observations": [
+        "The heading for clearing the countryside loses its leading character and changes the final numeral to a circled numeral in the label.",
+        "A three-character entry in the lower left of the image is missing from the label.",
+        "The image is a two-page spread with upper and lower groups. No unique reading-order gold standard was reconstructed."
+      ]
+    },
+    {
+      "path": "imgs/天文算法类/選擇天鏡/page_302.png",
+      "url": "https://huggingface.co/datasets/ByteDance/AncientDoc/blob/main/imgs/天文算法类/選擇天鏡/page_302.png",
+      "label_record_number_1_based": 2,
+      "image_sha256": "30bc91a9304633158aca2ff86bc1fa276582b5139fee385e3430245fe7aa3b84",
+      "matches_lfs_sha256": true,
+      "released_ocr": "選梓天鏡卷之一下論歲月太歲為一年萬神之主宰戊巳都天為一年吉凶神煞之統領歲破三煞金神天地官符等為一年輪占山向之凶神造塋修方往來抵向或擇用日辰犯之災禍極速蓋諸凶煞係太歲干支為主故凡用事亦取年命干支以避之至選用吉神乃每年逐月遇天月德二德合歲德金玉堂天嗣天恩太陽天喜等直日當以本命日辰取用或為我命貴祿馬或生助比和不落旬空而又無刑沖剋害此真上吉期也凡年月凶煞在山在向皆以定位為重若以月建飛到山向為遇吉曜可解坤八震九巽逆飛一中二巽三震四坤五坎六離七艮八兌九乾遇而復始天月二德乃年中至吉之神所到之處大能扶助吉神解除凶煞法以月建入中宮順飛九位如戊辰年三月修坤方天月二德在壬以丙辰建入中宮尋見壬戌泊坤為天月二德到也又看值日真德如三月丁亥日系甲申旬中以丙辰入中宮尋見壬辰泊中宮為真德到也餘倣此論日日干為主日支為佐與月令同氣或與月三合或月建相生及歲德天月德為上吉三德合日恩天赦日次吉日貴旺相得令忌休囚無氣而日干尤重日之吉凶全看",
+      "visual_observations": [
+        "Two complete opening columns are omitted before the section on years and months.",
+        "A visible sequence of fifteen characters in the middle is missing from the label.",
+        "The title at the right image edge is cropped; the title is not used as the primary evidence."
+      ]
+    }
+  ],
+  "limitations": [
+    "No OCR model or GJ.cool API was run.",
+    "The blog-reported 33.99 percent CER was not reproduced and is not independently established dataset error rate.",
+    "No full-page gold transcription or corpus CER was computed."
+  ]
+}
