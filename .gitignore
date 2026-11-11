@@ -1,0 +1,13 @@
+# macOS
+.DS_Store
+
+# ZCode 会话目录
+.zcode/
+
+# Node（各子项目自带 .gitignore，此处兜底）
+node_modules/
+dist/
+*.log
+
+# 编辑器
+.idea/
