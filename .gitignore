@@ -11,3 +11,9 @@ dist/
 
 # 编辑器
 .idea/
+
+# 数据集大文件（清单见 docs/research/evidence/）
+datasets/
+
+# 下载用临时虚拟环境
+scripts/.venv-dl/

@@ -32,7 +32,7 @@
         "homepage": "https://github.com/HCIILAB/TKH_MTH_Datasets_Release"
       },
       "license": "仅非商业研究",
-      "verification": "作者 README、IEEE论文全文与表1/4/5已读；未下载完整数据",
+      "verification": "百度盘入口命令行不可达；TKH 部分已随 MTHv2 的 TKHMTH2200.zip 取得，MTH 独立包未下。",
       "notes": "表1：TKH 1000页、23471行、323491字、1471字类；MTH 500页、17178行、197886字、3664字类。MTH实验保证单行输入，不代表完整复杂版式已解决；未确认完整RGD训练代码及权重。",
       "checked_at": "2026-11-11"
     },
@@ -50,7 +50,7 @@
         "homepage": "https://github.com/HCIILAB/MTHv2_Datasets_Release"
       },
       "license": "学术研究使用",
-      "verification": "作者 README 已读；下载入口已发现，未验证大文件",
+      "verification": "2026-11-11 已从 README 提供的 Google Drive 下载 TKHMTH2200.zip（4.93GB，SHA-256 见 evidence/2026-11-11-dataset-downloads.json；unzip -t 通过；内含 TKH/ 与 MTH1200/）。百度盘入口未用。",
       "notes": "常用统计3199图；有字、行和边界线段标注。",
       "checked_at": "2026-11-11"
     },
@@ -106,7 +106,7 @@
         "metadata": "https://api.figshare.com/v2/articles/26272375"
       },
       "license": "冲突：GitHub CC BY-NC-ND 4.0及机构限制；Figshare CC BY 4.0",
-      "verification": "作者 README、论文全文、Figshare元数据已读；未下载",
+      "verification": "2026-11-11 已下载 Figshare HisDoc1B.zip（8.56GB，MD5 与官方一致）；GitHub/Figshare 许可冲突仍未解决，压缩包未解压。",
       "notes": "40281册、3163330页、1082544808字、30615字类；主要半自动标注。Figshare约8.56GB文件的实际内容未确认。",
       "checked_at": "2026-11-11"
     },
@@ -121,7 +121,7 @@
         "homepage": "https://nlpr.ia.ac.cn/pal/CASIA-AHCDB.html"
       },
       "license": "官方页面未见明确完整许可；待确认",
-      "verification": "机构网页已读，ZIP入口可见；未下载",
+      "verification": "2026-11-11 已下载官方页六个分卷 ZIP（共 4.43GB，unzip -t 全部通过；哈希见 evidence）；CASIA-10k 属现代手写未下。许可仍未明确。",
       "notes": "官方简介超过220万样本、10658类；与其他论文统计口径有差异。单字数据，不是完整页面版式标注。",
       "checked_at": "2026-11-11"
     },
@@ -173,7 +173,7 @@
         "paper": "https://aclanthology.org/2026.findings-acl.1438/"
       },
       "license": "数据发布者声明CC0-1.0",
-      "verification": "作者 README、HF卡、正式论文已读；已核对完整文件树、下载label.csv及两张问题样例；未下载全图集",
+      "verification": "2026-11-11 已下载 HF 全量快照（3,438 文件，revision 149c447）；此前定向核查发现的标签错漏 caveat 不变。",
       "notes": "论文/卡2973页；当前14类135书目主目录2980图，另有455条重复图片路径。label.csv共2584条，2580条非空OCR。两张定向样例确认错误/遗漏，使用前审校；不能以博客33.99%差异推定全库标注错误率。不是语义版式检测训练集。",
       "evidence": "evidence/2026-11-11-ancientdoc-spotcheck.json",
       "label_sha256": "4dc642a7b2ed1d6c156f2392ca8807bacef44e8ae821c2707cb79ed6cd3b74ca",
@@ -228,7 +228,7 @@
         "paper": "https://arxiv.org/abs/2605.11960"
       },
       "license": "代码Apache-2.0；README声明基准仅研究用途，数据授权不能由代码许可推定",
-      "verification": "论文方法/指标、作者仓库、评分代码及实际标注JSONL已核对；未下载全图集",
+      "verification": "2026-11-11 已下载 HF 全量快照（2,832 文件，revision 8849c60，含七书体目录与 data/eval）。",
       "notes": "2800条记录，七书体各400；2799个不同image_path，一条隶书完全重复。1200条含spotting字段，其中5条金文为空。成熟四书体无逐字框。解析分数=1-edit/max(len_pred,len_gt)，越高越好，不等同CER。",
       "evidence": "evidence/2026-11-11-wechat-source-checks.json",
       "checked_at": "2026-11-11"
@@ -244,7 +244,7 @@
         "homepage": "https://github.com/ziqian2001/AncientDoc_OCR"
       },
       "license": "未确认明确许可证；来源于AncientDoc，不是独立新增金标库",
-      "verification": "仓库文件清单、gt.txt与notebook已读；未运行",
+      "verification": "2026-11-11 已下载 main 分支（commit 1f71655）至本地 datasets/。",
       "notes": "11张PNG及11条参考转录；1829个CJK统一表意字符。notebook按图片字节大小匹配GT、仅保留U+4E00–9FA5，复用需修正。无微信dots.mocr测试完整输出与脚本。",
       "evidence": "evidence/2026-11-11-wechat-source-checks.json",
       "checked_at": "2026-11-11"

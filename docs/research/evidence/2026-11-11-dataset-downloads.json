@@ -1,0 +1,75 @@
+{
+  "checked_at": "2026-11-11",
+  "purpose": "Manifest of datasets from the research reports downloaded to local disk on this date; sizes, hashes and integrity checks recorded as evidence of obtained versions. Downloads only — no annotation audit, no model run.",
+  "local_root": "datasets/ (gitignored; full per-file SHA-256 list in datasets/MANIFEST.json, not committed)",
+  "method": "Hugging Face snapshots via huggingface_hub.snapshot_download; Google Drive via gdown (resume); Figshare and nlpr.ia.ac.cn via curl with resume and, where the server throttled a single stream, parallel HTTP range segments reassembled in order.",
+  "datasets": {
+    "mthv2": {
+      "source": "https://drive.google.com/file/d/1JOFWYmiM2Ljcn1qJII2yHSGNA_0eouaj/view (from https://github.com/HCIILAB/MTHv2_Datasets_Release README)",
+      "file": "TKHMTH2200.zip",
+      "size_bytes": 4932243090,
+      "sha256": "6af2b2f03005bd7507faca49c94795ab724cb894e0dbdf3376ebb52084eac0ec",
+      "integrity": "unzip -t: no errors; 12811 entries (TKH/, MTH1200/, label_char/label_textline), 5062861976 bytes uncompressed",
+      "note": "Archive name and contents show it bundles TKH (1,000 pages) with MTH1200; the separately linked TKH/MTH Baidu netdisk packages were not downloaded. Non-commercial research license per author README."
+    },
+    "ancientdoc": {
+      "source": "https://huggingface.co/datasets/ByteDance/AncientDoc",
+      "revision_sha": "149c447ebff66792cee28e02000682820858f17b",
+      "files": 3438,
+      "size_bytes": 4636000000,
+      "integrity": "file count equals HF siblings metadata (3438); label.csv header matches 2026-11-11-ancientdoc-spotcheck.json (UTF-8-SIG)",
+      "note": "CC0-1.0 per dataset card. Prior spot-check caveats about label quality still apply."
+    },
+    "chronicles-ocr": {
+      "source": "https://huggingface.co/datasets/VirtualLUO/Chronicles-OCR",
+      "revision_sha": "8849c6074715335149ea361adaf99c43df168ee7",
+      "files": 2832,
+      "size_bytes": 1408000000,
+      "integrity": "file count equals HF siblings metadata (2832); seven script directories (甲骨文/金文/篆书/隶书/草书/行书/楷书) plus data/ and eval/"
+    },
+    "casia-ahcdb": {
+      "source": "https://nlpr.ia.ac.cn/pal/CASIA-AHCDB.html",
+      "files": {
+        "style1_basic_test.zip": { "size_bytes": 738929262, "sha256": "604917dbfe02b5bc5d9893d51c19ae857a1c48969dae9bf35158bd22de976b62" },
+        "style1_basic_train_part1.zip": { "size_bytes": 910549170, "sha256": "929b76ad1de13df697a8d4e79b0cce8138a07fb10be8bfe1deb52927bc27e1a5" },
+        "style1_basic_train_part2.zip": { "size_bytes": 764077504, "sha256": "cc264bdac879e1964ab99ce78044805b5a5d59688c2d579c7cd9314991cab634" },
+        "style1_basic_train_part3.zip": { "size_bytes": 830371907, "sha256": "4267770fbbd7a346fd00cdc547786b1af2d54fd87a521568a4243594dc8286d4" },
+        "style1_enhanced.zip": { "size_bytes": 471663188, "sha256": "02e2bf75f8a5e396b4098fb9569911a6e5f196f55fb4ce0e0422968cc81be27b" },
+        "style2.zip": { "size_bytes": 712569657, "sha256": "02c0c710a428dbe8a9e7095c2262d05e96395b278cc1795c856cb1b6a5879441" }
+      },
+      "total_bytes": 4428259188,
+      "integrity": "each zip passes unzip -t; sizes match server Content-Length exactly (two parts arrived truncated on first pass and were repaired via ranged resume to exact sizes)",
+      "note": "License/usage terms still not stated on the download page; CASIA-10k.zip (5.2G, modern handwriting) deliberately not downloaded as out of scope."
+    },
+    "hisdoc1b": {
+      "source": "https://ndownloader.figshare.com/files/47633191 (article https://figshare.com/articles/dataset/HisDoc1B_Dataset/26272375)",
+      "file": "HisDoc1B.zip",
+      "size_bytes": 8558840025,
+      "md5": "e63ed3f2d476b5bbb38c649e01e061d7",
+      "md5_matches_figshare_api": true,
+      "sha256": "49d1d6b906e5948ee1e5d9fd994c6576ecbe66c3714671a0b9119823baa5d4c2",
+      "note": "Figshare metadata says CC BY 4.0 while the author GitHub repo describes an application + password process under CC BY-NC-ND; license conflict recorded in the research report remains unresolved. Archive not extracted (disk space)."
+    },
+    "ancientdoc-ocr-mini": {
+      "source": "https://github.com/ziqian2001/AncientDoc_OCR (main)",
+      "commit_sha": "1f716551f00b73e39ef21bae8c592e82c7357245",
+      "files": 13,
+      "size_bytes": 16000000,
+      "note": "11 PNG pages + gt.txt + notebook; serves as small-scale evaluation flow sample, not an independent gold set."
+    }
+  },
+  "not_downloaded": {
+    "tkh_mth": "TKH/MTH Baidu-netdisk-only packages; CLI download not feasible. TKH portion is however included inside the MTHv2 archive TKHMTH2200.zip.",
+    "scut_cab": "Hugging Face archive exists (7.34 GB) but requires institutional application for the decompression password; encrypted download has no value without it.",
+    "m5hisdoc": "Application required; download link and password sent privately after approval.",
+    "evahan2026": "Data distributed after registration; only evaluation scripts are public.",
+    "mcs_bench": "Institutional application required.",
+    "ic19_hdrc": "No confirmed current public download.",
+    "chdac": "No confirmed current public download."
+  },
+  "limitations": [
+    "Archives (MTHv2, CASIA, HisDoc1B) are kept unextracted to fit disk space; unzip -t was run instead of full extraction and content spot-checks.",
+    "SHA-256 values verify what is on local disk; upstream files can change.",
+    "Downloading does not equal license compliance: non-commercial / application-based terms recorded in resources.json still apply."
+  ]
+}
