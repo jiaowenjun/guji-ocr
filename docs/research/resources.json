@@ -2,7 +2,14 @@
   "schema_version": 2,
   "checked_at": "2026-11-11",
   "scope": "中文竖排古籍OCR、物理/逻辑版式、阅读顺序",
-  "report": "2026-11-11-中文竖排古籍OCR调研.md",
+  "report": "README.md",
+  "bibliography": "references.md",
+  "evidence_guide": "evidence/README.md",
+  "reference_reports": [
+    "2026-11-11-中文竖排古籍OCR调研.md",
+    "2026-11-11-古籍酷与RGD论文补充调研.md",
+    "2026-11-11-微信七篇古籍OCR资料追踪.md"
+  ],
   "supplementary_reports": [
     "2026-11-11-古籍酷与RGD论文补充调研.md",
     "2026-11-11-微信七篇古籍OCR资料追踪.md"
