@@ -1,0 +1,556 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-11-11",
+  "scope": "中文竖排古籍OCR、物理/逻辑版式、阅读顺序",
+  "report": "2026-11-11-中文竖排古籍OCR调研.md",
+  "limitations": [
+    "未安装或运行模型",
+    "未下载完整数据集或模型权重",
+    "公开入口不等于已获授权、完整可复现或大文件可下载",
+    "作者报告的性能不能视为本次实测"
+  ],
+  "datasets": [
+    {
+      "id": "tkh_mth",
+      "name": "TKH / MTH",
+      "tasks": [
+        "character_detection",
+        "character_recognition"
+      ],
+      "urls": {
+        "homepage": "https://github.com/HCIILAB/TKH_MTH_Datasets_Release"
+      },
+      "license": "仅非商业研究",
+      "verification": "作者 README 已读；未下载完整数据",
+      "notes": "TKH 1000页；MTH约500页。",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "mthv2",
+      "name": "MTHv2",
+      "tasks": [
+        "character_detection",
+        "line_detection",
+        "text_recognition",
+        "reading_order",
+        "boundary_lines"
+      ],
+      "urls": {
+        "homepage": "https://github.com/HCIILAB/MTHv2_Datasets_Release"
+      },
+      "license": "学术研究使用",
+      "verification": "作者 README 已读；下载入口已发现，未验证大文件",
+      "notes": "常用统计3199图；有字、行和边界线段标注。",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "scut_cab",
+      "name": "SCUT-CAB",
+      "tasks": [
+        "physical_layout",
+        "logical_layout",
+        "reading_order"
+      ],
+      "urls": {
+        "homepage": "https://github.com/HCIILAB/SCUT-CAB_Dataset_Release",
+        "dataset": "https://huggingface.co/datasets/hiuyi/SCUT-CAB",
+        "annotation_guide": "https://github.com/HCIILAB/SCUT-CAB_Dataset_Release/blob/main/guideline/guideline_ancient.pdf"
+      },
+      "license": "CC BY-NC-ND 4.0；机构申请",
+      "verification": "作者 README 已读；需申请解压密码",
+      "notes": "4000图、31925区域；4类物理/27类逻辑；阅读顺序主要针对正文。标注指南链接已发现，未阅读全文。",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "m5hisdoc",
+      "name": "M5HisDoc",
+      "tasks": [
+        "character_detection",
+        "line_detection",
+        "text_recognition",
+        "reading_order"
+      ],
+      "urls": {
+        "homepage": "https://github.com/HCIILAB/M5HisDoc"
+      },
+      "license": "CC BY-NC-ND 4.0；非商业机构研究",
+      "verification": "作者 README 已读；需申请，未下载",
+      "notes": "8000图=4000原图+4000增强图；403824行、4367392字、16151字类。原图含300张MTHv2与700张SCUT-CAB。",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "hisdoc1b",
+      "name": "HisDoc1B",
+      "tasks": [
+        "character_detection",
+        "character_recognition",
+        "reading_order",
+        "punctuation",
+        "book_level"
+      ],
+      "urls": {
+        "homepage": "https://github.com/SCUT-DLVCLab/HisDoc1B",
+        "paper": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11775332/",
+        "dataset": "https://figshare.com/articles/dataset/HisDoc1B_Dataset/26272375",
+        "metadata": "https://api.figshare.com/v2/articles/26272375"
+      },
+      "license": "冲突：GitHub CC BY-NC-ND 4.0及机构限制；Figshare CC BY 4.0",
+      "verification": "作者 README、论文全文、Figshare元数据已读；未下载",
+      "notes": "40281册、3163330页、1082544808字、30615字类；主要半自动标注。Figshare约8.56GB文件的实际内容未确认。",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "casia_ahcdb",
+      "name": "CASIA-AHCDB",
+      "tasks": [
+        "isolated_character_recognition",
+        "historical_handwriting"
+      ],
+      "urls": {
+        "homepage": "https://nlpr.ia.ac.cn/pal/CASIA-AHCDB.html"
+      },
+      "license": "官方页面未见明确完整许可；待确认",
+      "verification": "机构网页已读，ZIP入口可见；未下载",
+      "notes": "官方简介超过220万样本、10658类；与其他论文统计口径有差异。单字数据，不是完整页面版式标注。",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "ic19_hdrc",
+      "name": "ICDAR2019 HDRC CHINESE",
+      "tasks": [
+        "genealogy_layout",
+        "line_detection",
+        "character_recognition"
+      ],
+      "urls": {
+        "paper": "https://arxiv.org/abs/1903.03341"
+      },
+      "license": "未确认",
+      "verification": "论文摘要与书目已读；现行数据获取未确认",
+      "notes": "摘要来源收藏超过20000页；不能当作固定公开精标子集的数量。",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "chdac",
+      "name": "CHDAC",
+      "tasks": [
+        "text_detection",
+        "text_recognition",
+        "reading_order"
+      ],
+      "urls": {
+        "paper": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10246825/"
+      },
+      "license": "未确认",
+      "verification": "相关论文全文已读；完整公开数据与代码未确认",
+      "notes": "8000图；4000/1000/3000训练/验证/测试。与M5HisDoc、MCS-Bench分开记录。",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "ancientdoc",
+      "name": "AncientDoc",
+      "tasks": [
+        "page_ocr",
+        "vernacular_translation",
+        "reasoning_qa",
+        "knowledge_qa",
+        "linguistic_variant_qa"
+      ],
+      "urls": {
+        "homepage": "https://github.com/bytedance/AncientDoc",
+        "dataset": "https://huggingface.co/datasets/ByteDance/AncientDoc",
+        "paper": "https://aclanthology.org/2026.findings-acl.1438/"
+      },
+      "license": "数据发布者声明CC0-1.0",
+      "verification": "作者 README、HF卡、正式论文已读；未下载完整数据",
+      "notes": "2973页、约百部书、14类文献；LLM预标注加人工修订；正式论文发表于2026，预印本2025。不是语义版式检测训练集。",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "evahan2026",
+      "name": "EvaHan2026",
+      "tasks": [
+        "printed_text_recognition",
+        "layout_detection",
+        "handwritten_text_recognition",
+        "variant_aware_evaluation"
+      ],
+      "urls": {
+        "homepage": "https://github.com/GoThereGit/EvaHan",
+        "paper": "https://aclanthology.org/2026.lt4hala-1.23/"
+      },
+      "license": "完整数据/脚本许可未确认；数据仍描述为注册分发",
+      "verification": "作者 README、正式论文已读；评测脚本入口公开",
+      "notes": "A/B/C各5000训练图+200测试图（正式论文）。A/C含文本裁片，不计为15600整页。B类别text/image/book_edge/seal。",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "mcs_bench",
+      "name": "MCS-Bench",
+      "tasks": [
+        "cultural_heritage_understanding",
+        "ocr",
+        "multimodal_qa"
+      ],
+      "urls": {
+        "homepage": "https://github.com/SCUT-DLVCLab/MCS-Bench"
+      },
+      "license": "数据CC BY-NC-SA 4.0；代码MIT；数据需机构申请",
+      "verification": "作者 README 已读",
+      "notes": "7子域45任务；扩展资源，不替代竖排书页OCR基准。",
+      "checked_at": "2026-11-11"
+    }
+  ],
+  "projects": [
+    {
+      "id": "chat",
+      "name": "CHAT models",
+      "tasks": [
+        "historical_chinese_segmentation",
+        "historical_chinese_recognition"
+      ],
+      "urls": {
+        "homepage": "https://github.com/colibrisson/CHAT_models",
+        "release": "https://doi.org/10.5281/zenodo.8383732"
+      },
+      "license": "CC BY-NC 4.0",
+      "verification": "作者 README 已读；未下载模型或运行",
+      "notes": "历史中文分割/识别模型。分割假设二值9:16图；识别建议栏宽>90px。170万行、>16000字类与>99%均为作者声明；阅读顺序模型仍标为待发布。",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "kraken",
+      "name": "kraken",
+      "tasks": [
+        "layout_analysis",
+        "text_recognition",
+        "reading_order",
+        "training"
+      ],
+      "urls": {
+        "homepage": "https://github.com/mittagessen/kraken",
+        "docs": "https://kraken.re/"
+      },
+      "license": "引擎Apache-2.0；模型另行许可",
+      "verification": "README与LICENSE已读；未安装",
+      "notes": "支持top-to-bottom；支持Linux/macOS ARM；PAGE XML/ALTO等输出。",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "escriptorium",
+      "name": "eScriptorium",
+      "tasks": [
+        "annotation",
+        "proofreading",
+        "training_workbench"
+      ],
+      "urls": {
+        "homepage": "https://gitlab.com/scripta/escriptorium"
+      },
+      "license": "软件MIT；模型另行许可",
+      "verification": "README与LICENSE已读；未安装",
+      "notes": "基于kraken的历史文献工作台，包含人工转写、标注、模型训练和协作。",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "hrcenternet",
+      "name": "HRCenterNet",
+      "tasks": [
+        "character_detection"
+      ],
+      "urls": {
+        "homepage": "https://github.com/Tverous/HRCenterNet",
+        "paper": "https://arxiv.org/abs/2012.05739"
+      },
+      "license": "MIT",
+      "verification": "作者 README、论文摘要、仓库license元数据已读；未运行",
+      "notes": "有train/evaluate/test与权重链接；仅单字检测，不是完整OCR。",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "pagenet",
+      "name": "PageNet",
+      "tasks": [
+        "page_level_recognition",
+        "weak_supervision"
+      ],
+      "urls": {
+        "homepage": "https://github.com/HCIILAB/PageNet",
+        "paper": "https://arxiv.org/abs/2207.14807"
+      },
+      "license": "非商业研究；商用需联系",
+      "verification": "作者 README 已读；未运行",
+      "notes": "公开推理、MTHv2配置及权重入口；训练代码明确未公开。",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "handoc_orderocr",
+      "name": "HanDoc-OrderOCR",
+      "tasks": [
+        "text_detection",
+        "text_recognition",
+        "reading_order"
+      ],
+      "urls": {
+        "homepage": "https://github.com/Polo-Marco/HanDoc-OrderOCR",
+        "paper": "https://doi.org/10.1609/aaai.v38i21.30572"
+      },
+      "license": "README称学术/研究使用；未确认为标准宽松开源许可",
+      "verification": "作者 README与论文Crossref摘要已读；未部署",
+      "notes": "DB++、SVTR、CNN顺序模块；Docker/Gradio/Colab；CUDA依赖及自动模型准备待复现。",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "paddleocr",
+      "name": "PaddleOCR",
+      "tasks": [
+        "text_detection",
+        "text_recognition",
+        "document_layout",
+        "training",
+        "deployment"
+      ],
+      "urls": {
+        "homepage": "https://github.com/PaddlePaddle/PaddleOCR"
+      },
+      "license": "Apache-2.0；具体模型另核查",
+      "verification": "官方 README 已读；未运行",
+      "notes": "当前README介绍PP-OCRv6、PP-StructureV3、PaddleOCR-VL-1.6；古籍语义类别与排序需适配。",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "paddleocr_vl16",
+      "name": "PaddleOCR-VL-1.6",
+      "tasks": [
+        "document_parsing",
+        "page_ocr"
+      ],
+      "urls": {
+        "model": "https://huggingface.co/PaddlePaddle/PaddleOCR-VL-1.6",
+        "code": "https://github.com/PaddlePaddle/PaddleOCR"
+      },
+      "license": "模型卡Apache-2.0",
+      "verification": "模型卡与官方README已读；未下载权重或推理",
+      "notes": "0.9B；官方声称古籍、稀有字和印章能力改进。没有本次古籍样本上的性能实测。",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "tesseract",
+      "name": "Tesseract / tessdata_best",
+      "tasks": [
+        "vertical_traditional_chinese_ocr",
+        "cpu_baseline"
+      ],
+      "urls": {
+        "homepage": "https://github.com/tesseract-ocr/tessdata_best",
+        "vertical_model": "https://github.com/tesseract-ocr/tessdata_best/blob/main/chi_tra_vert.traineddata",
+        "languages": "https://tesseract-ocr.github.io/tessdoc/Data-Files-in-different-versions.html"
+      },
+      "license": "Apache-2.0",
+      "verification": "官方说明已读；竖排模型原始文件HEAD返回200；未下载模型",
+      "notes": "可做离线CPU基线；复杂注释需额外版式与排序。",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "evahan_scripts",
+      "name": "EvaHan evaluation scripts",
+      "tasks": [
+        "ocr_evaluation",
+        "layout_evaluation"
+      ],
+      "urls": {
+        "homepage": "https://github.com/GoThereGit/EvaHan",
+        "ocr_script": "https://github.com/GoThereGit/EvaHan/blob/main/task_a_c_eva.py",
+        "layout_script": "https://github.com/GoThereGit/EvaHan/blob/main/task_b_eva.py"
+      },
+      "license": "待确认",
+      "verification": "README已核实脚本入口与输入格式；未运行",
+      "notes": "文本及区域JSON规范；复用时检查许可证和异体字评测规则。",
+      "checked_at": "2026-11-11"
+    }
+  ],
+  "papers": [
+    {
+      "id": "yang2018",
+      "title": "Dense and Tight Detection of Chinese Characters in Historical Documents: Datasets and a Recognition Guided Detector",
+      "year": 2018,
+      "venue": "IEEE Access",
+      "url": "https://doi.org/10.1109/ACCESS.2018.2840218",
+      "related_resource_ids": [
+        "tkh_mth"
+      ],
+      "reading_priority": "C",
+      "verification": "作者数据仓库引用、HisDoc1B参考文献",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "xu2019",
+      "title": "CASIA-AHCDB: A Large-Scale Chinese Ancient Handwritten Characters Database",
+      "year": 2019,
+      "venue": "ICDAR",
+      "url": "https://doi.org/10.1109/ICDAR.2019.00132",
+      "related_resource_ids": [
+        "casia_ahcdb"
+      ],
+      "reading_priority": "C",
+      "verification": "机构数据页及Crossref书目",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "saini2019",
+      "title": "ICDAR 2019 Historical Document Reading Challenge on Large Structured Chinese Family Records",
+      "year": 2019,
+      "venue": "ICDAR",
+      "url": "https://arxiv.org/abs/1903.03341",
+      "related_resource_ids": [
+        "ic19_hdrc"
+      ],
+      "reading_priority": "C",
+      "verification": "作者arXiv摘要及书目",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "ma2020",
+      "title": "Joint Layout Analysis, Character Detection and Recognition for Historical Document Digitization",
+      "year": 2020,
+      "venue": "ICFHR",
+      "url": "https://doi.org/10.1109/ICFHR2020.2020.00017",
+      "related_resource_ids": [
+        "mthv2"
+      ],
+      "reading_priority": "A",
+      "verification": "作者数据仓库及Crossref书目",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "tang2020",
+      "title": "HRCenterNet: An Anchorless Approach to Chinese Character Segmentation in Historical Documents",
+      "year": 2020,
+      "venue": "IEEE Big Data",
+      "url": "https://arxiv.org/abs/2012.05739",
+      "related_resource_ids": [
+        "hrcenternet",
+        "mthv2"
+      ],
+      "reading_priority": "B",
+      "verification": "作者代码及arXiv摘要",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "cheng2022",
+      "title": "SCUT-CAB: A New Benchmark Dataset of Ancient Chinese Books with Complex Layouts for Document Layout Analysis",
+      "year": 2022,
+      "venue": "ICFHR",
+      "url": "https://github.com/HCIILAB/SCUT-CAB_Dataset_Release",
+      "related_resource_ids": [
+        "scut_cab"
+      ],
+      "reading_priority": "A",
+      "verification": "作者项目介绍及引用条目；未阅读全文",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "peng2022",
+      "title": "PageNet: Towards End-to-End Weakly Supervised Page-Level Handwritten Chinese Text Recognition",
+      "year": 2022,
+      "venue": "IJCV",
+      "url": "https://arxiv.org/abs/2207.14807",
+      "related_resource_ids": [
+        "pagenet"
+      ],
+      "reading_priority": "B",
+      "verification": "作者仓库方法说明及引用条目；未阅读全文",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "liu2023",
+      "title": "A robust and efficient algorithm for Chinese historical document analysis and recognition",
+      "year": 2023,
+      "venue": "National Science Review",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10246825/",
+      "related_resource_ids": [
+        "chdac"
+      ],
+      "reading_priority": "B",
+      "verification": "公开全文已读",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "shi2023",
+      "title": "M5HisDoc: A Large-scale Multi-style Chinese Historical Document Analysis Benchmark",
+      "year": 2023,
+      "venue": "NeurIPS Datasets and Benchmarks",
+      "url": "https://proceedings.neurips.cc/paper_files/paper/2023/hash/f7b424d242cc6bb7708cff241367334d-Abstract-Datasets_and_Benchmarks.html",
+      "related_resource_ids": [
+        "m5hisdoc"
+      ],
+      "reading_priority": "A",
+      "verification": "作者数据仓库及其书目信息；论文链接由HisDoc1B作者仓库提供",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "ma2024",
+      "title": "Reading between the Lines: Image-Based Order Detection in OCR for Chinese Historical Documents",
+      "year": 2024,
+      "venue": "AAAI",
+      "url": "https://doi.org/10.1609/aaai.v38i21.30572",
+      "related_resource_ids": [
+        "handoc_orderocr"
+      ],
+      "reading_priority": "A",
+      "verification": "作者仓库及Crossref论文摘要；出版网页自动读取受限",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "shi2025",
+      "title": "A large-scale dataset for Chinese historical document recognition and analysis",
+      "year": 2025,
+      "venue": "Scientific Data",
+      "url": "https://doi.org/10.1038/s41597-025-04495-x",
+      "related_resource_ids": [
+        "hisdoc1b"
+      ],
+      "reading_priority": "B",
+      "verification": "PMC公开全文、作者仓库、数据元数据已读",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "zhang2025",
+      "title": "HierCode: A lightweight hierarchical codebook for zero-shot Chinese text recognition",
+      "year": 2025,
+      "venue": "Pattern Recognition",
+      "url": "https://arxiv.org/abs/2403.13761",
+      "related_resource_ids": [],
+      "reading_priority": "B",
+      "verification": "arXiv API摘要及Crossref书目；未确认官方代码",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "wang2026",
+      "title": "Overview of EvaHan2026: The First International Evaluation of Ancient Chinese OCR and Layout Analysis",
+      "year": 2026,
+      "venue": "LT4HALA @ LREC",
+      "url": "https://aclanthology.org/2026.lt4hala-1.23/",
+      "related_resource_ids": [
+        "evahan2026",
+        "evahan_scripts"
+      ],
+      "reading_priority": "A",
+      "verification": "ACL书目摘要、论文全文相关页及作者仓库已核对",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "yu2026",
+      "title": "Benchmarking Vision-Language Models on Chinese Ancient Documents: From OCR to Knowledge Reasoning",
+      "year": 2026,
+      "venue": "Findings of ACL",
+      "url": "https://aclanthology.org/2026.findings-acl.1438/",
+      "related_resource_ids": [
+        "ancientdoc"
+      ],
+      "reading_priority": "A",
+      "verification": "ACL书目摘要、论文全文相关页、作者仓库、HF卡已核对；预印本2025",
+      "checked_at": "2026-11-11"
+    }
+  ]
+}
