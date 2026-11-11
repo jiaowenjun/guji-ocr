@@ -15,6 +15,12 @@
 
 OCR 部分尚未安装、运行模型或复现性能；报告中的性能数字来自相应作者／文章，文件核查与待实施方案分别标明。
 
+## OCR 基线服务
+
+| 服务 | 用途 |
+| --- | --- |
+| [paddleocr-baseline](paddleocr-baseline/README.md) | 本地 PaddleOCR（PaddleOCR-VL-1.6）异步 job 服务与批量 CLI，为古籍 OCR 提供可对照的工程基线 |
+
 ## 古籍预览应用
 
 | 应用 | 用途 |

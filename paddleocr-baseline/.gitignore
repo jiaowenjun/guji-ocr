@@ -1,0 +1,8 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+# 运行期数据：上传原图、OCR 结果资产、SQLite
+data/
+# batch_ocr.py 默认输出目录
+out/
