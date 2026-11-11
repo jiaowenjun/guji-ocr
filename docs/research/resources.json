@@ -4,7 +4,8 @@
   "scope": "中文竖排古籍OCR、物理/逻辑版式、阅读顺序",
   "report": "2026-11-11-中文竖排古籍OCR调研.md",
   "supplementary_reports": [
-    "2026-11-11-古籍酷与RGD论文补充调研.md"
+    "2026-11-11-古籍酷与RGD论文补充调研.md",
+    "2026-11-11-微信七篇古籍OCR资料追踪.md"
   ],
   "limitations": [
     "未安装或运行模型",
@@ -204,6 +205,42 @@
       "verification": "作者 README 已读",
       "notes": "7子域45任务；扩展资源，不替代竖排书页OCR基准。",
       "checked_at": "2026-11-11"
+    },
+    {
+      "id": "chronicles_ocr",
+      "name": "Chronicles-OCR",
+      "tasks": [
+        "historical_character_spotting",
+        "archaic_character_recognition",
+        "historical_text_parsing",
+        "script_classification"
+      ],
+      "urls": {
+        "homepage": "https://github.com/VirtualLUOUCAS/Chronicles-OCR",
+        "dataset": "https://huggingface.co/datasets/VirtualLUO/Chronicles-OCR",
+        "paper": "https://arxiv.org/abs/2605.11960"
+      },
+      "license": "代码Apache-2.0；README声明基准仅研究用途，数据授权不能由代码许可推定",
+      "verification": "论文方法/指标、作者仓库、评分代码及实际标注JSONL已核对；未下载全图集",
+      "notes": "2800条记录，七书体各400；2799个不同image_path，一条隶书完全重复。1200条含spotting字段，其中5条金文为空。成熟四书体无逐字框。解析分数=1-edit/max(len_pred,len_gt)，越高越好，不等同CER。",
+      "evidence": "evidence/2026-11-11-wechat-source-checks.json",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "ancientdoc_ocr_mini",
+      "name": "AncientDoc_OCR 11页第三方实验样本",
+      "tasks": [
+        "page_ocr",
+        "ocr_evaluation_tutorial"
+      ],
+      "urls": {
+        "homepage": "https://github.com/ziqian2001/AncientDoc_OCR"
+      },
+      "license": "未确认明确许可证；来源于AncientDoc，不是独立新增金标库",
+      "verification": "仓库文件清单、gt.txt与notebook已读；未运行",
+      "notes": "11张PNG及11条参考转录；1829个CJK统一表意字符。notebook按图片字节大小匹配GT、仅保留U+4E00–9FA5，复用需修正。无微信dots.mocr测试完整输出与脚本。",
+      "evidence": "evidence/2026-11-11-wechat-source-checks.json",
+      "checked_at": "2026-11-11"
     }
   ],
   "projects": [
@@ -371,6 +408,115 @@
       "license": "待确认",
       "verification": "README已核实脚本入口与输入格式；未运行",
       "notes": "文本及区域JSON规范；复用时检查许可证和异体字评测规则。",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "dots_ocr",
+      "name": "dots.ocr",
+      "tasks": [
+        "document_layout",
+        "page_ocr",
+        "reading_order"
+      ],
+      "urls": {
+        "homepage": "https://github.com/studio-dots-ai/dots.ocr",
+        "model": "https://huggingface.co/rednote-hilab/dots.ocr",
+        "paper": "https://arxiv.org/abs/2512.02498"
+      },
+      "license": "MIT LICENSE + 附加模型LICENSE AGREEMENT（写明冲突时MIT优先）",
+      "verification": "官方仓库、模型入口、论文摘要及附加协议已读；未运行",
+      "notes": "联合版式/文本/阅读关系；通用区域类别不等于古籍语义类别。当前README混入mocr说明，应固定权重与代码版本。1.7B为语言骨干口径。",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "dots_mocr",
+      "name": "dots.mocr",
+      "tasks": [
+        "document_layout",
+        "page_ocr",
+        "reading_order",
+        "graphics_to_svg"
+      ],
+      "urls": {
+        "homepage": "https://github.com/studio-dots-ai/dots.mocr",
+        "model": "https://huggingface.co/rednote-hilab/dots.mocr",
+        "paper": "https://arxiv.org/abs/2603.13032"
+      },
+      "license": "MIT LICENSE + 附加模型LICENSE AGREEMENT（写明冲突时MIT优先）",
+      "verification": "官方仓库、论文摘要与附加协议已读；未运行",
+      "notes": "3B，原dots.ocr-1.5改名；输出bbox/category/text及Markdown。微信11页91.1%与古籍酷69.24%使用不同样本/配置/指标，不能直接比较；完整训练复现未确认。",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "hunyuan_ocr15",
+      "name": "HunyuanOCR-1.5",
+      "tasks": [
+        "page_ocr",
+        "text_spotting",
+        "historical_script_recognition",
+        "finetuning",
+        "deployment"
+      ],
+      "urls": {
+        "homepage": "https://github.com/Tencent-Hunyuan/HunyuanOCR",
+        "model": "https://huggingface.co/tencent/HunyuanOCR",
+        "paper": "https://arxiv.org/abs/2607.04884",
+        "license": "https://github.com/Tencent-Hunyuan/HunyuanOCR/blob/main/LICENSE"
+      },
+      "license": "Tencent Hunyuan Community License：地域、商业规模及改进其他AI模型等限制",
+      "verification": "官方仓库、模型卡、论文方法/实验及LICENSE已读；未运行",
+      "notes": "约1B；SFT/DFlash/RL训练入口、Transformers/vLLM/llama.cpp部署。不得默认用其输出训练其他模型；Chronicles解析0.54/0.79不是整页古籍字符准确率。",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "ovisocr2",
+      "name": "OvisOCR2",
+      "tasks": [
+        "page_ocr",
+        "document_parsing",
+        "reading_order"
+      ],
+      "urls": {
+        "model": "https://huggingface.co/ATH-MaaS/OvisOCR2",
+        "paper": "https://arxiv.org/abs/2607.13639"
+      },
+      "license": "Apache-2.0",
+      "verification": "模型卡及论文数据/训练/评测部分已读；未运行",
+      "notes": "0.8B；整页Markdown，公式LaTeX、表格HTML、图像区域坐标。无标准逐字框/置信输出；未确认全套训练引擎和4B教师发布。通用榜单非古籍专测；已有OvisOCR3。",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "ovisocr3",
+      "name": "OvisOCR3",
+      "tasks": [
+        "page_ocr",
+        "document_layout",
+        "text_spotting",
+        "information_extraction"
+      ],
+      "urls": {
+        "model": "https://huggingface.co/ATH-MaaS/OvisOCR3",
+        "paper": "https://arxiv.org/abs/2610.33066"
+      },
+      "license": "模型卡Apache-2.0",
+      "verification": "官方模型卡与论文书目摘要已读；未阅读全文或运行",
+      "notes": "0.8B；OvisOCR2卡提示的新版本。新增结构化JSON/版式JSON等输出，不应外推旧版仅Markdown的限制。古籍专项性能待测。",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "chronicles_eval",
+      "name": "Chronicles-OCR evaluation tools",
+      "tasks": [
+        "ocr_evaluation",
+        "spotting_evaluation",
+        "script_classification_evaluation"
+      ],
+      "urls": {
+        "homepage": "https://github.com/VirtualLUOUCAS/Chronicles-OCR/tree/main/Opensource"
+      },
+      "license": "仓库代码Apache-2.0；数据另受研究用途声明约束",
+      "verification": "README、文本评分、框评分、UNK清洗和bbox适配代码已读；未运行模型",
+      "notes": "API/local vLLM推理、纯规则评分、汇总；Spotting要求IoU>=0.75与字符同时匹配；额外提供纯检测F1。",
       "checked_at": "2026-11-11"
     }
   ],
@@ -555,6 +701,414 @@
       ],
       "reading_priority": "A",
       "verification": "ACL书目摘要、论文全文相关页、作者仓库、HF卡已核对；预印本2025",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "li2025_dots",
+      "title": "dots.ocr: Multilingual Document Layout Parsing in a Single Vision-Language Model",
+      "year": 2025,
+      "venue": "arXiv",
+      "url": "https://arxiv.org/abs/2512.02498",
+      "related_resource_ids": [
+        "dots_ocr"
+      ],
+      "reading_priority": "B",
+      "verification": "arXiv书目摘要及官方仓库",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "zheng2026_mocr",
+      "title": "Multimodal OCR: Parse Anything from Documents",
+      "year": 2026,
+      "venue": "arXiv",
+      "url": "https://arxiv.org/abs/2603.13032",
+      "related_resource_ids": [
+        "dots_mocr"
+      ],
+      "reading_priority": "B",
+      "verification": "arXiv书目摘要及官方仓库",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "li2026_hunyuan15",
+      "title": "HunyuanOCR-1.5: Making Lightweight OCR VLMs Faster and Better",
+      "year": 2026,
+      "venue": "arXiv",
+      "url": "https://arxiv.org/abs/2607.04884",
+      "related_resource_ids": [
+        "hunyuan_ocr15",
+        "chronicles_ocr"
+      ],
+      "reading_priority": "B",
+      "verification": "论文HTML v3的方法/实验/推荐提示与官方仓库已读",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "lu2026_ovis2",
+      "title": "OvisOCR2 Technical Report",
+      "year": 2026,
+      "venue": "arXiv",
+      "url": "https://arxiv.org/abs/2607.13639",
+      "related_resource_ids": [
+        "ovisocr2"
+      ],
+      "reading_priority": "B",
+      "verification": "论文HTML v1的数据/训练/评测与模型卡已读",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "li2026_chronicles",
+      "title": "Chronicles-OCR: A Cross-Temporal Perception Benchmark for the Evolutionary Trajectory of Chinese Characters",
+      "year": 2026,
+      "venue": "arXiv",
+      "url": "https://arxiv.org/abs/2605.11960",
+      "related_resource_ids": [
+        "chronicles_ocr",
+        "chronicles_eval"
+      ],
+      "reading_priority": "B",
+      "verification": "论文v2方法/指标、官方仓库与实际标签已核对",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "ovisocr3_2026",
+      "title": "OvisOCR3 Technical Report",
+      "year": 2026,
+      "venue": "arXiv",
+      "url": "https://arxiv.org/abs/2610.33066",
+      "related_resource_ids": [
+        "ovisocr3"
+      ],
+      "reading_priority": "B",
+      "verification": "论文书目摘要、模型卡已读；未阅读全文",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "ppocr2020",
+      "title": "PP-OCR: A Practical Ultra Lightweight OCR System",
+      "year": 2020,
+      "venue": "arXiv",
+      "url": "https://arxiv.org/abs/2009.09941",
+      "related_resource_ids": [
+        "paddleocr"
+      ],
+      "reading_priority": "C",
+      "verification": "arXiv书目摘要已核对；未阅读全文",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "ppocrv2_2021",
+      "title": "PP-OCRv2: Bag of Tricks for Ultra Lightweight OCR System",
+      "year": 2021,
+      "venue": "arXiv",
+      "url": "https://arxiv.org/abs/2109.03144",
+      "related_resource_ids": [
+        "paddleocr"
+      ],
+      "reading_priority": "C",
+      "verification": "arXiv书目摘要已核对；未阅读全文",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "ppocrv3_2022",
+      "title": "PP-OCRv3: More Attempts for the Improvement of Ultra Lightweight OCR System",
+      "year": 2022,
+      "venue": "arXiv",
+      "url": "https://arxiv.org/abs/2206.03001",
+      "related_resource_ids": [
+        "paddleocr"
+      ],
+      "reading_priority": "C",
+      "verification": "arXiv书目摘要已核对；未阅读全文",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "ppstructurev2_2022",
+      "title": "PP-StructureV2: A Stronger Document Analysis System",
+      "year": 2022,
+      "venue": "arXiv",
+      "url": "https://arxiv.org/abs/2210.05391",
+      "related_resource_ids": [
+        "paddleocr"
+      ],
+      "reading_priority": "C",
+      "verification": "arXiv书目摘要已核对；未阅读全文",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "paddleocr3_2025",
+      "title": "PaddleOCR 3.0 Technical Report",
+      "year": 2025,
+      "venue": "arXiv",
+      "url": "https://arxiv.org/abs/2507.05595",
+      "related_resource_ids": [
+        "paddleocr"
+      ],
+      "reading_priority": "B",
+      "verification": "arXiv书目摘要及官方项目说明；未阅读全文",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "ppocrv5_2026",
+      "title": "PP-OCRv5: A Specialized 5M-Parameter Model Rivaling Billion-Parameter Vision-Language Models on OCR Tasks",
+      "year": 2026,
+      "venue": "arXiv",
+      "url": "https://arxiv.org/abs/2603.24373",
+      "related_resource_ids": [
+        "paddleocr"
+      ],
+      "reading_priority": "B",
+      "verification": "arXiv当前标题与摘要已核对，微信标题表述不同；未阅读全文",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "paddleocrvl_2025",
+      "title": "PaddleOCR-VL: Boosting Multilingual Document Parsing via a 0.9B Ultra-Compact Vision-Language Model",
+      "year": 2025,
+      "venue": "arXiv",
+      "url": "https://arxiv.org/abs/2510.14528",
+      "related_resource_ids": [
+        "paddleocr"
+      ],
+      "reading_priority": "B",
+      "verification": "arXiv书目摘要已核对；未阅读全文",
+      "checked_at": "2026-11-11"
+    }
+  ],
+  "services": [
+    {
+      "id": "gjcool",
+      "name": "古籍酷",
+      "tasks": [
+        "historical_page_ocr",
+        "region_detection",
+        "character_coordinates",
+        "annotation_layout",
+        "proofreading"
+      ],
+      "urls": {
+        "homepage": "https://ocr.gj.cool/",
+        "blog": "https://ocr.gj.cool/blog",
+        "docs": "https://ocr.gj.cool/doc/v1"
+      },
+      "license": "商业服务；核心引擎开源代码与权重未确认",
+      "verification": "8篇技术/工作流文章与API文档已读；未调用API",
+      "notes": "排版2.0提供区域归属、小字评分、行字坐标；厂商分数不等于本次实测。ocr_plus属企业测试申请。",
+      "checked_at": "2026-11-11"
+    }
+  ],
+  "desktop_tools": [
+    {
+      "id": "gujiyun_ocr",
+      "name": "古籍云OCR",
+      "tasks": [
+        "historical_page_ocr",
+        "manual_layout",
+        "proofreading",
+        "searchable_pdf"
+      ],
+      "urls": {
+        "homepage": "http://gujiyun.cn",
+        "download_page": "http://gujiyun.cn/ziyuan.html",
+        "article": "https://mp.weixin.qq.com/s/NAWJJ5gBssbA2SBY5qHrbw"
+      },
+      "license": "资源页限个人研究/分享、禁止商用；未确认源码或开源许可证",
+      "verification": "微信完整说明与官网资源下载页已读；未下载/运行软件",
+      "notes": "官网当前支持Windows；默认本地OCR，另有可选联网AI转写。多后端与夹注样式学习为软件说明，打包模型/版本及效果未验证。",
+      "checked_at": "2026-11-11"
+    }
+  ],
+  "technical_articles": [
+    {
+      "id": "wx_gujiyun",
+      "title": "首款纯本地的古籍OCR来了，绿色免安装，功能全免费！",
+      "published_at": "2026-09-29",
+      "author": "游氏古籍研究室转经世国学馆／耕田四哥",
+      "url": "https://mp.weixin.qq.com/s/NAWJJ5gBssbA2SBY5qHrbw",
+      "related_resource_ids": [
+        "gujiyun_ocr"
+      ],
+      "verification": "微信全文已读；关联一手来源另行记录",
+      "notes": "软件说明；免费不等于开源，官网限非商业个人研究",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "wx_dots_mocr",
+      "title": "dots.mocr｜古籍 OCR 开源项目观察之四",
+      "published_at": "2026-08-02",
+      "author": "数字人文港",
+      "url": "https://mp.weixin.qq.com/s/aUdOM5Puffl2Ywx_EqztHg",
+      "related_resource_ids": [
+        "dots_mocr",
+        "ancientdoc_ocr_mini"
+      ],
+      "verification": "微信全文已读；关联一手来源另行记录",
+      "notes": "11页测试，报告CER8.9%；未找到完整dots输出和评分脚本",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "wx_paddle",
+      "title": "PaddleOCR 简史：古籍 OCR 开源项目观察之一",
+      "published_at": "2026-07-07",
+      "author": "数字人文港",
+      "url": "https://mp.weixin.qq.com/s/2_yPxPw78Ak4ueAfxbj69Q",
+      "related_resource_ids": [
+        "paddleocr"
+      ],
+      "verification": "微信全文已读；关联一手来源另行记录",
+      "notes": "技术综述；没有新增古籍受控实验",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "wx_dots_ocr",
+      "title": "dots.ocr｜古籍 OCR 开源项目观察之二",
+      "published_at": "2026-07-08",
+      "author": "数字人文港",
+      "url": "https://mp.weixin.qq.com/s/KUR7vrLD-Qg99ViBIq-71g",
+      "related_resource_ids": [
+        "dots_ocr",
+        "dots_mocr"
+      ],
+      "verification": "微信全文已读；关联一手来源另行记录",
+      "notes": "结构化文档解析路线介绍",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "wx_hunyuan",
+      "title": "HunyuanOCR-1.5｜古籍 OCR 开源项目观察之三",
+      "published_at": "2026-07-15",
+      "author": "数字人文港",
+      "url": "https://mp.weixin.qq.com/s/IsyXcdEkC4KMj0tVOpvmhA",
+      "related_resource_ids": [
+        "hunyuan_ocr15",
+        "chronicles_ocr"
+      ],
+      "verification": "微信全文已读；关联一手来源另行记录",
+      "notes": "原论文和训练入口已追踪，须补充自定义许可限制",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "wx_ovis2",
+      "title": "OvisOCR2｜古籍 OCR 开源项目观察之五",
+      "published_at": "2026-08-06",
+      "author": "数字人文港",
+      "url": "https://mp.weixin.qq.com/s/DdwTjSbrRF9c5IcHVKcI8Q",
+      "related_resource_ids": [
+        "ovisocr2",
+        "ovisocr3"
+      ],
+      "verification": "微信全文已读；关联一手来源另行记录",
+      "notes": "通用文档成绩不等于古籍专项；本次发现后续OvisOCR3",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "wx_chronicles",
+      "title": "【论文解读】古汉字识别新基准 | 腾讯混元发布Chronicles-OCR",
+      "published_at": "2026-06-05",
+      "author": "FireAICV",
+      "url": "https://mp.weixin.qq.com/s/gTfVVP4D8xWj3NPs3w4JIA",
+      "related_resource_ids": [
+        "chronicles_ocr",
+        "chronicles_eval"
+      ],
+      "verification": "微信全文已读；关联一手来源另行记录",
+      "notes": "七书体扩展评测；指标已用原文和代码校正",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "gj_layout",
+      "title": "排版引擎大更新：古籍酷排版2.0技术详解",
+      "published_at": "2026-10-16",
+      "url": "https://ocr.gj.cool/article/2026-10-16-new-layout-engine",
+      "related_resource_ids": [
+        "gjcool"
+      ],
+      "verification": "全文已读；详见古籍酷与RGD补充报告",
+      "notes": "技术博客/产品说明或使用案例；不是独立复现结果",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "gj_models",
+      "title": "开源OCR大模型的“冰与火”",
+      "published_at": "2026-04-03",
+      "url": "https://ocr.gj.cool/article/2026-04-03-ocr-model",
+      "related_resource_ids": [
+        "gjcool"
+      ],
+      "verification": "全文已读；详见古籍酷与RGD补充报告",
+      "notes": "技术博客/产品说明或使用案例；不是独立复现结果",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "gj_ancientdoc",
+      "title": "大模型——大跃进？大泡沫？",
+      "published_at": "2026-02-04",
+      "url": "https://ocr.gj.cool/article/2026-02-04-ancient-doc-criticize",
+      "related_resource_ids": [
+        "gjcool"
+      ],
+      "verification": "全文已读；详见古籍酷与RGD补充报告",
+      "notes": "技术博客/产品说明或使用案例；不是独立复现结果",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "gj_spring",
+      "title": "速度与激情：2026春季技术报告",
+      "published_at": "2026-03-15",
+      "url": "https://ocr.gj.cool/article/2026-03-15-gjcool-report",
+      "related_resource_ids": [
+        "gjcool"
+      ],
+      "verification": "全文已读；详见古籍酷与RGD补充报告",
+      "notes": "技术博客/产品说明或使用案例；不是独立复现结果",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "gj_punct",
+      "title": "打通OCR与自动标点最后“一公里”",
+      "published_at": "2026-06-16",
+      "url": "https://ocr.gj.cool/article/2026-06-16-punct-progress",
+      "related_resource_ids": [
+        "gjcool"
+      ],
+      "verification": "全文已读；详见古籍酷与RGD补充报告",
+      "notes": "技术博客/产品说明或使用案例；不是独立复现结果",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "gj_newspaper",
+      "title": "古籍和老旧报刊整理之利器",
+      "published_at": "2025-12-02",
+      "url": "https://ocr.gj.cool/article/2025-12-02-old-newspaper",
+      "related_resource_ids": [
+        "gjcool"
+      ],
+      "verification": "全文已读；详见古籍酷与RGD补充报告",
+      "notes": "技术博客/产品说明或使用案例；不是独立复现结果",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "gj_ocr_release",
+      "title": "古籍OCR新版发布",
+      "published_at": "2025-04-01",
+      "url": "https://ocr.gj.cool/article/2025-04-01-ocr-new-version",
+      "related_resource_ids": [
+        "gjcool"
+      ],
+      "verification": "全文已读；详见古籍酷与RGD补充报告",
+      "notes": "技术博客/产品说明或使用案例；不是独立复现结果",
+      "checked_at": "2026-11-11"
+    },
+    {
+      "id": "gj_htree",
+      "title": "科判制作",
+      "published_at": "2025-10-26",
+      "url": "https://ocr.gj.cool/article/2025-10-26-htree-edit",
+      "related_resource_ids": [
+        "gjcool"
+      ],
+      "verification": "全文已读；详见古籍酷与RGD补充报告",
+      "notes": "技术博客/产品说明或使用案例；不是独立复现结果",
       "checked_at": "2026-11-11"
     }
   ]

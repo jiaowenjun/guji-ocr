@@ -1,0 +1,115 @@
+{
+  "checked_at": "2026-11-11",
+  "scope": "Read-only source verification; no OCR model, notebook, API service or downloaded software executed.",
+  "wechat_articles": [
+    {
+      "id": "wx_gujiyun",
+      "url": "https://mp.weixin.qq.com/s/NAWJJ5gBssbA2SBY5qHrbw",
+      "title": "首款纯本地的古籍OCR来了，绿色免安装，功能全免费！",
+      "published_at": "2026-09-29",
+      "read_status": "full body read through browser"
+    },
+    {
+      "id": "wx_dots_mocr",
+      "url": "https://mp.weixin.qq.com/s/aUdOM5Puffl2Ywx_EqztHg",
+      "title": "dots.mocr｜古籍 OCR 开源项目观察之四",
+      "published_at": "2026-08-02",
+      "read_status": "full body read through browser"
+    },
+    {
+      "id": "wx_paddle",
+      "url": "https://mp.weixin.qq.com/s/2_yPxPw78Ak4ueAfxbj69Q",
+      "title": "PaddleOCR 简史：古籍 OCR 开源项目观察之一",
+      "published_at": "2026-07-07",
+      "read_status": "full body read through browser"
+    },
+    {
+      "id": "wx_dots_ocr",
+      "url": "https://mp.weixin.qq.com/s/KUR7vrLD-Qg99ViBIq-71g",
+      "title": "dots.ocr｜古籍 OCR 开源项目观察之二",
+      "published_at": "2026-07-08",
+      "read_status": "full body read through browser"
+    },
+    {
+      "id": "wx_hunyuan",
+      "url": "https://mp.weixin.qq.com/s/IsyXcdEkC4KMj0tVOpvmhA",
+      "title": "HunyuanOCR-1.5｜古籍 OCR 开源项目观察之三",
+      "published_at": "2026-07-15",
+      "read_status": "full body read through browser"
+    },
+    {
+      "id": "wx_ovis2",
+      "url": "https://mp.weixin.qq.com/s/DdwTjSbrRF9c5IcHVKcI8Q",
+      "title": "OvisOCR2｜古籍 OCR 开源项目观察之五",
+      "published_at": "2026-08-06",
+      "read_status": "full body read through browser"
+    },
+    {
+      "id": "wx_chronicles",
+      "url": "https://mp.weixin.qq.com/s/gTfVVP4D8xWj3NPs3w4JIA",
+      "title": "【论文解读】古汉字识别新基准 | 腾讯混元发布Chronicles-OCR",
+      "published_at": "2026-06-05",
+      "read_status": "full body read through browser"
+    }
+  ],
+  "ancientdoc_mini": {
+    "source": "https://github.com/ziqian2001/AncientDoc_OCR",
+    "reference_nonempty_lines": 11,
+    "cjk_unified_ideograph_count": 1829,
+    "characters_excluded_by_notebook_range": [
+      "㷔",
+      "䃅",
+      "䑓"
+    ],
+    "notebook_findings": [
+      "Prediction cleaning uses only U+4E00-U+9FA5.",
+      "Batch GT lookup indexes by image byte-size ordering, not an explicit filename-reference mapping.",
+      "No dots.mocr test outputs or corresponding scoring script found in the inspected repository."
+    ],
+    "limitation": "These notebook issues do not establish that the WeChat author used the same code or pairing. No CER was reproduced."
+  },
+  "chronicles": {
+    "source": "https://huggingface.co/datasets/VirtualLUO/Chronicles-OCR/blob/main/data/Chronicles_OCR.jsonl",
+    "sha256": "e2b24823ff1901e1b9696acdebffe91b2918b9f746fb3522d27c4567e2fc725d",
+    "records": 2800,
+    "font_type_counts": {
+      "甲骨文": 400,
+      "金文": 400,
+      "篆书": 400,
+      "隶书": 400,
+      "楷书": 400,
+      "行书": 400,
+      "草书": 400
+    },
+    "unique_image_paths": 2799,
+    "duplicate_records": [
+      {
+        "image_path": "images/隶书/f1df4491b1af67c5.jpg",
+        "record_numbers_1_based": [
+          1377,
+          1498
+        ],
+        "identical_records": true
+      }
+    ],
+    "records_with_spotting_field": 1200,
+    "empty_spotting_by_font": {
+      "金文": 5
+    },
+    "parsing_score": "1 - Levenshtein(pred,gt)/max(len(pred),len(gt)), after UNK removal and text normalization",
+    "spotting_match": "IoU >= 0.75 AND exact character match; separate bbox-only diagnostic",
+    "limitation": "No full-image download, content-hash deduplication or label quality audit performed."
+  },
+  "source_file_sha256": {
+    "ancientdoc-mini-gt.txt": "2d0d440f34669c568425e79e2f4a17a14ea19c616072b13baf197e10f3a00ddb",
+    "ancientdoc-mini-notebook.ipynb": "83a205a817fcddd5d89b6b128b34fb081005a3614f9dfba9c6a84345ef539bdf",
+    "chronicles-data.jsonl": "e2b24823ff1901e1b9696acdebffe91b2918b9f746fb3522d27c4567e2fc725d",
+    "chronicles-judge-text.py": "3e633d994401f783a41b6d92742b0c6bcb11519dea9533b733c0f4100a7e46df",
+    "chronicles-judge-spotting.py": "2d32de17555dc3aeb703f77c48f9692635138b84fa5022c9000350469b409659",
+    "chronicles-unk.py": "e0b88b494f00b20c93825010cade476a9e0cf16c00a5847044b073301854bf6c",
+    "chronicles-bbox.py": "3bc191090eb56111485cb28d062f08195d3d7fdec02ec828db994fb12fca633c",
+    "hunyuan-license.txt": "fa7c019148a66d26ffd8e94270fd70cd97dfe9b662a7ef3aca1a6ce826007006",
+    "dots-mocr-agreement.txt": "6ee9cba1899c5b8b4006ccd35849ec3e4de3971d3302e88a0d64452449edf000",
+    "dots-ocr-agreement.txt": "6ee9cba1899c5b8b4006ccd35849ec3e4de3971d3302e88a0d64452449edf000"
+  }
+}
