@@ -8,7 +8,7 @@
 | [微信资料原始来源核查](2026-11-11-wechat-source-checks.json) | 记录七篇文章及原始来源；读取 11 页样本标签／notebook、Chronicles JSONL／评分代码和部分许可；保存文件 SHA-256 | 未运行 notebook、模型或桌面软件；未下载 Chronicles 全图，2,799 为不同路径数，未作全图内容去重；不能复现 dots 8.9% CER |
 | [可下载数据集落地清单](2026-11-11-dataset-downloads.json) | 将调研中可直接获取的 MTHv2、AncientDoc、Chronicles-OCR、CASIA-AHCDB、HisDoc1B、AncientDoc_OCR 小样本下载至本地 `datasets/`（已 gitignore）；记录来源、版本指针、大小、SHA-256、MD5 对照与 unzip 完整性结果 | 只证明文件取得与位完整，不是标注质量审计；压缩包因磁盘空间未解压；下载不等于取得授权，非商业／申请制条款仍然适用 |
 | [kangxi-gold 图片下载与对齐](2026-11-12-kangxi-gold-images.json) | 自建金标用图：kangxizidian.com 武英殿版 17 页（0312–0328）下载记录（robots、限速方式、逐页 SHA-256）与页码对齐目视核对（0312 全文级、0315 逐句、0328 结构级）；标注零漂移对照结论 | 目视核对只覆盖 3 页且扩展 B 区字形仅确认结构；未跑任何 OCR 模型，gold vs gold 冒烟 CER=0 只验证脚本链路；图片版权归站点/原书相关方，限内部研究评测 |
-| [kangxizidian 站点结构](2026-11-12-kangxizidian-site-structure.json) | 阅读页 `/v2/index2.php` 结构调研：2 个样本页原始 HTML（SHA-256 固定）、字头缩略图两种命名形态、214 部首→起始页全表、0313 字头与 .gj 人工转写交叉验证、HTML 怪癖清单 | 只抽样 2 页，流水号连续性与 K 码编号规则为小样本推断；SVG 无页内坐标；未抓全书页面、未运行 OCR；结论详见[调研报告](../2026-11-12-kangxizidian-网站结构调研.md) |
+| [kangxizidian 站点结构](2026-11-12-kangxizidian-site-structure.json) | 阅读页 `/v2/index2.php` 结构调研：2 个样本页原始 HTML（SHA-256 固定）、字头缩略图两种命名形态、214 部首→起始页全表、0313 字头与 .gj 人工转写交叉验证、HTML 怪癖清单；同日补充核查字头详情页 `/search/index_v.php`（3 样本 SHA-256）：**完整释文纯 Unicode 文本**（丁条对金标正文零差异、丂条相似比 1.0）、双版本页位映射、K 码字可查（𠆤）、PUA U+EAB1 段落分隔符、侧栏古今人名随机轮换勿爬 | 阅读页仅抽样 2 页，流水号连续性与 K 码编号规则为小样本推断；SVG 无页内坐标；释文保真度仅比对 2 条不能外推全书；真·未编码字（缩略图破损实体 &#x）不可经详情端点查询；未抓全书页面、未运行 OCR；结论详见[调研报告](../2026-11-12-kangxizidian-网站结构调研.md)第 7 节 |
 
 ## 如何解读
 

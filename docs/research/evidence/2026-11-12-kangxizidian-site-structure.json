@@ -1,6 +1,6 @@
 {
   "checked_at": "2026-11-12",
-  "purpose": "kangxizidian.com 阅读页（/v2/index2.php）结构调研记录：URL 体系、字头缩略图命名、导航索引与 HTML 怪癖，用于评估全书页→字头索引抓取与 kangxi-gold 扩页辅助。未抓取全书页面，未运行 OCR。",
+  "purpose": "kangxizidian.com 阅读页（/v2/index2.php）与字头详情页（/search/index_v.php）结构调研记录：URL 体系、字头缩略图命名、导航索引、HTML 怪癖，以及同日发现的详情页全文纯文本源（见 detail_page_supplement）。未抓取全书页面，未运行 OCR。",
   "method": "curl 抓取 2 个阅读页原始 HTML（0313、0330）；对整页 JPG 与字头 SVG 各做 1 次 HEAD；下载 2 个字头 SVG 检查内容；用 kangxi-gold 人工转写 guji-preview/src/samples/kangxi-yibu.gj 交叉验证 0313 页字头；Python 正则解析部首映射与缩略图（未使用严格 XML 解析器）。",
   "samples": {
     "reading_page_template": "https://www.kangxizidian.com/v2/index2.php?page={page}",
@@ -947,5 +947,67 @@
     "未遍历全书 7738 页，页→字头索引、流水号连续性、K 码编号规则均为小样本推断",
     "未解析大图页 index.php 的结构差异（仅确认存在）",
     "未做批量抓取与限速方案实施（礼仪沿用 kangxi-gold 下载脚本：≥1.2s+抖动，robots 已核查全允许）"
-  ]
+  ],
+  "detail_page_supplement": {
+    "checked_at": "2026-11-12",
+    "purpose": "同日补充核查：字头详情页为全文纯文本源，推翻本 JSON 及报告初稿『站点无纯文本』的判断",
+    "discovery_path": "阅读页缩略图链接 index2.php?page=313&sword=丁 的页面以 iframe 嵌入 /search/index_v.php?stype=Word&sword=丁&detail=y；字頭标题在 #cornerbody3，卡片本体在 #cornerbody1，服务端渲染无 JS",
+    "endpoint_template": "https://www.kangxizidian.com/search/index_v.php?stype=Word&sword={urlencoded_char}&detail=y",
+    "samples": [
+      {
+        "sword": "丁",
+        "url": "https://www.kangxizidian.com/search/index_v.php?stype=Word&sword=%E4%B8%81&detail=y",
+        "bytes": 24352,
+        "sha256": "c2ab5d44ca9f2d9a793d45feac0ed23e170b227cfb72514afd1d208dcee0accc",
+        "stored_tmp": "/tmp/kx_detail.html"
+      },
+      {
+        "sword": "丂",
+        "url": "https://www.kangxizidian.com/search/index_v.php?stype=Word&sword=%E4%B8%82&detail=y",
+        "bytes": 12104,
+        "sha256": "50c83708eb71c8b17a282d1b56340eaa77030a51899c69cea4bb0bd71b096645",
+        "stored_tmp": "/tmp/kx_detail_kao.html"
+      },
+      {
+        "sword": "𠆤 (U+201A4, 丁古文, 缩略图 K0000)",
+        "url": "https://www.kangxizidian.com/search/index_v.php?stype=Word&sword=%F0%A0%86%A4&detail=y",
+        "bytes": 11100,
+        "sha256": "5857acc963b2b0682d43c5681a9599ed20505255a586421896d033c397464d78",
+        "stored_tmp": "/tmp/kx_detail_guwen.html"
+      }
+    ],
+    "card_fields": {
+      "字头": "丁",
+      "古文": "𠆤",
+      "部首": "一",
+      "部首筆畫": 1,
+      "部外筆畫": 1,
+      "總筆畫": 2,
+      "拼音": [
+        "dīng",
+        "zhēng"
+      ],
+      "注音": [
+        "ㄉㄧㄥ",
+        "ㄓㄥ"
+      ],
+      "倉頡": "MN",
+      "统一碼": "4E01",
+      "卷別": "〈子集上〉",
+      "同文書局本": "75頁，第3字",
+      "武英殿本": "313頁，第1字",
+      "释文": "og:description meta 一份 + 正文 HTML 一份（引书名 span.rcornertext、字头字红字 font 标记）"
+    },
+    "fidelity_vs_gold": {
+      "method": "difflib.SequenceMatcher；站点释文剥离 PUA/空白后与 kangxi-yibu.gj 对应条目比对",
+      "丁": "site 958 vs gold 966 净字符，相似比 0.9958，唯一差异 = 金标自身页界标记 @314/@315，正文零差异",
+      "丂": "site 49 vs gold 49 净字符，相似比 1.0",
+      "boundary": "样本仅 2 条（一长一短），不能外推全书无校勘差异"
+    },
+    "pua": "释文含 U+EAB1 段落分隔符（丁条 32 处，剥离后比对一致）；站方 kxfont 用私用区承载无 Unicode 字形，其他条目 PUA 字形出现率未测",
+    "k_coded_queryable": "𠆤 返回独立条目『【集韻】丁古作𠆤。註詳一部一畫。』；但 sword 须为 Unicode 可表示字符，缩略图链接为破损实体 &#x 的真·未编码字不可经此端点查询",
+    "sidebar_widgets": "大圖頁 #cornerbody1 的 歡迎光臨/古今人名/康熙頻道 块与页无关；古今人名经同页两次抓取证实服务端随机轮换（任熏/包融/周恩來… vs 張嘉森/唐珣/周濟…），勿爬",
+    "static_url_variants": "详情页尾部注释含 /search/stype-Word-{字}-y-1.html（全文版）与 -n-1.html（字頭版）静态 URL，未测试可用性",
+    "batch_path": "解析 7738 页缩略图列得全字头表后逐字取详情 ≈ 4.7 万请求；限速 ≥1.2s+抖动约 2 天"
+  }
 }
