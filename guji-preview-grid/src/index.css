@@ -6,28 +6,37 @@
 @import "./matrix.css";
 
 /* 本机刻本字体的跨浏览器别名（Safari 修复）：
-   Safari/WebKit 对 font-family 里的本机字体按注册名严格匹配（优先 PostScript 名），
-   Chrome 宽松匹配家族名即可命中——直接写中文家族名时 Safari 会落空回退 serif。
-   @font-face local() 依次列出 PostScript 名 / Full Name / Family 名，
-   两引擎都能命中；字体未安装时别名解析失败，自动落到调用处后备链。
+   WebKit 对这批用户字体的 local() 会"解析成功但渲染不可用"（实测伪命中，
+   且挡住 src 后续来源），font-family 写注册名也匹配不上；Chrome 一切正常。
+   因此 url() 必须放在最前：直接加载 public/fonts/ 的字体文件软链
+   （scripts/link-fonts.sh 从本机字体目录生成），任何浏览器渲染一致；
+   未跑脚本时 url() 404 → local() 名字链兜底（Chrome 命中）→ 再落调用处后备链。
    小字三个平面保持独立别名，保留 font-family 列表内的逐字回退。 */
 @font-face {
     font-family: "GujiLarge";
-    src: local("KangXiFontFullVersion"),
+    src: url("/fonts/guji-large.ttf") format("truetype"),
+        local("KangXiFontFullVersion"),
         local("康熙字典體傳承版 KangXiZiDian.com"),
         local("康熙傳承版 KangXiZiDian.com");
+    font-display: swap;
 }
 @font-face {
     font-family: "GujiPlane0";
-    src: local("FZSONG_ZHSJ_SIP--GB1-5"), local("中华书局宋体00平面");
+    src: url("/fonts/guji-plane0.ttf") format("truetype"),
+        local("FZSONG_ZHSJ_SIP--GB1-5"), local("中华书局宋体00平面");
+    font-display: swap;
 }
 @font-face {
     font-family: "GujiPlane2";
-    src: local("FZSONG_ZHSJ_02--GB1-5"), local("中华书局宋体02平面");
+    src: url("/fonts/guji-plane2.ttf") format("truetype"),
+        local("FZSONG_ZHSJ_02--GB1-5"), local("中华书局宋体02平面");
+    font-display: swap;
 }
 @font-face {
     font-family: "GujiPlaneF";
-    src: local("FZSONG_ZHSJ_0F--GB1-5"), local("中华书局宋体15平面");
+    src: url("/fonts/guji-planef.ttf") format("truetype"),
+        local("FZSONG_ZHSJ_0F--GB1-5"), local("中华书局宋体15平面");
+    font-display: swap;
 }
 
 @custom-variant dark (&:is(.dark *));

@@ -32,11 +32,12 @@
 
 ## 已知偏差与兼容性
 
-- **Safari 本机字体匹配**：Safari/WebKit 对 font-family 中的本机字体按注册名严格匹配
-  （优先 PostScript 名），Chrome 宽松匹配家族名——直接写「康熙傳承版 KangXiZiDian.com」等
-  中文家族名时 Safari 落空回退 serif。已用 `@font-face local()` 别名链修复
-  （`index.css`，每个字体列 PostScript 名 / Full Name / Family 名，如大字
-  `KangXiFontFullVersion`），别名命中前置于原字体栈；小字三平面保持独立别名以保留逐字回退
+- **Safari 本机字体匹配**：WebKit 对这批用户字体（康熙傳承版/中华书局宋体）的
+  `local()` 会「解析成功但渲染不可用」（伪命中，还会挡住 src 后续来源），font-family
+  写注册名也不匹配；Chrome 一切正常。修复：`@font-face` 以 **url() 为首源**直接加载
+  `public/fonts/` 下的字体文件软链（`scripts/link-fonts.sh` 从本机字体目录生成，不入库），
+  `local()` 名字链（PostScript/Full/Family 名）退居其次作为未跑脚本时的 Chrome 兜底。
+  Playwright WebKit 像素级验证：url 优先渲染真字形，local 优先渲染回退 serif
 - **亚格取整**：flex 版小字组为 auto-margin 精确居中，`W−k` 为奇数时落 0.5em；
   矩阵版取整。语料中夹注恒为双行（k=2，W=2），实际不触发
 - **续书名并列**：解析器在续书名状态遇换行不产出 br，【字/彙/补】实际渲染为
@@ -76,10 +77,11 @@ pnpm build
 - 保存后同步 json/txt：`npx -y tsx kangxi-gold/scripts/build_annotations.ts --allow-drift`
   （默认严格模式会因与原 fixture 不一致而拒绝，属预期防呆）
 
-首次使用先生成数据集访问层（符号链接 + 页清单，已 gitignore，重跑安全）：
+首次使用先生成数据集访问层与字体软链（均为符号链接，已 gitignore，重跑安全）：
 
 ```sh
 bash scripts/link-dataset.sh   # 需挂载存放扫描图的外置盘（manifest.images_dir）
+bash scripts/link-fonts.sh     # 从本机字体目录软链刻本字体（Safari 渲染必需，Chrome 可选）
 ```
 
 Guji 语法、字体安装说明见 [guji-preview README](../guji-preview/README.md)。
