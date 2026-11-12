@@ -159,6 +159,30 @@ class KangxiStore:
             row = c.execute("SELECT * FROM pages WHERE page=?", (page,)).fetchone()
             return dict(row) if row else None
 
+    def next_missing_page(self, start: int = 1, total: int = 7738) -> int | None:
+        """最小的未完成页（缺阅读页 HTML 或原图）；全部完成返回 None。"""
+        with self._conn() as c:
+            row = c.execute(
+                """WITH RECURSIVE seq(x) AS (SELECT ? UNION ALL SELECT x+1 FROM seq WHERE x < ?)
+                   SELECT MIN(x) FROM seq WHERE NOT EXISTS (
+                     SELECT 1 FROM pages
+                     WHERE page=x AND reading_html IS NOT NULL AND scan_sha256 IS NOT NULL)""",
+                (start, total),
+            ).fetchone()
+        return row[0] if row else None
+
+    def coded_chars_missing_entries(self, page: int) -> list[str]:
+        """该页有码位、但 entries 表尚无详情的字头（增量抓详情用）。"""
+        with self._conn() as c:
+            rows = c.execute(
+                """SELECT pc.char FROM page_chars pc
+                   WHERE pc.page=? AND pc.codepoint IS NOT NULL
+                     AND NOT EXISTS (SELECT 1 FROM entries e WHERE e.codepoint=pc.codepoint)
+                   ORDER BY pc.ord""",
+                (page,),
+            ).fetchall()
+        return [r[0] for r in rows]
+
     def page_missing(self, page: int, parts=("scan",)) -> set[str]:
         """返回 page 行缺失的部分 ⊆ {'scan', 'reading'}；行不存在则返回 parts 全集。"""
         row = self.get_page(page)

@@ -203,7 +203,11 @@ def fetch_entry(sword: str, out_dir: Path, store: kangxi_store.KangxiStore,
         return False
     rec["html_sha256"] = hashlib.sha256(body).hexdigest()
     store.save_entry(sword, rec, raw_html=html, source_url=url)
-    path.write_text(json.dumps(rec, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    try:
+        path.write_text(json.dumps(rec, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    except OSError as e:
+        # 库为主存储，文件副本失败不中断流程（如目录缺失/盘满）
+        print(f"[{sword}] ⚠ JSON 文件副本写入失败（{e}）；数据库记录已保存", file=sys.stderr)
     warn = f"  ⚠ PUA 字形: {rec['pua_other']}" if rec["pua_other"] else ""
     print(
         f"[{sword}] {fname} {rec['text_chars']}字 {len(rec['text_paragraphs'])}段 "
