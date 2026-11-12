@@ -31,11 +31,15 @@
 }
 
 /* 【新增】页码标题（原插件中无样式） */
+/* 页码：绝对定位于纸层右下角（与扫描图水印页码位置一致）；
+   定位祖先为数据集对照页的纸层 div（position: relative），
+   且不再在版框上方占位——原占位使渲染页比扫描版框高出约 0.85 字格 */
 .page-title {
+  position: absolute;
+  right: calc(var(--guji-unit) * 0.6);
+  bottom: calc(var(--guji-unit) * 0.35);
   font-size: calc(var(--guji-unit) * 0.55);
-  text-align: center;
   color: #8a8a8a;
-  margin-bottom: calc(var(--guji-unit) * 0.3);
   font-variant-numeric: tabular-nums;
 }
 

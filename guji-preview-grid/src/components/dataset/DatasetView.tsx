@@ -369,7 +369,7 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
               <div className="flex justify-center p-4">
                 {matrixPages.length > 0 ? (
                   <div
-                    className="shrink-0"
+                    className="relative shrink-0"
                     style={{
                       width: displayWidth,
                       paddingTop: paperPad.top,
