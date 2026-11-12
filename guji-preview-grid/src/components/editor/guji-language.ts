@@ -55,14 +55,15 @@ export const gujiLanguage = StreamLanguage.define({
       stream.pos += book[0].length;
       return "link";
     }
-    // 带圈大字 #(A) / #(AB) / #(A
-    const circle = rest.match(/^#\([^)#【】]{1,2}\)?/);
+    // 带圈大字 #(A) / #(AB) / #(A（u 标志：{1,2} 按码点计，代理对不被劈开）
+    const circle = rest.match(/^#\([^)#【】]{1,2}\)?/u);
     if (circle) {
       stream.pos += circle[0].length;
       return "strong";
     }
-    // 行内大字 #字
-    const large = rest.match(/^#[^#【】(]/);
+    // 行内大字 #字（u 标志：字符类匹配整个码点——否则扩展 B 区字的高代理
+    // 会被单独吞进 token，渲染成两个孤立代理的豆腐块）
+    const large = rest.match(/^#[^#【】(]/u);
     if (large) {
       stream.pos += large[0].length;
       return "strong";

@@ -197,6 +197,12 @@
     'GujiPlane2', 'GujiPlaneF', 'PingFang SC', 'Hiragino Sans GB', monospace;
   line-height: 1.7;
 }
+
+/* # 后的字头字符（large-char-decoration 标记）：康熙字典体优先——
+   覆盖全典字头（含扩展 B/C 区），中华书局平面作非康熙字的回退 */
+.cm-editor .cm-guji-large-char {
+  font-family: 'GujiLarge', 'GujiPlane2', 'GujiPlaneF', 'GujiPlane0', serif;
+}
 .cm-editor.cm-focused {
   outline: none;
 }

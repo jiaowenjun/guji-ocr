@@ -3,6 +3,7 @@ import CodeMirror from "@uiw/react-codemirror";
 import { EditorView } from "@codemirror/view";
 import { syntaxHighlighting } from "@codemirror/language";
 import { gujiHighlight, gujiLanguage } from "./guji-language";
+import { gujiLargeCharDecoration } from "./large-char-decoration";
 
 export function GujiEditor({
   value,
@@ -22,6 +23,7 @@ export function GujiEditor({
       extensions={[
         gujiLanguage,
         syntaxHighlighting(gujiHighlight),
+        gujiLargeCharDecoration,
         EditorView.lineWrapping,
       ]}
       height="100%"
