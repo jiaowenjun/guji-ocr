@@ -32,6 +32,11 @@
 
 ## 已知偏差与兼容性
 
+- **Safari 本机字体匹配**：Safari/WebKit 对 font-family 中的本机字体按注册名严格匹配
+  （优先 PostScript 名），Chrome 宽松匹配家族名——直接写「康熙傳承版 KangXiZiDian.com」等
+  中文家族名时 Safari 落空回退 serif。已用 `@font-face local()` 别名链修复
+  （`index.css`，每个字体列 PostScript 名 / Full Name / Family 名，如大字
+  `KangXiFontFullVersion`），别名命中前置于原字体栈；小字三平面保持独立别名以保留逐字回退
 - **亚格取整**：flex 版小字组为 auto-margin 精确居中，`W−k` 为奇数时落 0.5em；
   矩阵版取整。语料中夹注恒为双行（k=2，W=2），实际不触发
 - **续书名并列**：解析器在续书名状态遇换行不产出 br，【字/彙/补】实际渲染为

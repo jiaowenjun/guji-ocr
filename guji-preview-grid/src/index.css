@@ -5,6 +5,31 @@
 @import "./flex.css";
 @import "./matrix.css";
 
+/* 本机刻本字体的跨浏览器别名（Safari 修复）：
+   Safari/WebKit 对 font-family 里的本机字体按注册名严格匹配（优先 PostScript 名），
+   Chrome 宽松匹配家族名即可命中——直接写中文家族名时 Safari 会落空回退 serif。
+   @font-face local() 依次列出 PostScript 名 / Full Name / Family 名，
+   两引擎都能命中；字体未安装时别名解析失败，自动落到调用处后备链。
+   小字三个平面保持独立别名，保留 font-family 列表内的逐字回退。 */
+@font-face {
+    font-family: "GujiLarge";
+    src: local("KangXiFontFullVersion"),
+        local("康熙字典體傳承版 KangXiZiDian.com"),
+        local("康熙傳承版 KangXiZiDian.com");
+}
+@font-face {
+    font-family: "GujiPlane0";
+    src: local("FZSONG_ZHSJ_SIP--GB1-5"), local("中华书局宋体00平面");
+}
+@font-face {
+    font-family: "GujiPlane2";
+    src: local("FZSONG_ZHSJ_02--GB1-5"), local("中华书局宋体02平面");
+}
+@font-face {
+    font-family: "GujiPlaneF";
+    src: local("FZSONG_ZHSJ_0F--GB1-5"), local("中华书局宋体15平面");
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {

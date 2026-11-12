@@ -25,7 +25,7 @@
 
 /* 大字：单个 2×2 格 */
 .m-large {
-  font-family: "康熙傳承版 KangXiZiDian.com", "HanaMinA", serif;
+  font-family: "GujiLarge", "康熙傳承版 KangXiZiDian.com", "HanaMinA", serif;
   font-size: calc(var(--guji-unit) * 1.8);
   line-height: calc(var(--guji-unit) * 2);
   text-align: center;
@@ -38,7 +38,7 @@
 }
 .m-ring {
   box-sizing: border-box;
-  font-family: "康熙傳承版 KangXiZiDian.com", "HanaMinA", serif;
+  font-family: "GujiLarge", "康熙傳承版 KangXiZiDian.com", "HanaMinA", serif;
   height: calc(var(--guji-unit) * 1.7);
   width: calc(var(--guji-unit) * 1.7);
   margin: auto;
@@ -58,8 +58,8 @@
 /* 小字列：run 与 book 共用 1×1 字格 */
 .m-run,
 .m-book {
-  font-family: "中华书局宋体00平面", "中华书局宋体02平面", "中华书局宋体15平面",
-    "HanaMinA", serif;
+  font-family: "GujiPlane0", "GujiPlane2", "GujiPlaneF", "中华书局宋体00平面",
+    "中华书局宋体02平面", "中华书局宋体15平面", "HanaMinA", serif;
   font-size: calc(var(--guji-unit) * 0.8);
 }
 .m-cell {
