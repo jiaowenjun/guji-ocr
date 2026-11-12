@@ -2,6 +2,15 @@
   "checked_at": "2026-11-11",
   "purpose": "Manifest of datasets from the research reports downloaded to local disk on this date; sizes, hashes and integrity checks recorded as evidence of obtained versions. Downloads only — no annotation audit, no model run.",
   "local_root": "datasets/ (gitignored; full per-file SHA-256 list in datasets/MANIFEST.json, not committed)",
+  "relocated_2026_11_12": {
+    "to": "/Volumes/WD-2T/guji-ocr/datasets (exFAT external drive)",
+    "method": "rsync; all 6291 files re-verified byte-exact against MANIFEST.json before local deletion; archives then extracted on the drive (unzip CRC validates content)",
+    "extracted": {
+      "mthv2": "TKH/ (3,996 files) + MTH1200/ (4,800 files) from TKHMTH2200.zip",
+      "casia-ahcdb": "style1_basic_test/ (5 gntx), style1_basic_train/ (20 gntx, book_01-20 assembled from the three part zips), style1_enhanced_train/ (20), style2_enhanced_train/ (244)"
+    },
+    "archives_kept": "Original zips retained next to extracted trees for provenance."
+  },
   "method": "Hugging Face snapshots via huggingface_hub.snapshot_download; Google Drive via gdown (resume); Figshare and nlpr.ia.ac.cn via curl with resume and, where the server throttled a single stream, parallel HTTP range segments reassembled in order.",
   "datasets": {
     "mthv2": {
@@ -48,7 +57,8 @@
       "md5": "e63ed3f2d476b5bbb38c649e01e061d7",
       "md5_matches_figshare_api": true,
       "sha256": "49d1d6b906e5948ee1e5d9fd994c6576ecbe66c3714671a0b9119823baa5d4c2",
-      "note": "Figshare metadata says CC BY 4.0 while the author GitHub repo describes an application + password process under CC BY-NC-ND; license conflict recorded in the research report remains unresolved. Archive not extracted (disk space)."
+      "note": "Figshare metadata says CC BY 4.0 while the author GitHub repo describes an application + password process under CC BY-NC-ND; license conflict recorded in the research report remains unresolved. Archive not extracted (disk space).",
+      "update_2026_11_12": "Extraction attempt revealed the zip is fully password-encrypted (all 806 entries: books/ 401, annos/ 401, readme.md, read_anno.py, book2im.py). The archive is unusable without the password the authors send after institutional application; the CC BY 4.0 listing does not remove that gate. Encrypted zip retained on the external drive."
     },
     "ancientdoc-ocr-mini": {
       "source": "https://github.com/ziqian2001/AncientDoc_OCR (main)",

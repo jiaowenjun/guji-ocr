@@ -106,7 +106,7 @@
         "metadata": "https://api.figshare.com/v2/articles/26272375"
       },
       "license": "冲突：GitHub CC BY-NC-ND 4.0及机构限制；Figshare CC BY 4.0",
-      "verification": "2026-11-11 已下载 Figshare HisDoc1B.zip（8.56GB，MD5 与官方一致）；GitHub/Figshare 许可冲突仍未解决，压缩包未解压。",
+      "verification": "2026-11-11 已下载 Figshare HisDoc1B.zip（8.56GB，MD5 与官方一致）；2026-11-12 解压证实全包密码加密（806 项全部需要密码），无作者机构申请发放的解压密码不可用；加密包保留于移动硬盘 WD-2T，哈希见 evidence。",
       "notes": "40281册、3163330页、1082544808字、30615字类；主要半自动标注。Figshare约8.56GB文件的实际内容未确认。",
       "checked_at": "2026-11-11"
     },
