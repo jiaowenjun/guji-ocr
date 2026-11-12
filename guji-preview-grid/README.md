@@ -38,7 +38,8 @@
   入库的 `public/fonts/*.ttf`（guji-large 45M = kangxizidian.com 康熙傳承版；
   guji-plane0/2/f 18M+41M+25M = 中华书局宋体 00/02/15 平面，版权归原发行方，限研究用途），
   任何浏览器与服务器部署渲染一致；`local()` 名字链退居其次仅作文件缺失时的 Chrome 兜底。
-  Playwright WebKit 像素级验证：url 优先渲染真字形，local 优先渲染回退 serif
+  Playwright WebKit 像素级验证：url 优先渲染真字形，local 优先渲染回退 serif。
+  编辑器 `.cm-scroller` 字体栈同样接入三平面（拉丁/符号仍等宽），扩展 B/C 区字符不再缺字
 - **亚格取整**：flex 版小字组为 auto-margin 精确居中，`W−k` 为奇数时落 0.5em；
   矩阵版取整。语料中夹注恒为双行（k=2，W=2），实际不触发
 - **续书名并列**：解析器在续书名状态遇换行不产出 br，【字/彙/补】实际渲染为

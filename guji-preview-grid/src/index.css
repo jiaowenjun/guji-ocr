@@ -191,8 +191,10 @@
   font-size: 15px;
 }
 .cm-editor .cm-scroller {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'PingFang SC',
-    'Hiragino Sans GB', monospace;
+  /* 拉丁/符号保持等宽；CJK 依次落中华书局宋体三平面（经 @font-face url()，
+     含扩展 B/C 区，缺字不再出豆腐块），再退系统字体 */
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'GujiPlane0',
+    'GujiPlane2', 'GujiPlaneF', 'PingFang SC', 'Hiragino Sans GB', monospace;
   line-height: 1.7;
 }
 .cm-editor.cm-focused {
