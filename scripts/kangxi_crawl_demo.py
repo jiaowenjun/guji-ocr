@@ -1,16 +1,18 @@
 #!/usr/bin/env python3
 """康熙字典爬取功能演示服务器：网页展示「按页抓原图 + 按字头抓全文详情」。
 
-复用同目录爬虫原语，不重复实现爬取礼仪：
-- fetch_kangxi_page.py：阅读页解析（extract_scan_url）、JPEG 校验与缓存
-- fetch_kangxi_entry.py：字头详情解析（parse_detail）、阅读页字头提取、robots 核查
+复用同目录爬虫原语与存储层，不重复实现爬取礼仪：
+- fetch_kangxi_page.py：阅读页解析（extract_scan_url）、JPEG 校验
+- fetch_kangxi_entry.py：字头详情解析（parse_detail）、robots 核查
+- kangxi_store.py：SQLite 存储（原始 HTML/记录/页→字头索引），字段级去重，
+  库中已有数据零网络请求，磁盘旧缓存自动采纳
 
-流程：浏览器输入页码 → GET /api/page/N（抓阅读页 HTML 解析字头 + 下载原图入缓存）
-→ <img> 经 /api/scan/N 展示缓存原图 → 点字头 → GET /api/entry/{字} 抓详情卡，
-结构化展示元数据与分段释文；每次请求的轨迹（缓存命中/下载/限速）返回前端展示。
+流程：浏览器输入页码 → GET /api/page/N（缺什么补什么：阅读页 HTML/原图，
+入库后展示）→ <img> 经 /api/scan/N 展示原图 → 点字头 → GET /api/entry/{字}
+（库命中或抓取详情页入库）；每次请求的轨迹（数据库命中/采纳/下载）返回前端展示。
 
 用法：
-  python3 kangxi_crawl_demo.py [--port 8318] [--cache datasets/kangxi-demo-cache]
+  python3 kangxi_crawl_demo.py [--port 8318] [--cache datasets/kangxi-demo-cache] [--db PATH]
 然后浏览器打开 http://127.0.0.1:8318/ 。仅依赖标准库。
 """
 from __future__ import annotations
@@ -27,6 +29,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import fetch_kangxi_entry as fe  # noqa: E402
 import fetch_kangxi_page as fp  # noqa: E402
+import kangxi_store  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CACHE = REPO_ROOT / "datasets" / "kangxi-demo-cache"
@@ -101,7 +104,7 @@ PAGE_HTML = """<!DOCTYPE html>
 <body>
 <header>
   <h1>康熙字典爬取演示 <b>｜按页抓原图 · 按字抓全文</b></h1>
-  <p>guji-ocr · scripts/fetch_kangxi_page.py + fetch_kangxi_entry.py · 数据源 kangxizidian.com（武英殿版）· 限速 ≥1.2s/请求 · 本地缓存</p>
+  <p>guji-ocr · fetch_kangxi_page + fetch_kangxi_entry + kangxi_store(SQLite) · 数据源 kangxizidian.com（武英殿版）· 限速 ≥1.2s/请求 · 库中已有零网络</p>
 </header>
 
 <div class="controls">
@@ -233,9 +236,8 @@ fetchPage();
 
 
 class DemoHandler(BaseHTTPRequestHandler):
-    cache: Path = DEFAULT_CACHE
-    pages_dir: Path = DEFAULT_CACHE / "pages"
-    entries_dir: Path = DEFAULT_CACHE / "entries"
+    store: kangxi_store.KangxiStore  # main() 注入
+    img_dir: Path = DEFAULT_CACHE / "pages"  # 本演示的原图落盘目录（路径同时入库）
 
     def log_message(self, fmt, *args):  # 静默默认访问日志，轨迹走 /api 响应
         pass
@@ -252,12 +254,16 @@ class DemoHandler(BaseHTTPRequestHandler):
         self._send(code, json.dumps(obj, ensure_ascii=False).encode("utf-8"), "application/json; charset=utf-8")
 
     def _serve_scan(self, page: int):
-        """输出缓存的整页原图（由 /api/page 预先抓取）。"""
-        jpg_path = DemoHandler.pages_dir / f"{page:04d}.jpg"
-        if not fp.valid_cached_image(jpg_path):
-            self._json({"error": f"第 {page} 页原图未缓存，请先请求 /api/page/{page}"}, 404)
+        """输出库中登记的整页原图（由 /api/page 预先抓取/采纳）。"""
+        row = DemoHandler.store.get_page(page)
+        if not row or not row.get("scan_file"):
+            self._json({"error": f"第 {page} 页原图未入库，请先请求 /api/page/{page}"}, 404)
             return
-        self._send(200, jpg_path.read_bytes(), "image/jpeg")
+        path = Path(row["scan_file"])
+        if not path.exists():
+            self._json({"error": f"原图文件不可达（{path}；外置盘未挂载？）"}, 404)
+            return
+        self._send(200, path.read_bytes(), "image/jpeg")
 
     def do_GET(self):
         try:
@@ -275,72 +281,72 @@ class DemoHandler(BaseHTTPRequestHandler):
             self._json({"error": f"{type(e).__name__}: {e}"}, 502)
 
 
-def _thumb_items(page_html: str) -> list[dict]:
-    """配对阅读页缩略图的 (sword 实体, svg 文件名)，产出前端字头条目。"""
-    items = []
-    for m in re.finditer(
-        r"sword=&#x([0-9A-Fa-f]*)['\"][^>]*>\s*<img[^>]*?src=['\"]?([^'\"\s>]+\.svg)", page_html
-    ):
-        hexcode, svg = m.group(1), m.group(2).split("/")[-1]
-        stem = svg[:-4].split("-")
-        k_code = stem[2] if stem[2].startswith("K") else None
-        items.append({
-            "char": chr(int(hexcode, 16)) if hexcode else None,
-            "k_code": k_code,
-            "entry_no": stem[2] if len(stem) == 4 and not k_code else (k_code or stem[2]),
-            "page_seq": int(stem[1]),
-            "svg": svg,
-            "thumb_url": THUMB_URL_PREFIX + svg,
-        })
-    return items
+def _ui_thumbs(items: list[dict]) -> list[dict]:
+    """page_chars 行 → 前端字头条目（附缩略图直链）。"""
+    return [{**it, "thumb_url": THUMB_URL_PREFIX + it["svg"]} for it in items]
 
 
 def api_page(page: int) -> dict:
     trace = []
-    page_html_path = DemoHandler.pages_dir / f"{page:04d}.html"
-    if page_html_path.exists():
-        page_html = page_html_path.read_text(encoding="utf-8-sig")
-        trace.append(f"阅读页 index2.php?page={page}：本地缓存命中（{page_html_path.name}）")
+    store = DemoHandler.store
+    page_url = fe.READING_PAGE_TEMPLATE.format(page=page)
+    html_path = DemoHandler.img_dir / f"{page:04d}.html"
+    jpg_path = DemoHandler.img_dir / f"{page:04d}.jpg"
+    missing = store.page_missing(page, ("reading", "scan"))
+
+    if not missing:
+        trace.append(f"页 {page:04d}：数据库命中（阅读页 + 原图），零网络请求")
     else:
-        with NET_LOCK:
-            fp.polite_sleep()
-            body, ctype = fp.http_get(fe.READING_PAGE_TEMPLATE.format(page=page))
-        page_html = body.decode("utf-8-sig", "replace")
-        page_html_path.parent.mkdir(parents=True, exist_ok=True)
-        page_html_path.write_bytes(body)
-        trace.append(f"阅读页 index2.php?page={page}：已下载 {len(body) // 1024}KB（Content-Type {ctype}），缓存为 {page_html_path.name}")
+        if "reading" in missing:
+            if html_path.exists():  # 磁盘旧缓存采纳，不联网
+                body = html_path.read_bytes()
+                store.save_reading(page, body)
+                store.log("page", page, "adopt-reading")
+                trace.append(f"阅读页：磁盘旧缓存采纳入库（{html_path.name}）")
+            else:
+                with NET_LOCK:
+                    fp.polite_sleep()
+                    body, ctype = fp.http_get(page_url)
+                store.save_reading(page, body)
+                trace.append(f"阅读页 index2.php?page={page}：已下载 {len(body) // 1024}KB 入库")
+        row = store.get_page(page)
+        html = row["reading_html"] if row else None
+        if not html:
+            raise RuntimeError("阅读页入库失败，结构异常")
+        scan_url = fp.extract_scan_url(html, page_url)
+        if not scan_url:
+            raise RuntimeError("阅读页未解析到 center-fit 扫描图，站点结构可能变化")
+        if "scan" in missing:
+            if fp.valid_cached_image(jpg_path):  # 磁盘旧缓存采纳，不联网
+                store.adopt_scan(page, jpg_path, scan_url, fp.jpeg_size(jpg_path.read_bytes()))
+                trace.append(f"原图 {jpg_path.name}：磁盘旧图采纳入库")
+            else:
+                with NET_LOCK:
+                    fp.polite_sleep()
+                    data, ctype = fp.http_get(scan_url)
+                dims = fp.jpeg_size(data)
+                if dims is None:
+                    raise RuntimeError(f"原图响应非有效 JPEG（{ctype}，{len(data)}B）")
+                jpg_path.parent.mkdir(parents=True, exist_ok=True)
+                jpg_path.write_bytes(data)
+                store.save_scan(page, data, jpg_path, scan_url, dims)
+                trace.append(f"原图 {scan_url}：已下载 {len(data) // 1024}KB，JPEG 校验通过，入库")
 
-    scan_url = fp.extract_scan_url(page_html, fe.READING_PAGE_TEMPLATE.format(page=page))
-    if not scan_url:
-        raise RuntimeError("阅读页未解析到 center-fit 扫描图，站点结构可能变化")
-
-    jpg_path = DemoHandler.pages_dir / f"{page:04d}.jpg"
-    if fp.valid_cached_image(jpg_path):
-        source = "cached"
-        trace.append(f"原图 {scan_url.rsplit('/', 1)[-1]}：本地缓存命中")
-    else:
-        with NET_LOCK:
-            fp.polite_sleep()
-            data, ctype = fp.http_get(scan_url)
-        if fp.jpeg_size(data) is None:
-            raise RuntimeError(f"原图响应非有效 JPEG（{ctype}，{len(data)}B）")
-        jpg_path.parent.mkdir(parents=True, exist_ok=True)
-        jpg_path.write_bytes(data)
-        source = "download"
-        trace.append(f"原图 {scan_url}：已下载 {len(data) // 1024}KB，校验 JPEG 通过，缓存为 {jpg_path.name}")
-
-    data = jpg_path.read_bytes()
-    w, h = fp.jpeg_size(data)
-    import hashlib
-    thumbs = _thumb_items(page_html)
-    broken = sum(1 for t in thumbs if t["char"] is None)
-    trace.append(f"字头索引：解析出 {len(thumbs)} 个字头（{broken} 个未编码灰显）")
+    row = store.get_page(page) or {}
+    html = row.get("reading_html") or ""
+    scan_url = row.get("scan_url") or fp.extract_scan_url(html, page_url) or ""
+    items = kangxi_store.parse_thumb_items(html)
+    if items:
+        store.save_page_chars(page, items)
+    broken = sum(1 for it in items if it["char"] is None)
+    trace.append(f"页→字头索引：{len(items)} 个字头（{broken} 个未编码灰显）已入库")
     return {
         "page": page,
         "scan_url": scan_url,
-        "scan_meta": {"bytes": len(data), "width": w, "height": h,
-                      "sha256": hashlib.sha256(data).hexdigest(), "source": source},
-        "thumbs": thumbs,
+        "scan_meta": {"bytes": row.get("scan_bytes"), "width": row.get("scan_width"),
+                      "height": row.get("scan_height"), "sha256": row.get("scan_sha256"),
+                      "source": "db" if not missing else "fetched"},
+        "thumbs": _ui_thumbs(items),
         "total_pages": fp.TOTAL_PAGES,
         "trace": trace,
     }
@@ -348,29 +354,24 @@ def api_page(page: int) -> dict:
 
 def api_entry(sword: str) -> dict:
     trace = []
+    store = DemoHandler.store
     if len(sword) != 1:
         raise RuntimeError(f"sword 须为单字，收到 {sword!r}")
-    rec_path = DemoHandler.entries_dir / f"{ord(sword):04X}.json"
-    if rec_path.exists():
-        try:
-            rec = json.loads(rec_path.read_text(encoding="utf-8"))
-            if rec.get("text_paragraphs"):
-                trace.append(f"字头 {sword} 详情：本地缓存命中（{rec_path.name}）")
-                rec["trace"] = trace
-                return rec
-        except (OSError, json.JSONDecodeError):
-            pass
-    url = fe.DETAIL_TEMPLATE.format(sword=urllib.parse.quote(sword))
-    with NET_LOCK:
-        fp.polite_sleep()
-        body, ctype = fe.http_get(url)
-    trace.append(f"详情页 {url}：已下载 {len(body) // 1024}KB（Content-Type {ctype}）")
-    rec = fe.parse_detail(body.decode("utf-8-sig", "replace"), sword)
-    if rec is None:
-        raise RuntimeError(f"详情页未命中（无「字頭：」卡片），站点可能不收录 {sword!r}")
-    rec_path.parent.mkdir(parents=True, exist_ok=True)
-    rec_path.write_text(json.dumps(rec, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    trace.append(f"解析成功：{rec['text_chars']} 字 / {len(rec['text_paragraphs'])} 段，缓存为 {rec_path.name}")
+    row = store.get_entry_by_char(sword)
+    if row and row.get("record_json"):
+        rec = json.loads(row["record_json"])
+        trace.append(f"字头 {sword} 详情：数据库命中（entries U+{ord(sword):04X}），零网络请求")
+    else:
+        url = fe.DETAIL_TEMPLATE.format(sword=urllib.parse.quote(sword))
+        with NET_LOCK:
+            fp.polite_sleep()
+            body, ctype = fe.http_get(url)
+        trace.append(f"详情页 {url}：已下载 {len(body) // 1024}KB（Content-Type {ctype}）")
+        rec = fe.parse_detail(body.decode("utf-8-sig", "replace"), sword)
+        if rec is None:
+            raise RuntimeError(f"详情页未命中（无「字頭：」卡片），站点可能不收录 {sword!r}")
+        store.save_entry(sword, rec, raw_html=body.decode("utf-8-sig", "replace"), source_url=url)
+        trace.append(f"解析成功：{rec['text_chars']} 字 / {len(rec['text_paragraphs'])} 段，已入库")
     rec["trace"] = trace
     return rec
 
@@ -378,17 +379,20 @@ def api_entry(sword: str) -> dict:
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--port", type=int, default=8318)
-    ap.add_argument("--cache", type=Path, default=DEFAULT_CACHE, help=f"缓存目录（默认 {DEFAULT_CACHE}）")
+    ap.add_argument("--cache", type=Path, default=DEFAULT_CACHE, help=f"原图落盘目录（默认 {DEFAULT_CACHE}）")
+    ap.add_argument("--db", type=Path, default=kangxi_store.DEFAULT_DB,
+                    help=f"SQLite 库路径（默认 {kangxi_store.DEFAULT_DB}，与爬取器共用）")
     args = ap.parse_args()
 
-    DemoHandler.pages_dir = args.cache / "pages"
-    DemoHandler.entries_dir = args.cache / "entries"
-    DemoHandler.pages_dir.mkdir(parents=True, exist_ok=True)
-    DemoHandler.entries_dir.mkdir(parents=True, exist_ok=True)
+    DemoHandler.img_dir = args.cache / "pages"
+    DemoHandler.img_dir.mkdir(parents=True, exist_ok=True)
+    DemoHandler.store = kangxi_store.KangxiStore(args.db)
 
     print("核查 robots.txt …", flush=True)
     fe.check_robots()  # 禁止即 sys.exit(2)
-    print(f"缓存目录：{args.cache}", flush=True)
+    print(f"SQLite：{args.db}")
+    print(f"原图目录：{DemoHandler.img_dir}", flush=True)
+    print(json.dumps(DemoHandler.store.stats(), ensure_ascii=False), flush=True)
 
     server = ThreadingHTTPServer(("127.0.0.1", args.port), DemoHandler)
     print(f"演示页：http://127.0.0.1:{args.port}/  （Ctrl+C 退出）", flush=True)

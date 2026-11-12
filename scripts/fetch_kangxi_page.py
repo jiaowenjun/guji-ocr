@@ -11,18 +11,20 @@
 
 策略：robots.txt 先行核查（全站 Disallow 即中止）；每次网络请求间隔
 >=1.2s+抖动；重试退避；JPEG 魔数 + 尺寸解析 + 最小体积校验；
-本地有效缓存跳过（--force 重下）；--save-html 同时留存阅读页原文
-（供后续字头缩略图索引解析）。
+原始数据经 kangxi_store 入 SQLite（阅读页 HTML 全文、原图路径+sha256+尺寸、
+页→字头索引），二次运行对已有数据零网络请求；磁盘旧缓存（NNNN.html/NNNN.jpg）
+自动采纳入库不联网；--force 忽略数据库与缓存强制重抓。
 
 用法：
   python3 fetch_kangxi_page.py --pages 313
-  python3 fetch_kangxi_page.py --pages 312-328 --out DIR --save-html
+  python3 fetch_kangxi_page.py --pages 312-328 --out DIR --save-html --db PATH
 仅依赖标准库。
 """
 from __future__ import annotations
 
 import argparse
 import hashlib
+import json
 import random
 import re
 import sys
@@ -32,6 +34,8 @@ import urllib.request
 from datetime import date
 from pathlib import Path
 from urllib.parse import urljoin
+
+import kangxi_store
 
 READING_PAGE_TEMPLATE = "https://www.kangxizidian.com/v2/index2.php?page={page}"
 KNOWN_URL_TEMPLATE = "https://p.kangxizidian.com/kangxi2/{page:04d}.jpg"  # 仅漂移提示用
@@ -151,29 +155,46 @@ def parse_pages_arg(value: str) -> list[int]:
     return sorted(set(pages))
 
 
-def fetch_page(page: int, out_dir: Path, save_html: bool, force: bool) -> bool:
-    """抓取单页：解析阅读页 → 下载原图。返回是否成功。"""
-    fname = f"{page:04d}.jpg"
-    path = out_dir / fname
-    if not force and valid_cached_image(path):
-        print(f"[{page:04d}] {fname} 本地缓存有效，跳过（--force 重下）")
+def fetch_page(page: int, out_dir: Path, store: kangxi_store.KangxiStore,
+               save_html: bool, force: bool) -> bool:
+    """抓取单页入库：缺什么补什么（阅读页 HTML / 原图），库里全有时零网络。"""
+    parts = ("reading", "scan")
+    missing = set(parts) if force else store.page_missing(page, parts)
+    if not missing:
+        store.log("page", page, "skip-db")
+        print(f"[{page:04d}] 数据库已有（阅读页+原图），跳过（--force 重抓）")
         return True
 
-    # 1) 阅读页 HTML（站点带 BOM，用 utf-8-sig 剥离）
     page_url = READING_PAGE_TEMPLATE.format(page=page)
-    polite_sleep()
-    body, ctype = http_get(page_url)
-    if "html" not in ctype.lower() and len(body) < 500:
-        print(f"[{page:04d}] 阅读页响应异常（Content-Type: {ctype}，{len(body)}B）", file=sys.stderr)
-        return False
-    if save_html:
-        (out_dir / f"{page:04d}.html").write_bytes(body)
-    html = body.decode("utf-8-sig", "replace")
+    html_path = out_dir / f"{page:04d}.html"
+    jpg_path = out_dir / f"{page:04d}.jpg"
 
+    # 1) 阅读页 HTML（站点带 BOM，用 utf-8-sig 剥离）
+    if "reading" in missing:
+        if html_path.exists():  # 磁盘旧缓存采纳，不联网
+            body = html_path.read_bytes()
+            store.save_reading(page, body)
+            store.log("page", page, "adopt-reading")
+            print(f"[{page:04d}] 阅读页：磁盘旧缓存采纳入库")
+        else:
+            polite_sleep()
+            body, ctype = http_get(page_url)
+            if "html" not in ctype.lower() and len(body) < 500:
+                print(f"[{page:04d}] 阅读页响应异常（Content-Type: {ctype}，{len(body)}B）", file=sys.stderr)
+                return False
+            store.save_reading(page, body)
+            if save_html:
+                html_path.write_bytes(body)
+            print(f"[{page:04d}] 阅读页：已下载 {len(body) // 1024}KB 入库")
+        html = body.decode("utf-8-sig", "replace")
+    else:
+        html = store.get_page(page)["reading_html"]
+
+    # 2) 整页原图（URL 以阅读页解析为准，模板仅作漂移提示）
     scan_url = extract_scan_url(html, page_url)
     if not scan_url:
         print(
-            f"[{page:04d}] 阅读页未找到 center-fit 扫描图（{len(body)}B）；"
+            f"[{page:04d}] 阅读页未找到 center-fit 扫描图；"
             f"页面结构可能已变化，参见调研报告第 2/5 节",
             file=sys.stderr,
         )
@@ -182,17 +203,33 @@ def fetch_page(page: int, out_dir: Path, save_html: bool, force: bool) -> bool:
     if scan_url != expected:
         print(f"[{page:04d}] 注意：解析 URL 偏离已知模板：{scan_url}（模板 {expected}）")
 
-    # 2) 整页原图
-    polite_sleep()
-    data, ctype2 = http_get(scan_url)
-    dims = jpeg_size(data)
-    if "image" not in ctype2.lower() or dims is None or len(data) < MIN_BYTES:
-        print(f"[{page:04d}] 非有效扫描图（Content-Type: {ctype2}，{len(data)}B）", file=sys.stderr)
-        return False
-    path.write_bytes(data)
+    if "scan" in missing:
+        if valid_cached_image(jpg_path):  # 磁盘旧缓存采纳，不联网
+            dims = jpeg_size(jpg_path.read_bytes())
+            store.adopt_scan(page, jpg_path, scan_url, dims)
+            src = "（旧图采纳）"
+        else:
+            polite_sleep()
+            data, ctype2 = http_get(scan_url)
+            dims = jpeg_size(data)
+            if "image" not in ctype2.lower() or dims is None or len(data) < MIN_BYTES:
+                print(f"[{page:04d}] 非有效扫描图（Content-Type: {ctype2}，{len(data)}B）", file=sys.stderr)
+                return False
+            jpg_path.write_bytes(data)
+            store.save_scan(page, data, jpg_path, scan_url, dims)
+            src = ""
+    else:
+        src = "（库中已有）"
+
+    # 3) 页→字头索引（阅读页缩略图列）
+    items = kangxi_store.parse_thumb_items(html)
+    if items:
+        store.save_page_chars(page, items)
+
+    row = store.get_page(page)
     print(
-        f"[{page:04d}] {fname} {len(data)}B {dims[0]}x{dims[1]} "
-        f"sha256={hashlib.sha256(data).hexdigest()[:16]}… <- {scan_url}",
+        f"[{page:04d}] 原图{src} {row['scan_bytes']}B {row['scan_width']}x{row['scan_height']} "
+        f"sha256={row['scan_sha256'][:16]}… | 字头索引 {len(items)} 条 <- {scan_url}",
         flush=True,
     )
     return True
@@ -202,8 +239,10 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--pages", required=True, help="页码，如 313 或 312-328 或 312,313,320")
     ap.add_argument("--out", type=Path, default=DEFAULT_OUT_DIR, help=f"输出目录（默认 {DEFAULT_OUT_DIR}）")
-    ap.add_argument("--save-html", action="store_true", help="同时保存阅读页原文 NNNN.html（供字头索引解析）")
-    ap.add_argument("--force", action="store_true", help="忽略本地缓存强制重新下载")
+    ap.add_argument("--save-html", action="store_true", help="下载阅读页时同时留存 NNNN.html 文件副本")
+    ap.add_argument("--db", type=Path, default=kangxi_store.DEFAULT_DB,
+                    help=f"SQLite 库路径（默认 {kangxi_store.DEFAULT_DB}）")
+    ap.add_argument("--force", action="store_true", help="忽略数据库与本地缓存强制重新下载")
     args = ap.parse_args()
     pages = parse_pages_arg(args.pages)
 
@@ -218,13 +257,15 @@ def main() -> int:
         return 1
 
     check_robots()
+    store = kangxi_store.KangxiStore(args.db)
 
     failures = []
     for n, page in enumerate(pages):
-        if not fetch_page(page, args.out, args.save_html, args.force):
+        if not fetch_page(page, args.out, store, args.save_html, args.force):
             failures.append(page)
     ok = len(pages) - len(failures)
-    print(f"完成：{ok}/{len(pages)} 页 -> {args.out}" + (f"；失败页：{failures}" if failures else ""))
+    print(f"完成：{ok}/{len(pages)} 页 -> {args.out} | 库 {args.db}" + (f"；失败页：{failures}" if failures else ""))
+    print(json.dumps(store.stats(), ensure_ascii=False))
     return 0 if not failures else 1
 
 

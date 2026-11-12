@@ -12,14 +12,15 @@
 - sword 须为单个 Unicode 可表示字符；缩略图链接为破损实体 &#x 的真·未编码字
   无法经此端点查询（--pages 模式会跳过并计数）。
 
-输出：每字一个 JSON（以 Unicode 码位十六进制命名，如 4E01.json），含结构化
-字段与分段释文；--save-html 同时留存原始 HTML；本地已有且完整的记录跳过
-（--force 重下）。
+输出：结构化记录与详情页原始 HTML 经 kangxi_store 入 SQLite（entries 表，
+主键 Unicode 码位，天然去重；二次运行零网络请求）；磁盘旧 JSON 自动采纳
+入库不联网；同时仍写每字一个 JSON 文件副本（{码位}.json）。--save-html
+留存 HTML 文件副本。
 
 用法：
   python3 fetch_kangxi_entry.py --chars 丁,丂
   python3 fetch_kangxi_entry.py --pages 313            # 抓该页全部字头详情
-  python3 fetch_kangxi_entry.py --pages 312-328 --save-html
+  python3 fetch_kangxi_entry.py --pages 312-328 --save-html --db PATH
 仅依赖标准库。
 """
 from __future__ import annotations
@@ -37,6 +38,8 @@ import urllib.parse
 import urllib.request
 from datetime import date
 from pathlib import Path
+
+import kangxi_store
 
 DETAIL_TEMPLATE = "https://www.kangxizidian.com/search/index_v.php?stype=Word&sword={sword}&detail=y"
 READING_PAGE_TEMPLATE = "https://www.kangxizidian.com/v2/index2.php?page={page}"
@@ -172,17 +175,20 @@ def parse_detail(html: str, sword: str) -> dict | None:
     }
 
 
-def fetch_entry(sword: str, out_dir: Path, save_html: bool, force: bool) -> bool:
+def fetch_entry(sword: str, out_dir: Path, store: kangxi_store.KangxiStore,
+                save_html: bool, force: bool) -> bool:
     fname = f"{ord(sword):04X}.json"
     path = out_dir / fname
+    if not force and store.get_entry(ord(sword)):
+        store.log("entry", f"U+{ord(sword):04X}", "skip-db")
+        print(f"[{sword}] {fname} 数据库已有，跳过（--force 重下）")
+        return True
+
+    # 磁盘旧 JSON 采纳入库（不联网；损坏文件照常走网络重抓）
     if not force and path.exists():
-        try:
-            rec = json.loads(path.read_text(encoding="utf-8"))
-            if rec.get("text_paragraphs"):
-                print(f"[{sword}] {fname} 本地已有，跳过（--force 重下）")
-                return True
-        except (OSError, json.JSONDecodeError):
-            pass  # 损坏记录重抓
+        if store.adopt_entry_json(path):
+            print(f"[{sword}] {fname} 磁盘旧记录采纳入库")
+            return True
 
     url = DETAIL_TEMPLATE.format(sword=urllib.parse.quote(sword))
     polite_sleep()
@@ -196,6 +202,7 @@ def fetch_entry(sword: str, out_dir: Path, save_html: bool, force: bool) -> bool
         print(f"[{sword}] 详情页未命中（{len(body)}B，Content-Type {ctype}），跳过", file=sys.stderr)
         return False
     rec["html_sha256"] = hashlib.sha256(body).hexdigest()
+    store.save_entry(sword, rec, raw_html=html, source_url=url)
     path.write_text(json.dumps(rec, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     warn = f"  ⚠ PUA 字形: {rec['pua_other']}" if rec["pua_other"] else ""
     print(
@@ -224,8 +231,10 @@ def main() -> int:
     ap.add_argument("--pages", help="页码模式：抓阅读页解析字头后逐字取详情，如 313 或 312-328")
     ap.add_argument("--out", type=Path, default=Path("/Volumes/WD-2T/guji-ocr/datasets/kangxizidian-entries"),
                     help="输出目录（默认 WD-2T kangxizidian-entries）")
-    ap.add_argument("--save-html", action="store_true", help="同时保存详情页原始 HTML")
-    ap.add_argument("--force", action="store_true", help="忽略本地缓存强制重新下载")
+    ap.add_argument("--save-html", action="store_true", help="下载时同时保存详情页 HTML 文件副本")
+    ap.add_argument("--db", type=Path, default=kangxi_store.DEFAULT_DB,
+                    help=f"SQLite 库路径（默认 {kangxi_store.DEFAULT_DB}）")
+    ap.add_argument("--force", action="store_true", help="忽略数据库与本地缓存强制重新下载")
     args = ap.parse_args()
     if not args.chars and not args.pages:
         ap.error("需指定 --chars 或 --pages 至少一项")
@@ -247,29 +256,40 @@ def main() -> int:
         return 1
 
     check_robots()
+    store = kangxi_store.KangxiStore(args.db)
 
     skipped_unencoded = 0
     if args.pages:
         for page in parse_range(args.pages):
-            polite_sleep()
-            body, _ = http_get(READING_PAGE_TEMPLATE.format(page=page))
-            found, broken = chars_from_reading_page(body.decode("utf-8-sig", "replace"))
+            # 优先复用库中阅读页 HTML，避免重复抓取
+            row = None if args.force else store.get_page(page)
+            if row and row.get("reading_html"):
+                html = row["reading_html"]
+                src = "库中复用"
+            else:
+                polite_sleep()
+                body, _ = http_get(READING_PAGE_TEMPLATE.format(page=page))
+                html = body.decode("utf-8-sig", "replace")
+                store.save_reading(page, body)  # 顺手入库（scan 留给 fetch_kangxi_page 补）
+                src = "已下载入库"
+            found, broken = chars_from_reading_page(html)
             skipped_unencoded += broken
             new = [c for c in found if c not in chars]
             chars.extend(new)
-            print(f"[页 {page:04d}] 字头 {len(found)} 个（新增 {len(new)}），破损实体跳过 {broken} 个", flush=True)
+            print(f"[页 {page:04d}] 阅读页{src}：字头 {len(found)} 个（新增 {len(new)}），破损实体跳过 {broken} 个", flush=True)
 
     failures = []
     for n, c in enumerate(chars):
-        if not fetch_entry(c, args.out, args.save_html, args.force):
+        if not fetch_entry(c, args.out, store, args.save_html, args.force):
             failures.append(c)
     ok = len(chars) - len(failures)
-    summary = f"完成：{ok}/{len(chars)} 字 -> {args.out}"
+    summary = f"完成：{ok}/{len(chars)} 字 -> {args.out} | 库 {args.db}"
     if skipped_unencoded:
         summary += f"；另有 {skipped_unencoded} 个真·未编码字（破损实体）无法经详情端点查询"
     if failures:
         summary += f"；失败：{failures}"
     print(summary)
+    print(json.dumps(store.stats(), ensure_ascii=False))
     return 0 if not failures else 1
 
 
