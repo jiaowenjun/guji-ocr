@@ -48,18 +48,24 @@ def jpeg_size(data: bytes):
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--root", type=Path, default=REPO_ROOT / "kangxi-gold")
-    ap.add_argument("--pages", default="312-328")
+    ap.add_argument("--pages", default=None, help="默认取 manifest.json 的页清单（含新增页）")
     args = ap.parse_args()
-
-    lo, hi = (int(x) for x in args.pages.split("-", 1))
-    expected_pages = list(range(lo, hi + 1))
-    errors: list[str] = []
 
     manifest_path = args.root / "manifest.json"
     if not manifest_path.exists():
         print(f"✗ 缺少 {manifest_path}", file=sys.stderr)
         return 1
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    if args.pages:
+        lo, hi = (int(x) for x in args.pages.split("-", 1))
+        expected_pages = list(range(lo, hi + 1))
+    else:
+        expected_pages = sorted(p["page"] for p in manifest.get("pages", []))
+    if not expected_pages:
+        print("✗ manifest 页清单为空", file=sys.stderr)
+        return 1
+    errors: list[str] = []
+
     pages = {e["page"]: e for e in manifest.get("pages", [])}
 
     got = sorted(pages)
@@ -104,7 +110,12 @@ def main() -> int:
             if not p.is_file():
                 errors.append(f"{stem}: 标注缺失 {p}")
         if gj.is_file():
-            first = next((l.strip() for l in gj.read_text(encoding="utf-8").splitlines() if l.strip()), "")
+            # 首个非空、非注释行应是 @页码（与解析器语义一致：// 行会被剔除）
+            first = next(
+                (l.strip() for l in gj.read_text(encoding="utf-8").splitlines()
+                 if l.strip() and not l.strip().startswith("//")),
+                "",
+            )
             if first != f"@{page}":
                 errors.append(f"{stem}: .gj 首个非空行 {first!r} ≠ @{page}")
         if js.is_file():

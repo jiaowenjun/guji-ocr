@@ -32,7 +32,8 @@
         "gj": "0312.gj",
         "json": "0312.json",
         "txt": "0312.txt"
-      }
+      },
+      "status": "first"
     },
     {
       "page": 313,
@@ -47,7 +48,8 @@
         "gj": "0313.gj",
         "json": "0313.json",
         "txt": "0313.txt"
-      }
+      },
+      "status": "first"
     },
     {
       "page": 314,
@@ -62,7 +64,8 @@
         "gj": "0314.gj",
         "json": "0314.json",
         "txt": "0314.txt"
-      }
+      },
+      "status": "first"
     },
     {
       "page": 315,
@@ -77,7 +80,8 @@
         "gj": "0315.gj",
         "json": "0315.json",
         "txt": "0315.txt"
-      }
+      },
+      "status": "first"
     },
     {
       "page": 316,
@@ -92,7 +96,8 @@
         "gj": "0316.gj",
         "json": "0316.json",
         "txt": "0316.txt"
-      }
+      },
+      "status": "first"
     },
     {
       "page": 317,
@@ -107,7 +112,8 @@
         "gj": "0317.gj",
         "json": "0317.json",
         "txt": "0317.txt"
-      }
+      },
+      "status": "first"
     },
     {
       "page": 318,
@@ -122,7 +128,8 @@
         "gj": "0318.gj",
         "json": "0318.json",
         "txt": "0318.txt"
-      }
+      },
+      "status": "first"
     },
     {
       "page": 319,
@@ -137,7 +144,8 @@
         "gj": "0319.gj",
         "json": "0319.json",
         "txt": "0319.txt"
-      }
+      },
+      "status": "first"
     },
     {
       "page": 320,
@@ -152,7 +160,8 @@
         "gj": "0320.gj",
         "json": "0320.json",
         "txt": "0320.txt"
-      }
+      },
+      "status": "first"
     },
     {
       "page": 321,
@@ -167,7 +176,8 @@
         "gj": "0321.gj",
         "json": "0321.json",
         "txt": "0321.txt"
-      }
+      },
+      "status": "first"
     },
     {
       "page": 322,
@@ -182,7 +192,8 @@
         "gj": "0322.gj",
         "json": "0322.json",
         "txt": "0322.txt"
-      }
+      },
+      "status": "first"
     },
     {
       "page": 323,
@@ -197,7 +208,8 @@
         "gj": "0323.gj",
         "json": "0323.json",
         "txt": "0323.txt"
-      }
+      },
+      "status": "first"
     },
     {
       "page": 324,
@@ -212,7 +224,8 @@
         "gj": "0324.gj",
         "json": "0324.json",
         "txt": "0324.txt"
-      }
+      },
+      "status": "first"
     },
     {
       "page": 325,
@@ -227,7 +240,8 @@
         "gj": "0325.gj",
         "json": "0325.json",
         "txt": "0325.txt"
-      }
+      },
+      "status": "first"
     },
     {
       "page": 326,
@@ -242,7 +256,8 @@
         "gj": "0326.gj",
         "json": "0326.json",
         "txt": "0326.txt"
-      }
+      },
+      "status": "first"
     },
     {
       "page": 327,
@@ -257,7 +272,8 @@
         "gj": "0327.gj",
         "json": "0327.json",
         "txt": "0327.txt"
-      }
+      },
+      "status": "first"
     },
     {
       "page": 328,
@@ -272,7 +288,25 @@
         "gj": "0328.gj",
         "json": "0328.json",
         "txt": "0328.txt"
-      }
+      },
+      "status": "first"
+    },
+    {
+      "page": 330,
+      "image": "0330.jpg",
+      "url": "https://p.kangxizidian.com/kangxi2/0330.jpg",
+      "size_bytes": 527184,
+      "sha256": "4da2edcd934b4bca6945cd7776d7f93a73b4b33224347d001998976788b45442",
+      "width": 1130,
+      "height": 1709,
+      "downloaded_at": "2026-11-12",
+      "status": "first",
+      "annotations": {
+        "gj": "0330.gj",
+        "json": "0330.json",
+        "txt": "0330.txt"
+      },
+      "origin": "kangxizidian.com 爬取草稿（kangxi_page_tool.py add）"
     }
   ],
   "annotation_source": "guji-preview/src/samples/kangxi-yibu.gj（人工精标，源自 vscode-guji-preview/example；零漂移对照通过）"

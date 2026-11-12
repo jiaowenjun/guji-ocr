@@ -74,10 +74,18 @@ pnpm build
   默认 **Flex 视图 + 界栏关 + 原图高度适配视口**（缩放滑杆切为宽度百分比，↺ 恢复适配）。
   矩阵视图像素级对齐，Flex 视图行宽按内容混合为近似
 - ←/→ 翻页（编辑器聚焦时不劫持）；未保存修改按页保留，切页/切模式不丢
+- **「添加新页」**：输入页码（1–7738）→ `scripts/kangxi_page_tool.py` 补数据
+  （sqlite `datasets/kangxi-crawl.sqlite3` 已有则零联网，缺则由 fetch_kangxi_page/
+  fetch_kangxi_entry 增量爬取）→ 由 page_chars + entries 生成 .gj 草稿（字头行 +
+  释义段落带，未编码字 `#□` 占位注释）入 `annotations/`、manifest 追加该页并刷新
+  index.json，前端自动跳转；`POST /dataset/page-tool` 中间件仅 dev 生效
+- **页标签**：草稿（爬取生成）/ 初校 / 精校，存 manifest.json 每页 `status` 字段，
+  工具条徽章与页清单均带标记；既有 17 页定为初校
 - 「保存回数据集」写回 `kangxi-gold/annotations/NNNN.gj`（仅 dev server 生效的
   `POST /dataset/save` 中间件，vite.config.ts；校验页码在库内且首行仍为 @页码）
 - 保存后同步 json/txt：`npx -y tsx kangxi-gold/scripts/build_annotations.ts --allow-drift`
-  （默认严格模式会因与原 fixture 不一致而拒绝，属预期防呆）
+  （默认严格模式会因与原 fixture 不一致而拒绝，属预期防呆；样例外的附加页两种模式
+  都会从其 .gj 生成 json/txt）
 
 首次使用先生成数据集访问层（符号链接，已 gitignore，重跑安全）；刻本字体文件
 已随仓库入库（`public/fonts/`，~129MB，无需额外步骤）：

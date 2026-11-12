@@ -108,6 +108,9 @@ if (!allowDrift) {
   }
 }
 const summary: { page: number; chars: number }[] = [];
+const manifest = JSON.parse(readFileSync(MANIFEST, "utf-8")) as {
+  pages: { page: number; annotations?: Record<string, string> }[];
+};
 chunks.forEach((chunk, i) => {
   const sampleGj = chunk.lines.join("\n").replace(/\n+$/, "\n");
   const stem = String(chunk.page).padStart(4, "0");
@@ -139,6 +142,30 @@ chunks.forEach((chunk, i) => {
   }
   summary.push({ page: chunk.page, chars: [...text.replace(/\s/g, "")].length }); // 按码点计数（扩展 B 区字 1 字）
 });
+
+// ---- 附加页：manifest 中不在样例内的页（kangxi_page_tool.py 添加的爬取草稿页）。
+// 不参与样例/fixture 一致性校验（本就不是样例来源）；json/txt 从其 .gj 生成。
+const samplePages = new Set(pages);
+const extras = (manifest.pages ?? []).map((p) => p.page).filter((p) => !samplePages.has(p));
+for (const page of extras) {
+  const stem = String(page).padStart(4, "0");
+  const gjPath = join(OUT_DIR, `${stem}.gj`);
+  if (!existsSync(gjPath)) {
+    console.warn(`⚠ 附加页 @${page} 缺 ${stem}.gj（先经数据集对照页添加），跳过`);
+    continue;
+  }
+  const parsed = parsePages(readFileSync(gjPath, "utf-8"));
+  if (parsed.length !== 1 || parsed[0].p !== page) {
+    fail(`附加页 @${page} 解析异常：得到 ${JSON.stringify(parsed.map((p) => p.p))}`);
+  }
+  const text = pageToText(parsed[0]);
+  writeFileSync(join(OUT_DIR, `${stem}.json`), JSON.stringify(parsed[0], null, 2) + "\n", "utf-8");
+  writeFileSync(join(OUT_DIR, `${stem}.txt`), text, "utf-8");
+  summary.push({ page, chars: [...text.replace(/\s/g, "")].length });
+}
+if (extras.length > 0) {
+  console.log(`附加页（爬取草稿，非样例来源）：@${extras.join(" @")}`);
+}
 if (drifted.length > 0) {
   console.warn(
     `⚠ --allow-drift：${drifted.length} 页为人工修订（以 annotations/*.gj 为准，样例未改动）：@${drifted.join(" @")}`,
@@ -146,9 +173,6 @@ if (drifted.length > 0) {
 }
 
 // ---- 3. 更新 manifest 的标注记录 ----
-const manifest = JSON.parse(readFileSync(MANIFEST, "utf-8")) as {
-  pages: { page: number; annotations?: Record<string, string> }[];
-};
 const byPage = new Map(summary.map((s) => [s.page, s]));
 for (const entry of manifest.pages ?? []) {
   if (!byPage.has(entry.page)) continue;

@@ -11,7 +11,7 @@ import {
   type CSSProperties,
   type ReactNode,
 } from "react";
-import { ChevronLeft, ChevronRight, Database, Download, RotateCcw, Save } from "lucide-react";
+import { ChevronLeft, ChevronRight, Database, Download, Plus, RotateCcw, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -42,7 +42,15 @@ interface PageEntry {
   gj: string;
   width: number;
   height: number;
+  status?: "draft" | "first" | "final"; // 草稿 / 初校 / 精校（存于 manifest.json）
 }
+
+/** 页标签：内部值 ↔ 中文名与展示色 */
+const STATUS_META: Record<PageEntry["status"] & string, { label: string; dot: string; text: string }> = {
+  draft: { label: "草稿", dot: "bg-muted-foreground", text: "text-muted-foreground" },
+  first: { label: "初校", dot: "bg-amber-500", text: "text-amber-600" },
+  final: { label: "精校", dot: "bg-emerald-500", text: "text-emerald-600" },
+};
 
 const stem = (page: number) => String(page).padStart(4, "0");
 
@@ -89,6 +97,7 @@ function useContentSize<T extends HTMLElement>() {
 function useDatasetIndex() {
   const [index, setIndex] = useState<PageEntry[] | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [reloadKey, setReloadKey] = useState(0);
   useEffect(() => {
     let alive = true;
     fetch("/dataset/index.json")
@@ -100,8 +109,9 @@ function useDatasetIndex() {
     return () => {
       alive = false;
     };
-  }, []);
-  return { index, error };
+  }, [reloadKey]);
+  const reload = useCallback(() => setReloadKey((k) => k + 1), []);
+  return { index, error, reload };
 }
 
 /** 各页 .gj 原文缓存；ensure() 缺失即取（含预取），失败页可重试 */
@@ -140,7 +150,7 @@ function ColumnHeader({ children }: { children: ReactNode }) {
 }
 
 export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" | "dark" }) {
-  const { index, error } = useDatasetIndex();
+  const { index, error, reload } = useDatasetIndex();
   const [idx, setIdx] = useState(0);
   const [edits, setEdits] = useState<Record<number, string>>({});
   const { texts, ensure, put } = useDatasetText();
@@ -149,6 +159,21 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
   const [zoom, setZoom] = useState<number | "fit">("fit"); // 默认按原图高度适配视口
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState<{ ok: boolean; msg: string } | null>(null);
+  const [adding, setAdding] = useState(false); // 添加新页表单开合
+  const [pageInput, setPageInput] = useState("");
+  const [addBusy, setAddBusy] = useState(false); // 添加新页进行中
+  const [jumpTo, setJumpTo] = useState<number | null>(null); // 添加成功后跳转
+
+  // 清单刷新后跳到新添加的页
+  useEffect(() => {
+    if (index && jumpTo !== null) {
+      const i = index.findIndex((p) => p.page === jumpTo);
+      if (i >= 0) {
+        setIdx(i);
+        setJumpTo(null);
+      }
+    }
+  }, [index, jumpTo]);
 
   const entry = index?.[idx];
   const page = entry?.page;
@@ -229,6 +254,62 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
     setStatus(null);
   };
 
+  /** 添加新页：桥接 kangxi_page_tool.py（sqlite 优先，缺则增量爬取），完成后刷新清单并跳转 */
+  const addPage = async () => {
+    const n = Number(pageInput);
+    if (!/^\d{1,4}$/.test(pageInput) || n < 1 || n > 7738) {
+      setStatus({ ok: false, msg: `页码应为 1-7738 的整数（当前输入：${pageInput || "空"}）` });
+      return;
+    }
+    setAddBusy(true);
+    setStatus(null);
+    try {
+      const res = await fetch("/dataset/page-tool", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ action: "add", page: n }),
+      });
+      const data = (await res.json().catch(() => ({}))) as {
+        ok?: boolean;
+        error?: string;
+        counts?: { chars: number; unencoded: number; with_text: number };
+        summaries?: string[];
+      };
+      if (!res.ok || !data.ok) throw new Error(data.error ?? `HTTP ${res.status}`);
+      const { counts, summaries } = data;
+      reload();
+      setJumpTo(n);
+      setAdding(false);
+      setPageInput("");
+      setStatus({
+        ok: true,
+        msg: `已添加 @${n}（字头 ${counts?.chars ?? "?"} 个，含释义 ${counts?.with_text ?? "?"}，未编码 ${counts?.unencoded ?? 0}）${summaries?.length ? "；" + summaries.join("；") : ""}`,
+      });
+    } catch (e) {
+      setStatus({ ok: false, msg: e instanceof Error ? e.message : String(e) });
+    } finally {
+      setAddBusy(false);
+    }
+  };
+
+  /** 改页标签（kangxi_page_tool.py 写 manifest + index.json），成功后刷新清单 */
+  const setStatusOf = async (to: NonNullable<PageEntry["status"]>) => {
+    if (page === undefined) return;
+    try {
+      const res = await fetch("/dataset/page-tool", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ action: "status", page, status: to }),
+      });
+      const data = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string };
+      if (!res.ok || !data.ok) throw new Error(data.error ?? `HTTP ${res.status}`);
+      reload();
+      setStatus({ ok: true, msg: `@${page} 标签已改为「${STATUS_META[to].label}」` });
+    } catch (e) {
+      setStatus({ ok: false, msg: e instanceof Error ? e.message : String(e) });
+    }
+  };
+
   const save = async () => {
     if (page === undefined || text === undefined) return;
     setBusy(true);
@@ -294,13 +375,66 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
           <DropdownMenuContent align="start">
             <DropdownMenuLabel>kangxi-gold 页清单</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            {index.map((p, i) => (
-              <DropdownMenuItem key={p.page} onClick={() => setIdx(i)}>
-                @{p.page} · {p.image}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
+                  {index.map((p, i) => (
+                    <DropdownMenuItem key={p.page} onClick={() => setIdx(i)}>
+                      <span
+                        className={`inline-block size-1.5 shrink-0 rounded-full ${STATUS_META[p.status ?? "first"].dot}`}
+                      />
+                      @{p.page} · {STATUS_META[p.status ?? "first"].label} · {p.image}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm" disabled={!entry}>
+                    <span
+                      className={`inline-block size-2 rounded-full ${STATUS_META[entry?.status ?? "first"].dot}`}
+                    />
+                    {STATUS_META[entry?.status ?? "first"].label}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start">
+                  <DropdownMenuLabel>页标签（存 manifest.json）</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  {(Object.keys(STATUS_META) as NonNullable<PageEntry["status"]>[]).map((s) => (
+                    <DropdownMenuItem key={s} onClick={() => setStatusOf(s)}>
+                      <span className={`inline-block size-1.5 rounded-full ${STATUS_META[s].dot}`} />
+                      {STATUS_META[s].label}
+                      {entry?.status === s ? " ✓" : ""}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              {adding ? (
+                <div className="flex items-center gap-1">
+                  <input
+                    value={pageInput}
+                    onChange={(e) => setPageInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") addPage();
+                    }}
+                    disabled={addBusy}
+                    placeholder="页码 1-7738"
+                    inputMode="numeric"
+                    className="border-input bg-background h-7 w-24 rounded-md border px-2 text-xs outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  />
+                  <Button size="sm" onClick={addPage} disabled={addBusy}>
+                    确认添加
+                  </Button>
+                  <Button size="sm" variant="ghost" onClick={() => setAdding(false)} disabled={addBusy}>
+                    取消
+                  </Button>
+                </div>
+              ) : (
+                <Button size="sm" variant="outline" onClick={() => setAdding(true)}>
+                  <Plus data-icon="inline-start" />
+                  添加新页
+                </Button>
+              )}
+
 
         <Separator orientation="vertical" className="h-5" />
 
@@ -333,6 +467,11 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
         </div>
 
         <div className="ml-auto flex flex-wrap items-center gap-2">
+          {addBusy ? (
+            <span className="text-amber-600 text-xs">
+              抓取新页中…（sqlite 已有数据不联网，缺则增量爬取，约 10-60s）
+            </span>
+          ) : null}
           {status ? (
             <span className={`text-xs ${status.ok ? "text-emerald-600" : "text-destructive"}`}>{status.msg}</span>
           ) : null}

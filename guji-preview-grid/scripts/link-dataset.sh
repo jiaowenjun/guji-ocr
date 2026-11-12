@@ -26,6 +26,7 @@ pages = [
         "gj": p["annotations"]["gj"],
         "width": p["width"],
         "height": p["height"],
+        "status": p.get("status", "first"),
     }
     for p in manifest["pages"]
 ]

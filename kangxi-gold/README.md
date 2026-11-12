@@ -39,6 +39,15 @@ kangxi-gold/
   - **0328**：增补字头页，「增/增/七/十/十五」带圈标注序列与 .gj 吻合。
 - 每页扫描图页脚有站点水印（`kangxizidian.com` + 页码），非原书内容。
 
+## 扩页与页标签
+
+- 经 guji-preview-grid「添加新页」录入：`scripts/kangxi_page_tool.py` 以 sqlite
+  （`datasets/kangxi-crawl.sqlite3`，已有数据零联网）+ 站点增量爬取生成 .gj 草稿，
+  manifest 记 `status`；草稿页校对完成后跑 `build_annotations.ts --allow-drift`
+  同步 json/txt（样例外附加页自动处理），`verify_dataset.py` 默认按 manifest 页清单校验
+- 页标签：`draft` 草稿（爬取生成）→ `first` 初校（人工校对过）→ `final` 精校
+  （复核确认）；v1 的 17 页（312–328）定为初校
+
 ## 标注规范
 
 - 语法与语义以 [guji-preview 的 .gj 语法](../guji-preview/README.md) 为准；
