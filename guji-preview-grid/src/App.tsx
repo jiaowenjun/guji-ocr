@@ -1,24 +1,7 @@
-// 应用外壳：顶部工具栏 + 主区两种模式（编辑双栏 / 数据集三列对照）
-// 渲染视图二选一：Grid 矩阵（默认，可开关界栏）/ 原版 Flex（对照）
-import { useMemo, useRef, useState, type CSSProperties } from "react";
-import { BookOpenText, Database, Download, FileUp, Info, RotateCcw } from "lucide-react";
+// 应用外壳：顶部标题栏 + 数据集对照视图（扫描原图 | 刻本渲染 | .gj 编辑器 三列）
+// 原「编辑」双栏模式已移除，应用专注重复校对工作流；通用编辑/预览见姊妹项目 guji-preview
+import { BookOpenText, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/ui/resizable";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
-import { Slider } from "@/components/ui/slider";
 import {
   Tooltip,
   TooltipContent,
@@ -26,46 +9,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { DatasetView } from "@/components/dataset/DatasetView";
-import { GujiEditor } from "@/components/editor/GujiEditor";
-import { Pages as FlexPages } from "@/components/flex/Pages";
-import { MatrixPages } from "@/components/matrix/MatrixPages";
-import { useDebouncedValue } from "@/hooks/use-debounced-value";
-import { downloadHtml } from "@/lib/export-html";
-import { layoutPages } from "@/matrix/layout";
-import { parsePages } from "@/parser/parse-pages";
-import { samples } from "@/samples";
-
-const DEFAULT_SCALE = 25;
-
-type View = "grid" | "flex";
-type Mode = "edit" | "dataset";
 
 export default function App() {
-  const [mode, setMode] = useState<Mode>("edit");
-  // 数据集视图首次打开才挂载：ResizablePanelGroup 在 display:none 下挂载会量得 0 宽
-  // 且不自动恢复；挂载后保持挂载，仅切换可见性（保留未保存修改）。
-  const [datasetOpened, setDatasetOpened] = useState(false);
-  const [text, setText] = useState(samples[0].content);
-  const [scale, setScale] = useState(DEFAULT_SCALE);
-  const [view, setView] = useState<View>("grid");
-  const [rules, setRules] = useState(true);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const debouncedText = useDebouncedValue(text, 200);
-  const pages = useMemo(() => parsePages(debouncedText), [debouncedText]);
-  const matrixPages = useMemo(() => layoutPages(pages), [pages]);
-
-  const openFile = async (file: File) => {
-    setText(await file.text());
-  };
-
-  const exportBody =
-    view === "grid" ? (
-      <MatrixPages pages={matrixPages} rules={rules} />
-    ) : (
-      <FlexPages pageModels={pages} />
-    );
-
   return (
     <TooltipProvider>
       <div className="bg-background text-foreground flex h-svh flex-col">
@@ -74,149 +19,7 @@ export default function App() {
           <h1 className="text-base font-semibold">古籍预览</h1>
           <span className="text-muted-foreground text-xs">guji-preview-grid</span>
 
-          <div className="border-border ml-2 flex items-center gap-1 rounded-lg border p-0.5">
-            <Button
-              size="sm"
-              variant={mode === "edit" ? "default" : "ghost"}
-              onClick={() => setMode("edit")}
-            >
-              编辑
-            </Button>
-            <Button
-              size="sm"
-              variant={mode === "dataset" ? "default" : "ghost"}
-              onClick={() => {
-                setMode("dataset");
-                setDatasetOpened(true);
-              }}
-            >
-              <Database data-icon="inline-start" />
-              数据集对照
-            </Button>
-          </div>
-
-          <div className="ml-auto flex flex-wrap items-center gap-2">
-            {mode === "edit" && (
-              <>
-            <div className="border-border flex items-center gap-1 rounded-lg border p-0.5">
-              <Button
-                size="sm"
-                variant={view === "grid" ? "default" : "ghost"}
-                onClick={() => setView("grid")}
-              >
-                矩阵
-              </Button>
-              <Button
-                size="sm"
-                variant={view === "flex" ? "default" : "ghost"}
-                onClick={() => setView("flex")}
-              >
-                Flex 对照
-              </Button>
-            </div>
-
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  disabled={view !== "grid"}
-                  aria-pressed={rules}
-                  onClick={() => setRules((v) => !v)}
-                >
-                  界栏{rules ? "开" : "关"}
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                大行之间的贯通竖线（仅矩阵视图；严格刻本几何）
-              </TooltipContent>
-            </Tooltip>
-
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm">
-                  示例
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>内置文档</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                {samples.map((s) => (
-                  <DropdownMenuItem key={s.id} onClick={() => setText(s.content)}>
-                    <div className="flex flex-col">
-                      <span>{s.name}</span>
-                      <span className="text-muted-foreground text-xs">
-                        {s.description}
-                      </span>
-                    </div>
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => fileInputRef.current?.click()}
-            >
-              <FileUp data-icon="inline-start" />
-              打开文件
-            </Button>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept=".gj,text/plain"
-              className="hidden"
-              onChange={(e) => {
-                const file = e.target.files?.[0];
-                if (file) openFile(file);
-                e.target.value = "";
-              }}
-            />
-
-            <Separator orientation="vertical" className="h-5" />
-
-            <div className="flex items-center gap-2">
-              <span className="text-muted-foreground text-xs">缩放</span>
-              <Slider
-                value={[scale]}
-                onValueChange={([v]) => setScale(v)}
-                min={12}
-                max={48}
-                step={1}
-                className="w-28"
-              />
-              <span className="text-muted-foreground w-12 text-xs tabular-nums">
-                {scale} px
-              </span>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon-sm"
-                    aria-label="重置缩放"
-                    onClick={() => setScale(DEFAULT_SCALE)}
-                  >
-                    <RotateCcw />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>重置缩放</TooltipContent>
-              </Tooltip>
-            </div>
-
-            <Separator orientation="vertical" className="h-5" />
-
-            <Button
-              size="sm"
-              disabled={pages.length === 0}
-              onClick={() => downloadHtml(exportBody, "guji.html", scale)}
-            >
-              <Download data-icon="inline-start" />
-              导出 HTML
-            </Button>
-              </>
-            )}
-
+          <div className="ml-auto flex items-center gap-2">
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button variant="ghost" size="icon-sm" aria-label="字体说明">
@@ -235,50 +38,7 @@ export default function App() {
           </div>
         </header>
 
-        {/* 两模式都保持挂载（hidden 切换），编辑内容与数据集未保存修改互不丢失 */}
-        <div className={mode === "edit" ? "flex min-h-0 flex-1" : "hidden"}>
-        <ResizablePanelGroup orientation="horizontal" className="min-h-0 flex-1">
-          <ResizablePanel defaultSize={38} minSize={22}>
-            <div className="h-full overflow-hidden">
-              <GujiEditor value={text} onChange={setText} />
-            </div>
-          </ResizablePanel>
-          <ResizableHandle withHandle />
-          <ResizablePanel defaultSize={62}>
-            <div className="flex h-full flex-col">
-              <div className="text-muted-foreground border-b bg-white/60 px-4 py-1 text-xs">
-                共 {pages.length} 页 ·{" "}
-                {view === "grid" ? `矩阵 ${matrixPages.length} 页` : "Flex 对照"}
-              </div>
-              <ScrollArea className="min-h-0 flex-1">
-                <div
-                  className="flex justify-center p-8"
-                  style={{ "--guji-scale": `${scale}px` } as CSSProperties}
-                >
-                  {pages.length > 0 ? (
-                    exportBody
-                  ) : (
-                    <div className="text-muted-foreground flex h-96 flex-col items-center justify-center gap-2 text-sm">
-                      <BookOpenText className="size-10 opacity-30" />
-                      <p>尚未解析出任何页面</p>
-                      <p className="text-xs">
-                        Guji 文档需包含「@页码」声明行（如{" "}
-                        <code className="bg-muted rounded px-1">@312</code>
-                        ），其后的内容才会渲染
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </ScrollArea>
-            </div>
-          </ResizablePanel>
-        </ResizablePanelGroup>
-        </div>
-        {datasetOpened && (
-          <div className={mode === "dataset" ? "flex min-h-0 flex-1" : "hidden"}>
-            <DatasetView />
-          </div>
-        )}
+        <DatasetView />
       </div>
     </TooltipProvider>
   );

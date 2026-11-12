@@ -61,20 +61,24 @@ function useContentSize<T extends HTMLElement>() {
   useEffect(() => {
     if (!el) return;
     // 兜底初始尺寸：本环境（IAB/WKWebView）冷加载时 RO 的首次回调偶发丢失，
-    // rAF 里主动量一次 content box；RO 后续变化照常接管
-    const raf = requestAnimationFrame(() => {
+    // rAF 里主动量一次 content box；标签页不被绘制时 rAF 也会暂停，
+    // 再加一次延时重读（后台标签页定时器仍触发）；RO 后续变化照常接管
+    const read = () => {
       const cs = getComputedStyle(el);
       setSize({
         width: el.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight),
         height: el.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom),
       });
-    });
+    };
+    const raf = requestAnimationFrame(read);
+    const timer = setTimeout(read, 1200);
     const ro = new ResizeObserver(([entry]) =>
       setSize({ width: entry.contentRect.width, height: entry.contentRect.height }),
     );
     ro.observe(el);
     return () => {
       cancelAnimationFrame(raf);
+      clearTimeout(timer);
       ro.disconnect();
     };
   }, [el]);
