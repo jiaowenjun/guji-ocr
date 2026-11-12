@@ -42,12 +42,14 @@ def pick_dir(preferred: Path | None, fallback: Path, label: str) -> Path:
 
 
 def crawl_next_page(store: kangxi_store.KangxiStore, images_dir: Path, entries_dir: Path,
-                    from_page: int = 1) -> int:
+                    from_page: int = 1, order: str = "random") -> int:
     """抓取下一个未完成页（页 + 该页缺失字头详情）。
 
-    返回：0 成功；1 该页抓取失败（下轮重试同一页）；42 全部完成。
+    order：random = 在未完成页中均匀随机选（默认）；sequential = 取最小未完成页。
+    返回：0 成功；1 该页抓取失败（下轮重新选页）；42 全部完成。
     """
-    page = store.next_missing_page(from_page)
+    pick = store.random_missing_page if order == "random" else store.next_missing_page
+    page = pick(from_page)
     if page is None:
         print("ALL_DONE：全部页已完整入库（阅读页 + 原图）")
         return 42
@@ -77,6 +79,8 @@ def main() -> int:
     ap.add_argument("--entries-dir", type=Path, default=None,
                     help="详情 JSON 副本目录（默认 WD-2T，未挂载时回退 datasets/kangxi-crawl/entries）")
     ap.add_argument("--from-page", type=int, default=1, help="起始页码（默认 1）")
+    ap.add_argument("--order", choices=["random", "sequential"], default="random",
+                    help="选页策略：random 未完成页中均匀随机（默认）；sequential 最小未完成页")
     args = ap.parse_args()
 
     store = kangxi_store.KangxiStore(args.db)
@@ -84,7 +88,7 @@ def main() -> int:
     images_dir = pick_dir(args.images_dir, FALLBACK_IMAGES_DIR, "images")
     entries_dir = pick_dir(args.entries_dir, FALLBACK_ENTRIES_DIR, "entries")
 
-    rc = crawl_next_page(store, images_dir, entries_dir, args.from_page)
+    rc = crawl_next_page(store, images_dir, entries_dir, args.from_page, args.order)
     if rc == 0:
         print(json.dumps(store.stats(), ensure_ascii=False))
     return rc

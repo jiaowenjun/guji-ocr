@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import random
 import re
 import sqlite3
 from contextlib import contextmanager
@@ -170,6 +171,25 @@ class KangxiStore:
                 (start, total),
             ).fetchone()
         return row[0] if row else None
+
+    def random_missing_page(self, start: int = 1, total: int = 7738,
+                            rng: random.Random | None = None) -> int | None:
+        """均匀随机返回一个未完成页；全部完成返回 None。
+
+        与 next_missing_page 同一完成判据（缺阅读页或原图即未完成）；
+        随机化只为分散抓取顺序，断点续抓语义不变（重启后从不完整集合重抽）。
+        """
+        with self._conn() as c:
+            rows = c.execute(
+                """WITH RECURSIVE seq(x) AS (SELECT ? UNION ALL SELECT x+1 FROM seq WHERE x < ?)
+                   SELECT x FROM seq WHERE NOT EXISTS (
+                     SELECT 1 FROM pages
+                     WHERE page=x AND reading_html IS NOT NULL AND scan_sha256 IS NOT NULL)""",
+                (start, total),
+            ).fetchall()
+        if not rows:
+            return None
+        return (rng or random).choice([r[0] for r in rows])
 
     def coded_chars_missing_entries(self, page: int) -> list[str]:
         """该页有码位、但 entries 表尚无详情的字头（增量抓详情用）。"""

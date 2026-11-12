@@ -2,13 +2,14 @@
 """全书慢速循环爬取：每页之间以「截断正态分布」随机间隔（默认均值 3 分钟，
 落在 1–10 分钟内）持续抓取，直至 7738 页全部入库。
 
-间隔采样：N(μ=180s, σ=90s) 拒绝采样至落在 [60s, 600s]（真截断，非钳制，
-边界无点质量；σ 可调）。配合 kangxi_store 去重：已入库页/字头零网络，
-中断重启自动从下一个未完成页续抓。
+选页策略：默认 random（在未完成页中均匀随机选下一页，分散抓取顺序）；
+--order sequential 恢复从小到大顺序抓取。配合 kangxi_store 去重：已入库
+页/字头零网络，中断重启自动续抓（random 下从不完整集合重抽）。
 
-每轮动作与 kangxi_crawl_next.py 相同（阅读页 + 原图 + 页→字头索引 +
-该页缺失字头详情，内建 ≥1.2s 请求限速）。连续失败达到上限退出（站点故障/
-磁盘错误），避免死循环重试同一页。
+间隔采样：N(μ=180s, σ=90s) 拒绝采样至落在 [60s, 600s]（真截断，非钳制，
+边界无点质量；σ 可调）。每轮动作与 kangxi_crawl_next.py 相同（阅读页 +
+原图 + 页→字头索引 + 该页缺失字头详情，内建 ≥1.2s 请求限速）。连续失败
+达到上限退出（站点故障/磁盘错误），避免死循环重试同一页。
 
 用法：
   python3 kangxi_crawl_loop.py                       # 前台运行，Ctrl+C 退出
@@ -55,6 +56,8 @@ def main() -> int:
     ap.add_argument("--entries-dir", type=Path, default=None,
                     help="详情 JSON 副本目录（默认 WD-2T，未挂载时回退 datasets/kangxi-crawl/entries）")
     ap.add_argument("--from-page", type=int, default=1, help="起始页码（默认 1）")
+    ap.add_argument("--order", choices=["random", "sequential"], default="random",
+                    help="选页策略：random 未完成页中均匀随机（默认）；sequential 最小未完成页")
     ap.add_argument("--mean-seconds", type=float, default=180.0, help="间隔均值（秒，默认 180）")
     ap.add_argument("--sigma-seconds", type=float, default=90.0, help="间隔标准差（秒，默认 90）")
     ap.add_argument("--min-seconds", type=float, default=60.0, help="间隔下限（秒，默认 60）")
@@ -72,15 +75,16 @@ def main() -> int:
     images_dir = pick_dir(args.images_dir, FALLBACK_IMAGES_DIR, "images")
     entries_dir = pick_dir(args.entries_dir, FALLBACK_ENTRIES_DIR, "entries")
 
-    print(f"[{stamp()}] 循环爬取启动：间隔 ~ N(μ={args.mean_seconds:.0f}s, σ={args.sigma_seconds:.0f}s) "
-          f"截断于 [{args.min_seconds:.0f}s, {args.max_seconds:.0f}s]，库 {args.db}", flush=True)
+    print(f"[{stamp()}] 循环爬取启动：选页={args.order}，间隔 ~ N(μ={args.mean_seconds:.0f}s, "
+          f"σ={args.sigma_seconds:.0f}s) 截断于 [{args.min_seconds:.0f}s, {args.max_seconds:.0f}s]，"
+          f"库 {args.db}", flush=True)
     print(f"[{stamp()}] 初始统计：{json.dumps(store.stats(), ensure_ascii=False)}", flush=True)
 
     done = failures = 0
     try:
         while True:
             try:
-                rc = crawl_next_page(store, images_dir, entries_dir, args.from_page)
+                rc = crawl_next_page(store, images_dir, entries_dir, args.from_page, args.order)
             except KeyboardInterrupt:
                 raise
             except Exception as e:  # 单页异常（如重试耗尽/磁盘错误）不杀循环，计入熔断
