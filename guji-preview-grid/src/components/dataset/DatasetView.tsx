@@ -46,18 +46,32 @@ interface PageEntry {
 
 const stem = (page: number) => String(page).padStart(4, "0");
 
-/** 量取元素内容宽（跟随面板拖动/窗口缩放）；回调 ref 模式：
+/** 量取元素内容宽高（跟随面板拖动/窗口缩放）；回调 ref 模式：
  *  元素挂到 state 后才建立 ResizeObserver，规避挂载时序与节点重建问题 */
-function useContentWidth<T extends HTMLElement>() {
+function useContentSize<T extends HTMLElement>() {
   const [el, setEl] = useState<T | null>(null);
-  const [width, setWidth] = useState(0);
+  const [size, setSize] = useState({ width: 0, height: 0 });
   useEffect(() => {
     if (!el) return;
-    const ro = new ResizeObserver(([entry]) => setWidth(entry.contentRect.width));
-    ro.observe(el); // observe 时按规范会先发一次当前尺寸回调
-    return () => ro.disconnect();
+    // 兜底初始尺寸：本环境（IAB/WKWebView）冷加载时 RO 的首次回调偶发丢失，
+    // rAF 里主动量一次 content box；RO 后续变化照常接管
+    const raf = requestAnimationFrame(() => {
+      const cs = getComputedStyle(el);
+      setSize({
+        width: el.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight),
+        height: el.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom),
+      });
+    });
+    const ro = new ResizeObserver(([entry]) =>
+      setSize({ width: entry.contentRect.width, height: entry.contentRect.height }),
+    );
+    ro.observe(el);
+    return () => {
+      cancelAnimationFrame(raf);
+      ro.disconnect();
+    };
   }, [el]);
-  return { ref: setEl, width };
+  return { ref: setEl, ...size };
 }
 
 /** 页清单（public/dataset/index.json） */
@@ -119,9 +133,9 @@ export function DatasetView() {
   const [idx, setIdx] = useState(0);
   const [edits, setEdits] = useState<Record<number, string>>({});
   const { texts, ensure, put } = useDatasetText();
-  const [rules, setRules] = useState(true);
-  const [flexView, setFlexView] = useState(false);
-  const [zoom, setZoom] = useState(100);
+  const [rules, setRules] = useState(false); // 界栏默认关（默认 Flex 视图下也不可用）
+  const [flexView, setFlexView] = useState(true); // 默认 Flex 布局
+  const [zoom, setZoom] = useState<number | "fit">("fit"); // 默认按原图高度适配视口
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState<{ ok: boolean; msg: string } | null>(null);
 
@@ -155,9 +169,14 @@ export function DatasetView() {
   const matrixPages = useMemo(() => layoutPages(pageModels), [pageModels]);
   const cols = matrixPages[0] ? pageColumns(matrixPages[0]) : 0;
 
-  // 原图列内容宽 → 显示宽（缩放百分比）→ 渲染 unit（同宽联动）
-  const { ref: scanRef, width: scanWidth } = useContentWidth<HTMLDivElement>();
-  const displayWidth = Math.max(200, Math.round((scanWidth * zoom) / 100));
+  // 原图列内容宽高 → 显示宽 → 渲染 unit（同宽联动）
+  const { ref: scanRef, width: scanWidth, height: scanHeight } = useContentSize<HTMLDivElement>();
+  const fitHeight = zoom === "fit";
+  const displayWidth = fitHeight
+    ? entry && scanHeight > 0
+      ? Math.floor((scanHeight * entry.width) / entry.height) // 向下取整，避免 1px 溢出触发滚动条
+      : Math.max(200, scanWidth)
+    : Math.max(200, Math.round((scanWidth * zoom) / 100));
   const unit = cols > 0 ? (displayWidth - 2) / cols : 25;
 
   const onChange = useCallback(
@@ -259,10 +278,19 @@ export function DatasetView() {
 
         <div className="flex items-center gap-2">
           <span className="text-muted-foreground text-xs">原图缩放</span>
-          <Slider value={[zoom]} onValueChange={([v]) => setZoom(v)} min={30} max={160} step={5} className="w-24" />
-          <span className="text-muted-foreground w-10 text-xs tabular-nums">{zoom}%</span>
-          {zoom !== 100 ? (
-            <Button variant="ghost" size="icon-sm" aria-label="重置缩放" onClick={() => setZoom(100)}>
+          <Slider
+            value={[fitHeight ? 100 : zoom]}
+            onValueChange={([v]) => setZoom(v)}
+            min={30}
+            max={160}
+            step={5}
+            className="w-24"
+          />
+          <span className="text-muted-foreground w-12 text-xs">
+            {fitHeight ? "高度适配" : `${zoom}%`}
+          </span>
+          {!fitHeight ? (
+            <Button variant="ghost" size="icon-sm" aria-label="恢复高度适配" onClick={() => setZoom("fit")}>
               <RotateCcw />
             </Button>
           ) : null}
@@ -313,7 +341,8 @@ export function DatasetView() {
         <ResizablePanel defaultSize={34} minSize={20}>
           <div className="flex h-full flex-col">
             <ColumnHeader>
-              {flexView ? "Flex" : `矩阵 · ${cols} 列`} · 字格 {unit.toFixed(1)}px · 跟随原图同宽
+              {flexView ? "Flex" : `矩阵 · ${cols} 列`} · 字格 {unit.toFixed(1)}px ·{" "}
+              {flexView ? "近似同宽（行宽按内容混合，精确对照请用矩阵）" : "跟随原图同宽"}
             </ColumnHeader>
             <ScrollArea className="min-h-0 flex-1">
               <div
