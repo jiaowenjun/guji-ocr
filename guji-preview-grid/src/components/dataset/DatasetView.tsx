@@ -11,7 +11,7 @@ import {
   type CSSProperties,
   type ReactNode,
 } from "react";
-import { ChevronLeft, ChevronRight, Database, Download, Plus, RotateCcw, Save } from "lucide-react";
+import { ChevronLeft, ChevronRight, Database, Download, Minus, Plus, RotateCcw, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -410,6 +410,15 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
 
               {adding ? (
                 <div className="flex items-center gap-1">
+                  <Button
+                    variant="outline"
+                    size="icon-sm"
+                    aria-label="页码减一"
+                    disabled={addBusy}
+                    onClick={() => setPageInput(String(Math.max(1, (Number(pageInput) || 1) - 1)))}
+                  >
+                    <Minus />
+                  </Button>
                   <input
                     value={pageInput}
                     onChange={(e) => setPageInput(e.target.value)}
@@ -419,8 +428,17 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
                     disabled={addBusy}
                     placeholder="页码 1-7738"
                     inputMode="numeric"
-                    className="border-input bg-background h-7 w-24 rounded-md border px-2 text-xs outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                    className="border-input bg-background h-7 w-16 rounded-md border px-2 text-center text-xs tabular-nums outline-none focus-visible:ring-1 focus-visible:ring-ring"
                   />
+                  <Button
+                    variant="outline"
+                    size="icon-sm"
+                    aria-label="页码加一"
+                    disabled={addBusy}
+                    onClick={() => setPageInput(String(Math.min(7738, (Number(pageInput) || 0) + 1)))}
+                  >
+                    <Plus />
+                  </Button>
                   <Button size="sm" onClick={addPage} disabled={addBusy}>
                     确认添加
                   </Button>
@@ -429,7 +447,16 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
                   </Button>
                 </div>
               ) : (
-                <Button size="sm" variant="outline" onClick={() => setAdding(true)}>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => {
+                    // 预填下一页（清单最大页 +1，封顶 7738）；可用 −/+ 或直接输入调整
+                    const maxPage = index?.length ? index[index.length - 1].page : 312;
+                    setPageInput(String(Math.min(7738, maxPage + 1)));
+                    setAdding(true);
+                  }}
+                >
                   <Plus data-icon="inline-start" />
                   添加新页
                 </Button>
