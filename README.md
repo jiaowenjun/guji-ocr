@@ -21,6 +21,12 @@ OCR 部分尚未安装、运行模型或复现性能；报告中的性能数字�
 | --- | --- |
 | [paddleocr-baseline](paddleocr-baseline/README.md) | 本地 PaddleOCR（PaddleOCR-VL-1.6）异步 job 服务与批量 CLI，为古籍 OCR 提供可对照的工程基线 |
 
+## 自建金标数据集
+
+| 数据集 | 用途 |
+| --- | --- |
+| [kangxi-gold](kangxi-gold/README.md) | 康熙字典武英殿版 17 页（@312–@328）整页文本金标 v1：`.gj`/JSON/阅读序 TXT 三件套 + 严格 CER 评测脚本；图片存 WD-2T，清单带 sha256 |
+
 ## 古籍预览应用
 
 | 应用 | 用途 |

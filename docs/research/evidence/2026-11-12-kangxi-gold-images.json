@@ -1,0 +1,49 @@
+{
+  "checked_at": "2026-11-12",
+  "purpose": "Download and alignment-verification record for the self-built Kangxi Dictionary gold standard (kangxi-gold v1): page scans fetched from kangxizidian.com and verified against the human-transcribed .gj sample. No model run, no OCR eval yet (gold-vs-gold smoke = CER 0).",
+  "source": {
+    "site": "https://www.kangxizidian.com/v2/",
+    "edition": "武英殿版（站点默认版本；另有同文書局版/渡部氏版未使用）",
+    "image_url_template": "https://p.kangxizidian.com/kangxi2/{page:04d}.jpg",
+    "text_page_template": "https://www.kangxizidian.com/v2/index.php?page={page}",
+    "transcription_source": "guji-preview/src/samples/kangxi-yibu.gj（人工精标，源自 vscode-guji-preview/example，注释行标明「康熙字典武英殿版」）"
+  },
+  "fetch": {
+    "method": "curl/urllib 单线程顺序下载，请求间隔 >=1.2s+抖动，JPEG 魔数与 Content-Type 校验，sha256 记录（工具：kangxi-gold/scripts/download_pages.py）",
+    "robots": "www.kangxizidian.com/robots.txt = 'User-agent: * / Allow: /'; p.kangxizidian.com 无 robots.txt（默认允许），2026-11-12 核查",
+    "storage": "/Volumes/WD-2T/guji-ocr/datasets/kangxizidian-wuyingdian/（exFAT 外置盘，git 不入库；清单在仓库 kangxi-gold/manifest.json）"
+  },
+  "pages": {
+    "range": "0312-0328",
+    "count": 17,
+    "total_bytes": 9035457,
+    "dimensions": "1130px 宽，高 1678-1706px（5 种）",
+    "per_page_sha256": {
+      "0312.jpg": "ac6a89dd08818c9a8e020673c6cb71d39ecf870592fc222e0732a9bb6dbd9c2b",
+      "0313.jpg": "cc9e95cfb000d60dcfed001c7370e21c6450c99d90dd991edb0bf7348608f4f6",
+      "0314.jpg": "195f0eff1ccb7a2928bcf7059f69fb5d5d523ac016e81e424e0fb9f55fe676b9",
+      "0315.jpg": "f464b0d3578c3e50ea949985ef371cb0886b421c7beb21564aa30cc770d8e5f6",
+      "0316.jpg": "32a091e5a44bdf19d554b5f516091f3f60b1609e954a5a5bbdd3e4b61ff8d093",
+      "0317.jpg": "4c69275f254441a9c84ca68662f2f01463b4c4eb3889e10af624edcd293ce153",
+      "0318.jpg": "9b27a20e480daac085c96f40a45eb208bbbfb161da65684f6102fa0fcae72b00",
+      "0319.jpg": "db92421195effd2e79b460f3e84c4ece2f8b3121a507626448aaecaf65259d01",
+      "0320.jpg": "56a06513892dc04521c3ba8a580cbcb41533537c9dc02d6dc072119a7b3f4ba8",
+      "0321.jpg": "3b17f13702c5d83ff71b15e60b64966f2d25a531cfc798bbbb50b1d9f1016dd1",
+      "0322.jpg": "bdba52e245251dd98cf0bb4cc1f4e5b1af8b76f3cde20d281696498e2c5c7433",
+      "0323.jpg": "cc9cbc95637950befc2d4b4b5576a119bd8cfc80dffcbe71c6a2473e9df12eaf",
+      "0324.jpg": "2d592bcdbf367fce867466a17c935c93d25572ba26ff466f97a7b1a5f43ee4de",
+      "0325.jpg": "97e5130ea701a7b5e936c98e8f9a7917aac953788cc0e385e81c26ad9b6fad5c",
+      "0326.jpg": "b50fd56f0908625145ce5e3e3ba0ba1c1ea607ade1be248d98a42a254811e755",
+      "0327.jpg": "4f562d9dae3a1f7e03e290277567baf60c711808f2772362d151af94b7ddca1e",
+      "0328.jpg": "01ac3fac9b7affa3c601725836a6c6318c5e04dc72617bc271cd8293d5901756"
+    }
+  },
+  "alignment_verification": {
+    "0312": "目视核对通过：版心「康熙字典 子集上」，页首标题「康熙字典/子集上/一部」，字头「一」+古文「弌」，注文开头与 .gj @312 逐字吻合",
+    "0315": "目视核对通过：页始于「丁」条续文（丁水/丁子科斗/識一丁字等引文逐句吻合），「丂」字头注文（苦浩切音考、玉篇古文巧字註詳工部二畫）吻合；页末「𠀀」未单独目视确认（整页文本吻合度高）",
+    "0328": "目视核对通过（结构级）：增补字头页，「增/增/七/十/十五」带圈标注序列与字头数与 .gj 吻合；视觉模型对扩展 B 区字形的具体释读不可靠，未据此逐字确认",
+    "method": "视觉模型读图与 .gj 文本交叉比对；对扩展 B 区生僻字仅确认结构（字头位置/圈注/引文书名），不逐字确认形旁"
+  },
+  "zero_drift_check": "build_annotations.ts 三层对照全部通过：单页解析 = 整篇解析 = guji-preview/test/fixtures/kangxi-yibu.expected.json（原扩展解析器黄金期望），17 页正文 5,933 Unicode 码点",
+  "note": "扫描图页脚含站点水印（kangxizidian.com + 页码），非原书内容；版权归站点/原书相关方，仅供内部研究评测。"
+}

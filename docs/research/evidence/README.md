@@ -7,6 +7,7 @@
 | [AncientDoc 定向核查](2026-11-11-ancientdoc-spotcheck.json) | 读取完整 HF 图像树分页元数据、LFS 哈希和 `label.csv`；下载两张已知问题图目视比对；记录标签数、重复路径及样例遗漏 | 只检查当前访问版本；两图来自批评文章的已知样例，不是随机抽样；不能估算全库错误率，未复算文章 CER |
 | [微信资料原始来源核查](2026-11-11-wechat-source-checks.json) | 记录七篇文章及原始来源；读取 11 页样本标签／notebook、Chronicles JSONL／评分代码和部分许可；保存文件 SHA-256 | 未运行 notebook、模型或桌面软件；未下载 Chronicles 全图，2,799 为不同路径数，未作全图内容去重；不能复现 dots 8.9% CER |
 | [可下载数据集落地清单](2026-11-11-dataset-downloads.json) | 将调研中可直接获取的 MTHv2、AncientDoc、Chronicles-OCR、CASIA-AHCDB、HisDoc1B、AncientDoc_OCR 小样本下载至本地 `datasets/`（已 gitignore）；记录来源、版本指针、大小、SHA-256、MD5 对照与 unzip 完整性结果 | 只证明文件取得与位完整，不是标注质量审计；压缩包因磁盘空间未解压；下载不等于取得授权，非商业／申请制条款仍然适用 |
+| [kangxi-gold 图片下载与对齐](2026-11-12-kangxi-gold-images.json) | 自建金标用图：kangxizidian.com 武英殿版 17 页（0312–0328）下载记录（robots、限速方式、逐页 SHA-256）与页码对齐目视核对（0312 全文级、0315 逐句、0328 结构级）；标注零漂移对照结论 | 目视核对只覆盖 3 页且扩展 B 区字形仅确认结构；未跑任何 OCR 模型，gold vs gold 冒烟 CER=0 只验证脚本链路；图片版权归站点/原书相关方，限内部研究评测 |
 
 ## 如何解读
 

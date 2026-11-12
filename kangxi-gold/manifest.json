@@ -1,0 +1,279 @@
+{
+  "dataset": "kangxi-gold",
+  "book": "康熙字典（武英殿版）",
+  "gold_version": "v1",
+  "source": {
+    "site": "https://www.kangxizidian.com/v2/",
+    "edition_note": "站点默认版本即武英殿版；部首「一」指向 index.php?page=312，与 guji-preview/src/samples/kangxi-yibu.gj 的 @312 页码体系一致；0312.jpg 已目视核对为「子集上·一部·一」起始页（版心：康熙字典 子集上）",
+    "image_url_template": "https://p.kangxizidian.com/kangxi2/{page:04d}.jpg",
+    "text_page_template": "https://www.kangxizidian.com/v2/index.php?page={page}",
+    "watermark_note": "页脚有站点水印「kangxizidian.com 0312」，非原书内容",
+    "robots": {
+      "checked_at": "2026-11-12",
+      "rules": {
+        "https://www.kangxizidian.com/robots.txt": "allow",
+        "https://p.kangxizidian.com/robots.txt": "allow"
+      },
+      "note": "www 站为 User-agent: * / Allow: /；img CDN 无 robots.txt（默认允许）"
+    }
+  },
+  "images_dir": "/Volumes/WD-2T/guji-ocr/datasets/kangxizidian-wuyingdian",
+  "pages": [
+    {
+      "page": 312,
+      "image": "0312.jpg",
+      "url": "https://p.kangxizidian.com/kangxi2/0312.jpg",
+      "size_bytes": 472401,
+      "sha256": "ac6a89dd08818c9a8e020673c6cb71d39ecf870592fc222e0732a9bb6dbd9c2b",
+      "width": 1130,
+      "height": 1679,
+      "downloaded_at": "cached",
+      "annotations": {
+        "gj": "0312.gj",
+        "json": "0312.json",
+        "txt": "0312.txt"
+      }
+    },
+    {
+      "page": 313,
+      "image": "0313.jpg",
+      "url": "https://p.kangxizidian.com/kangxi2/0313.jpg",
+      "size_bytes": 536723,
+      "sha256": "cc9e95cfb000d60dcfed001c7370e21c6450c99d90dd991edb0bf7348608f4f6",
+      "width": 1130,
+      "height": 1678,
+      "downloaded_at": "2026-11-12",
+      "annotations": {
+        "gj": "0313.gj",
+        "json": "0313.json",
+        "txt": "0313.txt"
+      }
+    },
+    {
+      "page": 314,
+      "image": "0314.jpg",
+      "url": "https://p.kangxizidian.com/kangxi2/0314.jpg",
+      "size_bytes": 536381,
+      "sha256": "195f0eff1ccb7a2928bcf7059f69fb5d5d523ac016e81e424e0fb9f55fe676b9",
+      "width": 1130,
+      "height": 1678,
+      "downloaded_at": "2026-11-12",
+      "annotations": {
+        "gj": "0314.gj",
+        "json": "0314.json",
+        "txt": "0314.txt"
+      }
+    },
+    {
+      "page": 315,
+      "image": "0315.jpg",
+      "url": "https://p.kangxizidian.com/kangxi2/0315.jpg",
+      "size_bytes": 544694,
+      "sha256": "f464b0d3578c3e50ea949985ef371cb0886b421c7beb21564aa30cc770d8e5f6",
+      "width": 1130,
+      "height": 1678,
+      "downloaded_at": "2026-11-12",
+      "annotations": {
+        "gj": "0315.gj",
+        "json": "0315.json",
+        "txt": "0315.txt"
+      }
+    },
+    {
+      "page": 316,
+      "image": "0316.jpg",
+      "url": "https://p.kangxizidian.com/kangxi2/0316.jpg",
+      "size_bytes": 526151,
+      "sha256": "32a091e5a44bdf19d554b5f516091f3f60b1609e954a5a5bbdd3e4b61ff8d093",
+      "width": 1130,
+      "height": 1678,
+      "downloaded_at": "2026-11-12",
+      "annotations": {
+        "gj": "0316.gj",
+        "json": "0316.json",
+        "txt": "0316.txt"
+      }
+    },
+    {
+      "page": 317,
+      "image": "0317.jpg",
+      "url": "https://p.kangxizidian.com/kangxi2/0317.jpg",
+      "size_bytes": 538955,
+      "sha256": "4c69275f254441a9c84ca68662f2f01463b4c4eb3889e10af624edcd293ce153",
+      "width": 1130,
+      "height": 1680,
+      "downloaded_at": "2026-11-12",
+      "annotations": {
+        "gj": "0317.gj",
+        "json": "0317.json",
+        "txt": "0317.txt"
+      }
+    },
+    {
+      "page": 318,
+      "image": "0318.jpg",
+      "url": "https://p.kangxizidian.com/kangxi2/0318.jpg",
+      "size_bytes": 522631,
+      "sha256": "9b27a20e480daac085c96f40a45eb208bbbfb161da65684f6102fa0fcae72b00",
+      "width": 1130,
+      "height": 1680,
+      "downloaded_at": "2026-11-12",
+      "annotations": {
+        "gj": "0318.gj",
+        "json": "0318.json",
+        "txt": "0318.txt"
+      }
+    },
+    {
+      "page": 319,
+      "image": "0319.jpg",
+      "url": "https://p.kangxizidian.com/kangxi2/0319.jpg",
+      "size_bytes": 532395,
+      "sha256": "db92421195effd2e79b460f3e84c4ece2f8b3121a507626448aaecaf65259d01",
+      "width": 1130,
+      "height": 1679,
+      "downloaded_at": "2026-11-12",
+      "annotations": {
+        "gj": "0319.gj",
+        "json": "0319.json",
+        "txt": "0319.txt"
+      }
+    },
+    {
+      "page": 320,
+      "image": "0320.jpg",
+      "url": "https://p.kangxizidian.com/kangxi2/0320.jpg",
+      "size_bytes": 530707,
+      "sha256": "56a06513892dc04521c3ba8a580cbcb41533537c9dc02d6dc072119a7b3f4ba8",
+      "width": 1130,
+      "height": 1679,
+      "downloaded_at": "2026-11-12",
+      "annotations": {
+        "gj": "0320.gj",
+        "json": "0320.json",
+        "txt": "0320.txt"
+      }
+    },
+    {
+      "page": 321,
+      "image": "0321.jpg",
+      "url": "https://p.kangxizidian.com/kangxi2/0321.jpg",
+      "size_bytes": 551355,
+      "sha256": "3b17f13702c5d83ff71b15e60b64966f2d25a531cfc798bbbb50b1d9f1016dd1",
+      "width": 1130,
+      "height": 1678,
+      "downloaded_at": "2026-11-12",
+      "annotations": {
+        "gj": "0321.gj",
+        "json": "0321.json",
+        "txt": "0321.txt"
+      }
+    },
+    {
+      "page": 322,
+      "image": "0322.jpg",
+      "url": "https://p.kangxizidian.com/kangxi2/0322.jpg",
+      "size_bytes": 525147,
+      "sha256": "bdba52e245251dd98cf0bb4cc1f4e5b1af8b76f3cde20d281696498e2c5c7433",
+      "width": 1130,
+      "height": 1678,
+      "downloaded_at": "2026-11-12",
+      "annotations": {
+        "gj": "0322.gj",
+        "json": "0322.json",
+        "txt": "0322.txt"
+      }
+    },
+    {
+      "page": 323,
+      "image": "0323.jpg",
+      "url": "https://p.kangxizidian.com/kangxi2/0323.jpg",
+      "size_bytes": 546568,
+      "sha256": "cc9cbc95637950befc2d4b4b5576a119bd8cfc80dffcbe71c6a2473e9df12eaf",
+      "width": 1130,
+      "height": 1678,
+      "downloaded_at": "2026-11-12",
+      "annotations": {
+        "gj": "0323.gj",
+        "json": "0323.json",
+        "txt": "0323.txt"
+      }
+    },
+    {
+      "page": 324,
+      "image": "0324.jpg",
+      "url": "https://p.kangxizidian.com/kangxi2/0324.jpg",
+      "size_bytes": 531796,
+      "sha256": "2d592bcdbf367fce867466a17c935c93d25572ba26ff466f97a7b1a5f43ee4de",
+      "width": 1130,
+      "height": 1678,
+      "downloaded_at": "2026-11-12",
+      "annotations": {
+        "gj": "0324.gj",
+        "json": "0324.json",
+        "txt": "0324.txt"
+      }
+    },
+    {
+      "page": 325,
+      "image": "0325.jpg",
+      "url": "https://p.kangxizidian.com/kangxi2/0325.jpg",
+      "size_bytes": 540691,
+      "sha256": "97e5130ea701a7b5e936c98e8f9a7917aac953788cc0e385e81c26ad9b6fad5c",
+      "width": 1130,
+      "height": 1698,
+      "downloaded_at": "2026-11-12",
+      "annotations": {
+        "gj": "0325.gj",
+        "json": "0325.json",
+        "txt": "0325.txt"
+      }
+    },
+    {
+      "page": 326,
+      "image": "0326.jpg",
+      "url": "https://p.kangxizidian.com/kangxi2/0326.jpg",
+      "size_bytes": 542899,
+      "sha256": "b50fd56f0908625145ce5e3e3ba0ba1c1ea607ade1be248d98a42a254811e755",
+      "width": 1130,
+      "height": 1698,
+      "downloaded_at": "2026-11-12",
+      "annotations": {
+        "gj": "0326.gj",
+        "json": "0326.json",
+        "txt": "0326.txt"
+      }
+    },
+    {
+      "page": 327,
+      "image": "0327.jpg",
+      "url": "https://p.kangxizidian.com/kangxi2/0327.jpg",
+      "size_bytes": 557266,
+      "sha256": "4f562d9dae3a1f7e03e290277567baf60c711808f2772362d151af94b7ddca1e",
+      "width": 1130,
+      "height": 1706,
+      "downloaded_at": "2026-11-12",
+      "annotations": {
+        "gj": "0327.gj",
+        "json": "0327.json",
+        "txt": "0327.txt"
+      }
+    },
+    {
+      "page": 328,
+      "image": "0328.jpg",
+      "url": "https://p.kangxizidian.com/kangxi2/0328.jpg",
+      "size_bytes": 498697,
+      "sha256": "01ac3fac9b7affa3c601725836a6c6318c5e04dc72617bc271cd8293d5901756",
+      "width": 1130,
+      "height": 1706,
+      "downloaded_at": "2026-11-12",
+      "annotations": {
+        "gj": "0328.gj",
+        "json": "0328.json",
+        "txt": "0328.txt"
+      }
+    }
+  ],
+  "annotation_source": "guji-preview/src/samples/kangxi-yibu.gj（人工精标，源自 vscode-guji-preview/example；零漂移对照通过）"
+}
