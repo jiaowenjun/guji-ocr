@@ -352,7 +352,8 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
       </div>
 
       <ResizablePanelGroup orientation="horizontal" className="min-h-0 flex-1">
-        <ResizablePanel defaultSize={38} minSize={20}>
+        {/* 三栏默认宽度 2:2:3（原图:渲染:编辑器），可拖动调整 */}
+        <ResizablePanel defaultSize={28.5} minSize={20}>
           <div className="flex h-full flex-col">
             <ColumnHeader>
               原图 · {entry?.image} · {entry ? `${entry.width}×${entry.height}` : ""} · 显示宽 {displayWidth}px
@@ -374,7 +375,7 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
 
         <ResizableHandle withHandle />
 
-        <ResizablePanel defaultSize={34} minSize={20}>
+        <ResizablePanel defaultSize={28.5} minSize={20}>
           <div className="flex h-full flex-col">
             <ColumnHeader>
               {flexView ? "Flex" : `矩阵 · ${cols} 列`} · 字格 {unit.toFixed(1)}px ·{" "}
@@ -420,7 +421,7 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
 
         <ResizableHandle withHandle />
 
-        <ResizablePanel defaultSize={28} minSize={20}>
+        <ResizablePanel defaultSize={43} minSize={20}>
           <div className="flex h-full flex-col">
             <ColumnHeader>
               .gj 编辑器 · @{page} · {dirty ? "未保存" : original !== undefined ? "与数据集一致" : "加载中…"}
