@@ -76,7 +76,25 @@
     --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+/* Guji 语法高亮配色（亮/暗两套；guji-language.ts 经 var() 引用，随 .dark 切换） */
 :root {
+    --guji-hl-comment: #a1907f;
+    --guji-hl-keyword: #9a6700;
+    --guji-hl-heading: #0550ae;
+    --guji-hl-link: #116329;
+    --guji-hl-escape: #8250df;
+}
+
+.dark {
+    --guji-hl-comment: #8b949e;
+    --guji-hl-keyword: #d29922;
+    --guji-hl-heading: #79c0ff;
+    --guji-hl-link: #7ee787;
+    --guji-hl-escape: #d2a8ff;
+}
+
+:root {
+    color-scheme: light;
     --background: oklch(1 0 0);
     --foreground: oklch(0.145 0 0);
     --card: oklch(1 0 0);
@@ -112,6 +130,7 @@
 }
 
 .dark {
+    color-scheme: dark;
     --background: oklch(0.145 0 0);
     --foreground: oklch(0.985 0 0);
     --card: oklch(0.205 0 0);

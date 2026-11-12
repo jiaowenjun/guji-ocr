@@ -133,13 +133,13 @@ function useDatasetText() {
 
 function ColumnHeader({ children }: { children: ReactNode }) {
   return (
-    <div className="text-muted-foreground border-b bg-white/60 px-3 py-1 text-xs">
+    <div className="text-muted-foreground bg-background/60 border-b px-3 py-1 text-xs">
       {children}
     </div>
   );
 }
 
-export function DatasetView() {
+export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" | "dark" }) {
   const { index, error } = useDatasetIndex();
   const [idx, setIdx] = useState(0);
   const [edits, setEdits] = useState<Record<number, string>>({});
@@ -410,7 +410,7 @@ export function DatasetView() {
             </ColumnHeader>
             <div className="min-h-0 flex-1 overflow-hidden">
               {text !== undefined ? (
-                <GujiEditor value={text} onChange={onChange} />
+                <GujiEditor value={text} onChange={onChange} theme={editorTheme} />
               ) : (
                 <div className="text-muted-foreground flex h-full items-center justify-center text-sm">
                   正在加载 {stem(page ?? 0)}.gj…

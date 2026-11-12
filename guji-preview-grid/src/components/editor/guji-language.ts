@@ -81,12 +81,13 @@ export const gujiLanguage = StreamLanguage.define({
   },
 });
 
+// 颜色经 CSS 变量引用（index.css 亮/暗两套 --guji-hl-*），随主题切换
 export const gujiHighlight = HighlightStyle.define([
-  { tag: t.comment, color: "#a1907f", fontStyle: "italic" },
-  { tag: t.keyword, color: "#9a6700", fontWeight: "600" },
-  { tag: t.meta, color: "#a1907f" },
-  { tag: t.heading, color: "#0550ae", fontWeight: "700" },
-  { tag: t.strong, color: "#0550ae", fontWeight: "600" },
-  { tag: t.link, color: "#116329" },
-  { tag: t.escape, color: "#8250df", fontStyle: "italic" },
+  { tag: t.comment, color: "var(--guji-hl-comment)", fontStyle: "italic" },
+  { tag: t.keyword, color: "var(--guji-hl-keyword)", fontWeight: "600" },
+  { tag: t.meta, color: "var(--guji-hl-comment)" },
+  { tag: t.heading, color: "var(--guji-hl-heading)", fontWeight: "700" },
+  { tag: t.strong, color: "var(--guji-hl-heading)", fontWeight: "600" },
+  { tag: t.link, color: "var(--guji-hl-link)" },
+  { tag: t.escape, color: "var(--guji-hl-escape)", fontStyle: "italic" },
 ]);
