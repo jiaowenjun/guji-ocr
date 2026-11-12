@@ -198,6 +198,21 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
     bottom: SCAN_FRAME_MARGIN.bottom * scanScale,
   };
   const frameWidth = displayWidth - paperPad.left - paperPad.right;
+
+  // 纸层高度与扫描显示高一致（网格行数 × 宽度字格 ≠ 版框实际高，会矮一截，
+  // 在深色主题下表现为纸层上下的黑边）：显式 minHeight = 图片等比高，
+  // 纵向富余按版框实测上/下边距比例分配（左右边距不变，纸宽本就相等）
+  const { ref: paperContentRef, height: paperContentH } = useContentSize<HTMLDivElement>();
+  const paperHeight = entry ? Math.floor((displayWidth * entry.height) / entry.width) : 0;
+  const verticalBudget = paperHeight - paperContentH;
+  const marginSum = SCAN_FRAME_MARGIN.top + SCAN_FRAME_MARGIN.bottom;
+  const paperPadY =
+    verticalBudget > paperPad.top + paperPad.bottom && paperContentH > 0
+      ? {
+          top: (verticalBudget * SCAN_FRAME_MARGIN.top) / marginSum,
+          bottom: (verticalBudget * SCAN_FRAME_MARGIN.bottom) / marginSum,
+        }
+      : { top: paperPad.top, bottom: paperPad.bottom };
   const unit = cols > 0 ? (frameWidth - 2) / cols : 25;
 
   const onChange = useCallback(
@@ -366,20 +381,22 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
               {flexView ? "版框近似对齐（行宽按内容混合，精确对照请用矩阵）" : "与原图版框对齐（含等比纸边）"}
             </ColumnHeader>
             <ScrollArea className="min-h-0 flex-1">
-              <div className="flex justify-center p-4">
+              <div className="flex justify-center p-2">
                 {matrixPages.length > 0 ? (
                   <div
                     className="relative shrink-0"
                     style={{
                       width: displayWidth,
-                      paddingTop: paperPad.top,
+                      minHeight: paperHeight,
+                      paddingTop: paperPadY.top,
                       paddingRight: paperPad.right,
-                      paddingBottom: paperPad.bottom,
+                      paddingBottom: paperPadY.bottom,
                       paddingLeft: paperPad.left,
                       background: PAPER_BG,
                     }}
                   >
                     <div
+                      ref={paperContentRef}
                       className="flex justify-center"
                       style={{ "--guji-scale": `${unit}px` } as CSSProperties}
                     >
