@@ -139,3 +139,11 @@
   border-bottom-right-radius: 0;
   margin-bottom: 0;
 }
+
+/* 编辑器光标联动高亮（.line = 大行；.book-active = 光标所在书名区间） */
+.line.line-active {
+  background: rgba(217, 119, 6, 0.14);
+}
+.book.book-active {
+  background: rgba(217, 119, 6, 0.3);
+}

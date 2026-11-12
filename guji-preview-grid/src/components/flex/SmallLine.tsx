@@ -4,12 +4,25 @@ import type { BlockModel } from "./model";
 import { Book } from "./Book";
 import { Grid } from "./Grid";
 
-export function SmallLine({ frags }: { frags: BlockModel[] }) {
+export function SmallLine({
+  frags,
+  activeBooks,
+}: {
+  frags: BlockModel[];
+  activeBooks?: Set<BlockModel>;
+}) {
   return (
     <div className="small-line">
       {frags.map((frag, i) => {
         if (frag.st && frag.st.startsWith("book") && frag.t) {
-          return <Book key={i} text={frag.t} style={frag.st} />;
+          return (
+            <Book
+              key={i}
+              text={frag.t}
+              style={frag.st}
+              active={activeBooks?.has(frag)}
+            />
+          );
         } else if (frag.t) {
           return [...frag.t].map((letter, j) => (
             <Grid key={`${i}-${j}`} letter={letter} />

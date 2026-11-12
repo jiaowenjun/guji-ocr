@@ -8,14 +8,16 @@ import { LargeCircle } from "./LargeCircle";
 import { Small } from "./Small";
 import { SmallLine } from "./SmallLine";
 
-function parseLineBlocks(blks: BlockModel[]): ReactNode[] {
+function parseLineBlocks(blks: BlockModel[], activeBooks: Set<BlockModel>): ReactNode[] {
   const nodes: ReactNode[] = [];
   let smallLines: ReactNode[] = [];
   let frags: BlockModel[] = [];
 
   const mergeFrags = () => {
     if (frags.length > 0) {
-      smallLines.push(<SmallLine key={smallLines.length} frags={frags} />);
+      smallLines.push(
+        <SmallLine key={smallLines.length} frags={frags} activeBooks={activeBooks} />,
+      );
       frags = [];
     }
   };
@@ -55,18 +57,35 @@ function parseLineBlocks(blks: BlockModel[]): ReactNode[] {
   return nodes;
 }
 
-export function Line({ model }: { model: LineModel }) {
+export function Line({
+  model,
+  active,
+  activeBooks,
+  onClick,
+}: {
+  model: LineModel;
+  /** 编辑器光标所在大行（联动高亮） */
+  active?: boolean;
+  /** 该行内需高亮的书名块（编辑器光标落在书名区间内时） */
+  activeBooks?: Set<BlockModel>;
+  onClick?: () => void;
+}) {
+  const cls = ["line", active && "line-active"].filter(Boolean).join(" ");
   if ("c" in model) {
-    return <div className="line">{parseLineBlocks(model.c)}</div>;
+    return (
+      <div className={cls} onClick={onClick}>
+        {parseLineBlocks(model.c, activeBooks ?? new Set())}
+      </div>
+    );
   } else if (model.si === "large" && model.t) {
     return (
-      <div className="line">
+      <div className={cls} onClick={onClick}>
         <Large text={model.t} indent={model.i ? model.i : 0} />
       </div>
     );
   } else if (model.st === "empty") {
     return (
-      <div className="line">
+      <div className={cls} onClick={onClick}>
         <Large text=" " indent={0} />
       </div>
     );

@@ -35,6 +35,15 @@ import { MatrixPages, pageColumns } from "@/components/matrix/MatrixPages";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
 import { layoutPages } from "@/matrix/layout";
 import { parsePages } from "@/parser/parse-pages";
+import {
+  bandAt,
+  bandStartOffset,
+  bookRuns,
+  locate,
+  locateBooks,
+  spanAt,
+  type RenderHighlight,
+} from "@/parser/locate";
 
 interface PageEntry {
   page: number;
@@ -204,6 +213,29 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
   const pageModels = useMemo(() => parsePages(debouncedText), [debouncedText]);
   const matrixPages = useMemo(() => layoutPages(pageModels), [pageModels]);
   const cols = matrixPages[0] ? pageColumns(matrixPages[0]) : 0;
+
+  // ---- 编辑器 ↔ 渲染列联动 ----
+  // 定位用实时文本（光标偏移指向当前文本；解析渲染用防抖文本，200ms 内自愈）
+  const [cursor, setCursor] = useState<number | null>(null);
+  const [requestCursor, setRequestCursor] = useState<number | null>(null);
+  const located = useMemo(() => locate(text ?? ""), [text]);
+  const spans = useMemo(() => locateBooks(text ?? ""), [text]);
+  const highlight = useMemo<RenderHighlight>(() => {
+    if (cursor === null) return { band: null, book: null };
+    const band = bandAt(located, cursor);
+    const span = spanAt(spans, cursor);
+    return {
+      band: band ? { page: band.page, index: band.index } : null,
+      book: bookRuns(located, spans, span, text ?? ""),
+    };
+  }, [cursor, located, spans, text]);
+  const onBandClick = useCallback(
+    (p: number, i: number) => {
+      const band = located.bands.find((b) => b.page === p && b.index === i);
+      if (band) setRequestCursor(bandStartOffset(band, text ?? ""));
+    },
+    [located, text],
+  );
   // 渲染 unit 对齐版框内容宽（而非整图宽），矩阵视图下渲染页宽 = frameWidth
 
   // 原图列内容宽高 → 显示宽 → 渲染 unit（同宽联动）
@@ -568,9 +600,18 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
                       style={{ "--guji-scale": `${unit}px` } as CSSProperties}
                     >
                       {flexView ? (
-                        <FlexPages pageModels={pageModels} />
+                        <FlexPages
+                          pageModels={pageModels}
+                          highlight={highlight}
+                          onBandClick={onBandClick}
+                        />
                       ) : (
-                        <MatrixPages pages={matrixPages} rules={rules} />
+                        <MatrixPages
+                          pages={matrixPages}
+                          rules={rules}
+                          highlight={highlight}
+                          onBandClick={onBandClick}
+                        />
                       )}
                     </div>
                   </div>
@@ -594,7 +635,13 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
             </ColumnHeader>
             <div className="min-h-0 flex-1 overflow-hidden">
               {text !== undefined ? (
-                <GujiEditor value={text} onChange={onChange} theme={editorTheme} />
+                <GujiEditor
+                  value={text}
+                  onChange={onChange}
+                  theme={editorTheme}
+                  onCursor={setCursor}
+                  requestCursor={requestCursor}
+                />
               ) : (
                 <div className="text-muted-foreground flex h-full items-center justify-center text-sm">
                   正在加载 {stem(page ?? 0)}.gj…

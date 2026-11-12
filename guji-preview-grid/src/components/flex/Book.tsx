@@ -2,9 +2,12 @@
 // 行内书名框；跨行书名拆为 book-start / book-middle / book-end 相邻拼接
 import { Grid } from "./Grid";
 
-export function Book({ text, style }: { text: string; style: string }) {
+export function Book({ text, style, active }: { text: string; style: string; active?: boolean }) {
+  const cls = [style === "book" ? "book" : `book ${style}`, active && "book-active"]
+    .filter(Boolean)
+    .join(" ");
   return (
-    <div className={style === "book" ? "book" : `book ${style}`}>
+    <div className={cls}>
       {[...text].map((letter, i) => (
         <Grid key={i} letter={letter} />
       ))}

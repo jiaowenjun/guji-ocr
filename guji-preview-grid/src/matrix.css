@@ -97,3 +97,11 @@
 .m-book.m-flush-r {
   margin-right: -1px;
 }
+
+/* 编辑器光标联动高亮（.m-band = 大行；.m-book-active = 光标所在书名区间） */
+.m-band.m-band-active {
+  background: rgba(217, 119, 6, 0.14);
+}
+.m-book.m-book-active {
+  background: rgba(217, 119, 6, 0.3);
+}
