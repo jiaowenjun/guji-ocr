@@ -46,6 +46,13 @@ interface PageEntry {
 
 const stem = (page: number) => String(page).padStart(4, "0");
 
+/** 武英殿版扫描的版框（印刷内容框）到纸边距离，自然像素、页宽 1130。
+ *  17 页投影法实测中位数（列/行暗像素计数定位贯穿框线，左侧书脊暗带与
+ *  底部水印区已排除）；扫描同源，取常量即可，渲染列据此做等比纸边。 */
+const SCAN_FRAME_MARGIN = { left: 124, right: 104, top: 150, bottom: 97 };
+/** 扫描纸面色（0312 纸边取样平均） */
+const PAPER_BG = "#dcb68a";
+
 /** 量取元素内容宽高（跟随面板拖动/窗口缩放）；回调 ref 模式：
  *  元素挂到 state 后才建立 ResizeObserver，规避挂载时序与节点重建问题 */
 function useContentSize<T extends HTMLElement>() {
@@ -168,6 +175,7 @@ export function DatasetView() {
   const pageModels = useMemo(() => parsePages(debouncedText), [debouncedText]);
   const matrixPages = useMemo(() => layoutPages(pageModels), [pageModels]);
   const cols = matrixPages[0] ? pageColumns(matrixPages[0]) : 0;
+  // 渲染 unit 对齐版框内容宽（而非整图宽），矩阵视图下渲染页宽 = frameWidth
 
   // 原图列内容宽高 → 显示宽 → 渲染 unit（同宽联动）
   const { ref: scanRef, width: scanWidth, height: scanHeight } = useContentSize<HTMLDivElement>();
@@ -177,7 +185,16 @@ export function DatasetView() {
       ? Math.floor((scanHeight * entry.width) / entry.height) // 向下取整，避免 1px 溢出触发滚动条
       : Math.max(200, scanWidth)
     : Math.max(200, Math.round((scanWidth * zoom) / 100));
-  const unit = cols > 0 ? (displayWidth - 2) / cols : 25;
+  // 等比纸边：渲染列包一层与扫描同尺寸的"纸"，内容区对齐版框
+  const scanScale = entry ? displayWidth / entry.width : 0;
+  const paperPad = {
+    left: SCAN_FRAME_MARGIN.left * scanScale,
+    right: SCAN_FRAME_MARGIN.right * scanScale,
+    top: SCAN_FRAME_MARGIN.top * scanScale,
+    bottom: SCAN_FRAME_MARGIN.bottom * scanScale,
+  };
+  const frameWidth = displayWidth - paperPad.left - paperPad.right;
+  const unit = cols > 0 ? (frameWidth - 2) / cols : 25;
 
   const onChange = useCallback(
     (value: string) => {
@@ -342,19 +359,33 @@ export function DatasetView() {
           <div className="flex h-full flex-col">
             <ColumnHeader>
               {flexView ? "Flex" : `矩阵 · ${cols} 列`} · 字格 {unit.toFixed(1)}px ·{" "}
-              {flexView ? "近似同宽（行宽按内容混合，精确对照请用矩阵）" : "跟随原图同宽"}
+              {flexView ? "版框近似对齐（行宽按内容混合，精确对照请用矩阵）" : "与原图版框对齐（含等比纸边）"}
             </ColumnHeader>
             <ScrollArea className="min-h-0 flex-1">
-              <div
-                className="flex justify-center p-4"
-                style={{ "--guji-scale": `${unit}px` } as CSSProperties}
-              >
+              <div className="flex justify-center p-4">
                 {matrixPages.length > 0 ? (
-                  flexView ? (
-                    <FlexPages pageModels={pageModels} />
-                  ) : (
-                    <MatrixPages pages={matrixPages} rules={rules} />
-                  )
+                  <div
+                    className="shrink-0"
+                    style={{
+                      width: displayWidth,
+                      paddingTop: paperPad.top,
+                      paddingRight: paperPad.right,
+                      paddingBottom: paperPad.bottom,
+                      paddingLeft: paperPad.left,
+                      background: PAPER_BG,
+                    }}
+                  >
+                    <div
+                      className="flex justify-center"
+                      style={{ "--guji-scale": `${unit}px` } as CSSProperties}
+                    >
+                      {flexView ? (
+                        <FlexPages pageModels={pageModels} />
+                      ) : (
+                        <MatrixPages pages={matrixPages} rules={rules} />
+                      )}
+                    </div>
+                  </div>
                 ) : (
                   <div className="text-muted-foreground flex h-96 flex-col items-center justify-center gap-2 text-sm">
                     <p>尚未解析出页面</p>
