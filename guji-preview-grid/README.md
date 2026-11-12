@@ -10,7 +10,7 @@
 | 布局模型 | 流式：`row-reverse` flex，行对齐由内容"涌现" | 严格矩阵：布局引擎推导 1em 字格坐标，显式 grid 轨道 |
 | 跨行书名 | `book-start/middle/end` 三态 + 负边距阶梯 + `:has()` 按边删 border 拼接 | 同列连续片段合并为**单个跨行矩形项**（单一边框）；仅 wrap 连接边开口 |
 | 行线贯通 | 无（仅外框） | 大行之间界栏全页高（`border-left` + subgrid 占满行，可开关） |
-| 渲染管线 | `parsePages → React 组件` | `parsePages → layoutPages（坐标推导）→ 矩阵组件` |
+| 渲染管线 | `parsePages → React 组件` | `gj2ir → ir2blocks → layoutPages（坐标推导）→ 矩阵组件`（[Guji IR](../docs/design/guji-ir.md) 中间表示） |
 
 解析器、CodeMirror 编辑器与 guji-preview 完全一致；应用外壳已分叉——本项目自
 2026-11-12 起移除独立「编辑」双栏模式，打开即数据集对照视图（通用编辑/预览用 guji-preview）。
@@ -60,8 +60,8 @@ pnpm build
 
 - **编辑器 ↔ 渲染列联动**：光标所在**大行**琥珀高亮（间隙取前行）；光标落在
   **书名区间**内时两侧书名框同时点亮（含跨大行 wrap，如【史記·儒/林傳】）；
-  点击渲染列任意行 → 编辑器光标跳到该行源码首位。定位器 `src/parser/locate.ts`
-  独立复刻分块语义（不动被 fixtures 锁定的解析器），对等性测试锁定（41 例）
+  点击渲染列任意行 → 编辑器光标跳到该行源码首位。定位基于 IR 的 `src` 偏移
+  （`src/ir/linkage.ts`；原 locate.ts 已被 IR 吸收），对等性由 ir.spec 全语料锁定
 - 打开即**数据集对照**视图（原「编辑」双栏模式已移除）：kangxi-gold 金标三列
   可视化与校对（见下节），含矩阵/Flex 渲染切换与界栏开关（矩阵视图）
 - **亮/暗主题**：默认跟随系统（`prefers-color-scheme`），顶栏可手动三态切换

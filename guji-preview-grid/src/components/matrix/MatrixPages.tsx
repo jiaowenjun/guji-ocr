@@ -3,7 +3,7 @@
 // 其 border-left 即贯通界栏（data-rules 开关）；band 0（首个大行）放在最右列
 import type { CSSProperties } from "react";
 import type { MatrixItem, MatrixPage } from "@/matrix/types";
-import { bandKey, type RenderHighlight } from "@/parser/locate";
+import { bandKey, type RenderHighlight } from "@/ir/types";
 
 /** 页面横向字格数（含 band 间无缝拼接）；渲染页宽 = pageColumns × unit + 2px 边框。
  *  供组件内部与外部（如数据集对照页的同宽联动）共用，避免两处漂移。 */

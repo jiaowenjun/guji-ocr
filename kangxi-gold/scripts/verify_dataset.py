@@ -121,8 +121,16 @@ def main() -> int:
         if js.is_file():
             try:
                 obj = json.loads(js.read_text(encoding="utf-8"))
-                if obj.get("p") != page or not isinstance(obj.get("l"), list):
-                    errors.append(f"{stem}: .json 结构异常（p={obj.get('p')}, l 类型 {type(obj.get('l')).__name__}）")
+                # Guji IR v1：{version, meta, pages:[{no, bands}]}（此前为 PageModel {p,l}）
+                ir_pages = obj.get("pages") if isinstance(obj, dict) else None
+                if (
+                    obj.get("version") != 1
+                    or not isinstance(ir_pages, list)
+                    or len(ir_pages) != 1
+                    or ir_pages[0].get("no") != page
+                    or not isinstance(ir_pages[0].get("bands"), list)
+                ):
+                    errors.append(f"{stem}: .json 非 guji-ir/1 结构（version={obj.get('version')}）")
             except json.JSONDecodeError as e:
                 errors.append(f"{stem}: .json 解析失败：{e}")
         if txt.is_file():

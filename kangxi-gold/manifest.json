@@ -309,5 +309,6 @@
       "origin": "kangxizidian.com 爬取草稿（kangxi_page_tool.py add）"
     }
   ],
-  "annotation_source": "guji-preview/src/samples/kangxi-yibu.gj（人工精标，源自 vscode-guji-preview/example；零漂移对照通过）"
+  "annotation_source": "guji-preview/src/samples/kangxi-yibu.gj（人工精标，源自 vscode-guji-preview/example；零漂移对照通过）",
+  "annotations_schema": "guji-ir/1"
 }

@@ -72,13 +72,50 @@ def align(ref: str, hyp: str):
     return s, d, ins
 
 
-def evaluate(gold_dir: Path, ocr_dir: Path):
-    gold_pages = {int(p.stem): p for p in sorted(gold_dir.glob("*.txt")) if p.stem.isdigit()}
+def ir_reference(path: Path) -> str:
+    """从 Guji IR（NNNN.json）抽取阅读序文本并按文档自带 profile 清洗。
+
+    与 irPageToText（guji-preview-grid/src/ir/text.ts）同构：大行一行；
+    标题/字头/注文/书名同序；跨行书名只计入属本行的 part。"""
+    doc = json.loads(path.read_text(encoding="utf-8"))
+    profile = doc.get("meta", {}).get("profile", {})
+    strip = set(profile.get("stripPunct", []))
+    norm = {a: b for a, b in profile.get("normalize", [])}
+
+    def clean(s: str) -> str:
+        for a, b in norm.items():
+            s = s.replace(a, b)
+        return "".join(ch for ch in s if ch not in strip)
+
+    lines = []
+    for page in doc.get("pages", []):
+        for band in page.get("bands", []):
+            if "heading" in band:
+                lines.append(clean(band["heading"]["text"]))
+                continue
+            parts = []
+            for seg in band.get("segments", []):
+                kind = seg.get("kind")
+                if kind == "head":
+                    parts.append(seg.get("char", ""))
+                elif kind in ("text", "mark"):
+                    parts.append(clean(seg.get("text", "")))
+                elif kind == "book":
+                    for p in seg.get("parts", []):
+                        if not p.get("band") or p.get("band") == band.get("id"):
+                            parts.append("".join(clean(x) for x in p.get("text", "").split("\n")))
+            lines.append("".join(parts))
+    return "\n".join(lines) + "\n" if lines else ""
+
+
+def evaluate(gold_dir: Path, ocr_dir: Path, from_ir: bool = False):
+    pattern = "*.json" if from_ir else "*.txt"
+    gold_pages = {int(p.stem): p for p in sorted(gold_dir.glob(pattern)) if p.stem.isdigit()}
     if not gold_pages:
-        sys.exit(f"2 金标目录无 NNNN.txt：{gold_dir}")
+        sys.exit(f"2 金标目录无 NNNN.{ 'json' if from_ir else 'txt' }：{gold_dir}")
     rows = []
     for page, gold_path in sorted(gold_pages.items()):
-        ref = clean(gold_path.read_text(encoding="utf-8"))
+        ref = clean(ir_reference(gold_path) if from_ir else gold_path.read_text(encoding="utf-8"))
         md = ocr_dir / f"{page:04d}.md"
         status = "ok"
         if not md.is_file():
@@ -127,6 +164,8 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--gold-dir", type=Path, default=DEFAULT_GOLD)
     ap.add_argument("--ocr-dir", type=Path)
+    ap.add_argument("--from-ir", action="store_true",
+                    help="参考文本取 NNNN.json（Guji IR，含自带 profile）而非 NNNN.txt")
     ap.add_argument("--json", type=Path, help="机器可读结果输出路径")
     ap.add_argument("--self-test", action="store_true")
     args = ap.parse_args()
@@ -136,7 +175,7 @@ def main() -> int:
     if not args.ocr_dir:
         ap.error("需要 --ocr-dir（或 --self-test）")
 
-    rows = evaluate(args.gold_dir, args.ocr_dir)
+    rows = evaluate(args.gold_dir, args.ocr_dir, from_ir=args.from_ir)
     total_n = sum(r["n_ref"] for r in rows)
     total_ops = sum(r["S"] + r["D"] + r["I"] for r in rows)
     micro = total_ops / total_n if total_n else 0.0

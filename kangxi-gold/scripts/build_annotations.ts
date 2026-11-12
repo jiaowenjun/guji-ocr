@@ -12,6 +12,8 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parsePages } from "../../guji-preview/src/parser/parse-pages";
 import type { BlockModel, LineModel, PageModel } from "../../guji-preview/src/components/guji/model";
+import { gj2ir } from "../../guji-preview-grid/src/ir/gj2ir";
+import { irPageToText } from "../../guji-preview-grid/src/ir/text";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(here, "../..");
@@ -130,16 +132,21 @@ chunks.forEach((chunk, i) => {
     fail(`@${chunk.page} 单页解析 ≠ 整篇解析对应页——拆分改变了语义`);
   }
 
-  const text = pageToText(parsed[0]);
+  // IR（guji-ir/1）：语义结构 JSON 入库；txt 与旧口径逐字符等价（运行时断言防漂移）
+  const pageIr = gj2ir(pageGj);
+  if (pageIr.pages.length !== 1 || pageIr.pages[0].no !== chunk.page) {
+    fail(`@${chunk.page} IR 解析异常：得到 ${JSON.stringify(pageIr.pages.map((p) => p.no))}`);
+  }
+  const text = irPageToText(pageIr.pages[0]);
+  if (text !== pageToText(parsed[0])) {
+    fail(`@${chunk.page} IR 文本流 ≠ 旧 pageToText 口径——IR 管线漂移`);
+  }
   if (pageGj !== sampleGj) {
     // 保留人工修订的 .gj（不回写样例）；json/txt 从修订版重新生成
-    writeFileSync(join(OUT_DIR, `${stem}.json`), JSON.stringify(parsed[0], null, 2) + "\n", "utf-8");
-    writeFileSync(join(OUT_DIR, `${stem}.txt`), text, "utf-8");
-  } else {
     writeFileSync(gjPath, pageGj, "utf-8");
-    writeFileSync(join(OUT_DIR, `${stem}.json`), JSON.stringify(parsed[0], null, 2) + "\n", "utf-8");
-    writeFileSync(join(OUT_DIR, `${stem}.txt`), text, "utf-8");
   }
+  writeFileSync(join(OUT_DIR, `${stem}.json`), JSON.stringify(pageIr, null, 2) + "\n", "utf-8");
+  writeFileSync(join(OUT_DIR, `${stem}.txt`), text, "utf-8");
   summary.push({ page: chunk.page, chars: [...text.replace(/\s/g, "")].length }); // 按码点计数（扩展 B 区字 1 字）
 });
 
@@ -158,8 +165,12 @@ for (const page of extras) {
   if (parsed.length !== 1 || parsed[0].p !== page) {
     fail(`附加页 @${page} 解析异常：得到 ${JSON.stringify(parsed.map((p) => p.p))}`);
   }
-  const text = pageToText(parsed[0]);
-  writeFileSync(join(OUT_DIR, `${stem}.json`), JSON.stringify(parsed[0], null, 2) + "\n", "utf-8");
+  const pageIr = gj2ir(readFileSync(gjPath, "utf-8"));
+  const text = irPageToText(pageIr.pages[0]);
+  if (text !== pageToText(parsed[0])) {
+    fail(`附加页 @${page} IR 文本流 ≠ 旧口径——IR 管线漂移`);
+  }
+  writeFileSync(join(OUT_DIR, `${stem}.json`), JSON.stringify(pageIr, null, 2) + "\n", "utf-8");
   writeFileSync(join(OUT_DIR, `${stem}.txt`), text, "utf-8");
   summary.push({ page, chars: [...text.replace(/\s/g, "")].length });
 }
@@ -179,6 +190,7 @@ for (const entry of manifest.pages ?? []) {
   const stem = String(entry.page).padStart(4, "0");
   entry.annotations = { gj: `${stem}.gj`, json: `${stem}.json`, txt: `${stem}.txt` };
 }
+manifest["annotations_schema"] = "guji-ir/1"; // NNNN.json 自此为 Guji IR（v1 前为 PageModel）
 manifest["annotation_source"] =
   "guji-preview/src/samples/kangxi-yibu.gj（人工精标，源自 vscode-guji-preview/example；零漂移对照通过）";
 writeFileSync(MANIFEST, JSON.stringify(manifest, null, 2) + "\n", "utf-8");

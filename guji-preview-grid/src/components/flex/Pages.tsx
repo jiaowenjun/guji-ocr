@@ -1,7 +1,7 @@
 // 移植自 vscode-guji-preview/src/components/pages.ts
 // 多页文档容器；缩放基准 --guji-unit 挂在 .pages 上（见 flex.css）
 import type { PageModel, BlockModel } from "./model";
-import { bandKey, type RenderHighlight } from "../../parser/locate";
+import { bandKey, type RenderHighlight } from "../../ir/types";
 import { Page } from "./Page";
 
 export type { RenderHighlight };

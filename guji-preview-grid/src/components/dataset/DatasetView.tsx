@@ -34,16 +34,9 @@ import { Pages as FlexPages } from "@/components/flex/Pages";
 import { MatrixPages, pageColumns } from "@/components/matrix/MatrixPages";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
 import { layoutPages } from "@/matrix/layout";
-import { parsePages } from "@/parser/parse-pages";
-import {
-  bandAt,
-  bandStartOffset,
-  bookRuns,
-  locate,
-  locateBooks,
-  spanAt,
-  type RenderHighlight,
-} from "@/parser/locate";
+import { gj2ir } from "@/ir/gj2ir";
+import { ir2blocks } from "@/ir/ir2blocks";
+import { bandCursorTarget, highlightAt } from "@/ir/linkage";
 
 interface PageEntry {
   page: number;
@@ -210,31 +203,23 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
   }, [index, idx]);
 
   const debouncedText = useDebouncedValue(text ?? "", 200);
-  const pageModels = useMemo(() => parsePages(debouncedText), [debouncedText]);
+  // 渲染管线：.gj → IR（语义）→ PageModel（版面适配）→ 矩阵布局
+  const irDoc = useMemo(() => gj2ir(debouncedText), [debouncedText]);
+  const pageModels = useMemo(() => ir2blocks(irDoc), [irDoc]);
   const matrixPages = useMemo(() => layoutPages(pageModels), [pageModels]);
   const cols = matrixPages[0] ? pageColumns(matrixPages[0]) : 0;
 
-  // ---- 编辑器 ↔ 渲染列联动 ----
-  // 定位用实时文本（光标偏移指向当前文本；解析渲染用防抖文本，200ms 内自愈）
+  // ---- 编辑器 ↔ 渲染列联动（IR src 偏移；实时文本，防抖期 200ms 内自愈） ----
   const [cursor, setCursor] = useState<number | null>(null);
   const [requestCursor, setRequestCursor] = useState<number | null>(null);
-  const located = useMemo(() => locate(text ?? ""), [text]);
-  const spans = useMemo(() => locateBooks(text ?? ""), [text]);
-  const highlight = useMemo<RenderHighlight>(() => {
-    if (cursor === null) return { band: null, book: null };
-    const band = bandAt(located, cursor);
-    const span = spanAt(spans, cursor);
-    return {
-      band: band ? { page: band.page, index: band.index } : null,
-      book: bookRuns(located, spans, span, text ?? ""),
-    };
-  }, [cursor, located, spans, text]);
+  const irLive = useMemo(() => gj2ir(text ?? ""), [text]);
+  const highlight = useMemo(() => highlightAt(irLive, cursor), [irLive, cursor]);
   const onBandClick = useCallback(
     (p: number, i: number) => {
-      const band = located.bands.find((b) => b.page === p && b.index === i);
-      if (band) setRequestCursor(bandStartOffset(band, text ?? ""));
+      const target = bandCursorTarget(irLive, text ?? "", p, i);
+      if (target !== null) setRequestCursor(target);
     },
-    [located, text],
+    [irLive, text],
   );
   // 渲染 unit 对齐版框内容宽（而非整图宽），矩阵视图下渲染页宽 = frameWidth
 
