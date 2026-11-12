@@ -1,7 +1,7 @@
-// 应用外壳：顶部工具栏 + 左编辑右预览双栏
+// 应用外壳：顶部工具栏 + 主区两种模式（编辑双栏 / 数据集三列对照）
 // 渲染视图二选一：Grid 矩阵（默认，可开关界栏）/ 原版 Flex（对照）
 import { useMemo, useRef, useState, type CSSProperties } from "react";
-import { BookOpenText, Download, FileUp, Info, RotateCcw } from "lucide-react";
+import { BookOpenText, Database, Download, FileUp, Info, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -25,6 +25,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { DatasetView } from "@/components/dataset/DatasetView";
 import { GujiEditor } from "@/components/editor/GujiEditor";
 import { Pages as FlexPages } from "@/components/flex/Pages";
 import { MatrixPages } from "@/components/matrix/MatrixPages";
@@ -37,8 +38,13 @@ import { samples } from "@/samples";
 const DEFAULT_SCALE = 25;
 
 type View = "grid" | "flex";
+type Mode = "edit" | "dataset";
 
 export default function App() {
+  const [mode, setMode] = useState<Mode>("edit");
+  // 数据集视图首次打开才挂载：ResizablePanelGroup 在 display:none 下挂载会量得 0 宽
+  // 且不自动恢复；挂载后保持挂载，仅切换可见性（保留未保存修改）。
+  const [datasetOpened, setDatasetOpened] = useState(false);
   const [text, setText] = useState(samples[0].content);
   const [scale, setScale] = useState(DEFAULT_SCALE);
   const [view, setView] = useState<View>("grid");
@@ -68,7 +74,30 @@ export default function App() {
           <h1 className="text-base font-semibold">古籍预览</h1>
           <span className="text-muted-foreground text-xs">guji-preview-grid</span>
 
+          <div className="border-border ml-2 flex items-center gap-1 rounded-lg border p-0.5">
+            <Button
+              size="sm"
+              variant={mode === "edit" ? "default" : "ghost"}
+              onClick={() => setMode("edit")}
+            >
+              编辑
+            </Button>
+            <Button
+              size="sm"
+              variant={mode === "dataset" ? "default" : "ghost"}
+              onClick={() => {
+                setMode("dataset");
+                setDatasetOpened(true);
+              }}
+            >
+              <Database data-icon="inline-start" />
+              数据集对照
+            </Button>
+          </div>
+
           <div className="ml-auto flex flex-wrap items-center gap-2">
+            {mode === "edit" && (
+              <>
             <div className="border-border flex items-center gap-1 rounded-lg border p-0.5">
               <Button
                 size="sm"
@@ -185,6 +214,8 @@ export default function App() {
               <Download data-icon="inline-start" />
               导出 HTML
             </Button>
+              </>
+            )}
 
             <Tooltip>
               <TooltipTrigger asChild>
@@ -204,6 +235,8 @@ export default function App() {
           </div>
         </header>
 
+        {/* 两模式都保持挂载（hidden 切换），编辑内容与数据集未保存修改互不丢失 */}
+        <div className={mode === "edit" ? "flex min-h-0 flex-1" : "hidden"}>
         <ResizablePanelGroup orientation="horizontal" className="min-h-0 flex-1">
           <ResizablePanel defaultSize={38} minSize={22}>
             <div className="h-full overflow-hidden">
@@ -240,6 +273,12 @@ export default function App() {
             </div>
           </ResizablePanel>
         </ResizablePanelGroup>
+        </div>
+        {datasetOpened && (
+          <div className={mode === "dataset" ? "flex min-h-0 flex-1" : "hidden"}>
+            <DatasetView />
+          </div>
+        )}
       </div>
     </TooltipProvider>
   );

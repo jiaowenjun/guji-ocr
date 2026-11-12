@@ -4,6 +4,14 @@
 import type { CSSProperties } from "react";
 import type { MatrixItem, MatrixPage } from "@/matrix/types";
 
+/** 页面横向字格数（含 band 间无缝拼接）；渲染页宽 = pageColumns × unit + 2px 边框。
+ *  供组件内部与外部（如数据集对照页的同宽联动）共用，避免两处漂移。 */
+export function pageColumns(page: MatrixPage): number {
+  let acc = 0;
+  for (const band of page.bands) acc += band.cols;
+  return Math.max(2, acc);
+}
+
 export function MatrixPages({
   pages,
   rules = true,
@@ -28,7 +36,7 @@ function MatrixPageView({ page, rules }: { page: MatrixPage; rules: boolean }) {
     colStarts[i] = acc;
     acc += page.bands[i].cols;
   }
-  const totalCols = Math.max(2, acc);
+  const totalCols = pageColumns(page);
 
   return (
     <div className="page">

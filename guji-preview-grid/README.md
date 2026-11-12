@@ -51,6 +51,25 @@ pnpm build
 
 - 「矩阵 / Flex 对照」视图切换：同一文档两种渲染即时对照
 - 界栏开关（矩阵视图，默认开）
+- **「数据集对照」模式**：kangxi-gold 金标三列可视化（见下节）
 - 其余（编辑器、示例、缩放、导入导出）与 guji-preview 相同
+
+## 数据集对照模式
+
+顶部「编辑 / 数据集对照」切换。数据集模式为三列布局：**扫描原图 | 刻本渲染 | .gj 编辑器**，
+用于目视核对 [kangxi-gold](../kangxi-gold/README.md) 金标与后续扩页校对：
+
+- 渲染列宽度跟随原图列显示宽（`unit = (显示宽−2px)/横向字格数`），逐字对照像素对齐
+- ←/→ 翻页（编辑器聚焦时不劫持）；未保存修改按页保留，切页/切模式不丢
+- 「保存回数据集」写回 `kangxi-gold/annotations/NNNN.gj`（仅 dev server 生效的
+  `POST /dataset/save` 中间件，vite.config.ts；校验页码在库内且首行仍为 @页码）
+- 保存后同步 json/txt：`npx -y tsx kangxi-gold/scripts/build_annotations.ts --allow-drift`
+  （默认严格模式会因与原 fixture 不一致而拒绝，属预期防呆）
+
+首次使用先生成数据集访问层（符号链接 + 页清单，已 gitignore，重跑安全）：
+
+```sh
+bash scripts/link-dataset.sh   # 需挂载存放扫描图的外置盘（manifest.images_dir）
+```
 
 Guji 语法、字体安装说明见 [guji-preview README](../guji-preview/README.md)。

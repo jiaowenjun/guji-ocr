@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# kangxi-gold 数据集访问层（scripts/link-dataset.sh 生成：符号链接 + index.json）
+public/dataset/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

@@ -60,8 +60,14 @@ kangxi-gold/
 # 1. 下载/补齐图片（WD-2T 需挂载；可用 --images-dir 换路径）
 python3 scripts/download_pages.py
 
-# 2. 重建标注（改 .gj 样例后重跑；零漂移校验失败会拒绝产出）
+# 2. 重建标注
+#    严格模式（默认）：以 guji-preview 样例为唯一源重新生成三件套，
+#    与 fixture 零漂移校验；检测到人工修订页会拒绝执行（防覆盖）
 npx -y tsx scripts/build_annotations.ts
+#    --allow-drift：人工修订模式——annotations/NNNN.gj（如经 guji-preview-grid
+#    数据集对照页保存的校对）视为源，不被样例覆盖，json/txt 从修订版重新生成，
+#    修订页列入 drift 清单供 git diff 审查
+npx -y tsx scripts/build_annotations.ts --allow-drift
 
 # 3. 校验数据集一致性
 python3 -I scripts/verify_dataset.py

@@ -7,7 +7,7 @@
 //   2) 整篇解析结果 === guji-preview/test/fixtures/kangxi-yibu.expected.json
 //      （原 vscode-guji-preview 扩展解析器的黄金期望，见 test/parser.spec.ts）
 // 运行：npx -y tsx kangxi-gold/scripts/build_annotations.ts
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parsePages } from "../../guji-preview/src/parser/parse-pages";
@@ -63,36 +63,87 @@ const pages = chunks.map((c) => c.page);
 console.log(`拆分得到 ${pages.length} 页：@${pages[0]}–@${pages[pages.length - 1]}`);
 
 // ---- 2. 逐页解析 + 两层零漂移校验 ----
+// 模式说明：
+//   默认（严格）：以 guji-preview 样例为唯一源，重新生成全部 .gj/.json/.txt，
+//     并与 fixture（原扩展解析器黄金期望）逐页比对，任何不一致即失败。
+//   --allow-drift：annotations/NNNN.gj 视为人工修订源（数据集对照页保存所得）——
+//     已存在的 .gj 不被样例覆盖，json/txt 从该页 .gj 重新生成；
+//     与样例或 fixture 不同的页列入 drift 清单（供 git diff 审查）。
+const allowDrift = process.argv.includes("--allow-drift");
 const fullParse = parsePages(source);
 const fixture = JSON.parse(readFileSync(FIXTURE, "utf-8")) as PageModel[];
-if (fullParse.length !== fixture.length) {
+if (fullParse.length !== fixture.length && !allowDrift) {
   fail(`整篇解析页数 ${fullParse.length} ≠ fixture 页数 ${fixture.length}`);
 }
+if (fullParse.length !== fixture.length && allowDrift) {
+  console.warn(`⚠ --allow-drift：页数 ${fullParse.length} 与 fixture ${fixture.length} 不同`);
+}
+const drifted: number[] = [];
 fullParse.forEach((p, i) => {
-  if (stable(p) !== stable(fixture[i])) {
-    fail(`整篇解析第 ${i} 页（@${p.p}）与 fixture 不一致——解析器行为漂移`);
+  const fx = fixture[i];
+  if (!fx || stable(p) !== stable(fx)) {
+    if (allowDrift) {
+      drifted.push(p.p);
+    } else {
+      fail(`整篇解析第 ${i} 页（@${p.p}）与 fixture 不一致——解析器行为漂移；人工修订请加 --allow-drift`);
+    }
   }
 });
 
 mkdirSync(OUT_DIR, { recursive: true });
+// 严格模式防呆：已有 .gj 与样例不同（人工修订）时拒绝执行，避免静默覆盖校对成果
+if (!allowDrift) {
+  const revised: number[] = [];
+  chunks.forEach((chunk) => {
+    const gjPath = join(OUT_DIR, `${String(chunk.page).padStart(4, "0")}.gj`);
+    if (existsSync(gjPath) && readFileSync(gjPath, "utf-8") !== chunk.lines.join("\n").replace(/\n+$/, "\n")) {
+      revised.push(chunk.page);
+    }
+  });
+  if (revised.length > 0) {
+    fail(
+      `annotations/ 中存在人工修订页（@${revised.join(" @")}）：严格模式将覆盖它们。` +
+        `确认以 annotations/*.gj 为准请加 --allow-drift；要丢弃修订恢复样例请先 git checkout kangxi-gold/annotations/`,
+    );
+  }
+}
 const summary: { page: number; chars: number }[] = [];
 chunks.forEach((chunk, i) => {
-  const pageGj = chunk.lines.join("\n").replace(/\n+$/, "\n");
+  const sampleGj = chunk.lines.join("\n").replace(/\n+$/, "\n");
+  const stem = String(chunk.page).padStart(4, "0");
+  const gjPath = join(OUT_DIR, `${stem}.gj`);
+  let pageGj = sampleGj;
+  if (allowDrift && existsSync(gjPath)) {
+    pageGj = readFileSync(gjPath, "utf-8");
+    if (pageGj !== sampleGj && !drifted.includes(chunk.page)) {
+      drifted.push(chunk.page);
+    }
+  }
   const parsed = parsePages(pageGj);
   if (parsed.length !== 1 || parsed[0].p !== chunk.page) {
     fail(`@${chunk.page} 单页解析异常：得到 ${JSON.stringify(parsed.map((p) => p.p))}`);
   }
-  if (stable(parsed[0]) !== stable(fullParse[i])) {
+  if (pageGj === sampleGj && stable(parsed[0]) !== stable(fullParse[i])) {
     fail(`@${chunk.page} 单页解析 ≠ 整篇解析对应页——拆分改变了语义`);
   }
 
-  const stem = String(chunk.page).padStart(4, "0");
   const text = pageToText(parsed[0]);
-  writeFileSync(join(OUT_DIR, `${stem}.gj`), pageGj, "utf-8");
-  writeFileSync(join(OUT_DIR, `${stem}.json`), JSON.stringify(parsed[0], null, 2) + "\n", "utf-8");
-  writeFileSync(join(OUT_DIR, `${stem}.txt`), text, "utf-8");
+  if (pageGj !== sampleGj) {
+    // 保留人工修订的 .gj（不回写样例）；json/txt 从修订版重新生成
+    writeFileSync(join(OUT_DIR, `${stem}.json`), JSON.stringify(parsed[0], null, 2) + "\n", "utf-8");
+    writeFileSync(join(OUT_DIR, `${stem}.txt`), text, "utf-8");
+  } else {
+    writeFileSync(gjPath, pageGj, "utf-8");
+    writeFileSync(join(OUT_DIR, `${stem}.json`), JSON.stringify(parsed[0], null, 2) + "\n", "utf-8");
+    writeFileSync(join(OUT_DIR, `${stem}.txt`), text, "utf-8");
+  }
   summary.push({ page: chunk.page, chars: [...text.replace(/\s/g, "")].length }); // 按码点计数（扩展 B 区字 1 字）
 });
+if (drifted.length > 0) {
+  console.warn(
+    `⚠ --allow-drift：${drifted.length} 页为人工修订（以 annotations/*.gj 为准，样例未改动）：@${drifted.join(" @")}`,
+  );
+}
 
 // ---- 3. 更新 manifest 的标注记录 ----
 const manifest = JSON.parse(readFileSync(MANIFEST, "utf-8")) as {
