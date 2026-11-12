@@ -8,10 +8,10 @@
 /* 本机刻本字体的跨浏览器别名（Safari 修复）：
    WebKit 对这批用户字体的 local() 会"解析成功但渲染不可用"（实测伪命中，
    且挡住 src 后续来源），font-family 写注册名也匹配不上；Chrome 一切正常。
-   因此 url() 必须放在最前：直接加载 public/fonts/ 的字体文件软链
-   （scripts/link-fonts.sh 从本机字体目录生成），任何浏览器渲染一致；
-   未跑脚本时 url() 404 → local() 名字链兜底（Chrome 命中）→ 再落调用处后备链。
-   小字三个平面保持独立别名，保留 font-family 列表内的逐字回退。 */
+   因此 url() 放在最前：字体文件随仓库入库于 public/fonts/（共 ~129MB，
+   来源：kangxizidian.com 康熙傳承版 + 中华书局宋体三平面，复制自本机安装），
+   任何浏览器/服务器部署渲染一致；local() 名字链退居其次仅作文件缺失时的
+   Chrome 兜底。小字三个平面保持独立别名，保留逐字回退。 */
 @font-face {
     font-family: "GujiLarge";
     src: url("/fonts/guji-large.ttf") format("truetype"),

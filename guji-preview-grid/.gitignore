@@ -15,8 +15,7 @@ dist-ssr
 # kangxi-gold 数据集访问层（scripts/link-dataset.sh 生成：符号链接 + index.json）
 public/dataset/
 
-# 刻本字体软链（scripts/link-fonts.sh 生成；@font-face url() 兜底源）
-public/fonts/
+# 刻本字体已随仓库入库（public/fonts/*.ttf，部署服务器可直接访问），不再忽略
 
 # Editor directories and files
 .vscode/*
