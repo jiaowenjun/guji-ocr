@@ -1,0 +1,24 @@
+{
+  "checked_at": "2026-11-13",
+  "purpose": "Feasibility probe #2: use PaddleOCR-VL-1.6 output to recover the physical line breaks (行尾/行首 folds) of a page when importing it, so drafts come pre-folded and proofreaders stop inserting line breaks by hand. Simplified scope per request: line-end/line-head boundaries only; nested small-range folds within a line (double-column cross-splits inside a band) are out of scope. Ground truth = the proofread @333 .gj (16 physical lines).",
+  "method": {
+    "ocr_signal": "the provider markdown already groups text by physical line — blank-line-separated groups (16 on @333), no geometry parsing needed (prunedResult only exposes 7 page-level blocks: header/vertical_text/footer/number)",
+    "comparison": "normalize both sides (strip punct/space/【】), accumulate per-line character offsets to get fold boundaries, map each ground-truth boundary into OCR coordinates via the same difflib matching blocks used by the trim probe, then snap to the nearest OCR group boundary; additionally compare each line's first and last character"
+  },
+  "results": {
+    "lines_ground_truth": 16,
+    "lines_ocr_groups": 16,
+    "fold_boundary_hits": "15/15 at ±0 chars (100%), no misses even before tolerance",
+    "line_first_char_accuracy": "16/16",
+    "line_last_char_accuracy": "16/16",
+    "observed_boundaries": "行1 末「中」/next「也」… 行15 末「中」/next「爲」 — all exact",
+    "notes": "the OCR group ends align because the VL model preserves line order in vertical layout; boundary chars match despite 3 true OCR errors elsewhere (errors shift content, not the fold skeleton on this sample)"
+  },
+  "caveats": [
+    "single-page sample; @333 is a continuation-only page (no head chars, no circles, no cross-band books) — the easiest case",
+    "band boundaries (blank-line bands in .gj) vs fold boundaries (newlines inside a band) were treated uniformly as physical lines here; a production pass must still decide which line ends are band ends (paragraph semantics), which OCR cannot know — OCR gives folds, the transcription source gives paragraph/band boundaries; the intersection rule needs design",
+    "a draft fold pass must interleave with OCR-trim (trim fixes page end; folds fix interior) and with the 90%-coverage continuation alignment",
+    "OCR per line had 3 true character errors; folds are correct but content is not — text still must come from the sqlite transcription"
+  ],
+  "conclusion": "Feasible at the simplified scope: the provider markdown's blank-line groups ARE the physical lines; on @333 they reproduce all 15 fold boundaries exactly (±0) with 16/16 first/last characters. Recommend implementing as an optional fold pass in kangxi_page_tool (draft lines split at OCR group boundaries, paragraph bands kept from the transcription source), validating per-page with the same confidence gates and falling back to unfolded drafts on mismatch."
+}
