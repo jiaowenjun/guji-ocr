@@ -13,6 +13,7 @@
 | 使用 `.gj` 流式排版预览 | [guji-preview 使用与开发说明](../guji-preview/README.md) |
 | 使用字格矩阵排版和两种渲染对照 | [guji-preview-grid 使用与开发说明](../guji-preview-grid/README.md) |
 | 核验康熙字典未编码字头（K0000）与字体缺字判定 | [未编码字头字体核验流程](research/2026-11-13-kangxi-未编码字头字体核验流程.md) |
+| 向康熙字典體补录缺字字形（K0000 字形入库） | [字体补录流程](research/2026-11-13-kangxi-字体补录流程.md) |
 
 ## 文档结构
 
@@ -34,7 +35,8 @@ docs/
     ├── 2026-11-11-古籍酷与RGD论文补充调研.md        历史参考
     ├── 2026-11-11-微信七篇古籍OCR资料追踪.md         历史参考
     ├── 2026-11-12-kangxizidian-网站结构调研.md      字头索引与抓取可行性
-    └── 2026-11-13-kangxi-未编码字头字体核验流程.md  K0000 身份判定与缺字判定
+    ├── 2026-11-13-kangxi-未编码字头字体核验流程.md  K0000 身份判定与缺字判定
+    └── 2026-11-13-kangxi-字体补录流程.md           K0000 缺字字形入库操作手册
 guji-preview/README.md                  流式预览应用文档
 guji-preview-grid/README.md             字格预览应用文档
 ```
