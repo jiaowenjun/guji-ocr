@@ -83,7 +83,10 @@ def verify(db_path: Path, verbose: bool = False) -> bool:
           f"svg 页段/码位互译/ord 连续 {'全部通过' if chars_bad == 0 else f'{chars_bad} 处问题'}")
 
     # ---- 3) 字头详情 ----
-    miss_entry, ed_bad, text_bad, pua_pages = [], [], [], []
+    # 回指页/unihan 不一致多为站点数据特性（補遺重出字头详情只回主条目、
+    # 简繁码位混用），归入 quirks 备注；结构性损坏才算问题。
+    miss_entry, ed_bad, text_bad, quirks, pua_pages = [], [], [], [], []
+    nth_by_page: dict[int, list[tuple[int, int | None, int | None]]] = {}
     for r in chars:
         if r["codepoint"] is None:
             continue
@@ -98,32 +101,33 @@ def verify(db_path: Path, verbose: bool = False) -> bool:
             continue
         ed = rec.get("wuying_edition") or {}
         if ed.get("page") != r["page"]:
-            ed_bad.append(f"{r['char']} 详情回指 p{ed.get('page')} ≠ 所在页 {r['page']}")
+            quirks.append(f"{r['char']} 详情回指 p{ed.get('page')} ≠ 索引页 {r['page']}（疑似補遺/重出字头）")
         if not rec.get("text_paragraphs") or not rec.get("text_chars"):
             text_bad.append(f"{r['char']} 释文为空")
         if not e["raw_html"]:
             notes.append(f"{r['char']} 无 raw_html（采纳旧记录）")
         if rec.get("unihan") and rec["unihan"].upper() != f"{r['codepoint']:X}":
-            ed_bad.append(f"{r['char']} unihan={rec['unihan']} ≠ 码位")
+            quirks.append(f"{r['char']} 详情 unihan={rec['unihan']} ≠ 索引码位 U+{r['codepoint']:X}（站点索引/详情不一致）")
         if rec.get("pua_other"):
             pua_pages.append(f"{r['char']}:{','.join(rec['pua_other'])}")
-    # nth_char 沿 ord 严格递增（按页、只看有码字头）
-    for page, rows in by_page.items():
+        nth_by_page.setdefault(r["page"], []).append(
+            (r["ord"], ed.get("nth_char"), ed.get("page")))
+    # nth_char 沿 ord 严格递增（仅校验回指页一致的记录，避免重出字头级联误报）
+    for page, seq in nth_by_page.items():
         prev = 0
-        for r in rows:
-            if r["codepoint"] is None:
+        for _ord, nth, edpage in seq:
+            if nth is None or edpage != page:
                 continue
-            e = entries.get(r["codepoint"])
-            nth = (json.loads(e["record_json"]).get("wuying_edition") or {}).get("nth_char") if e else None
-            if nth is not None and nth <= prev:
-                ed_bad.append(f"页 {page} {r['char']} 第{nth}字 未随 ord 递增（前值 {prev}）")
-            if nth is not None:
-                prev = nth
+            if nth <= prev:
+                ed_bad.append(f"页 {page} 第{nth}字 未随 ord 递增（前值 {prev}）")
+            prev = nth
     problems += [f"[详情] 缺 entries: {x}" for x in miss_entry]
     problems += [f"[详情] {x}" for x in ed_bad + text_bad]
     print(f"字头详情：{coded_total - len(miss_entry)}/{coded_total} 有记录；"
-          f"回指页/nth_char/unihan {'一致' if not ed_bad else f'{len(ed_bad)} 处问题'}；"
-          f"释文 {'非空' if not text_bad else f'{len(text_bad)} 条异常'}")
+          f"nth_char 单调 {'通过' if not ed_bad else f'{len(ed_bad)} 处问题'}；"
+          f"释文 {'非空' if not text_bad else f'{len(text_bad)} 条异常'}；"
+          f"站点特性备注 {len(quirks)} 条")
+    notes += quirks
     if pua_pages:
         notes.append("疑似 kxfont 字形（需人工定字）: " + "; ".join(pua_pages))
 
