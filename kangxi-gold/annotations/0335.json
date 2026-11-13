@@ -1,0 +1,1120 @@
+{
+  "version": 3,
+  "meta": {
+    "sourceFormat": "gj",
+    "generatedBy": "guji-ir/3",
+    "fidelity": "full",
+    "profile": {
+      "stripPunct": [
+        "。",
+        "，",
+        "·",
+        "\"",
+        ":",
+        "：",
+        "、",
+        "《",
+        "》"
+      ],
+      "normalize": [
+        [
+          "◎",
+          "○"
+        ],
+        [
+          "〇",
+          "○"
+        ]
+      ]
+    },
+    "lineLayout": "fold",
+    "orientation": "vertical-rtl",
+    "rangeUnit": "codepoint",
+    "srcUnit": "utf-16"
+  },
+  "pages": [
+    {
+      "id": "p0335",
+      "no": 335,
+      "src": [
+        0,
+        4
+      ],
+      "bands": [
+        {
+          "id": "p0335-b0",
+          "ord": 0,
+          "src": [
+            6,
+            70
+          ],
+          "lines": [
+            {
+              "id": "p0335-b0-l0",
+              "ord": 0,
+              "src": [
+                6,
+                37
+              ],
+              "elements": [
+                {
+                  "id": "p0335-b0-e0",
+                  "class": "small",
+                  "text": "字註。〇按《正韻》上聲梗韻，礦，亦作卝。去聲諫韻，卝，亦作丱。"
+                }
+              ]
+            },
+            {
+              "id": "p0335-b0-l1",
+              "ord": 1,
+              "src": [
+                38,
+                70
+              ],
+              "elements": [
+                {
+                  "id": "p0335-b0-e1",
+                  "class": "small",
+                  "text": "《字彙》丱爲總角之丱，卝爲銅錫礦之卝。丱卝分而爲二，非。"
+                },
+                {
+                  "id": "p0335-b0-e2",
+                  "class": "large",
+                  "text": "五"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "p0335-b1",
+          "ord": 1,
+          "src": [
+            72,
+            137
+          ],
+          "lines": [
+            {
+              "id": "p0335-b1-l0",
+              "ord": 0,
+              "src": [
+                72,
+                85
+              ],
+              "elements": [
+                {
+                  "id": "p0335-b1-e0",
+                  "class": "large",
+                  "text": "增"
+                },
+                {
+                  "id": "p0335-b1-e1",
+                  "class": "large",
+                  "text": "𠁦"
+                },
+                {
+                  "id": "p0335-b1-e2",
+                  "class": "small",
+                  "text": "字彙補籀"
+                }
+              ]
+            },
+            {
+              "id": "p0335-b1-l1",
+              "ord": 1,
+              "src": [
+                86,
+                90
+              ],
+              "elements": [
+                {
+                  "id": "p0335-b1-e3",
+                  "class": "small",
+                  "text": "文中字。"
+                }
+              ]
+            },
+            {
+              "id": "p0335-b1-l2",
+              "ord": 2,
+              "src": [
+                91,
+                117
+              ],
+              "elements": [
+                {
+                  "id": "p0335-b1-e4",
+                  "class": "large",
+                  "text": "六"
+                },
+                {
+                  "id": "p0335-b1-e5",
+                  "class": "large",
+                  "text": "串"
+                },
+                {
+                  "id": "p0335-b1-e6",
+                  "class": "small",
+                  "text": "廣韻集韻正韻𠀤古患切，與慣"
+                }
+              ]
+            },
+            {
+              "id": "p0335-b1-l3",
+              "ord": 3,
+              "src": [
+                118,
+                137
+              ],
+              "elements": [
+                {
+                  "id": "p0335-b1-e7",
+                  "class": "small",
+                  "text": "通。狎習也。詩·大雅串夷載路。毛"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "p0335-b2",
+          "ord": 2,
+          "src": [
+            139,
+            208
+          ],
+          "lines": [
+            {
+              "id": "p0335-b2-l0",
+              "ord": 0,
+              "src": [
+                139,
+                174
+              ],
+              "elements": [
+                {
+                  "id": "p0335-b2-e0",
+                  "class": "small",
+                  "text": "傳串習。夷，常也。箋串夷卽混夷。西戎國名。荀子·大略篇國法禁"
+                }
+              ]
+            },
+            {
+              "id": "p0335-b2-l1",
+              "ord": 1,
+              "src": [
+                175,
+                208
+              ],
+              "elements": [
+                {
+                  "id": "p0335-b2-e1",
+                  "class": "small",
+                  "text": "拾遺，惡民之串，以無分得也。梁𥳑文帝詩長顰串翠眉。謝惠連·"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "p0335-b3",
+          "ord": 3,
+          "src": [
+            210,
+            274
+          ],
+          "lines": [
+            {
+              "id": "p0335-b3-l0",
+              "ord": 0,
+              "src": [
+                210,
+                241
+              ],
+              "elements": [
+                {
+                  "id": "p0335-b3-e0",
+                  "class": "small",
+                  "text": "秋懷詩聊用布親串。註言賦詩布與親狎之人也。 又正韻樞"
+                }
+              ]
+            },
+            {
+              "id": "p0335-b3-l1",
+              "ord": 1,
+              "src": [
+                242,
+                274
+              ],
+              "elements": [
+                {
+                  "id": "p0335-b3-e1",
+                  "class": "small",
+                  "text": "絹切，音釧。物相連貫也。與穿讀去聲通。穿，亦作串。前漢·司馬遷"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "p0335-b4",
+          "ord": 4,
+          "src": [
+            276,
+            336
+          ],
+          "lines": [
+            {
+              "id": "p0335-b4-l0",
+              "ord": 0,
+              "src": [
+                276,
+                307
+              ],
+              "elements": [
+                {
+                  "id": "p0335-b4-e0",
+                  "class": "small",
+                  "text": "傳貫穿經傳，卽貫串，言博通經傳大義也。 又與𠢏通，別作賗。"
+                }
+              ]
+            },
+            {
+              "id": "p0335-b4-l1",
+              "ord": 1,
+              "src": [
+                308,
+                336
+              ],
+              "elements": [
+                {
+                  "id": "p0335-b4-e1",
+                  "class": "small",
+                  "text": "文字指歸支取貨物之契曰賗，今官司倉庫收帖曰串子。 又"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "p0335-b5",
+          "ord": 5,
+          "src": [
+            338,
+            404
+          ],
+          "lines": [
+            {
+              "id": "p0335-b5-l0",
+              "ord": 0,
+              "src": [
+                338,
+                346
+              ],
+              "elements": [
+                {
+                  "id": "p0335-b5-e0",
+                  "class": "small",
+                  "text": "正韻五換切，"
+                }
+              ]
+            },
+            {
+              "id": "p0335-b5-l1",
+              "ord": 1,
+              "src": [
+                347,
+                353
+              ],
+              "elements": [
+                {
+                  "id": "p0335-b5-e1",
+                  "class": "small",
+                  "text": "音玩。義同。"
+                }
+              ]
+            },
+            {
+              "id": "p0335-b5-l2",
+              "ord": 2,
+              "src": [
+                354,
+                368
+              ],
+              "elements": [
+                {
+                  "id": "p0335-b5-e2",
+                  "class": "large",
+                  "text": "增"
+                },
+                {
+                  "id": "p0335-b5-e3",
+                  "class": "large",
+                  "text": "𠁧"
+                },
+                {
+                  "id": "p0335-b5-e4",
+                  "class": "small",
+                  "text": "玉篇古文中"
+                }
+              ]
+            },
+            {
+              "id": "p0335-b5-l3",
+              "ord": 3,
+              "src": [
+                369,
+                376
+              ],
+              "elements": [
+                {
+                  "id": "p0335-b5-e5",
+                  "class": "small",
+                  "text": "字。註詳三畫。"
+                }
+              ]
+            },
+            {
+              "id": "p0335-b5-l4",
+              "ord": 4,
+              "src": [
+                377,
+                395
+              ],
+              "elements": [
+                {
+                  "id": "p0335-b5-e6",
+                  "class": "large",
+                  "text": "七"
+                },
+                {
+                  "id": "p0335-b5-e7",
+                  "class": "large",
+                  "text": "丳"
+                },
+                {
+                  "id": "p0335-b5-e8",
+                  "class": "small",
+                  "text": "廣韻集韻韻會"
+                }
+              ]
+            },
+            {
+              "id": "p0335-b5-l5",
+              "ord": 5,
+              "src": [
+                396,
+                404
+              ],
+              "elements": [
+                {
+                  "id": "p0335-b5-e9",
+                  "class": "small",
+                  "text": "楚限切正韻楚"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "p0335-b6",
+          "ord": 6,
+          "src": [
+            406,
+            470
+          ],
+          "lines": [
+            {
+              "id": "p0335-b6-l0",
+              "ord": 0,
+              "src": [
+                406,
+                435
+              ],
+              "elements": [
+                {
+                  "id": "p0335-b6-e0",
+                  "class": "small",
+                  "text": "𥳑切，𠀤音鏟。燔肉器。韓愈·贈張籍詩試將詩義授，如"
+                }
+              ]
+            },
+            {
+              "id": "p0335-b6-l1",
+              "ord": 1,
+              "src": [
+                436,
+                462
+              ],
+              "elements": [
+                {
+                  "id": "p0335-b6-e1",
+                  "class": "small",
+                  "text": "以肉貫丳。註言愈兒子侍籍，籍授兒詩，義有條貫也。"
+                }
+              ]
+            },
+            {
+              "id": "p0335-b6-l2",
+              "ord": 2,
+              "src": [
+                463,
+                470
+              ],
+              "elements": [
+                {
+                  "id": "p0335-b6-e2",
+                  "class": "large",
+                  "text": "增"
+                },
+                {
+                  "id": "p0335-b6-e3",
+                  "class": "large",
+                  "text": "𠁩"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "p0335-b7",
+          "ord": 7,
+          "src": [
+            472,
+            535
+          ],
+          "lines": [
+            {
+              "id": "p0335-b7-l0",
+              "ord": 0,
+              "src": [
+                472,
+                479
+              ],
+              "elements": [
+                {
+                  "id": "p0335-b7-e0",
+                  "class": "small",
+                  "text": "玉篇古文中"
+                }
+              ]
+            },
+            {
+              "id": "p0335-b7-l1",
+              "ord": 1,
+              "src": [
+                480,
+                502
+              ],
+              "elements": [
+                {
+                  "id": "p0335-b7-e1",
+                  "class": "small",
+                  "text": "字。註詳三畫。"
+                },
+                {
+                  "id": "p0335-b7-e2",
+                  "class": "large",
+                  "text": "八"
+                },
+                {
+                  "id": "p0335-b7-e3",
+                  "class": "large",
+                  "text": "𠁭"
+                },
+                {
+                  "id": "p0335-b7-e4",
+                  "class": "small",
+                  "text": "廣韻巨支切，"
+                }
+              ]
+            },
+            {
+              "id": "p0335-b7-l2",
+              "ord": 2,
+              "src": [
+                503,
+                527
+              ],
+              "elements": [
+                {
+                  "id": "p0335-b7-e5",
+                  "class": "small",
+                  "text": "音岐。參差也。"
+                },
+                {
+                  "id": "p0335-b7-e6",
+                  "class": "large",
+                  "text": "增"
+                },
+                {
+                  "id": "p0335-b7-e7",
+                  "class": "large",
+                  "text": "𠁮"
+                },
+                {
+                  "id": "p0335-b7-e8",
+                  "class": "small",
+                  "text": "集韻叔古作𠁮。"
+                }
+              ]
+            },
+            {
+              "id": "p0335-b7-l3",
+              "ord": 3,
+              "src": [
+                528,
+                535
+              ],
+              "elements": [
+                {
+                  "id": "p0335-b7-e9",
+                  "class": "small",
+                  "text": "註詳又部六畫。"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "overlays": [
+    {
+      "id": "o0",
+      "kind": "circle",
+      "target": "p0335-b0-e2"
+    },
+    {
+      "id": "o1",
+      "kind": "circle",
+      "target": "p0335-b1-e0"
+    },
+    {
+      "id": "o2",
+      "kind": "circle",
+      "target": "p0335-b1-e4"
+    },
+    {
+      "id": "o3",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0335-b1-l0",
+          "range": [
+            2,
+            5
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        79,
+        84
+      ]
+    },
+    {
+      "id": "o4",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0335-b1-l2",
+          "range": [
+            2,
+            4
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        97,
+        101
+      ]
+    },
+    {
+      "id": "o5",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0335-b1-l2",
+          "range": [
+            4,
+            6
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        101,
+        105
+      ]
+    },
+    {
+      "id": "o6",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0335-b1-l2",
+          "range": [
+            6,
+            8
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        105,
+        109
+      ]
+    },
+    {
+      "id": "o7",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0335-b1-l3",
+          "range": [
+            6,
+            10
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        124,
+        130
+      ]
+    },
+    {
+      "id": "o8",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0335-b1-l3",
+          "range": [
+            15,
+            16
+          ]
+        },
+        {
+          "line": "p0335-b2-l0",
+          "range": [
+            0,
+            1
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        135,
+        141
+      ]
+    },
+    {
+      "id": "o9",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0335-b2-l0",
+          "range": [
+            9,
+            10
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        149,
+        152
+      ]
+    },
+    {
+      "id": "o10",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0335-b2-l0",
+          "range": [
+            21,
+            27
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        163,
+        171
+      ]
+    },
+    {
+      "id": "o11",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0335-b2-l1",
+          "range": [
+            14,
+            19
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        189,
+        197
+      ]
+    },
+    {
+      "id": "o12",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0335-b2-l1",
+          "range": [
+            25,
+            29
+          ]
+        },
+        {
+          "line": "p0335-b3-l0",
+          "range": [
+            0,
+            3
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        203,
+        214
+      ]
+    },
+    {
+      "id": "o13",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0335-b3-l0",
+          "range": [
+            9,
+            10
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        220,
+        223
+      ]
+    },
+    {
+      "id": "o14",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0335-b3-l0",
+          "range": [
+            23,
+            25
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        236,
+        240
+      ]
+    },
+    {
+      "id": "o15",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0335-b3-l1",
+          "range": [
+            25,
+            31
+          ]
+        },
+        {
+          "line": "p0335-b4-l0",
+          "range": [
+            0,
+            1
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        267,
+        278
+      ]
+    },
+    {
+      "id": "o16",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0335-b4-l1",
+          "range": [
+            0,
+            4
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        308,
+        314
+      ]
+    },
+    {
+      "id": "o17",
+      "kind": "circle",
+      "target": "p0335-b5-e2"
+    },
+    {
+      "id": "o18",
+      "kind": "circle",
+      "target": "p0335-b5-e6"
+    },
+    {
+      "id": "o19",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0335-b5-l0",
+          "range": [
+            0,
+            2
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        338,
+        342
+      ]
+    },
+    {
+      "id": "o20",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0335-b5-l2",
+          "range": [
+            2,
+            4
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        361,
+        365
+      ]
+    },
+    {
+      "id": "o21",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0335-b5-l4",
+          "range": [
+            2,
+            4
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        383,
+        387
+      ]
+    },
+    {
+      "id": "o22",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0335-b5-l4",
+          "range": [
+            4,
+            6
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        387,
+        391
+      ]
+    },
+    {
+      "id": "o23",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0335-b5-l4",
+          "range": [
+            6,
+            8
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        391,
+        395
+      ]
+    },
+    {
+      "id": "o24",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0335-b5-l5",
+          "range": [
+            3,
+            5
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        399,
+        403
+      ]
+    },
+    {
+      "id": "o25",
+      "kind": "circle",
+      "target": "p0335-b6-e2"
+    },
+    {
+      "id": "o26",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0335-b6-l0",
+          "range": [
+            11,
+            18
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        419,
+        428
+      ]
+    },
+    {
+      "id": "o27",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0335-b6-l1",
+          "range": [
+            5,
+            6
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        441,
+        444
+      ]
+    },
+    {
+      "id": "o28",
+      "kind": "circle",
+      "target": "p0335-b7-e2"
+    },
+    {
+      "id": "o29",
+      "kind": "circle",
+      "target": "p0335-b7-e6"
+    },
+    {
+      "id": "o30",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0335-b7-l0",
+          "range": [
+            0,
+            2
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        472,
+        476
+      ]
+    },
+    {
+      "id": "o31",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0335-b7-l1",
+          "range": [
+            9,
+            11
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        494,
+        498
+      ]
+    },
+    {
+      "id": "o32",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0335-b7-l2",
+          "range": [
+            9,
+            11
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        517,
+        521
+      ]
+    }
+  ]
+}
