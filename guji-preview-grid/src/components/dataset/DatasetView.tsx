@@ -35,6 +35,7 @@ import { formatCircles } from "@/components/dataset/format-circles";
 import { MatrixPages } from "@/components/matrix/MatrixPages";
 import { FlexPages } from "@/components/flex/FlexPages";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
+import { normalizeInput } from "@/parser/split-line";
 import { gj2ir } from "@/ir/gj2ir";
 import { layout3 } from "@/ir/layout3";
 import { bandCursorTarget, highlightAt } from "@/ir/linkage";
@@ -397,6 +398,18 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
     return () => window.removeEventListener("keydown", onKey);
   }, [save, dirty, busy]);
 
+  /** 格式化：全角带圈括号 → 半角；z/数字速记 → 汉字（规范化为标准写法） */
+  const formatText = () => {
+    if (page === undefined || text === undefined) return;
+    const formatted = normalizeInput(text);
+    if (formatted === text) {
+      setStatus({ ok: true, msg: `@${page} 已是标准写法，无需格式化` });
+      return;
+    }
+    setEdits((prev) => ({ ...prev, [page]: formatted }));
+    setStatus({ ok: true, msg: `@${page} 已格式化（全角括号/速记归一）——检查后保存` });
+  };
+
   /** OCR 自动断行：对已保存的当前页 .gj 重折行（先保存修改再触发） */
   const ocrFold = async () => {
     if (page === undefined) return;
@@ -638,6 +651,10 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
           <Button size="sm" variant="outline" disabled={text === undefined} onClick={download}>
             <Download data-icon="inline-start" />
             下载 .gj
+          </Button>
+          <Button size="sm" variant="outline" disabled={text === undefined} onClick={formatText}
+            title="规范化为标准写法：#（X）→#(X)；括号内 z→增、数字→汉字（如 15→十五）">
+            格式化
           </Button>
           <Button size="sm" variant="outline" disabled={page === undefined || folding || dirty} onClick={ocrFold}
             title="按 OCR 行组在当前页 .gj 内插入折行换行（只插入换行不改字符；需先保存修改）">

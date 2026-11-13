@@ -102,6 +102,22 @@ function locateSpans(text: string): Array<[number, number]> {
 
 const isOrdinary = (c: string) => !"#【】\n".includes(c);
 
+const DIGIT_CN = ["零", "一", "二", "三", "四", "五", "六", "七", "八", "九"];
+function numberToCn(num: number): string | null {
+  if (num < 0 || num > 99) return null;
+  if (num < 10) return DIGIT_CN[num];
+  const tens = Math.floor(num / 10);
+  const ones = num % 10;
+  if (num < 20) return "十" + (ones ? DIGIT_CN[ones] : "");
+  return DIGIT_CN[tens] + "十" + (ones ? DIGIT_CN[ones] : "");
+}
+/** 带圈内容速记归一：z/Z→增；数字→汉字（1→一、15→十五） */
+function normalizeShorthand(inner: string): string {
+  return inner
+    .replace(/z/gi, "增")
+    .replace(/\d+/g, (d) => numberToCn(Number(d)) ?? d);
+}
+
 interface LocalRegion {
   from: number;
   to: number;
@@ -231,22 +247,26 @@ export function gj2ir(text: string): IRDocument {
         if (ch === "#") {
           flushPlain();
           const n1 = lineSource[i + 1];
-          if (n1 === "(") {
-            // 带圈：大字/合字进骨架，圆圈进 overlay
+          if (n1 === "(" || n1 === "（") {
+            // 带圈：大字/合字进骨架，圆圈进 overlay。扩展输入（原文不动，src 对齐保持）：
+            //   全角括号 #（X）/#（X 等同半角；括号内速记 z→增、数字→汉字（1→一等）
             let j = i + 2;
             let inner = "";
-            if (lineSource[j + 1] === ")" || lineSource[j + 2] === ")") {
-              while (j < lineSource.length && lineSource[j] !== ")" && isOrdinary(lineSource[j])) {
+            const isCloser = (c: string) => c === ")" || c === "）";
+            const isInner = (c: string) => isOrdinary(c) && c !== "（" && c !== "）";
+            if (isCloser(lineSource[j + 1]) || isCloser(lineSource[j + 2])) {
+              while (j < lineSource.length && !isCloser(lineSource[j]) && isInner(lineSource[j])) {
                 inner += lineSource[j] === "*" ? " " : lineSource[j];
                 j++;
               }
-              if (lineSource[j] === ")") j++;
-            } else if (j < lineSource.length && isOrdinary(lineSource[j])) {
+              if (isCloser(lineSource[j])) j++;
+            } else if (j < lineSource.length && isInner(lineSource[j])) {
               inner = lineSource[j] === "*" ? " " : lineSource[j];
               j++;
             } else {
               j = i + 2;
             }
+            inner = normalizeShorthand(inner);
             if (inner) {
               const el: IRElement = {
                 id: nextId(),

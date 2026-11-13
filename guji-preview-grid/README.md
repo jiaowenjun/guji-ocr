@@ -105,4 +105,6 @@ bash scripts/link-dataset.sh        # 需挂载存放扫描图的外置盘（man
 python3 scripts/prefetch_ocr.py      # 可选：预识别近期页（默认数据集末页起，限 20 页/次）
 ```
 
-Guji 语法、字体安装说明见 [guji-preview README](../guji-preview/README.md)。
+Guji 语法、字体安装说明见 [guji-preview README](../guji-preview/README.md)。本仓库扩展输入：带圈字头支持
+全角括号 `#（X）`/`#（X`（等同半角）与括号内速记 `z`→增、数字→汉字（`(15)`≡`(十五)`）；编辑器
+「格式化」按钮一键归一为标准写法（parser 与 IR 管线均已支持，`src/parser/split-line.ts`）。

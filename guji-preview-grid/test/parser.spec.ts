@@ -131,3 +131,25 @@ describe("parsePages", () => {
     expect(pages).toEqual(yibuExpected);
   });
 });
+
+describe("输入规范化（全角括号与速记）", () => {
+  const eq = (std: string, ext: string) =>
+    it(`${ext.slice(0, 10)} ≡ ${std.slice(0, 10)}`, () => {
+      const page = (t: string) => JSON.stringify(parsePages(`@1\n\n${t}\n`));
+      expect(page(ext)).toBe(page(std));
+    });
+  eq("#(增) 音義", "#（增） 音義"); // 全角闭 → 半角闭
+  eq("#(增 音義", "#（增 音義"); // 全角开
+  eq("#(增) 音義", "#(z) 音義"); // z 速记
+  eq("#(增) 音義", "#（z） 音義"); // z 全角速记
+  eq("#(十五) 音義", "#(15) 音義"); // 数字速记
+  eq("#(十五) 音義", "#（15） 音義");
+  eq("#(一) 音義", "#（1） 音義");
+  eq("#(十) 音義", "#（10） 音義"); // 10→十（长度变化的用例）
+  it("#(z) 的 IR mark 文本为「增」", async () => {
+    const { gj2ir } = await import("../src/ir/gj2ir");
+    const doc = gj2ir("@2\n\n#(z)#(15)音義\n");
+    const marks = doc.pages[0].bands[0].lines.flatMap((l) => l.elements).filter((e) => e.class === "large");
+    expect(marks.map((m) => m.text)).toEqual(["增", "十五"]);
+  });
+});
