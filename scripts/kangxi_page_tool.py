@@ -40,15 +40,26 @@ INDEX_JSON = REPO / "guji-preview-grid" / "public" / "dataset" / "index.json"
 STATUS_LABELS = {"draft": "草稿", "first": "初校", "final": "精校"}
 
 
-def run_fetch(script: str, page: int) -> str:
-    """复用既有爬取 CLI 增量补数据（库里有则零网络）；返回末行摘要。"""
+def run_fetch(script: str, page: int, label: str) -> str:
+    """复用既有爬取 CLI 增量补数据（库里有则零网络）。
+
+    末行是全库 stats JSON（两个 fetch 脚本打印同一份），原样入 summaries 会让
+    前端状态栏出现两段重复长 JSON——转为一句带 label 的人话摘要。
+    """
     r = subprocess.run(
         [sys.executable, str(SCRIPTS / script), "--pages", str(page)],
         capture_output=True, text=True, timeout=600,
     )
     if r.returncode != 0:
         raise RuntimeError(f"{script} 退出码 {r.returncode}\n{r.stdout}\n{r.stderr}")
-    return (r.stdout or r.stderr).strip().splitlines()[-1] if (r.stdout or r.stderr) else ""
+    last = (r.stdout or r.stderr).strip().splitlines()[-1] if (r.stdout or r.stderr) else ""
+    try:
+        stats = json.loads(last)
+    except ValueError:
+        stats = None
+    if isinstance(stats, dict) and "pages_total" in stats:
+        return f"{label}：联网补抓完成（库内 {stats['pages_total']} 页 / {stats['entries_total']} 条字头）"
+    return f"{label}：{last[:80]}" if last else f"{label}：完成"
 
 
 PUNCT_STRIP = "。，·\"：:、；《》【】*　 \t\n\r"
@@ -271,7 +282,7 @@ def cmd_add(page: int) -> dict:
     store = kangxi_store.KangxiStore()
     summaries = []
     if store.page_missing(page, ("reading", "scan")):
-        summaries.append(run_fetch("fetch_kangxi_page.py", page))
+        summaries.append(run_fetch("fetch_kangxi_page.py", page, "页数据"))
     else:
         summaries.append("页数据：库中已有，未联网")
     chars = store.get_page_chars(page)
@@ -280,7 +291,7 @@ def cmd_add(page: int) -> dict:
         if c["char"] and store.get_entry(c["codepoint"]) is None
     ]
     if chars and missing_entries:
-        summaries.append(run_fetch("fetch_kangxi_entry.py", page))
+        summaries.append(run_fetch("fetch_kangxi_entry.py", page, "字头详情"))
     elif chars:
         summaries.append(f"字头详情：库中已有 {len(chars) - len(missing_entries)}/{len(chars)}，未联网")
 
