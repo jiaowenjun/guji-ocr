@@ -11,7 +11,7 @@ import {
   type CSSProperties,
   type ReactNode,
 } from "react";
-import { ChevronLeft, ChevronRight, Database, Download, Minus, Plus, RotateCcw, Save } from "lucide-react";
+import { ChevronLeft, ChevronRight, Database, Download, Minus, Plus, RotateCcw, Save, Space, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -30,6 +30,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Slider } from "@/components/ui/slider";
 import { GujiEditor } from "@/components/editor/GujiEditor";
+import { formatSpaces } from "@/components/dataset/format-spaces";
 import { MatrixPages } from "@/components/matrix/MatrixPages";
 import { FlexPages } from "@/components/flex/FlexPages";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
@@ -54,6 +55,9 @@ const STATUS_META: Record<PageEntry["status"] & string, { label: string; dot: st
 };
 
 const stem = (page: number) => String(page).padStart(4, "0");
+
+/** 保存快捷键：Mac ⌘S，Win/Linux Ctrl+S（按钮 title 提示用） */
+const SAVE_SHORTCUT_HINT = /Mac|iPod|iPhone|iPad/.test(navigator.platform) ? "⌘S" : "Ctrl+S";
 
 /** 武英殿版扫描的版框（印刷内容框）到纸边距离，自然像素、页宽 1130。
  *  17 页投影法实测中位数（列/行暗像素计数定位贯穿框线，左侧书脊暗带与
@@ -177,6 +181,13 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
     }
   }, [index, jumpTo]);
 
+  // 成功反馈 6s 自动消失；错误保留至人工处理（均可手动关闭），避免长消息常驻撑乱工具栏
+  useEffect(() => {
+    if (!status?.ok) return;
+    const t = setTimeout(() => setStatus(null), 6000);
+    return () => clearTimeout(t);
+  }, [status]);
+
   const entry = index?.[idx];
   const page = entry?.page;
   const original = page !== undefined ? texts[page] : undefined;
@@ -241,18 +252,13 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
   };
   const frameWidth = displayWidth - paperPad.left - paperPad.right;
 
-  // 纸面纵向与扫描版框对齐：上 padding = 版框上边距等比值（内容顶边对齐版框上沿）；
-  // 下 padding = 版框内容高 − 渲染内容实际高（网格行数 × 宽度字格 ≠ 版框实际高，
-  // 会矮一截——纸面下边缘因此对齐版框下沿，内容超出时退为 0 由内容撑高）。
-  // minHeight = 版框下沿位置，内容量出前先撑住纸面
-  const { ref: paperContentRef, height: paperContentH } = useContentSize<HTMLDivElement>();
-  const paperBottomY = entry
-    ? Math.floor((displayWidth * (entry.height - SCAN_FRAME_MARGIN.bottom)) / entry.width)
-    : 0;
+  // 纸面纵向：上 padding = 版框上边距等比值（内容顶边对齐版框上沿）；
+  // 纸面本身顶天立地撑满渲染列视口（minHeight = 视口高 − p-2×2），
+  // 内容框（.lines）由 --guji-frame-h 拉到版框内容高，下边缘大致对齐版框下沿
+  const { ref: scrollVPRef, height: scrollVPH } = useContentSize<HTMLDivElement>();
   const frameContentH = entry
     ? (entry.height - SCAN_FRAME_MARGIN.top - SCAN_FRAME_MARGIN.bottom) * scanScale
     : 0;
-  const padBottom = Math.max(0, frameContentH - paperContentH);
   const unit = cols > 0 ? (frameWidth - 2) / cols : 25;
 
   const onChange = useCallback(
@@ -267,6 +273,18 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
     if (page === undefined) return;
     setEdits(({ [page]: _drop, ...rest }) => rest);
     setStatus(null);
+  };
+
+  /** 空格格式化：行内空格（全角 1:1、半角串合并）改为显式 *；只进编辑缓冲，不自动保存 */
+  const formatAllSpaces = () => {
+    if (text === undefined) return;
+    const { text: next, count } = formatSpaces(text);
+    if (count === 0) {
+      setStatus({ ok: true, msg: `@${page} 没有需要转换的行内空格` });
+      return;
+    }
+    onChange(next);
+    setStatus({ ok: true, msg: `已将 ${count} 处行内空格转为 *（未保存，可校对后保存）` });
   };
 
   /** 添加新页：桥接 kangxi_page_tool.py（sqlite 优先，缺则增量爬取），完成后刷新清单并跳转 */
@@ -325,7 +343,8 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
     }
   };
 
-  const save = async () => {
+  // useCallback：⌘S/Ctrl+S 监听可直接依赖（identity 只随 page/text 变化）
+  const save = useCallback(async () => {
     if (page === undefined || text === undefined) return;
     setBusy(true);
     setStatus(null);
@@ -345,7 +364,18 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
     } finally {
       setBusy(false);
     }
-  };
+  }, [page, text, put]);
+
+  // ⌘S/Ctrl+S 保存：编辑器聚焦时也生效（区别于 ←/→ 翻页），并拦截浏览器“存储页面”默认行为
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (!(e.metaKey || e.ctrlKey) || e.altKey || e.key.toLowerCase() !== "s") return;
+      e.preventDefault();
+      if (dirty && !busy) save();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [save, dirty, busy]);
 
   const download = () => {
     if (text === undefined || page === undefined) return;
@@ -515,10 +545,21 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
             </span>
           ) : null}
           {status ? (
-            <span className={`text-xs ${status.ok ? "text-emerald-600" : "text-destructive"}`}>{status.msg}</span>
+            // 单行截断 + 悬停看全文，长消息（含抓取统计）不再把 flex-wrap 工具栏撑乱
+            <span className="flex items-center gap-1">
+              <span
+                title={status.msg}
+                className={`max-w-[min(52ch,45vw)] truncate text-xs ${status.ok ? "text-emerald-600" : "text-destructive"}`}
+              >
+                {status.msg}
+              </span>
+              <Button variant="ghost" size="icon-sm" aria-label="关闭反馈" onClick={() => setStatus(null)}>
+                <X />
+              </Button>
+            </span>
           ) : null}
           {dirty ? <span className="text-xs text-amber-600">● 未保存</span> : null}
-          <Button size="sm" disabled={!dirty || busy} onClick={save}>
+          <Button size="sm" disabled={!dirty || busy} onClick={save} title={SAVE_SHORTCUT_HINT}>
             <Save data-icon="inline-start" />
             保存回数据集
           </Button>
@@ -562,7 +603,7 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
               {flexView ? "Flex" : `矩阵 · ${cols} 列`} · 字格 {unit.toFixed(1)}px ·{" "}
               {flexView ? "版框近似对齐（行宽按内容混合，精确对照请用矩阵）" : "与原图版框对齐（含等比纸边）"}
             </ColumnHeader>
-            <ScrollArea className="min-h-0 flex-1">
+            <ScrollArea className="min-h-0 flex-1" ref={scrollVPRef}>
               <div className="flex justify-center p-2">
                 {laidPages.length > 0 ? (
                   <div
@@ -570,18 +611,21 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
                     className="relative shrink-0"
                     style={{
                       width: displayWidth,
-                      minHeight: paperBottomY,
+                      minHeight: Math.max(0, scrollVPH - 16),
                       paddingTop: paperPad.top,
                       paddingRight: paperPad.right,
-                      paddingBottom: padBottom,
                       paddingLeft: paperPad.left,
                       background: PAPER_BG,
                     }}
                   >
                     <div
-                      ref={paperContentRef}
                       className="flex justify-center"
-                      style={{ "--guji-scale": `${unit}px` } as CSSProperties}
+                      style={
+                        {
+                          "--guji-scale": `${unit}px`,
+                          "--guji-frame-h": `${frameContentH}px`,
+                        } as CSSProperties
+                      }
                     >
                       {flexView ? (
                         <FlexPages doc={irDoc} highlight={highlight} onBandClick={onBandClick} />
@@ -614,6 +658,19 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
             <ColumnHeader>
               .gj 编辑器 · @{page} · {dirty ? "未保存" : original !== undefined ? "与数据集一致" : "加载中…"}
             </ColumnHeader>
+            {/* 编辑器工具栏：作用于 .gj 源码的快捷操作（改入编辑缓冲，不自动保存） */}
+            <div className="flex flex-wrap items-center gap-2 border-b px-2 py-1">
+              <Button
+                size="sm"
+                variant="outline"
+                disabled={text === undefined}
+                onClick={formatAllSpaces}
+                title="行内全角/半角空格 → *（半角连续空格合并为一个；标题行与注释不动；不自动保存）"
+              >
+                <Space data-icon="inline-start" />
+                空格格式化
+              </Button>
+            </div>
             <div className="min-h-0 flex-1 overflow-hidden">
               {text !== undefined ? (
                 <GujiEditor
