@@ -21,7 +21,10 @@ from __future__ import annotations
 
 import argparse
 import difflib
+import io
 import json
+import time
+import uuid
 import re
 import subprocess
 import sys
@@ -191,6 +194,105 @@ def continuation_from_prev(
     return out, info
 
 
+def ocr_trim_continuation(
+    page: int, continuation: list[str], store: kangxi_store.KangxiStore
+) -> tuple[list[str], str]:
+    """用 PaddleOCR 基线服务把续文裁剪到页面物理范围（删头去尾）。
+
+    文本始终以库内转写为准，OCR 只作范围标尺（2026-11-13 试探：@333 单页
+    96.5% 准确率，自动裁剪与人工初校差 1 字）。流程：取该页扫描图 → 本地
+    服务 /ocr 同步提交（服务未启动/识别失败时原样返回并说明，回退全量灌入）。
+    """
+    import urllib.request
+
+    base = "http://127.0.0.1:8010"
+    img = Path(store.get_page(page)["scan_file"])
+    if not img.is_file():
+        return continuation, "无扫描图，未裁剪"
+    try:
+        with urllib.request.urlopen(f"{base}/health", timeout=3) as r:
+            if json.loads(r.read()).get("service") != "ocr":
+                return continuation, "OCR 服务未运行，未裁剪"
+    except Exception:
+        return continuation, "OCR 服务未运行，未裁剪"
+
+    boundary = uuid.uuid4().hex
+    payload = img.read_bytes()
+    file_field = (
+        f"--{boundary}\r\n"
+        f'Content-Disposition: form-data; name="file"; filename="{img.name}"\r\n'
+        f"Content-Type: image/jpeg\r\n\r\n"
+    ).encode() + payload + f"\r\n--{boundary}--\r\n".encode()
+    req = urllib.request.Request(
+        f"{base}/ocr/images",
+        data=file_field,
+        headers={"content-type": f"multipart/form-data; boundary={boundary}"},
+        method="POST",
+    )
+    with urllib.request.urlopen(req, timeout=120) as r:
+        submit = json.loads(r.read())
+    image_id = submit.get("image_id")
+    if not image_id:
+        return continuation, "OCR 提交未返回 image_id，未裁剪"
+    deadline = time.time() + 600
+    view = {}
+    while time.time() < deadline:
+        time.sleep(3)
+        with urllib.request.urlopen(f"{base}/ocr/images/{image_id}", timeout=30) as r:
+            view = json.loads(r.read())
+        # weimo 视图：result 非 null 即终态成功；error 非 null 即失败
+        if view.get("result") is not None:
+            break
+        if view.get("error") is not None:
+            return continuation, f"OCR 任务失败（{view.get('error')}），未裁剪"
+    else:
+        return continuation, "OCR 轮询超时，未裁剪"
+
+    result_view = view.get("result") or {}
+    md_text = result_view.get("markdown") or ""
+    if not md_text:
+        md_text = (
+            ((result_view.get("json") or {}).get("result") or {}).get("layoutParsingResults")
+            or [{}]
+        )[0].get("markdown", {}).get("text", "")
+
+    cand_n = _norm("\n".join(continuation))
+    ocr_n = _norm(md_text)
+    if not ocr_n:
+        return continuation, "OCR 无文本输出，未裁剪"
+    sm = difflib.SequenceMatcher(None, cand_n, ocr_n, autojunk=False)
+    blocks = [b for b in sm.get_matching_blocks() if b.size > 0]
+    cover = sum(b.size for b in blocks)
+    end = max(b.a + b.size for b in blocks)
+    # 门槛按「裁点前区域」判信而非 OCR 全长：页面含新字头时匹配数天然小于
+    # OCR 全文（334：候选末段 375 字，页面上只有前 ~79 字）。要求裁点区域
+    # 至少 20 字且其中过半是真实匹配（连续性证据），否则放弃裁剪回退全量
+    if end < 20 or cover < end * 0.5:
+        return continuation, f"OCR 与续文对齐不可信（裁点 {end} 字中匹配 {cover}），未裁剪"
+    if end >= len(cand_n):
+        return continuation, "续文已在页面范围内，无需裁剪"
+
+    # 归一化裁点映射回原文：走一遍续文原文累计（跳过被剔除字符），取第 end 个保留字
+    kept = 0
+    cut_para, cut_idx = len(continuation) - 1, len(continuation[-1])
+    for pi, para in enumerate(continuation):
+        for ci, ch in enumerate(para):
+            if ch in PUNCT_STRIP:
+                continue
+            if kept == end:
+                cut_para, cut_idx = pi, ci
+                break
+            kept += 1
+        else:
+            continue
+        break
+    trimmed = list(continuation[:cut_para])  # 裁点前的整段全部保留
+    if cut_idx > 0:
+        trimmed.append(continuation[cut_para][:cut_idx].rstrip())  # 裁点所在段取前半
+    removed = len(cand_n) - end
+    return trimmed, f"OCR 裁剪：保留 {end}/{len(cand_n)} 字（页面物理末界），溢出 {removed} 字留给下页"
+
+
 def build_draft_gj(
     page: int,
     store: kangxi_store.KangxiStore,
@@ -316,6 +418,9 @@ def cmd_add(page: int) -> dict:
             f"前页续入：@{cont_info['prev_page']} 字头「{cont_info['head']}」余 {cont_info['paragraphs']} 段"
         )
 
+    if continuation:
+        continuation, trim_note = ocr_trim_continuation(page, continuation, store)
+        summaries.append(trim_note)
     draft, counts = build_draft_gj(
         page, store, continuation=continuation or None, skip_head=cont_info.get("head")
     )
