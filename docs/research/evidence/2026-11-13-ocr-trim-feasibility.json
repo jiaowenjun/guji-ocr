@@ -1,0 +1,29 @@
+{
+  "checked_at": "2026-11-13",
+  "purpose": "Feasibility probe: use the local PaddleOCR baseline (PaddleOCR-VL-1.6) to determine a page's physical text range when importing a new page, so that continuation drafts are auto-trimmed to the page boundary (删头去尾) instead of dumping the host entry's full remaining text for manual trimming. Ground truth = the proofread (初校) @333 .gj. Probe only — no production code changed; OCR used strictly as a range ruler, never as a text source.",
+  "method": {
+    "sample": "kangxi-gold @333 scan (/Volumes/WD-2T/guji-ocr/datasets/kangxizidian-wuyingdian/0333.jpg, 1130×1711)",
+    "ocr": "paddleocr-baseline service (FastAPI, port 8010) → PaddleOCR-VL-1.6 cloud provider, single job, cold start ~40s",
+    "comparison": [
+      "baseline: proofread 0333.gj, punctuation/whitespace/【】 stripped (376 chars)",
+      "candidate: what add --page 333 would import = 中's remaining 16 paragraphs (464 chars)",
+      "alignment: difflib.SequenceMatcher on normalized text; trim point = end of last matching block against the candidate"
+    ]
+  },
+  "results": {
+    "ocr_chars_normalized": 371,
+    "accuracy_vs_proofread": "358/371 = 96.5%",
+    "coverage_of_proofread": "358/376 = 95.2%",
+    "auto_trim": "377 chars vs proofread 376 — 1 char apart; first-15 and last-15 chars identical (能爲役杜預註：… / …邈私飮沈醉趙)",
+    "draft_reduction": "candidate 464 → 377 chars (19% overflow to next page removed)",
+    "diff_breakdown": {
+      "colons_dropped_by_ocr": 5,
+      "variant_forms": "9 (鄕/鄉 尚/尙 郞/郎 飮/飲 日/曰 興/與 etc.) — irrelevant to range detection",
+      "true_ocr_errors": 3 (春→天, 𤇏→烝, 𥓓→碑; 0.8% of chars)",
+      "bracket_loss": "OCR emits no 【】 frame characters — range use unaffected, but OCR cannot be a text source"
+    }
+  },
+  "conclusion": "Feasible and worth implementing: draft text stays sourced from the sqlite transcription (faithful); OCR only fixes the cut point via the same difflib-tolerant alignment already used by continuation_from_prev. Residual proofreading reduces to verifying the head/tail joint at ±1 char. Limitations recorded: vertical woodblock without ruling is an easy case for the VL model; one OCR job per added page (~40s cold + provider latency); OCR must never feed gold text.",
+  "artifacts": "OCR raw result kept at /tmp/kx-ocr-test/out/0333.{md,json} (ephemeral); scripts unchanged",
+  "note": "OCR token for the probe was read from local-only reflog commit 150cf35 and passed via env var; never written to any tracked file."
+}
