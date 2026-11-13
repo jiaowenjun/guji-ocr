@@ -199,6 +199,21 @@ _OCR_CACHE: dict[int, str] = {}
 _OCR_CACHE_DIR = REPO / "paddleocr-baseline" / "data" / "ocr-markdown"
 
 
+def _scan_for(page: int, store: kangxi_store.KangxiStore) -> tuple[Path | None, str]:
+    """定位页扫描图：crawl store 的 scan_file 优先；未登记（直接下载入库的
+    312–328 等页）回退 kangxi-gold manifest 的 images_dir + sha256。"""
+    row = store.get_page(page) or {}
+    if row.get("scan_file") and Path(row["scan_file"]).is_file():
+        return Path(row["scan_file"]), row.get("scan_sha256") or ""
+    m = json.loads(MANIFEST.read_text(encoding="utf-8")) if MANIFEST.exists() else {"pages": []}
+    for e in m.get("pages", []):
+        if e["page"] == page:
+            img = Path(m["images_dir"]) / e["image"]
+            if img.is_file():
+                return img, e.get("sha256") or ""
+    return None, ""
+
+
 def _ocr_cache_read(page: int, store: kangxi_store.KangxiStore) -> str | None:
     """持久缓存命中（sha256 与扫描图一致）→ markdown；空串哨兵=None；未命中=None。"""
     f = _OCR_CACHE_DIR / f"{page:04d}.json"
@@ -208,14 +223,15 @@ def _ocr_cache_read(page: int, store: kangxi_store.KangxiStore) -> str | None:
         entry = json.loads(f.read_text(encoding="utf-8"))
     except (json.JSONDecodeError, OSError):
         return None
-    if not entry.get("sha256") or entry["sha256"] != (store.get_page(page) or {}).get("scan_sha256"):
+    _, cur_sha = _scan_for(page, store)
+    if not entry.get("sha256") or entry["sha256"] != cur_sha:
         return None  # 图已变（重爬），缓存失效
     md = entry.get("markdown") or ""
     return md or None
 
 
 def _ocr_cache_write(page: int, store: kangxi_store.KangxiStore, markdown: str) -> None:
-    sha = (store.get_page(page) or {}).get("scan_sha256") or ""
+    _, sha = _scan_for(page, store)
     if not sha:
         return
     _OCR_CACHE_DIR.mkdir(parents=True, exist_ok=True)
@@ -243,9 +259,8 @@ def _ocr_markdown(page: int, store: kangxi_store.KangxiStore) -> str | None:
         _OCR_CACHE[page] = persistent
         return persistent
     base = "http://127.0.0.1:8010"
-    row = store.get_page(page) or {}
-    img = Path(row.get("scan_file") or "")
-    if not img.is_file():
+    img, sha = _scan_for(page, store)
+    if img is None:
         _OCR_CACHE[page] = ""
         return None
     try:
@@ -505,6 +520,80 @@ def build_draft_gj(
     return "\n".join(parts) + "\n", counts
 
 
+def cmd_ocr_fold(page: int, fold: bool = True) -> dict:
+    """对已入库页的 .gj 执行 OCR 折行（用户在编辑器工具栏手动触发）。
+
+    读取该页 .gj 的现有大行结构，按 OCR 行组插入换行——只插入换行、不改字符；
+    页面已有折行会被先去掉再按 OCR 重折（幂等）。写回 .gj 并刷新 json/txt。
+    """
+    gj_path = ANNOTATIONS / f"{page:04d}.gj"
+    if not gj_path.exists():
+        raise RuntimeError(f"页 {page} 不在数据集中")
+    store = kangxi_store.KangxiStore()
+    raw = gj_path.read_text(encoding="utf-8")
+
+    # 保留头部（注释 + @页码 行）与正文大行
+    lines = raw.splitlines()
+    head: list[str] = []
+    body_start = 0
+    for i, l in enumerate(lines):
+        head.append(l)
+        if l.strip().startswith("@"):
+            body_start = i + 1
+            break
+    bands: list[list[str]] = []
+    cur: list[str] = []
+    for l in lines[body_start:]:
+        if l.strip():
+            cur.append(l)
+        elif cur:
+            bands.append(cur)
+            cur = []
+    if cur:
+        bands.append(cur)
+
+    folded, note = ocr_fold_page_lines(page, bands, store)
+    if fold and folded is bands:
+        return {"ok": True, "page": page, "note": note, "changed": False}
+
+    # 过滤空 band / 空行成员，避免连续空行（空行是 .gj 的大行分隔，连续会成空大行）
+    parts = list(head)
+    for band in folded:
+        lines = [l.rstrip() for l in band if l.strip()]
+        if not lines:
+            continue
+        parts.append("")
+        parts.extend(lines)
+    gj_path.write_text("\n".join(parts).rstrip() + "\n", encoding="utf-8")
+
+    # 同步 json/txt（build 的运行时断言管 IR 口径）
+    import subprocess as sp
+
+    r = sp.run(
+        ["npx", "-y", "tsx", str(REPO / "kangxi-gold/scripts/build_annotations.ts"), "--allow-drift"],
+        capture_output=True, text=True, timeout=900,
+        cwd=str(REPO),
+    )
+    if r.returncode != 0:
+        raise RuntimeError(f"build 同步失败：{r.stderr[-300:]}")
+    return {"ok": True, "page": page, "note": note, "changed": True}
+
+
+def cmd_ocr_view(page: int) -> dict:
+    """返回该页的 OCR markdown（供前端弹窗展示）。"""
+    store = kangxi_store.KangxiStore()
+    img, sha = _scan_for(page, store)
+    if img is None or not sha:
+        raise RuntimeError(f"页 {page} 无扫描图（crawl store 与数据集清单均未登记）")
+    entry = _ocr_cache_read(page, store)
+    if entry is None:
+        entry = _ocr_markdown(page, store)
+    if entry is None:
+        return {"ok": True, "page": page, "markdown": None,
+                "hint": "OCR 缓存未命中且服务未运行——先跑 scripts/prefetch_ocr.py 或启动服务"}
+    return {"ok": True, "page": page, "markdown": entry}
+
+
 def load_manifest() -> dict:
     return json.loads(MANIFEST.read_text(encoding="utf-8"))
 
@@ -695,10 +784,21 @@ def main() -> int:
     s = sub.add_parser("status")
     s.add_argument("--page", type=int, required=True)
     s.add_argument("--to", required=True)
+    f = sub.add_parser("ocr-fold")
+    f.add_argument("--page", type=int, required=True)
+    v = sub.add_parser("ocr-view")
+    v.add_argument("--page", type=int, required=True)
     args = ap.parse_args()
 
     try:
-        result = cmd_add(args.page) if args.cmd == "add" else cmd_status(args.page, args.to)
+        if args.cmd == "add":
+            result = cmd_add(args.page)
+        elif args.cmd == "ocr-fold":
+            result = cmd_ocr_fold(args.page)
+        elif args.cmd == "ocr-view":
+            result = cmd_ocr_view(args.page)
+        else:
+            result = cmd_status(args.page, args.to)
         print(json.dumps(result, ensure_ascii=False))
         # add 触发的后台预取（爬取+OCR）在此等待完成（不拖慢上面的结果输出）
         for t in _PREFETCH_THREADS:

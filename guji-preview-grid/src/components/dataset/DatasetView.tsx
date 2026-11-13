@@ -11,7 +11,7 @@ import {
   type CSSProperties,
   type ReactNode,
 } from "react";
-import { ChevronLeft, ChevronRight, Circle, Database, Download, Minus, Plus, RotateCcw, Save, Space, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, Circle, Database, Download, Minus, Plus, RotateCcw, Save, ScanText, Scissors, Space, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -167,6 +167,8 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
   const [zoom, setZoom] = useState<number | "fit">("fit"); // 默认按原图高度适配视口
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState<{ ok: boolean; msg: string } | null>(null);
+  const [ocrView, setOcrView] = useState<string | null>(null); // OCR 结果弹窗内容
+  const [folding, setFolding] = useState(false); // OCR 自动断行进行中
   const [adding, setAdding] = useState(false); // 添加新页表单开合
   const [pageInput, setPageInput] = useState("");
   const [addBusy, setAddBusy] = useState(false); // 添加新页进行中
@@ -395,6 +397,55 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
     return () => window.removeEventListener("keydown", onKey);
   }, [save, dirty, busy]);
 
+  /** OCR 自动断行：对已保存的当前页 .gj 重折行（先保存修改再触发） */
+  const ocrFold = async () => {
+    if (page === undefined) return;
+    if (dirty) {
+      setStatus({ ok: false, msg: "有未保存修改——先保存再自动断行（断行直接写回 .gj）" });
+      return;
+    }
+    setFolding(true);
+    setStatus(null);
+    try {
+      const res = await fetch("/dataset/page-tool", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ action: "ocr-fold", page }),
+      });
+      const data = (await res.json().catch(() => ({}))) as {
+        ok?: boolean;
+        error?: string;
+        note?: string;
+        changed?: boolean;
+      };
+      if (!res.ok || !data.ok) throw new Error(data.error ?? `HTTP ${res.status}`);
+      reload();
+      setStatus({ ok: true, msg: `@${page} ${data.note}${data.changed ? "（.gj 已更新，json/txt 已同步）" : ""}` });
+    } catch (e) {
+      setStatus({ ok: false, msg: e instanceof Error ? e.message : String(e) });
+    } finally {
+      setFolding(false);
+    }
+  };
+
+  /** 显示 OCR 结果：弹窗展示该页 OCR markdown */
+  const ocrShow = async () => {
+    if (page === undefined) return;
+    setStatus(null);
+    try {
+      const res = await fetch("/dataset/page-tool", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ action: "ocr-view", page }),
+      });
+      const data = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string; markdown?: string | null; hint?: string };
+      if (!res.ok || !data.ok) throw new Error(data.error ?? `HTTP ${res.status}`);
+      setOcrView(data.markdown ?? data.hint ?? "（无内容）");
+    } catch (e) {
+      setStatus({ ok: false, msg: e instanceof Error ? e.message : String(e) });
+    }
+  };
+
   const download = () => {
     if (text === undefined || page === undefined) return;
     const url = URL.createObjectURL(new Blob([text], { type: "text/plain;charset=utf-8" }));
@@ -588,6 +639,16 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
             <Download data-icon="inline-start" />
             下载 .gj
           </Button>
+          <Button size="sm" variant="outline" disabled={page === undefined || folding || dirty} onClick={ocrFold}
+            title="按 OCR 行组在当前页 .gj 内插入折行换行（只插入换行不改字符；需先保存修改）">
+            <Scissors data-icon="inline-start" />
+            {folding ? "断行中…" : "OCR自动断行"}
+          </Button>
+          <Button size="sm" variant="outline" disabled={page === undefined} onClick={ocrShow}
+            title="弹窗显示该页的 PaddleOCR 识别文本">
+            <ScanText data-icon="inline-start" />
+            显示OCR结果
+          </Button>
         </div>
       </div>
 
@@ -717,6 +778,25 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
           </div>
         </ResizablePanel>
       </ResizablePanelGroup>
+          {ocrView !== null ? (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-6"
+          onClick={() => setOcrView(null)}
+        >
+          <div
+            className="bg-background text-foreground max-h-[80vh] w-[560px] max-w-[90vw] overflow-auto rounded-lg border p-4 text-sm shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="mb-2 flex items-center justify-between">
+              <span className="font-semibold">PaddleOCR 识别结果 · @{page}</span>
+              <Button size="sm" variant="ghost" onClick={() => setOcrView(null)}>关闭</Button>
+            </div>
+            <pre className="text-muted-foreground whitespace-pre-wrap font-mono text-xs leading-6">
+              {ocrView}
+            </pre>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

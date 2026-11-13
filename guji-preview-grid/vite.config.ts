@@ -106,6 +106,10 @@ function datasetPageTool(): Plugin {
           args = ['add', '--page', String(page)]
         } else if (action === 'status' && pageOk && typeof status === 'string' && /^[a-z]+$/.test(status)) {
           args = ['status', '--page', String(page), '--to', status]
+        } else if (action === 'ocr-fold' && pageOk) {
+          args = ['ocr-fold', '--page', String(page)]
+        } else if (action === 'ocr-view' && pageOk) {
+          args = ['ocr-view', '--page', String(page)]
         }
       } catch {
         args = null
@@ -113,7 +117,7 @@ function datasetPageTool(): Plugin {
       if (!args) {
         res.statusCode = 400
         res.setHeader('content-type', 'application/json')
-        res.end(JSON.stringify({ ok: false, error: '请求体应为 { action: add|status, page, status? }' }))
+        res.end(JSON.stringify({ ok: false, error: '请求体应为 { action: add|status|ocr-fold|ocr-view, page, status? }' }))
         return
       }
       run(args, res)
