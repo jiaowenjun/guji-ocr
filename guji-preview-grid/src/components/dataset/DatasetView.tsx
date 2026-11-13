@@ -207,12 +207,17 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
     ));
   }, [index, idx, ensure]);
 
-  // ←/→ 翻页（编辑器/表单聚焦时不劫持）
+  // ←/→、Ctrl-N/P 翻页（编辑器/表单聚焦时不劫持——Ctrl-N/P 是 CodeMirror 行移动）
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (!index || (e.target as HTMLElement | null)?.closest(".cm-editor, input, textarea, select")) return;
-      if (e.key === "ArrowRight" && idx < index.length - 1) setIdx(idx + 1);
-      if (e.key === "ArrowLeft" && idx > 0) setIdx(idx - 1);
+      const np = (e.ctrlKey || e.metaKey) && !e.altKey ? e.key.toLowerCase() : null;
+      if (np === "n" || np === "p") e.preventDefault(); // Ctrl-P 别落进浏览器打印
+      if (e.key === "ArrowRight" || np === "n") {
+        if (idx < index.length - 1) setIdx(idx + 1);
+      } else if (e.key === "ArrowLeft" || np === "p") {
+        if (idx > 0) setIdx(idx - 1);
+      }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -488,10 +493,10 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
     <div className="flex min-h-0 flex-1 flex-col">
       <div className="flex flex-wrap items-center gap-2 border-b px-3 py-1.5">
         <div className="flex items-center gap-1">
-          <Button variant="outline" size="icon-sm" aria-label="上一页" disabled={idx === 0} onClick={() => setIdx(idx - 1)}>
+          <Button variant="outline" size="icon-sm" aria-label="上一页" title="上一页（← 或 Ctrl-P）" disabled={idx === 0} onClick={() => setIdx(idx - 1)}>
             <ChevronLeft />
           </Button>
-          <Button variant="outline" size="icon-sm" aria-label="下一页" disabled={idx === index.length - 1} onClick={() => setIdx(idx + 1)}>
+          <Button variant="outline" size="icon-sm" aria-label="下一页" title="下一页（→ 或 Ctrl-N）" disabled={idx === index.length - 1} onClick={() => setIdx(idx + 1)}>
             <ChevronRight />
           </Button>
         </div>
