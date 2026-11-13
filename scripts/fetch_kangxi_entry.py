@@ -39,6 +39,7 @@ import urllib.request
 from datetime import date
 from pathlib import Path
 
+import kangxi_log
 import kangxi_store
 
 DETAIL_TEMPLATE = "https://www.kangxizidian.com/search/index_v.php?stype=Word&sword={sword}&detail=y"
@@ -59,17 +60,24 @@ PARA_SEP = "\ueab1"  # 站点释文段落分隔符（PUA）
 
 
 def http_get(url: str, timeout: float = 60.0) -> tuple[bytes, str]:
-    """GET 并返回 (body, content_type)，4 次尝试带退避。"""
+    """GET 并返回 (body, content_type)，4 次尝试带退避；成功/重试均记事件日志。"""
+    t0 = time.monotonic()
     last_err: Exception | None = None
     for attempt in range(len(RETRY_DELAYS) + 1):
         try:
             req = urllib.request.Request(url, headers=HEADERS)
             with urllib.request.urlopen(req, timeout=timeout) as resp:
-                return resp.read(), resp.headers.get("Content-Type", "")
+                body = resp.read()
+                ctype = resp.headers.get("Content-Type", "")
+            kangxi_log.emit("http", url=url, ms=round((time.monotonic() - t0) * 1000),
+                            bytes=len(body), attempts=attempt + 1, ctype=ctype)
+            return body, ctype
         except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError, OSError) as e:
             last_err = e
             if attempt < len(RETRY_DELAYS):
                 delay = RETRY_DELAYS[attempt]
+                kangxi_log.emit("http_retry", url=url, attempt=attempt + 1,
+                                error=f"{type(e).__name__}: {e}", delay=delay)
                 print(f"  ! {url} 失败（{e}），{delay}s 后重试", flush=True)
                 time.sleep(delay)
     raise RuntimeError(f"{url} 多次重试仍失败：{last_err}")
@@ -181,12 +189,14 @@ def fetch_entry(sword: str, out_dir: Path, store: kangxi_store.KangxiStore,
     path = out_dir / fname
     if not force and store.get_entry(ord(sword)):
         store.log("entry", f"U+{ord(sword):04X}", "skip-db")
+        kangxi_log.emit("entry_skip", sword=sword, codepoint=f"U+{ord(sword):04X}", reason="db")
         print(f"[{sword}] {fname} 数据库已有，跳过（--force 重下）")
         return True
 
     # 磁盘旧 JSON 采纳入库（不联网；损坏文件照常走网络重抓）
     if not force and path.exists():
         if store.adopt_entry_json(path):
+            kangxi_log.emit("entry_adopt", sword=sword, codepoint=f"U+{ord(sword):04X}")
             print(f"[{sword}] {fname} 磁盘旧记录采纳入库")
             return True
 
@@ -199,6 +209,8 @@ def fetch_entry(sword: str, out_dir: Path, store: kangxi_store.KangxiStore,
 
     rec = parse_detail(html, sword)
     if rec is None:
+        kangxi_log.emit("entry_error", sword=sword, codepoint=f"U+{ord(sword):04X}",
+                        error="no card (字頭 missing)")
         print(f"[{sword}] 详情页未命中（{len(body)}B，Content-Type {ctype}），跳过", file=sys.stderr)
         return False
     rec["html_sha256"] = hashlib.sha256(body).hexdigest()
@@ -207,7 +219,12 @@ def fetch_entry(sword: str, out_dir: Path, store: kangxi_store.KangxiStore,
         path.write_text(json.dumps(rec, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     except OSError as e:
         # 库为主存储，文件副本失败不中断流程（如目录缺失/盘满）
+        kangxi_log.emit("artifact_warn", sword=sword, error=str(e))
         print(f"[{sword}] ⚠ JSON 文件副本写入失败（{e}）；数据库记录已保存", file=sys.stderr)
+    kangxi_log.emit("entry_done", sword=sword, codepoint=f"U+{ord(sword):04X}",
+                    text_chars=rec["text_chars"], paragraphs=len(rec["text_paragraphs"]),
+                    pua=rec["pua_other"] or None,
+                    wuying=rec.get("wuying_edition"))
     warn = f"  ⚠ PUA 字形: {rec['pua_other']}" if rec["pua_other"] else ""
     print(
         f"[{sword}] {fname} {rec['text_chars']}字 {len(rec['text_paragraphs'])}段 "

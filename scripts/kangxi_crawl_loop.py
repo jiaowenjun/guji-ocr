@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import random
 import sys
 import time
@@ -29,8 +30,11 @@ from datetime import datetime
 from pathlib import Path
 
 import fetch_kangxi_page as fp
+import kangxi_log
 import kangxi_store
 from kangxi_crawl_next import FALLBACK_ENTRIES_DIR, FALLBACK_IMAGES_DIR, crawl_next_page, pick_dir
+
+HEARTBEAT_EVERY = 50  # 每完成 N 页输出一次心跳快照（控制台 + 事件日志）
 
 
 def truncated_normal_seconds(mean: float, sigma: float, lo: float, hi: float,
@@ -65,10 +69,18 @@ def main() -> int:
     ap.add_argument("--max-pages", type=int, default=0, help="试运行上限页数（0 = 不限，跑完全书）")
     ap.add_argument("--max-consecutive-failures", type=int, default=5,
                     help="连续整页失败退出阈值（默认 5）")
+    ap.add_argument("--events-file", type=Path, default=None,
+                    help="JSONL 事件日志路径（默认与 --db 同目录的 kangxi-crawl-events.jsonl）")
     args = ap.parse_args()
 
     if not (args.min_seconds <= args.mean_seconds <= args.max_seconds):
         ap.error("均值须落在 [min-seconds, max-seconds] 内")
+
+    events_path = kangxi_log.setup(args.events_file or args.db.parent / "kangxi-crawl-events.jsonl")
+    kangxi_log.emit("loop_start", pid=os.getpid(), db=str(args.db), order=args.order,
+                    from_page=args.from_page, mean_s=args.mean_seconds, sigma_s=args.sigma_seconds,
+                    min_s=args.min_seconds, max_s=args.max_seconds,
+                    max_consecutive_failures=args.max_consecutive_failures)
 
     fp.check_robots()  # 禁止即 sys.exit(2)
     store = kangxi_store.KangxiStore(args.db)
@@ -78,6 +90,7 @@ def main() -> int:
     print(f"[{stamp()}] 循环爬取启动：选页={args.order}，间隔 ~ N(μ={args.mean_seconds:.0f}s, "
           f"σ={args.sigma_seconds:.0f}s) 截断于 [{args.min_seconds:.0f}s, {args.max_seconds:.0f}s]，"
           f"库 {args.db}", flush=True)
+    print(f"[{stamp()}] 事件日志：{events_path}", flush=True)
     print(f"[{stamp()}] 初始统计：{json.dumps(store.stats(), ensure_ascii=False)}", flush=True)
 
     done = failures = 0
@@ -93,27 +106,36 @@ def main() -> int:
                       file=sys.stderr, flush=True)
                 rc = 1
             if rc == 42:
+                kangxi_log.emit("loop_exit", reason="all_done", done=done)
                 print(f"[{stamp()}] 全书完成，退出。{json.dumps(store.stats(), ensure_ascii=False)}", flush=True)
                 return 0
             if rc == 1:
                 failures += 1
                 if failures >= args.max_consecutive_failures:
+                    kangxi_log.emit("loop_exit", reason="consecutive_failures", done=done, failures=failures)
                     print(f"[{stamp()}] 连续 {failures} 页失败（站点/磁盘故障？），退出。", file=sys.stderr, flush=True)
                     return 1
             else:
                 failures = 0
                 done += 1
+                if done % HEARTBEAT_EVERY == 0:
+                    stats = store.stats()
+                    kangxi_log.emit("heartbeat", done=done, **stats)
+                    print(f"[{stamp()}] ♥ 心跳：{json.dumps(stats, ensure_ascii=False)}", flush=True)
                 if args.max_pages and done >= args.max_pages:
+                    kangxi_log.emit("loop_exit", reason="max_pages", done=done)
                     print(f"[{stamp()}] 达到试运行上限 {args.max_pages} 页，退出。"
                           f"{json.dumps(store.stats(), ensure_ascii=False)}", flush=True)
                     return 0
 
             delay = truncated_normal_seconds(args.mean_seconds, args.sigma_seconds,
                                              args.min_seconds, args.max_seconds)
+            kangxi_log.emit("interval", seconds=round(delay), done=done)
             state = f"累计完成 {done} 页" + (f"，连续失败 {failures} 次" if failures else "")
             print(f"[{stamp()}] {state}，{delay:.0f}s（{delay / 60:.1f} 分）后抓下一轮", flush=True)
             time.sleep(delay)
     except KeyboardInterrupt:
+        kangxi_log.emit("loop_exit", reason="keyboard_interrupt", done=done)
         print(f"\n[{stamp()}] 手动停止；已抓 {done} 页，重启后自动续抓。", flush=True)
         return 0
 

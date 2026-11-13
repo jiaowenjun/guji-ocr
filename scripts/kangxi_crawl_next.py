@@ -19,6 +19,7 @@ from pathlib import Path
 
 import fetch_kangxi_entry as fe
 import fetch_kangxi_page as fp
+import kangxi_log
 import kangxi_store
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -51,8 +52,10 @@ def crawl_next_page(store: kangxi_store.KangxiStore, images_dir: Path, entries_d
     pick = store.random_missing_page if order == "random" else store.next_missing_page
     page = pick(from_page)
     if page is None:
+        kangxi_log.emit("all_done")
         print("ALL_DONE：全部页已完整入库（阅读页 + 原图）")
         return 42
+    kangxi_log.emit("round_start", page=page, order=order)
 
     print(f"下一页：{page:04d}")
     if not fp.fetch_page(page, images_dir, store, save_html=False, force=False):

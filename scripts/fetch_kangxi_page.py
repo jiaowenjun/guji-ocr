@@ -35,6 +35,7 @@ from datetime import date
 from pathlib import Path
 from urllib.parse import urljoin
 
+import kangxi_log
 import kangxi_store
 
 READING_PAGE_TEMPLATE = "https://www.kangxizidian.com/v2/index2.php?page={page}"
@@ -57,17 +58,24 @@ RETRY_DELAYS = [5, 15, 45]
 
 
 def http_get(url: str, timeout: float = 60.0) -> tuple[bytes, str]:
-    """GET 并返回 (body, content_type)，4 次尝试带退避。"""
+    """GET 并返回 (body, content_type)，4 次尝试带退避；成功/重试均记事件日志。"""
+    t0 = time.monotonic()
     last_err: Exception | None = None
     for attempt in range(len(RETRY_DELAYS) + 1):
         try:
             req = urllib.request.Request(url, headers=HEADERS)
             with urllib.request.urlopen(req, timeout=timeout) as resp:
-                return resp.read(), resp.headers.get("Content-Type", "")
+                body = resp.read()
+                ctype = resp.headers.get("Content-Type", "")
+            kangxi_log.emit("http", url=url, ms=round((time.monotonic() - t0) * 1000),
+                            bytes=len(body), attempts=attempt + 1, ctype=ctype)
+            return body, ctype
         except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError, OSError) as e:
             last_err = e
             if attempt < len(RETRY_DELAYS):
                 delay = RETRY_DELAYS[attempt]
+                kangxi_log.emit("http_retry", url=url, attempt=attempt + 1,
+                                error=f"{type(e).__name__}: {e}", delay=delay)
                 print(f"  ! {url} 失败（{e}），{delay}s 后重试", flush=True)
                 time.sleep(delay)
     raise RuntimeError(f"{url} 多次重试仍失败：{last_err}")
@@ -162,6 +170,7 @@ def fetch_page(page: int, out_dir: Path, store: kangxi_store.KangxiStore,
     missing = set(parts) if force else store.page_missing(page, parts)
     if not missing:
         store.log("page", page, "skip-db")
+        kangxi_log.emit("page_skip", page=page, reason="db-complete")
         print(f"[{page:04d}] 数据库已有（阅读页+原图），跳过（--force 重抓）")
         return True
 
@@ -180,6 +189,8 @@ def fetch_page(page: int, out_dir: Path, store: kangxi_store.KangxiStore,
             polite_sleep()
             body, ctype = http_get(page_url)
             if "html" not in ctype.lower() and len(body) < 500:
+                kangxi_log.emit("page_error", page=page, phase="reading",
+                                error=f"bad content-type {ctype}, {len(body)}B")
                 print(f"[{page:04d}] 阅读页响应异常（Content-Type: {ctype}，{len(body)}B）", file=sys.stderr)
                 return False
             store.save_reading(page, body)
@@ -193,6 +204,7 @@ def fetch_page(page: int, out_dir: Path, store: kangxi_store.KangxiStore,
     # 2) 整页原图（URL 以阅读页解析为准，模板仅作漂移提示）
     scan_url = extract_scan_url(html, page_url)
     if not scan_url:
+        kangxi_log.emit("page_error", page=page, phase="parse", error="no center-fit scan img")
         print(
             f"[{page:04d}] 阅读页未找到 center-fit 扫描图；"
             f"页面结构可能已变化，参见调研报告第 2/5 节",
@@ -213,6 +225,8 @@ def fetch_page(page: int, out_dir: Path, store: kangxi_store.KangxiStore,
             data, ctype2 = http_get(scan_url)
             dims = jpeg_size(data)
             if "image" not in ctype2.lower() or dims is None or len(data) < MIN_BYTES:
+                kangxi_log.emit("page_error", page=page, phase="scan",
+                                error=f"invalid jpeg {ctype2}, {len(data)}B")
                 print(f"[{page:04d}] 非有效扫描图（Content-Type: {ctype2}，{len(data)}B）", file=sys.stderr)
                 return False
             jpg_path.write_bytes(data)
@@ -227,6 +241,10 @@ def fetch_page(page: int, out_dir: Path, store: kangxi_store.KangxiStore,
         store.save_page_chars(page, items)
 
     row = store.get_page(page)
+    kangxi_log.emit("page_done", page=page, scan_bytes=row["scan_bytes"],
+                    width=row["scan_width"], height=row["scan_height"],
+                    sha256=row["scan_sha256"][:16], chars=len(items),
+                    scan_url=scan_url, fetched=sorted(missing))
     print(
         f"[{page:04d}] 原图{src} {row['scan_bytes']}B {row['scan_width']}x{row['scan_height']} "
         f"sha256={row['scan_sha256'][:16]}… | 字头索引 {len(items)} 条 <- {scan_url}",
