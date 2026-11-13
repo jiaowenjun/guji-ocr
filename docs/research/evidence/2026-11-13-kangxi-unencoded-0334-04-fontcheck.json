@@ -1,0 +1,106 @@
+{
+  "checked_at": "2026-11-13",
+  "purpose": "未编码字头 0334-04-K0000（site 334 页第 4 字头）的身份判定与本地康熙字典體（KX_47043_14.ttf）覆盖核验。结论：身份 U+2BD6E 𫵮（Ext-C，kKangXi 0079.090，G 源 GKX-0079.09），不在本地字体 cmap 中——首例字体缺字。",
+  "method": "爬取库 page_chars 定位字头与邻居；下载缩略图 SVG（p.kangxizidian.com/kxzt/ 直链）并 rsvg-convert 栅格化；fontTools 枚举 cmap 后 PIL+scipy 对称 chamfer 全库初筛（128px，阈值标尺锚点 0.785）；下载 Unihan.zip 本地 grep kKangXi 做槽位仲裁；GlyphWiki 参考字形目视终验；cmap 判定覆盖。",
+  "target": {
+    "site_page": 334,
+    "ord": 3,
+    "svg_rel": "0000s/0334-04-K0000.svg",
+    "k_code": "K0000",
+    "codepoint_in_db": null,
+    "neighbors": [
+      { "ord": 0, "char": "丮", "cp": "U+4E2E", "kkx": "0079.060" },
+      { "ord": 1, "char": "丯", "cp": "U+4E2F", "kkx": "0079.070" },
+      { "ord": 2, "char": "丰", "cp": "U+4E30", "kkx": "0079.080" },
+      { "ord": 3, "char": null, "cp": null, "kkx": "0079.090?", "note": "本案 K0000" },
+      { "ord": 4, "char": "丱", "cp": "U+4E31", "kkx": "0079.100" }
+    ]
+  },
+  "artifacts": {
+    "svg": {
+      "path": "datasets/kangxi-unencoded/svg/0334-04-K0000.svg",
+      "sha256": "40aca218281b9efe68b7046acac6448684457cf34cf5a756d65fb857d00f13fd",
+      "bytes": 2583,
+      "url": "https://p.kangxizidian.com/kxzt/0000s/0334-04-K0000.svg"
+    },
+    "png_256": {
+      "path": "datasets/kangxi-unencoded/png/0334-04-K0000.png",
+      "sha256": "6622efb08effd00da8df936fd09a5994fbb597dbf4945112270fdc25aa02ee59"
+    },
+    "verdict_sheet": {
+      "path": "datasets/kangxi-unencoded/png/0334-04-K0000-verdict.png",
+      "sha256": "668b07915d6f539cbfbfd12c12bcf8cc2539b0adcd58ddca72ef2fdb0c343812",
+      "panels": ["目标 0334-04", "GlyphWiki u2bd6e (=kx-0079009)", "部件 u21d00"]
+    }
+  },
+  "font": {
+    "path": "/Users/jwj/Library/Fonts/KX_47043_14.ttf",
+    "cmap_total": 49407,
+    "composition": { "BMP": 24858, "Ext-B": 24548, "Ext-G": 1 },
+    "ext_c_coverage": 0,
+    "target_in_cmap": false
+  },
+  "chamfer_prescreen": {
+    "unit": "px @128 canvas, symmetric mean EDT",
+    "thresholds": { "same": 0.785, "suspect_lo": 0.8, "suspect_hi": 1.0 },
+    "top5": [
+      { "cp": "U+20077", "char": "𠁷", "score": 0.731, "verdict": "误报：kKangXi 0080.111，classic 下一页形近邻字" },
+      { "cp": "U+246D9", "char": "𤛙", "score": 0.904, "verdict": "误报：牛部 kKangXi 0704.081" },
+      { "cp": "U+209C4", "char": "𠧄", "score": 0.937 },
+      { "cp": "U+24685", "char": "𤚅", "score": 0.942 },
+      { "cp": "U+097D5", "char": "韕", "score": 0.967 }
+    ],
+    "target_true_identity_score": null,
+    "note": "真身 U+2BD6E 不在字体，无法参与匹配；榜单全部为候选噪声"
+  },
+  "slot_arbitration": {
+    "unihan_source": "https://www.unicode.org/Public/UCD/latest/ucd/Unihan.zip（2026-11-13 取）",
+    "grep": "kKangXi 0079.090 → U+2BD6E（Unihan_DictionaryIndices.txt 唯一占主）",
+    "unihan_fields": {
+      "kKangXi": "0079.090",
+      "kIRG_GSource": "GKX-0079.09",
+      "kRSUnicode": "45.7",
+      "kTotalStrokes": 10,
+      "block": "CJK Ext-C (U+2A700–2B73F)"
+    },
+    "roster_page79": [
+      { "slot": "0079.010", "cp": "U+4E2B", "char": "丬" },
+      { "slot": "0079.020", "cp": "U+3404", "char": "㐄" },
+      { "slot": "0079.030", "cp": "U+4E2D", "char": "中" },
+      { "slot": "0079.060", "cp": "U+4E2E", "char": "丮" },
+      { "slot": "0079.070", "cp": "U+4E2F", "char": "丯" },
+      { "slot": "0079.080", "cp": "U+4E30", "char": "丰" },
+      { "slot": "0079.090", "cp": "U+2BD6E", "char": "𫵮" },
+      { "slot": "0079.100", "cp": "U+4E31", "char": "丱" }
+    ],
+    "forward_check_page80": [
+      { "slot": "0080.020", "cp": "U+4E32", "char": "串" },
+      { "slot": "0080.040", "cp": "U+4E33", "char": "丳" },
+      { "slot": "0080.071", "cp": "U+4E34", "char": "临" },
+      { "slot": "0080.080", "cp": "U+4E35", "char": "丵", "site_page": 336 },
+      { "slot": "0080.090", "cp": "U+20070", "char": "𠁰", "site_page": 336 },
+      { "slot": "0080.100", "cp": "U+20071", "char": "𠁱", "site_page": 336 },
+      { "slot": "0080.110", "cp": "U+20074", "char": "𠁴", "site_page": 336 }
+    ],
+    "data_quality_notes": "Unihan 自身存在重复槽位值：U+20075/20076/20077 同报 kKangXi 0080.111（本地 grep 证实，非网页误读）"
+  },
+  "glyphwiki": {
+    "page": "https://glyphwiki.org/wiki/u2bd6e",
+    "aliases": ["kx-0079009", "kx-007909", "extd-02374"],
+    "composed_of": "u21d00 ×2（⿰ 同部件并排）",
+    "image_url_ok": "https://glyphwiki.org/glyph/u2bd6e.100px.png",
+    "visual_verdict": "目标与 u2bd6e 笔画结构一致；两个 u21d00 并排，仅字体风格差异"
+  },
+  "verdict": {
+    "identity": "U+2BD6E 𫵮",
+    "in_local_font": false,
+    "first_missing_glyph_case": true,
+    "prior_eval_context": "95 项（2026-11-13 晨）：92 在库 / 2 疑似（2345-02→昙、2856-02→过）/ 1 残损（4673-12）；本案为第 96 项"
+  },
+  "db_snapshot": {
+    "as_of": "2026-11-13T18:10+08:00",
+    "k0000_heads": 118,
+    "unencoded_total_incl_twins": 123,
+    "pages_crawled": 361
+  }
+}

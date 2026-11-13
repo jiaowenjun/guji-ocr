@@ -12,6 +12,7 @@
 | 检查 AncientDoc、Chronicles 和 11 页样本的具体核查依据 | [证据目录说明](research/evidence/README.md) |
 | 使用 `.gj` 流式排版预览 | [guji-preview 使用与开发说明](../guji-preview/README.md) |
 | 使用字格矩阵排版和两种渲染对照 | [guji-preview-grid 使用与开发说明](../guji-preview-grid/README.md) |
+| 核验康熙字典未编码字头（K0000）与字体缺字判定 | [未编码字头字体核验流程](research/2026-11-13-kangxi-未编码字头字体核验流程.md) |
 
 ## 文档结构
 
@@ -26,10 +27,14 @@ docs/
     ├── evidence/
     │   ├── README.md                  核查方法、文件与证据边界
     │   ├── 2026-11-11-ancientdoc-spotcheck.json
-    │   └── 2026-11-11-wechat-source-checks.json
+    │   ├── 2026-11-11-wechat-source-checks.json
+    │   ├── 2026-11-12-kangxizidian-site-structure.json
+    │   └── 2026-11-13-kangxi-unencoded-0334-04-fontcheck.json
     ├── 2026-11-11-中文竖排古籍OCR调研.md             历史参考
     ├── 2026-11-11-古籍酷与RGD论文补充调研.md        历史参考
-    └── 2026-11-11-微信七篇古籍OCR资料追踪.md         历史参考
+    ├── 2026-11-11-微信七篇古籍OCR资料追踪.md         历史参考
+    ├── 2026-11-12-kangxizidian-网站结构调研.md      字头索引与抓取可行性
+    └── 2026-11-13-kangxi-未编码字头字体核验流程.md  K0000 身份判定与缺字判定
 guji-preview/README.md                  流式预览应用文档
 guji-preview-grid/README.md             字格预览应用文档
 ```
