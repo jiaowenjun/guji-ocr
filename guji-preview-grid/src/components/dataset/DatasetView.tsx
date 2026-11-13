@@ -11,7 +11,7 @@ import {
   type CSSProperties,
   type ReactNode,
 } from "react";
-import { ChevronLeft, ChevronRight, Database, Download, Minus, Plus, RotateCcw, Save, Space, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, Circle, Database, Download, Minus, Plus, RotateCcw, Save, Space, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -31,6 +31,7 @@ import { Separator } from "@/components/ui/separator";
 import { Slider } from "@/components/ui/slider";
 import { GujiEditor } from "@/components/editor/GujiEditor";
 import { formatSpaces } from "@/components/dataset/format-spaces";
+import { formatCircles } from "@/components/dataset/format-circles";
 import { MatrixPages } from "@/components/matrix/MatrixPages";
 import { FlexPages } from "@/components/flex/FlexPages";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
@@ -289,6 +290,18 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
     }
     onChange(next);
     setStatus({ ok: true, msg: `已将 ${count} 处行内空格转为 *（未保存，可校对后保存）` });
+  };
+
+  /** 〇格式化：按语标记 ◎ 规范化为语料标准写法 〇；只进编辑缓冲，不自动保存 */
+  const formatAllCircles = () => {
+    if (text === undefined) return;
+    const { text: next, count } = formatCircles(text);
+    if (count === 0) {
+      setStatus({ ok: true, msg: `@${page} 没有需要转换的 ◎` });
+      return;
+    }
+    onChange(next);
+    setStatus({ ok: true, msg: `已将 ${count} 处 ◎ 转为 〇（未保存，可校对后保存）` });
   };
 
   /** 添加新页：桥接 kangxi_page_tool.py（sqlite 优先，缺则增量爬取），完成后刷新清单并跳转 */
@@ -673,6 +686,16 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
               >
                 <Space data-icon="inline-start" />
                 空格格式化
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                disabled={text === undefined}
+                onClick={formatAllCircles}
+                title="按语标记 ◎ → 〇（语料标准写法；已是 〇/○ 的不动；标题行与注释不动；不自动保存）"
+              >
+                <Circle data-icon="inline-start" />
+                〇格式化
               </Button>
             </div>
             <div className="min-h-0 flex-1 overflow-hidden">
