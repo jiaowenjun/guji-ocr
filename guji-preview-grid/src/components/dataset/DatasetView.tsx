@@ -61,9 +61,10 @@ const stem = (page: number) => String(page).padStart(4, "0");
 const SAVE_SHORTCUT_HINT = /Mac|iPod|iPhone|iPad/.test(navigator.platform) ? "⌘S" : "Ctrl+S";
 
 /** 武英殿版扫描的版框（印刷内容框）到纸边距离，自然像素、页宽 1130。
- *  17 页投影法实测中位数（列/行暗像素计数定位贯穿框线，左侧书脊暗带与
- *  底部水印区已排除）；扫描同源，取常量即可，渲染列据此做等比纸边。 */
-const SCAN_FRAME_MARGIN = { left: 124, right: 104, top: 150, bottom: 97 };
+ *  纵向为 0312 像素实测框线中心（行暗像素占比定位贯穿横线：上线 160.5、
+ *  下线 1679-1572=107）——旧中位数值 150/97 每边偏差 ~10px，致渲染框高
+ *  比实测版框大 20.5 自然像素；横向沿用旧值（0312 左线被裁切不可测）。 */
+const SCAN_FRAME_MARGIN = { left: 124, right: 104, top: 160.5, bottom: 107 };
 /** 扫描纸面色（0312 纸边取样平均） */
 const PAPER_BG = "#dcb68a";
 
