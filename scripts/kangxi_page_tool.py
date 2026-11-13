@@ -194,27 +194,31 @@ def continuation_from_prev(
     return out, info
 
 
-def ocr_trim_continuation(
-    page: int, continuation: list[str], store: kangxi_store.KangxiStore
-) -> tuple[list[str], str]:
-    """用 PaddleOCR 基线服务把续文裁剪到页面物理范围（删头去尾）。
+def _ocr_markdown(page: int, store: kangxi_store.KangxiStore) -> str | None:
+    """取该页扫描图的 OCR markdown（本地 paddleocr-baseline 服务）。
 
-    文本始终以库内转写为准，OCR 只作范围标尺（2026-11-13 试探：@333 单页
-    96.5% 准确率，自动裁剪与人工初校差 1 字）。流程：取该页扫描图 → 本地
-    服务 /ocr 同步提交（服务未启动/识别失败时原样返回并说明，回退全量灌入）。
+    服务未运行 / 提交失败 / 轮询超时 / 无文本 → 返回 None（调用方按需回退）。
+    结果按页缓存（同一次 add 内 trim 与 fold 共用一次 OCR job）。
     """
     import urllib.request
 
+    cached = _OCR_CACHE.get(page)
+    if cached is not None:
+        return cached if cached != "" else None
     base = "http://127.0.0.1:8010"
-    img = Path(store.get_page(page)["scan_file"])
+    row = store.get_page(page) or {}
+    img = Path(row.get("scan_file") or "")
     if not img.is_file():
-        return continuation, "无扫描图，未裁剪"
+        _OCR_CACHE[page] = ""
+        return None
     try:
         with urllib.request.urlopen(f"{base}/health", timeout=3) as r:
             if json.loads(r.read()).get("service") != "ocr":
-                return continuation, "OCR 服务未运行，未裁剪"
+                _OCR_CACHE[page] = ""
+                return None
     except Exception:
-        return continuation, "OCR 服务未运行，未裁剪"
+        _OCR_CACHE[page] = ""
+        return None
 
     boundary = uuid.uuid4().hex
     payload = img.read_bytes()
@@ -229,24 +233,30 @@ def ocr_trim_continuation(
         headers={"content-type": f"multipart/form-data; boundary={boundary}"},
         method="POST",
     )
-    with urllib.request.urlopen(req, timeout=120) as r:
-        submit = json.loads(r.read())
-    image_id = submit.get("image_id")
-    if not image_id:
-        return continuation, "OCR 提交未返回 image_id，未裁剪"
-    deadline = time.time() + 600
-    view = {}
-    while time.time() < deadline:
-        time.sleep(3)
-        with urllib.request.urlopen(f"{base}/ocr/images/{image_id}", timeout=30) as r:
-            view = json.loads(r.read())
-        # weimo 视图：result 非 null 即终态成功；error 非 null 即失败
-        if view.get("result") is not None:
-            break
-        if view.get("error") is not None:
-            return continuation, f"OCR 任务失败（{view.get('error')}），未裁剪"
-    else:
-        return continuation, "OCR 轮询超时，未裁剪"
+    try:
+        with urllib.request.urlopen(req, timeout=120) as r:
+            submit = json.loads(r.read())
+        image_id = submit.get("image_id")
+        if not image_id:
+            _OCR_CACHE[page] = ""
+            return None
+        deadline = time.time() + 600
+        while time.time() < deadline:
+            time.sleep(3)
+            with urllib.request.urlopen(f"{base}/ocr/images/{image_id}", timeout=30) as r:
+                view = json.loads(r.read())
+            # weimo 视图：result 非 null 即终态成功；error 非 null 即失败
+            if view.get("result") is not None:
+                break
+            if view.get("error") is not None:
+                _OCR_CACHE[page] = ""
+                return None
+        else:
+            _OCR_CACHE[page] = ""
+            return None
+    except Exception:
+        _OCR_CACHE[page] = ""
+        return None
 
     result_view = view.get("result") or {}
     md_text = result_view.get("markdown") or ""
@@ -255,6 +265,28 @@ def ocr_trim_continuation(
             ((result_view.get("json") or {}).get("result") or {}).get("layoutParsingResults")
             or [{}]
         )[0].get("markdown", {}).get("text", "")
+    if not md_text:
+        _OCR_CACHE[page] = ""
+        return None
+    _OCR_CACHE[page] = md_text
+    return md_text
+
+
+_OCR_CACHE: dict[int, str] = {}
+
+
+def ocr_trim_continuation(
+    page: int, continuation: list[str], store: kangxi_store.KangxiStore
+) -> tuple[list[str], str]:
+    """用 PaddleOCR 基线服务把续文裁剪到页面物理范围（删头去尾）。
+
+    文本始终以库内转写为准，OCR 只作范围标尺（全量测试：21 页 micro-CER
+    5.65%；干净链路 @332→333 裁剪与人工初校差 1 字）。服务不可用或对齐
+    不可信时原样返回并说明（回退全量灌入）。
+    """
+    md_text = _ocr_markdown(page, store)
+    if md_text is None:
+        return continuation, "OCR 不可用，未裁剪"
 
     cand_n = _norm("\n".join(continuation))
     ocr_n = _norm(md_text)
@@ -293,15 +325,99 @@ def ocr_trim_continuation(
     return trimmed, f"OCR 裁剪：保留 {end}/{len(cand_n)} 字（页面物理末界），溢出 {removed} 字留给下页"
 
 
+def ocr_fold_page_lines(page: int, bands: list[list[str]], store: kangxi_store.KangxiStore) -> tuple[list[list[str]], str]:
+    """按 OCR 行组在草稿大行内插入折行（小行换行）。
+
+    全量测试：21 页 399 个行界 96.2% ±0 命中；OCR 空行组过分裂只增加边界
+    不移动真实边界，用「短片段合并」防护（归一化 <8 字的相邻片段并回）。
+    安全性：只插入换行、不改任何字符——最坏情况折点偏移 1-2 字，对照页中
+    即刻可见、拖动即可；库内转写文本永不因折行改动。
+    """
+    md_text = _ocr_markdown(page, store)
+    if md_text is None:
+        return bands, "OCR 不可用，未折行"
+    groups = [g.replace("\n", "") for g in md_text.split("\n\n") if g.strip()]
+    if len(groups) < 2:
+        return bands, "OCR 行组不足，未折行"
+    ocr_n = _norm("".join(groups))
+    if not ocr_n:
+        return bands, "OCR 无文本，未折行"
+
+    # 全页草稿文本（按 band 拼接）与 OCR 对齐；fold 边界 = OCR 组界映射到草稿
+    full = "\u0001".join("\n".join(b) for b in bands)
+    full_n = _norm(full)
+    sm = difflib.SequenceMatcher(None, full_n, ocr_n, autojunk=False)
+    blocks = [b for b in sm.get_matching_blocks() if b.size > 0]
+    cover = sum(b.size for b in blocks)
+    if cover < len(ocr_n) * 0.5 or cover < len(full_n) * 0.5:
+        return bands, f"OCR 与草稿对齐不可信（{cover} 字匹配），未折行"
+
+    # OCR 组界（归一化偏移）→ 草稿归一化坐标（经匹配块反向映射）
+    ocr_off, acc = [], 0
+    for g in groups[:-1]:
+        acc += len(_norm(g))
+        ocr_off.append(acc)
+    full_positions = []
+    for o in ocr_off:
+        pos = None
+        for b in blocks:
+            if b.b <= o <= b.b + b.size:
+                pos = b.a + (o - b.b)
+                break
+        if pos is not None:
+            full_positions.append(pos)
+    if not full_positions:
+        return bands, "OCR 组界无法映射，未折行"
+
+    # 短片段合并：相邻折点距离 <8（归一化字）的边界视为过分裂，去后一个
+    merged: list[int] = []
+    for pos in full_positions:
+        if merged and pos - merged[-1] < 8:
+            continue
+        merged.append(pos)
+
+    buf_lines: list[str] = []
+    kept = 0
+    cut_set = set()
+    pos_in_full = 0
+    # 重新走 full 原文（含 \u0001 与换行），把 merged 折点（归一化序号）转为原文切点
+    norm_idx = 0
+    pieces: list[str] = []
+    last = 0
+    cut_norm = sorted(merged)
+    ci = 0
+    for i, ch in enumerate(full):
+        if ch in PUNCT_STRIP:
+            continue
+        if ci < len(cut_norm) and norm_idx == cut_norm[ci]:
+            pieces.append(full[last:i])
+            last = i
+            ci += 1
+        norm_idx += 1
+    pieces.append(full[last:])
+    if len(pieces) <= 1:
+        return bands, "折点未落在草稿内，未折行"
+    # pieces 按原文切分；把 \u0001 分隔的 band 重组
+    flat = "\n".join(pieces)
+    result = [b.split("\n") for b in flat.split("\u0001")]
+    inserted = len(pieces) - 1
+    return result, f"OCR 折行：插入 {inserted} 处换行（合并过分裂 {len(full_positions)-len(merged)}）"
+
+
 def build_draft_gj(
     page: int,
     store: kangxi_store.KangxiStore,
     continuation: list[str] | None = None,
     skip_head: str | None = None,
+    fold: bool = True,
 ) -> tuple[str, dict]:
-    """由库内 page_chars + entries 生成 .gj 草稿与统计；continuation 为前页
-    未完字头的续文行（置于新字头之前，符合阅读顺序）；skip_head 防重复收录
-    延续字头（站点 page_chars 通常不标延续，此为保险）。"""
+    """由库内 page_chars + entries 生成 .gj 草稿与统计。
+
+    continuation 为前页未完字头的续文行（置于新字头之前，符合阅读顺序）；
+    skip_head 防重复收录延续字头（站点 page_chars 通常不标延续，此为保险）。
+    fold=True 且 OCR 服务可用时，按 OCR 行组在大行内插入折行（只插入换行
+    不改字符；不可用/不可信时草稿为未折行的平铺段——校对者回退到手工折行）。
+    """
     chars = store.get_page_chars(page)
     if not chars and not continuation:
         raise RuntimeError(
@@ -309,25 +425,19 @@ def build_draft_gj(
             "阅读页数据不完整或该页既无新字头也无延续内容"
         )
 
-    parts = [
-        f"// 草稿：kangxizidian.com 爬取生成 {date.today()}，未经人工校对（状态：草稿）",
-        "",  # 注释与 @页码 之间必须空行，否则并入同一大行致页声明不解析
-        f"@{page}",
-    ]
+    bands: list[list[str]] = []  # 每项 = 一个大行（未折行时单元素）
     counts = {"chars": 0, "unencoded": 0, "with_text": 0}
+    notes: list[str] = []
     if continuation:
-        # 续文（前页字头的余段）：每段一个大行
         for para in continuation:
-            parts.append("")
-            parts.append(para)
+            bands.append([para])
         counts["with_text"] += 1  # 续文计入有释文字头
     for item in chars:
         if skip_head and item["char"] == skip_head:
             counts["skipped_dup"] = counts.get("skipped_dup", 0) + 1
             continue
-        parts.append("")
         if item["char"]:
-            parts.append(f"#{item['char']}")
+            bands.append([f"#{item['char']}"])
             counts["chars"] += 1
             entry = store.get_entry(item["codepoint"])
             if entry:
@@ -335,15 +445,26 @@ def build_draft_gj(
                 paragraphs = [p for p in record.get("text_paragraphs") or [] if p.strip()]
                 if paragraphs:
                     counts["with_text"] += 1
-                    # 每段释义一个空行分隔的大行；段落分隔符等 PUA 已由爬取器剥离
-                    parts.append("")
-                    parts.extend(paragraphs)
+                    bands.extend([p] for p in paragraphs)
         else:
             k = item.get("k_code") or item.get("svg", "?")
-            parts.append(f"#□")
-            parts.append("")
-            parts.append(f"// 未编码字（{k}）：站点无 Unicode 映射，请对照原图补录")
+            bands.append(["#□"])
+            bands.append([f"// 未编码字（{k}）：站点无 Unicode 映射，请对照原图补录"])
             counts["unencoded"] += 1
+
+    if fold:
+        bands, note = ocr_fold_page_lines(page, bands, store)
+        notes.append(note)
+
+    parts = [
+        f"// 草稿：kangxizidian.com 爬取生成 {date.today()}，未经人工校对（状态：草稿）",
+        "",  # 注释与 @页码 之间必须空行，否则并入同一大行致页声明不解析
+        f"@{page}",
+    ]
+    for band in bands:
+        parts.append("")
+        parts.extend(band)
+    counts["ocr_notes"] = notes
     return "\n".join(parts) + "\n", counts
 
 
@@ -424,6 +545,7 @@ def cmd_add(page: int) -> dict:
     draft, counts = build_draft_gj(
         page, store, continuation=continuation or None, skip_head=cont_info.get("head")
     )
+    summaries.extend(counts.pop("ocr_notes", []))
     stem = f"{page:04d}"
     gj_path = ANNOTATIONS / f"{stem}.gj"
     gj_path.write_text(draft, encoding="utf-8")
