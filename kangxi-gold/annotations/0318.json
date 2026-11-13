@@ -442,6 +442,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         20,
         29
@@ -459,6 +461,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         45,
         49
@@ -476,6 +480,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         57,
         63
@@ -492,7 +498,9 @@
             7
           ]
         }
-      ]
+      ],
+      "openedHere": false,
+      "closed": true
     },
     {
       "id": "o4",
@@ -506,6 +514,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         92,
         96
@@ -523,6 +533,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         96,
         100
@@ -540,6 +552,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         100,
         104
@@ -557,6 +571,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         104,
         108
@@ -574,6 +590,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         134,
         142
@@ -591,6 +609,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         153,
         157
@@ -608,6 +628,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         167,
         174
@@ -625,6 +647,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         198,
         204
@@ -642,6 +666,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         209,
         212
@@ -659,6 +685,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         275,
         279
@@ -676,6 +704,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         284,
         288
@@ -693,6 +723,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         288,
         292
@@ -710,6 +742,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         292,
         296
@@ -727,6 +761,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         319,
         325
@@ -744,6 +780,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         330,
         336
@@ -768,6 +806,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": false,
       "src": [
         351,
         362
@@ -785,6 +825,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         375,
         381
@@ -809,6 +851,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         386,
         395
@@ -826,6 +870,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         408,
         413
@@ -843,6 +889,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         425,
         429
@@ -860,6 +908,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         437,
         444
@@ -877,6 +927,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         479,
         486
@@ -894,6 +946,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         523,
         531

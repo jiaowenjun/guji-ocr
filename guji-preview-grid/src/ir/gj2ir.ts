@@ -314,6 +314,10 @@ export function gj2ir(text: string): IRDocument {
       if (!overlay) {
         if (!createIfMissing) return;
         overlay = { id: `o${overlays.length}`, kind: "book-title", spans: [] };
+        // 语义边界（渲染开口依据，不依赖 src）：openedHere = 以【开启（孤立】为 false）；
+        // closed = 区域含 】（continuation 必含；opener 仅 closed 形态含——EOF 未闭合 false）
+        overlay.openedHere = region.kind !== "continuation";
+        overlay.closed = region.kind !== "opener";
         if (span) {
           overlay.src = span;
           bookBySpan.set(spanKey(span), overlay);

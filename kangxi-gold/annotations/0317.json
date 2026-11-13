@@ -432,6 +432,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         26,
         29
@@ -449,6 +451,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         41,
         46
@@ -466,6 +470,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         51,
         54
@@ -483,6 +489,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         63,
         69
@@ -499,7 +507,9 @@
             7
           ]
         }
-      ]
+      ],
+      "openedHere": false,
+      "closed": true
     },
     {
       "id": "o5",
@@ -513,6 +523,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         87,
         90
@@ -530,6 +542,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         102,
         108
@@ -547,6 +561,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         121,
         125
@@ -564,6 +580,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         151,
         156
@@ -581,6 +599,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         164,
         169
@@ -598,6 +618,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         178,
         181
@@ -615,6 +637,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         190,
         194
@@ -639,6 +663,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": false,
       "src": [
         205,
         211
@@ -656,6 +682,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         244,
         248
@@ -673,6 +701,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         248,
         252
@@ -690,6 +720,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         252,
         256
@@ -707,6 +739,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         260,
         264
@@ -724,6 +758,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         276,
         280
@@ -741,6 +777,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         310,
         318
@@ -758,6 +796,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         331,
         338
@@ -775,6 +815,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         354,
         364
@@ -792,6 +834,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         374,
         382
@@ -809,6 +853,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         413,
         417
@@ -826,6 +872,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         429,
         433
@@ -843,6 +891,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         501,
         505
@@ -860,6 +910,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         509,
         513
@@ -877,6 +929,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": true,
       "src": [
         525,
         529
@@ -894,6 +948,8 @@
           ]
         }
       ],
+      "openedHere": true,
+      "closed": false,
       "src": [
         534,
         537

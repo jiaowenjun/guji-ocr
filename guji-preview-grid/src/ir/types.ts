@@ -101,6 +101,10 @@ export interface IRBookOverlay {
   spans: IRBookSpan[];
   /** 原文区间（UTF-16，含【】）——仅溯源与编辑器联动；无 .gj 源时缺省 */
   src?: [number, number];
+  /** 语义边界（渲染开口依据，不依赖 src）：首段是否以【开启（孤立】延续为 false） */
+  openedHere?: boolean;
+  /** 末段是否已见】闭合（EOF 未闭合为 false——应渲染为开口而非闭合框） */
+  closed?: boolean;
 }
 
 export type IROverlay = IRCircleOverlay | IRBookOverlay;

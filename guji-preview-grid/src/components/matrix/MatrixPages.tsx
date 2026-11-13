@@ -62,6 +62,8 @@ function bookBoxesFor(page: L3Page, overlay: IRBookOverlay): BookBox[] {
     }
     if (rowMin === Infinity || col < 0) return [];
     const key = spanPos[si].key;
+    const hasEarlier = spanPos.some((p, j) => j !== si && p.key !== -1 && p.key < key);
+    const hasLater = spanPos.some((p, j) => j !== si && p.key !== -1 && p.key > key);
     return [
       {
         overlayId: overlay.id,
@@ -69,8 +71,10 @@ function bookBoxesFor(page: L3Page, overlay: IRBookOverlay): BookBox[] {
         rowStart: rowMin,
         rowEnd: rowMax + 1,
         col,
-        openTop: spanPos.some((p, j) => j !== si && p.key !== -1 && p.key < key),
-        openBottom: spanPos.some((p, j) => j !== si && p.key !== -1 && p.key > key),
+        // 开口 = 前/后有延续 span，或语义边界：孤立】延续（!openedHere）开口向上；
+        // 未见】的流出（!closed，如 EOF 未闭合书名）开口向下
+        openTop: hasEarlier || overlay.openedHere === false,
+        openBottom: hasLater || overlay.closed === false,
       },
     ];
   });

@@ -69,9 +69,16 @@ function piecesOfLine(
   }
   const hits = books.byLine.get(line.id) ?? [];
   const edgeOf = (overlayId: string, pos: number): Piece["edge"] => {
-    const total = books.byId.get(overlayId)!.spans.length;
-    if (total === 1) return "book";
-    return pos === 0 ? "book-start" : pos === total - 1 ? "book-end" : "book-middle";
+    const ov = books.byId.get(overlayId)!;
+    const total = ov.spans.length;
+    // 开口 = 前/后有延续 span，或语义边界（孤立】延续开口向上；未见】的流出——
+    // 如 EOF 未闭合书名——开口向下）；映射到 flex.css 的去边框拼接类
+    const openTop = pos > 0 || ov.openedHere === false;
+    const openBottom = pos < total - 1 || ov.closed === false;
+    if (openTop && openBottom) return "book-middle";
+    if (openBottom) return "book-start";
+    if (openTop) return "book-end";
+    return "book";
   };
 
   const pieces: Piece[] = [];
