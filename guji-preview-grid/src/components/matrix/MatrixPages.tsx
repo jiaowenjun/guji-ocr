@@ -15,6 +15,8 @@ interface BookBox {
   col: number; // 页级列
   openTop: boolean;
   openBottom: boolean;
+  /** 所属 run 的亚格居中偏移（奇数余量组） */
+  halfShift?: 0.5;
 }
 
 /** 行 id → band 序（行 id 形如 pXXXX-bN-lM，band id 即其去掉 -lM 前缀） */
@@ -42,6 +44,7 @@ function bookBoxesFor(page: L3Page, overlay: IRBookOverlay): BookBox[] {
     let rowMin = Infinity;
     let rowMax = -Infinity;
     let col = -1;
+    let halfShift: 0.5 | undefined;
     for (const item of band.items) {
       if (item.kind !== "run" || item.lineId !== span.line) continue;
       // span 是行规范文本（未清洗）坐标；cells 是清洗后逐字——经 rawOffsets 对位：
@@ -59,6 +62,7 @@ function bookBoxesFor(page: L3Page, overlay: IRBookOverlay): BookBox[] {
       rowMin = Math.min(rowMin, item.r + first);
       rowMax = Math.max(rowMax, item.r + last);
       col = page.colStarts[bandIdx] + item.c;
+      halfShift = item.halfShift;
     }
     if (rowMin === Infinity || col < 0) return [];
     const key = spanPos[si].key;
@@ -71,6 +75,7 @@ function bookBoxesFor(page: L3Page, overlay: IRBookOverlay): BookBox[] {
         rowStart: rowMin,
         rowEnd: rowMax + 1,
         col,
+        halfShift,
         // 开口 = 前/后有延续 span，或语义边界：孤立】延续（!openedHere）开口向上；
         // 未见】的流出（!closed，如 EOF 未闭合书名）开口向下
         openTop: hasEarlier || overlay.openedHere === false,
@@ -181,6 +186,9 @@ function MatrixPageView({
               {
                 gridRow: `${box.rowStart + 1} / span ${box.rowEnd - box.rowStart}`,
                 gridColumn: `${box.col + 1} / span 1`,
+                ...(box.halfShift
+                  ? { transform: `translateX(calc(var(--guji-unit) * ${box.halfShift}))` }
+                  : {}),
               } as CSSProperties
             }
           />
@@ -220,6 +228,10 @@ function ItemView({ item, circled }: { item: L3Item; circled: Set<string> }) {
         {
           gridRow: `${item.r + 1} / span ${item.cells?.length ?? 0}`,
           gridColumn: `${item.c + 1}`,
+          // 奇数余量小字组的亚格居中（transform 平移——margin 会挤压固定轨道内的内容宽）
+          ...(item.halfShift
+            ? { transform: `translateX(calc(var(--guji-unit) * ${item.halfShift}))` }
+            : {}),
         } as CSSProperties
       }
     >

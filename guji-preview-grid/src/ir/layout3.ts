@@ -26,6 +26,9 @@ export interface L3Item {
   lineId?: string;
   /** run：首字符在该行规范文本（未清洗）中的码点偏移 */
   cpStart?: number;
+  /** run：奇数余量组的亚格居中（cols−k 为奇数时整组右移 0.5 字格，
+   *  复刻 flex auto-margin 的精确居中——如 2 列大行内的单列「古文」组） */
+  halfShift?: 0.5;
 }
 
 export interface L3Band {
@@ -129,7 +132,9 @@ function layoutComposite(band: IRBand): L3Band {
   const cols = Math.max(2, ...groups.map((g) => g.lines.length));
   for (const g of groups) {
     const k = g.lines.length;
-    const start = Math.floor((cols - k) / 2);
+    const slack = cols - k;
+    const start = Math.floor(slack / 2);
+    const half = slack % 2 === 1 ? (0.5 as const) : undefined; // 亚格居中
     g.lines.forEach((l, j) => {
       items.push({
         kind: "run",
@@ -139,6 +144,7 @@ function layoutComposite(band: IRBand): L3Band {
         rawOffsets: l.offsets,
         lineId: l.lineId,
         cpStart: l.cpStart,
+        halfShift: half,
       });
     });
   }
