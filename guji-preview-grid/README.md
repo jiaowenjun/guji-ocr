@@ -78,7 +78,9 @@ pnpm build
   默认 **Flex 视图 + 界栏关 + 原图高度适配视口**（缩放滑杆切为宽度百分比，↺ 恢复适配）。
   矩阵视图像素级对齐，Flex 视图行宽按内容混合为近似
 - ←/→ 翻页（编辑器聚焦时不劫持）；未保存修改按页保留，切页/切模式不丢
-- **「添加新页」**：输入页码（1–7738）→ `scripts/kangxi_page_tool.py` 补数据
+- **「添加新页」**：输入页码（1–7738）→ `scripts/kangxi_page_tool.py` 补数据（含**前页未完字头续入**：
+  解析前页 .gj 尾部，在库内该字头全量释义中容差对齐定位断点，余段作为本页
+  草稿开头——跨页书名靠 per-page 语义边界自然衔接：前页下开口、本页上开口）
   （sqlite `datasets/kangxi-crawl.sqlite3` 已有则零联网，缺则由 fetch_kangxi_page/
   fetch_kangxi_entry 增量爬取）→ 由 page_chars + entries 生成 .gj 草稿（字头行 +
   释义段落带，未编码字 `#□` 占位注释）入 `annotations/`、manifest 追加该页并刷新

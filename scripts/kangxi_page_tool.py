@@ -20,6 +20,7 @@
 from __future__ import annotations
 
 import argparse
+import difflib
 import json
 import re
 import subprocess
@@ -50,8 +51,107 @@ def run_fetch(script: str, page: int) -> str:
     return (r.stdout or r.stderr).strip().splitlines()[-1] if (r.stdout or r.stderr) else ""
 
 
-def build_draft_gj(page: int, store: kangxi_store.KangxiStore) -> tuple[str, dict]:
-    """由库内 page_chars + entries 生成 .gj 草稿与统计。"""
+PUNCT_STRIP = "。，·\"：:、；《》【】*　 \t\n\r"
+
+
+def _norm(text: str) -> str:
+    """清洗为匹配口径：去标点/空白/书名括号（与 .gj 词法的剔除集一致）。"""
+    return "".join(ch for ch in text if ch not in PUNCT_STRIP)
+
+
+def continuation_from_prev(
+    page: int, store: kangxi_store.KangxiStore
+) -> tuple[list[str], dict]:
+    """前页（page-1）未完字头续入：取前页 .gj 最后一个字头之后的尾部文本，
+    在库内该字头的全量释义（段落拼接）中定位，返回余下的段落列表
+    （首段可为半段，保留原文标点与未闭合书名的闭合括号）。
+
+    跨页书名靠 per-page 语义边界自然衔接：前页未闭合书名渲染为下开口，
+    本页行首的孤儿】延续渲染为上开口（无需跨文件机制）。
+    """
+    info = {"prev_page": page - 1, "head": None, "paragraphs": 0, "skipped": None}
+    prev_gj = ANNOTATIONS / f"{page - 1:04d}.gj"
+    if not prev_gj.exists():
+        info["skipped"] = f"前页 {page - 1} 不在数据集"
+        return [], info
+    raw = prev_gj.read_text(encoding="utf-8")
+    # 行内/独立字头统一识别：# 后跟普通字符（含「#(二#个」的行内「个」）
+    marks = list(re.finditer(r"#([^#(\s【])", raw))
+    if not marks:
+        info["skipped"] = "前页无字头行"
+        return [], info
+    last = marks[-1]
+    head = last.group(1)
+    info["head"] = head
+    tail_raw = raw[last.end():]
+    entry = store.get_entry(ord(head)) if len(head) == 1 else None
+    if entry is None:
+        info["skipped"] = f"字头「{head}」库中无详情"
+        return [], info
+    paragraphs = [
+        p for p in (json.loads(entry["record_json"]).get("text_paragraphs") or []) if p.strip()
+    ]
+    if not paragraphs:
+        info["skipped"] = f"字头「{head}」无释义段"
+        return [], info
+
+    tail_n = _norm(tail_raw)
+    if not tail_n:
+        info["skipped"] = "前页该字头无正文（可能整段在后页）"
+        return [], info
+
+    # 全量释义拼接（含归一化坐标 → (段序, 段内原文下标) 映射）
+    full = "\u0001".join(paragraphs)
+    norm_chars: list[str] = []
+    idx_map: list[tuple[int, int]] = []
+    for pi, para in enumerate(paragraphs):
+        for ci, ch in enumerate(para):
+            if ch not in PUNCT_STRIP:
+                norm_chars.append(ch)
+                idx_map.append((pi, ci))
+    entry_n = "".join(norm_chars)
+
+    # 定位：先锚定（尾部前缀在库文中找起点），再容差对齐到尾串末尾——
+    # 前页可能有个别校订增删（如站点文本少一字），整串子串匹配会整体失败
+    anchor = -1
+    for k in range(min(len(tail_n), 24), 7, -1):
+        anchor = entry_n.find(tail_n[:k])
+        if anchor >= 0:
+            break
+    if anchor < 0:
+        info["skipped"] = "前页尾部与库内段落不匹配（可能已大幅校订），未自动续入"
+        return [], info
+    sm = difflib.SequenceMatcher(None, entry_n, tail_n, autojunk=False)
+    blocks = [b for b in sm.get_matching_blocks() if b.size > 0]
+    covered = sum(b.size for b in blocks)
+    if covered / len(tail_n) < 0.9:
+        info["skipped"] = (
+            f"前页尾部与库内段落对齐覆盖率 {covered}/{len(tail_n)} 过低，未自动续入"
+        )
+        return [], info
+    end = max(b.a + b.size for b in blocks)
+    if end >= len(entry_n):
+        info["skipped"] = "前页已完整收录该字头，无需续入"
+        return [], info
+    pi0, ci0 = idx_map[end]
+    out: list[str] = []
+    rest = paragraphs[pi0][ci0:].strip()
+    if rest:
+        out.append(rest)
+    out.extend(paragraphs[pi0 + 1:])
+    info["paragraphs"] = len(out)
+    return out, info
+
+
+def build_draft_gj(
+    page: int,
+    store: kangxi_store.KangxiStore,
+    continuation: list[str] | None = None,
+    skip_head: str | None = None,
+) -> tuple[str, dict]:
+    """由库内 page_chars + entries 生成 .gj 草稿与统计；continuation 为前页
+    未完字头的续文行（置于新字头之前，符合阅读顺序）；skip_head 防重复收录
+    延续字头（站点 page_chars 通常不标延续，此为保险）。"""
     chars = store.get_page_chars(page)
     if not chars:
         raise RuntimeError(f"页 {page} 无字头索引（page_chars 为空）——阅读页数据不完整")
@@ -62,7 +162,16 @@ def build_draft_gj(page: int, store: kangxi_store.KangxiStore) -> tuple[str, dic
         f"@{page}",
     ]
     counts = {"chars": 0, "unencoded": 0, "with_text": 0}
+    if continuation:
+        # 续文（前页字头的余段）：每段一个大行
+        for para in continuation:
+            parts.append("")
+            parts.append(para)
+        counts["with_text"] += 1  # 续文计入有释文字头
     for item in chars:
+        if skip_head and item["char"] == skip_head:
+            counts["skipped_dup"] = counts.get("skipped_dup", 0) + 1
+            continue
         parts.append("")
         if item["char"]:
             parts.append(f"#{item['char']}")
@@ -147,7 +256,18 @@ def cmd_add(page: int) -> dict:
         target.write_bytes(scan_file.read_bytes())
         scan_file = target
 
-    draft, counts = build_draft_gj(page, store)
+    # 前页未完字头续入（只读前页 .gj，不回写；站点 page_chars 不标延续字头）
+    continuation, cont_info = continuation_from_prev(page, store)
+    if cont_info.get("skipped"):
+        summaries.append(f"前页续入跳过：{cont_info['skipped']}")
+    else:
+        summaries.append(
+            f"前页续入：@{cont_info['prev_page']} 字头「{cont_info['head']}」余 {cont_info['paragraphs']} 段"
+        )
+
+    draft, counts = build_draft_gj(
+        page, store, continuation=continuation or None, skip_head=cont_info.get("head")
+    )
     stem = f"{page:04d}"
     gj_path = ANNOTATIONS / f"{stem}.gj"
     gj_path.write_text(draft, encoding="utf-8")
