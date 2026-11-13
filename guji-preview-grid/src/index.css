@@ -14,7 +14,8 @@
    Chrome 兜底。小字三个平面保持独立别名，保留逐字回退。 */
 @font-face {
     font-family: "GujiLarge";
-    src: url("/fonts/guji-large.ttf") format("truetype"),
+    /* ?v= 缓存戳：字体已补录 K0000 字形（U+2BD6E 等），更新时递增 */
+    src: url("/fonts/guji-large.ttf?v=001015-2bd6e") format("truetype"),
         local("KangXiFontFullVersion"),
         local("康熙字典體傳承版 KangXiZiDian.com"),
         local("康熙傳承版 KangXiZiDian.com");
