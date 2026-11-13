@@ -98,6 +98,19 @@ PAGE_HTML = """<!DOCTYPE html>
   #log .t { color: #a09378; margin-right: 6px; }
   .state { padding: 30px; text-align: center; color: #8a7c62; font-size: 14px; }
   .err { color: var(--accent); }
+  #gallery { margin: 0 22px 14px; }
+  .pbar { height: 8px; background: #e9dfc6; border-radius: 4px; overflow: hidden; margin: 6px 0 12px; }
+  #pbarFill { height: 100%; background: var(--accent); width: 0; transition: width .4s; }
+  #pgGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 8px;
+    max-height: 264px; overflow: auto; padding: 2px; }
+  .pgc { border: 1px solid var(--line); border-radius: 8px; padding: 8px 4px 6px; text-align: center;
+    cursor: pointer; background: var(--card); }
+  .pgc:hover { border-color: var(--accent); }
+  .pgc.cur { border-color: var(--accent); background: #fdeede; }
+  .pgc .n { font-size: 19px; font-weight: 700; }
+  .pgc .m { font-size: 10.5px; color: #8a7c62; font-family: ui-monospace, monospace; line-height: 1.5; }
+  .pgNav { display: flex; align-items: center; gap: 12px; justify-content: center; margin-top: 10px; }
+  .pgNav button { padding: 3px 12px; }
   footer { padding: 8px 22px 16px; font-size: 11px; color: #a09378; }
 </style>
 </head>
@@ -114,6 +127,17 @@ PAGE_HTML = """<!DOCTYPE html>
   <input id="charBox" type="text" placeholder="如 丁" maxlength="2" style="width:70px">
   <button id="fetchChar" class="ghost">查字头详情</button>
   <span class="hint" id="pageRange"></span>
+</div>
+
+<div class="card" id="gallery">
+  <h2>已爬取页面 <span id="pgProgress" class="hint"></span></h2>
+  <div class="pbar"><div id="pbarFill"></div></div>
+  <div id="pgGrid" class="state">载入中…</div>
+  <div class="pgNav">
+    <button id="pgPrev" class="ghost">‹ 上一页</button>
+    <span id="pgInfo" class="hint"></span>
+    <button id="pgNext" class="ghost">下一页 ›</button>
+  </div>
 </div>
 
 <main>
@@ -187,6 +211,7 @@ async function fetchPage() {
     document.querySelectorAll('.chip[data-char]').forEach(el =>
       el.addEventListener('click', () => fetchChar(el.dataset.char, el)));
     if (d.thumbs.find(t => t.char)) fetchChar(d.thumbs.find(t => t.char).char);
+    loadGallery();
   } catch (e) {
     $('scanBox').innerHTML = `<div class="state err">抓取失败：${esc(e.message)}</div>`;
   } finally { $('fetchPage').disabled = false; }
@@ -221,6 +246,41 @@ async function fetchChar(ch, chipEl) {
   }
 }
 
+const PG_SIZE = 60;
+let pgOffset = 0, pgTotal = 0;
+
+async function loadGallery() {
+  try {
+    const d = await api(`/api/pages?offset=${pgOffset}&limit=${PG_SIZE}`);
+    pgTotal = d.total;
+    $('pgProgress').textContent = `${d.total} / ${d.total_pages} 页（${(d.total / d.total_pages * 100).toFixed(1)}%）`;
+    $('pbarFill').style.width = `${d.total / d.total_pages * 100}%`;
+    $('pgGrid').innerHTML = d.items.map(it => `
+      <div class="pgc" data-p="${it.page}" title="${(it.scan_width || '?')}×${(it.scan_height || '?')}，抓于 ${esc(it.scan_fetched_at ?? '')}">
+        <div class="n">${it.page}</div>
+        <div class="m">字头 ${it.chars}（码 ${it.coded}）</div>
+        <div class="m">${((it.scan_bytes || 0) / 1024).toFixed(0)}KB · ${esc((it.scan_fetched_at ?? '').slice(5, 10))}</div>
+      </div>`).join('') || '<div class="state">尚无已爬取页面——输入页码点「抓取本页」开始</div>';
+    const pages = Math.max(1, Math.ceil(pgTotal / PG_SIZE));
+    $('pgInfo').textContent = `第 ${pgOffset / PG_SIZE + 1} / ${pages} 页`;
+    const cur = String(+$('pageNo').value);
+    document.querySelectorAll('.pgc').forEach(el => {
+      el.classList.toggle('cur', el.dataset.p === cur);
+      el.addEventListener('click', () => { $('pageNo').value = el.dataset.p; fetchPage(); });
+    });
+  } catch (e) {
+    $('pgGrid').innerHTML = `<div class="state err">页面库载入失败：${esc(e.message)}</div>`;
+  }
+}
+
+function pgTurn(delta) {
+  const pages = Math.max(1, Math.ceil(pgTotal / PG_SIZE));
+  pgOffset = Math.min(Math.max(0, pgOffset + delta * PG_SIZE), (pages - 1) * PG_SIZE);
+  loadGallery();
+}
+$('pgPrev').addEventListener('click', () => pgTurn(-1));
+$('pgNext').addEventListener('click', () => pgTurn(1));
+
 $('fetchPage').addEventListener('click', fetchPage);
 $('fetchChar').addEventListener('click', () => {
   const ch = $('charBox').value.trim();
@@ -228,7 +288,13 @@ $('fetchChar').addEventListener('click', () => {
   fetchChar(ch);
 });
 $('charBox').addEventListener('keydown', e => { if (e.key === 'Enter') $('fetchChar').click(); });
-fetchPage();
+
+(async () => {
+  await loadGallery();
+  const first = document.querySelector('.pgc');   // 默认展示已爬的最小页码
+  if (first) { $('pageNo').value = first.dataset.p; fetchPage(); }
+  else fetchPage();                                // 空库时按输入框默认页码抓取
+})();
 </script>
 </body>
 </html>
@@ -269,6 +335,10 @@ class DemoHandler(BaseHTTPRequestHandler):
         try:
             if self.path in ("/", "/index.html"):
                 self._send(200, PAGE_HTML.encode("utf-8"), "text/html; charset=utf-8")
+            elif m := re.fullmatch(r"/api/pages\?offset=(\d+)&limit=(\d+)", self.path):
+                total, items = DemoHandler.store.list_pages(
+                    limit=int(m.group(2)), offset=int(m.group(1)))
+                self._json({"total": total, "total_pages": fp.TOTAL_PAGES, "items": items})
             elif m := re.fullmatch(r"/api/page/(\d{1,4})", self.path):
                 self._json(api_page(int(m.group(1))))
             elif m := re.fullmatch(r"/api/scan/(\d{1,4})", self.path):

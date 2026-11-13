@@ -272,6 +272,25 @@ class KangxiStore:
             return [dict(r) for r in c.execute(
                 "SELECT * FROM page_chars WHERE page=? ORDER BY ord", (page,))]
 
+    def list_pages(self, limit: int = 60, offset: int = 0) -> tuple[int, list[dict]]:
+        """已完成页（阅读页+原图齐备）分页列表，按页码排序；返回 (总数, 行)。"""
+        with self._conn() as c:
+            total = c.execute(
+                "SELECT COUNT(*) FROM pages WHERE reading_html IS NOT NULL AND scan_sha256 IS NOT NULL"
+            ).fetchone()[0]
+            rows = c.execute(
+                """SELECT p.page, p.scan_bytes, p.scan_width, p.scan_height,
+                          p.scan_fetched_at,
+                          (SELECT COUNT(*) FROM page_chars pc WHERE pc.page = p.page) AS chars,
+                          (SELECT COUNT(*) FROM page_chars pc
+                            WHERE pc.page = p.page AND pc.codepoint IS NOT NULL) AS coded
+                   FROM pages p
+                   WHERE p.reading_html IS NOT NULL AND p.scan_sha256 IS NOT NULL
+                   ORDER BY p.page LIMIT ? OFFSET ?""",
+                (limit, offset),
+            ).fetchall()
+        return total, [dict(r) for r in rows]
+
     # ---- entries ----
 
     def get_entry(self, codepoint: int) -> dict | None:
