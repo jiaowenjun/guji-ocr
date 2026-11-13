@@ -33,6 +33,14 @@ import kangxi_store  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CACHE = REPO_ROOT / "datasets" / "kangxi-demo-cache"
+# 罕见字字体：由本服务直供（@font-face url），避免 Safari 等浏览器
+# 对本地已装字体族名匹配的差异；文件在用户字体目录，缺省 404 时
+# 栈内仍按族名回退本地字体
+FONT_FILES = {
+    "kx.ttf": Path.home() / "Library" / "Fonts" / "KX_47043_14.ttf",
+    "hana-a.ttf": Path.home() / "Library" / "Fonts" / "HanaMinA.ttf",
+    "hana-b.ttf": Path.home() / "Library" / "Fonts" / "HanaMinB.ttf",
+}
 THUMB_URL_PREFIX = "https://www.kangxizidian.com/kxzt/"  # svg 字段含千位桶目录（如 1000s/…）
 NET_LOCK = threading.Lock()  # 串行化网络请求，保持限速礼仪
 
@@ -42,9 +50,21 @@ PAGE_HTML = """<!DOCTYPE html>
 <meta charset="utf-8">
 <title>康熙字典爬取演示 · guji-ocr</title>
 <style>
+  /* 罕见字字体直供：本地字体目录的 TTF 经本服务下发，Safari 无需匹配本地族名。
+     与栈内族名同名，覆盖式生效；文件缺失时回退本地字体。 */
+  @font-face { font-family: "KangXiZiDian.com"; font-display: swap;
+    src: url("/api/font/kx.ttf") format("truetype"); }
+  @font-face { font-family: "HanaMinA"; font-display: swap;
+    src: url("/api/font/hana-a.ttf") format("truetype"); }
+  @font-face { font-family: "HanaMinB"; font-display: swap;
+    src: url("/api/font/hana-b.ttf") format("truetype"); }
   :root {
     --paper: #f6f1e4; --card: #fffdf6; --line: #d9cba8; --ink: #3b3226;
     --accent: #8b2f2f; --tan: #daba94; --pale: #fef2e3; --ok: #4a7c3f;
+    /* 罕见字渲染（站点方案即依赖本地「康熙字典體」https://ww2.kangxizidian.com/kxfont/）：
+       康熙體（风格 + 部分 PUA）→ 花园明朝 A/B（Ext-A/B）→ 中华书局宋体 02/15 平面（SMP/SIP）→ 系统宋体 */
+    --kxfont: "KangXiZiDian.com", "康熙傳承版", "HanaMinA", "HanaMinB",
+              "中华书局宋体02平面", "中华书局宋体15平面", "Songti SC", "Noto Serif CJK SC", serif;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -84,15 +104,18 @@ PAGE_HTML = """<!DOCTYPE html>
   .badge { font-size: 10px; color: var(--accent); border: 1px solid var(--accent);
     border-radius: 4px; padding: 0 4px; }
   #detail .head-line { display: flex; align-items: baseline; gap: 12px; margin-bottom: 8px; }
-  #detail .big { font-size: 44px; color: var(--accent); line-height: 1; }
-  #detail .gw { font-size: 15px; }
+  #detail .big { font-size: 44px; color: var(--accent); line-height: 1; font-family: var(--kxfont); }
+  #detail .gw { font-size: 15px; font-family: var(--kxfont); }
   #detail table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 6px 0 10px; }
   #detail td { padding: 3px 6px; border-bottom: 1px dashed #e4d9bd; }
+  #detail td { font-family: var(--kxfont); }
   #detail td:first-child { color: #7a6f5c; width: 5.5em; white-space: nowrap; }
   #detail .editions td:first-child { width: 7em; }
   #detail .text { max-height: 46vh; overflow: auto; font-size: 14.5px; line-height: 1.95;
-    white-space: pre-wrap; padding-right: 6px; }
+    white-space: pre-wrap; padding-right: 6px; font-family: var(--kxfont); }
   #detail .pua { font-size: 12px; color: var(--accent); margin-top: 8px; }
+  .puaBadge { font-size: 11px; font-family: ui-monospace, monospace; color: #8b5a00;
+    background: #f3e8cf; border: 1px solid #d9cba8; border-radius: 4px; padding: 0 3px; margin: 0 1px; }
   #log { font-size: 12px; line-height: 1.8; font-family: ui-monospace, monospace;
     color: #5c5342; max-height: 150px; overflow: auto; }
   #log .t { color: #a09378; margin-right: 6px; }
@@ -163,11 +186,16 @@ PAGE_HTML = """<!DOCTYPE html>
   <div id="log"></div>
 </div>
 
-<footer>演示用途；站点内容版权归 kangxizidian.com / 原书相关方，仅限内部研究评测。未编码字（缩略图 K 码、链接为破损实体）无法经详情端点查询，灰显不可点。</footer>
+<footer>演示用途；站点内容版权归 kangxizidian.com / 原书相关方，仅限内部研究评测。未编码字（缩略图 K 码、链接为破损实体）无法经详情端点查询，灰显不可点。释文罕见字（Ext-B/PUA）依赖本地安装<a href="https://ww2.kangxizidian.com/kxfont/" target="_blank">《康熙字典體》</a>（KangXiZiDian.com），未安装时显示为方框。</footer>
 
 <script>
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+// 站点 PUA（kxfont 私用区）：本地字体可显则原字直出（fonts.check 探测），
+// 否则内联为码位徽标，避免隐形豆腐；日后装上新版康熙字典体自动恢复原字
+const PUA_FONT_OK = document.fonts.check('16px "KangXiZiDian.com"', '\uE815');
+const kxText = s => esc(s).replace(/[\uE000-\uF8FF]/g,
+  ch => PUA_FONT_OK ? ch : `<span class="puaBadge">U+${ch.codePointAt(0).toString(16).toUpperCase()}</span>`);
 
 function log(lines) {
   for (const line of lines ?? []) {
@@ -227,7 +255,7 @@ async function fetchChar(ch, chipEl) {
     $('detailBox').innerHTML = `
       <div class="head-line">
         <span class="big">${esc(r.head ?? ch)}</span>
-        <span class="gw">${r.guwen ? '古文 ' + esc(r.guwen) : ''}</span>
+        <span class="gw">${r.guwen ? '古文 ' + kxText(r.guwen) : ''}</span>
         <span style="font-size:13px;color:#7a6f5c">${esc(r.juan ?? '')}</span>
         <code style="font-size:12px;color:#8a7c62">${esc(r.unicode)}</code>
       </div>
@@ -239,7 +267,7 @@ async function fetchChar(ch, chipEl) {
       <table class="editions">
         ${ed('同文書局本', r.tongwen_edition)}${ed('武英殿本', r.wuying_edition)}
       </table>
-      <div class="text">${esc((r.text_paragraphs ?? []).join('\\n'))}</div>
+      <div class="text">${kxText((r.text_paragraphs ?? []).join('\\n'))}</div>
       ${r.pua_other?.length ? `<div class="pua">⚠ 释文含疑似 kxfont 字形的私用区字符：${r.pua_other.map(esc).join(' ')}，需人工定字</div>` : ''}`;
   } catch (e) {
     $('detailBox').innerHTML = `<div class="state err">抓取失败：${esc(e.message)}</div>`;
@@ -290,6 +318,9 @@ $('fetchChar').addEventListener('click', () => {
 $('charBox').addEventListener('keydown', e => { if (e.key === 'Enter') $('fetchChar').click(); });
 
 (async () => {
+  // 显式预载罕见字 webfont（@font-face 优先于本地同名族，Safari 亦不依赖本地匹配）
+  for (const [f, s] of [['"KangXiZiDian.com"', '丁'], ['"HanaMinA"', '一'], ['"HanaMinB"', '𠀤']])
+    document.fonts.load(`16px ${f}`, s).catch(() => {});
   await loadGallery();
   const first = document.querySelector('.pgc');   // 默认展示已爬的最小页码
   if (first) { $('pageNo').value = first.dataset.p; fetchPage(); }
@@ -319,6 +350,21 @@ class DemoHandler(BaseHTTPRequestHandler):
     def _json(self, obj, code: int = 200):
         self._send(code, json.dumps(obj, ensure_ascii=False).encode("utf-8"), "application/json; charset=utf-8")
 
+    def _serve_font(self, name: str):
+        """下发罕见字字体（用户字体目录的白名单 TTF），长缓存。"""
+        path = FONT_FILES.get(name)
+        if not path or not path.exists():
+            self._json({"error": f"字体不可用：{name}（{path}）"}, 404)
+            return
+        self.send_response(200)
+        self.send_header("Content-Type", "font/ttf")
+        self.send_header("Content-Length", str(path.stat().st_size))
+        self.send_header("Cache-Control", "public, max-age=86400")
+        self.end_headers()
+        with open(path, "rb") as f:
+            while chunk := f.read(1 << 20):
+                self.wfile.write(chunk)
+
     def _serve_scan(self, page: int):
         """输出库中登记的整页原图（由 /api/page 预先抓取/采纳）。"""
         row = DemoHandler.store.get_page(page)
@@ -335,6 +381,8 @@ class DemoHandler(BaseHTTPRequestHandler):
         try:
             if self.path in ("/", "/index.html"):
                 self._send(200, PAGE_HTML.encode("utf-8"), "text/html; charset=utf-8")
+            elif m := re.fullmatch(r"/api/font/([a-z\-]+\.ttf)", self.path):
+                self._serve_font(m.group(1))
             elif m := re.fullmatch(r"/api/pages\?offset=(\d+)&limit=(\d+)", self.path):
                 total, items = DemoHandler.store.list_pages(
                     limit=int(m.group(2)), offset=int(m.group(1)))
