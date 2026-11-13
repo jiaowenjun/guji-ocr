@@ -1,8 +1,8 @@
 {
-  "version": 1,
+  "version": 2,
   "meta": {
     "sourceFormat": "gj",
-    "generatedBy": "guji-ir/1",
+    "generatedBy": "guji-ir/2",
     "fidelity": "full",
     "profile": {
       "stripPunct": [
@@ -26,7 +26,9 @@
           "○"
         ]
       ]
-    }
+    },
+    "lineLayout": "fold",
+    "orientation": "vertical-rtl"
   },
   "pages": [
     {
@@ -44,57 +46,64 @@
             6,
             70
           ],
-          "segments": [
+          "lines": [
             {
-              "kind": "text",
-              "id": "p0326-b0-s0",
-              "text": "子涉淇，至于頓丘。叶下媒期。"
-            },
-            {
-              "kind": "book",
-              "id": "p0326-b0-s1",
-              "parts": [
+              "id": "p0326-b0-l0",
+              "ord": 0,
+              "src": [
+                6,
+                37
+              ],
+              "elements": [
                 {
+                  "id": "p0326-b0-e0",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "子涉淇，至于頓丘。叶下媒期。"
+                },
+                {
+                  "id": "p0326-b0-e1",
+                  "class": "small",
+                  "sem": "title",
                   "text": "小雅",
-                  "band": "p0326-b0"
-                }
-              ],
-              "src": [
-                20,
-                24
-              ]
-            },
-            {
-              "kind": "text",
-              "id": "p0326-b0-s2",
-              "text": "楊園之道，猗于畝丘。叶下詩"
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "text",
-              "id": "p0326-b0-s3",
-              "text": "之。"
-            },
-            {
-              "kind": "book",
-              "id": "p0326-b0-s4",
-              "parts": [
+                  "ref": "p0326-bk0"
+                },
                 {
-                  "text": "左傳·僖十五年",
-                  "band": "p0326-b0"
+                  "id": "p0326-b0-e2",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "楊園之道，猗于畝丘。叶下詩"
                 }
-              ],
-              "src": [
-                40,
-                49
               ]
             },
             {
-              "kind": "text",
-              "id": "p0326-b0-s5",
-              "text": "史蘇占之曰：不利行師，敗於宗丘。叶上姬旗。"
+              "id": "p0326-b0-l1",
+              "ord": 1,
+              "src": [
+                38,
+                70
+              ],
+              "elements": [
+                {
+                  "id": "p0326-b0-e3",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "之。"
+                },
+                {
+                  "id": "p0326-b0-e4",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "左傳·僖十五年",
+                  "ref": "p0326-bk1"
+                },
+                {
+                  "id": "p0326-b0-e5",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "史蘇占之曰：不利行師，敗於宗丘。叶上姬旗。"
+                }
+              ]
             }
           ]
         },
@@ -105,57 +114,64 @@
             72,
             136
           ],
-          "segments": [
+          "lines": [
             {
-              "kind": "text",
-              "id": "p0326-b1-s0",
-              "text": " 又叶苦高切，音尻。"
-            },
-            {
-              "kind": "book",
-              "id": "p0326-b1-s1",
-              "parts": [
+              "id": "p0326-b1-l0",
+              "ord": 0,
+              "src": [
+                72,
+                103
+              ],
+              "elements": [
                 {
+                  "id": "p0326-b1-e0",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": " 又叶苦高切，音尻。"
+                },
+                {
+                  "id": "p0326-b1-e1",
+                  "class": "small",
+                  "sem": "title",
                   "text": "楚辭·九懷",
-                  "band": "p0326-b1"
-                }
-              ],
-              "src": [
-                82,
-                89
-              ]
-            },
-            {
-              "kind": "text",
-              "id": "p0326-b1-s2",
-              "text": "玄鳥兮辭歸，飛翔兮靈丘。望谿"
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "text",
-              "id": "p0326-b1-s3",
-              "text": "兮蓊鬰，熊羆兮呴嘷。 又叶丘於切，音區。"
-            },
-            {
-              "kind": "book",
-              "id": "p0326-b1-s4",
-              "parts": [
+                  "ref": "p0326-bk2"
+                },
                 {
-                  "text": "𨻰琳·大荒賦",
-                  "band": "p0326-b1"
+                  "id": "p0326-b1-e2",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "玄鳥兮辭歸，飛翔兮靈丘。望谿"
                 }
-              ],
-              "src": [
-                124,
-                133
               ]
             },
             {
-              "kind": "text",
-              "id": "p0326-b1-s5",
-              "text": "過不死"
+              "id": "p0326-b1-l1",
+              "ord": 1,
+              "src": [
+                104,
+                136
+              ],
+              "elements": [
+                {
+                  "id": "p0326-b1-e3",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "兮蓊鬰，熊羆兮呴嘷。 又叶丘於切，音區。"
+                },
+                {
+                  "id": "p0326-b1-e4",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "𨻰琳·大荒賦",
+                  "ref": "p0326-bk3"
+                },
+                {
+                  "id": "p0326-b1-e5",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "過不死"
+                }
+              ]
             }
           ]
         },
@@ -166,38 +182,51 @@
             138,
             196
           ],
-          "segments": [
+          "lines": [
             {
-              "kind": "text",
-              "id": "p0326-b2-s0",
-              "text": "之靈域兮，仍羽人之丹丘。惟民生之每每兮，佇盤桓以躊蹰。古"
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "text",
-              "id": "p0326-b2-s1",
-              "text": "丘區聲通。"
-            },
-            {
-              "kind": "book",
-              "id": "p0326-b2-s2",
-              "parts": [
-                {
-                  "text": "顏師古曰",
-                  "band": "p0326-b2"
-                }
-              ],
+              "id": "p0326-b2-l0",
+              "ord": 0,
               "src": [
-                172,
-                178
+                138,
+                166
+              ],
+              "elements": [
+                {
+                  "id": "p0326-b2-e0",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "之靈域兮，仍羽人之丹丘。惟民生之每每兮，佇盤桓以躊蹰。古"
+                }
               ]
             },
             {
-              "kind": "text",
-              "id": "p0326-b2-s3",
-              "text": "古語丘區二字音不別，今讀則異。互見匚"
+              "id": "p0326-b2-l1",
+              "ord": 1,
+              "src": [
+                167,
+                196
+              ],
+              "elements": [
+                {
+                  "id": "p0326-b2-e1",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "丘區聲通。"
+                },
+                {
+                  "id": "p0326-b2-e2",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "顏師古曰",
+                  "ref": "p0326-bk4"
+                },
+                {
+                  "id": "p0326-b2-e3",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "古語丘區二字音不別，今讀則異。互見匚"
+                }
+              ]
             }
           ]
         },
@@ -208,149 +237,166 @@
             198,
             265
           ],
-          "segments": [
+          "lines": [
             {
-              "kind": "text",
-              "id": "p0326-b3-s0",
-              "text": "部區字註。 "
-            },
-            {
-              "kind": "book",
-              "id": "p0326-b3-s1",
-              "parts": [
-                {
-                  "text": "集韻",
-                  "band": "p0326-b3"
-                }
-              ],
+              "id": "p0326-b3-l0",
+              "ord": 0,
               "src": [
-                204,
+                198,
                 208
-              ]
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "text",
-              "id": "p0326-b3-s2",
-              "text": "本作丠，亦作𡊣。"
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "head",
-              "id": "p0326-b3-s3",
-              "char": "㐀"
-            },
-            {
-              "kind": "text",
-              "id": "p0326-b3-s4",
-              "text": ":"
-            },
-            {
-              "kind": "book",
-              "id": "p0326-b3-s5",
-              "parts": [
-                {
-                  "text": "正字通",
-                  "band": "p0326-b3"
-                }
               ],
-              "src": [
-                222,
-                227
-              ]
-            },
-            {
-              "kind": "text",
-              "id": "p0326-b3-s6",
-              "text": "同丘。"
-            },
-            {
-              "kind": "book",
-              "id": "p0326-b3-s7",
-              "parts": [
+              "elements": [
                 {
-                  "text": "風俗通",
-                  "band": "p0326-b3"
-                }
-              ],
-              "src": [
-                230,
-                235
-              ]
-            },
-            {
-              "kind": "text",
-              "id": "p0326-b3-s8",
-              "text": "二人"
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "text",
-              "id": "p0326-b3-s9",
-              "text": "立一上。一者，地也。象形。"
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "head",
-              "id": "p0326-b3-s10",
-              "char": "丙"
-            },
-            {
-              "kind": "text",
-              "id": "p0326-b3-s11",
-              "text": ":"
-            },
-            {
-              "kind": "book",
-              "id": "p0326-b3-s12",
-              "parts": [
-                {
-                  "text": "唐韻",
-                  "band": "p0326-b3"
-                }
-              ],
-              "src": [
-                255,
-                259
-              ]
-            },
-            {
-              "kind": "text",
-              "id": "p0326-b3-s13",
-              "text": "兵"
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "text",
-              "id": "p0326-b3-s14",
-              "text": "永切"
-            },
-            {
-              "kind": "book",
-              "id": "p0326-b3-s15",
-              "parts": [
-                {
-                  "text": "集",
-                  "band": "p0326-b3"
+                  "id": "p0326-b3-e0",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "部區字註。 "
                 },
                 {
-                  "text": "韻",
-                  "band": "p0326-b4"
+                  "id": "p0326-b3-e1",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "集韻",
+                  "ref": "p0326-bk5"
                 }
-              ],
+              ]
+            },
+            {
+              "id": "p0326-b3-l1",
+              "ord": 1,
               "src": [
-                263,
-                269
+                209,
+                218
+              ],
+              "elements": [
+                {
+                  "id": "p0326-b3-e2",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "本作丠，亦作𡊣。"
+                }
+              ]
+            },
+            {
+              "id": "p0326-b3-l2",
+              "ord": 2,
+              "src": [
+                219,
+                237
+              ],
+              "elements": [
+                {
+                  "id": "p0326-b3-e3",
+                  "class": "large",
+                  "sem": "head",
+                  "text": "㐀"
+                },
+                {
+                  "id": "p0326-b3-e4",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": ":"
+                },
+                {
+                  "id": "p0326-b3-e5",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "正字通",
+                  "ref": "p0326-bk6"
+                },
+                {
+                  "id": "p0326-b3-e6",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "同丘。"
+                },
+                {
+                  "id": "p0326-b3-e7",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "風俗通",
+                  "ref": "p0326-bk7"
+                },
+                {
+                  "id": "p0326-b3-e8",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "二人"
+                }
+              ]
+            },
+            {
+              "id": "p0326-b3-l3",
+              "ord": 3,
+              "src": [
+                238,
+                251
+              ],
+              "elements": [
+                {
+                  "id": "p0326-b3-e9",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "立一上。一者，地也。象形。"
+                }
+              ]
+            },
+            {
+              "id": "p0326-b3-l4",
+              "ord": 4,
+              "src": [
+                252,
+                260
+              ],
+              "elements": [
+                {
+                  "id": "p0326-b3-e10",
+                  "class": "large",
+                  "sem": "head",
+                  "text": "丙"
+                },
+                {
+                  "id": "p0326-b3-e11",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": ":"
+                },
+                {
+                  "id": "p0326-b3-e12",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "唐韻",
+                  "ref": "p0326-bk8"
+                },
+                {
+                  "id": "p0326-b3-e13",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "兵"
+                }
+              ]
+            },
+            {
+              "id": "p0326-b3-l5",
+              "ord": 5,
+              "src": [
+                261,
+                265
+              ],
+              "elements": [
+                {
+                  "id": "p0326-b3-e14",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "永切"
+                },
+                {
+                  "id": "p0326-b3-e15",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "集",
+                  "ref": "p0326-bk9"
+                }
               ]
             }
           ]
@@ -362,99 +408,85 @@
             267,
             334
           ],
-          "segments": [
+          "lines": [
             {
-              "kind": "book",
-              "id": "p0326-b4-s0",
-              "parts": [
+              "id": "p0326-b4-l0",
+              "ord": 0,
+              "src": [
+                267,
+                303
+              ],
+              "elements": [
                 {
+                  "id": "p0326-b4-e0",
+                  "class": "small",
+                  "sem": "title",
                   "text": "韻",
-                  "band": "p0326-b4"
-                }
-              ],
-              "src": [
-                263,
-                269
-              ]
-            },
-            {
-              "kind": "book",
-              "id": "p0326-b4-s1",
-              "parts": [
+                  "ref": "p0326-bk9"
+                },
                 {
+                  "id": "p0326-b4-e1",
+                  "class": "small",
+                  "sem": "title",
                   "text": "韻會",
-                  "band": "p0326-b4"
-                }
-              ],
-              "src": [
-                269,
-                273
-              ]
-            },
-            {
-              "kind": "book",
-              "id": "p0326-b4-s2",
-              "parts": [
+                  "ref": "p0326-bk10"
+                },
                 {
+                  "id": "p0326-b4-e2",
+                  "class": "small",
+                  "sem": "title",
                   "text": "正韻",
-                  "band": "p0326-b4"
-                }
-              ],
-              "src": [
-                273,
-                277
-              ]
-            },
-            {
-              "kind": "text",
-              "id": "p0326-b4-s3",
-              "text": "補永切，𠀤音炳。十幹名之一。"
-            },
-            {
-              "kind": "book",
-              "id": "p0326-b4-s4",
-              "parts": [
+                  "ref": "p0326-bk11"
+                },
                 {
+                  "id": "p0326-b4-e3",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "補永切，𠀤音炳。十幹名之一。"
+                },
+                {
+                  "id": "p0326-b4-e4",
+                  "class": "small",
+                  "sem": "title",
                   "text": "爾雅·釋天",
-                  "band": "p0326-b4"
-                }
-              ],
-              "src": [
-                292,
-                299
-              ]
-            },
-            {
-              "kind": "text",
-              "id": "p0326-b4-s5",
-              "text": "太歲在丙"
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "text",
-              "id": "p0326-b4-s6",
-              "text": "曰柔兆。月在丙曰修。"
-            },
-            {
-              "kind": "book",
-              "id": "p0326-b4-s7",
-              "parts": [
+                  "ref": "p0326-bk12"
+                },
                 {
-                  "text": "說文",
-                  "band": "p0326-b4"
+                  "id": "p0326-b4-e5",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "太歲在丙"
                 }
-              ],
-              "src": [
-                314,
-                318
               ]
             },
             {
-              "kind": "text",
-              "id": "p0326-b4-s8",
-              "text": "南方之位也。南方屬火，而丙丁適當"
+              "id": "p0326-b4-l1",
+              "ord": 1,
+              "src": [
+                304,
+                334
+              ],
+              "elements": [
+                {
+                  "id": "p0326-b4-e6",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "曰柔兆。月在丙曰修。"
+                },
+                {
+                  "id": "p0326-b4-e7",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "說文",
+                  "ref": "p0326-bk13"
+                },
+                {
+                  "id": "p0326-b4-e8",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "南方之位也。南方屬火，而丙丁適當"
+                }
+              ]
             }
           ]
         },
@@ -465,89 +497,83 @@
             336,
             402
           ],
-          "segments": [
+          "lines": [
             {
-              "kind": "text",
-              "id": "p0326-b5-s0",
-              "text": "其處，故有文明之象。 又"
-            },
-            {
-              "kind": "book",
-              "id": "p0326-b5-s1",
-              "parts": [
+              "id": "p0326-b5-l0",
+              "ord": 0,
+              "src": [
+                336,
+                366
+              ],
+              "elements": [
                 {
+                  "id": "p0326-b5-e0",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "其處，故有文明之象。 又"
+                },
+                {
+                  "id": "p0326-b5-e1",
+                  "class": "small",
+                  "sem": "title",
                   "text": "周髀算經",
-                  "band": "p0326-b5"
+                  "ref": "p0326-bk14"
+                },
+                {
+                  "id": "p0326-b5-e2",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "上天名靑丙，下地曰靑戊。"
                 }
-              ],
-              "src": [
-                348,
-                354
               ]
             },
             {
-              "kind": "text",
-              "id": "p0326-b5-s2",
-              "text": "上天名靑丙，下地曰靑戊。"
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "text",
-              "id": "p0326-b5-s3",
-              "text": " 又"
-            },
-            {
-              "kind": "book",
-              "id": "p0326-b5-s4",
-              "parts": [
-                {
-                  "text": "張衡·東京賦",
-                  "band": "p0326-b5"
-                }
-              ],
+              "id": "p0326-b5-l1",
+              "ord": 1,
               "src": [
-                369,
-                377
-              ]
-            },
-            {
-              "kind": "text",
-              "id": "p0326-b5-s5",
-              "text": "大丙弭節，風后陪乗。"
-            },
-            {
-              "kind": "book",
-              "id": "p0326-b5-s6",
-              "parts": [
-                {
-                  "text": "註",
-                  "band": "p0326-b5"
-                }
-              ],
-              "src": [
-                387,
-                390
-              ]
-            },
-            {
-              "kind": "text",
-              "id": "p0326-b5-s7",
-              "text": "大丙，神名。 又"
-            },
-            {
-              "kind": "book",
-              "id": "p0326-b5-s8",
-              "parts": [
-                {
-                  "text": "集韻",
-                  "band": "p0326-b5"
-                }
-              ],
-              "src": [
-                398,
+                367,
                 402
+              ],
+              "elements": [
+                {
+                  "id": "p0326-b5-e3",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": " 又"
+                },
+                {
+                  "id": "p0326-b5-e4",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "張衡·東京賦",
+                  "ref": "p0326-bk15"
+                },
+                {
+                  "id": "p0326-b5-e5",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "大丙弭節，風后陪乗。"
+                },
+                {
+                  "id": "p0326-b5-e6",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "註",
+                  "ref": "p0326-bk16"
+                },
+                {
+                  "id": "p0326-b5-e7",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "大丙，神名。 又"
+                },
+                {
+                  "id": "p0326-b5-e8",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "集韻",
+                  "ref": "p0326-bk17"
+                }
               ]
             }
           ]
@@ -559,106 +585,132 @@
             404,
             465
           ],
-          "segments": [
+          "lines": [
             {
-              "kind": "text",
-              "id": "p0326-b6-s0",
-              "text": "陂病切，音"
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "text",
-              "id": "p0326-b6-s1",
-              "text": "柄。日名。"
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "mark",
-              "id": "p0326-b6-s2",
-              "text": "五",
-              "style": "circled"
-            },
-            {
-              "kind": "head",
-              "id": "p0326-b6-s3",
-              "char": "㐁"
-            },
-            {
-              "kind": "text",
-              "id": "p0326-b6-s4",
-              "text": "古文："
-            },
-            {
-              "kind": "head",
-              "id": "p0326-b6-s5",
-              "char": "𠀬"
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "book",
-              "id": "p0326-b6-s6",
-              "parts": [
-                {
-                  "text": "集韻",
-                  "band": "p0326-b6"
-                }
+              "id": "p0326-b6-l0",
+              "ord": 0,
+              "src": [
+                404,
+                409
               ],
+              "elements": [
+                {
+                  "id": "p0326-b6-e0",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "陂病切，音"
+                }
+              ]
+            },
+            {
+              "id": "p0326-b6-l1",
+              "ord": 1,
+              "src": [
+                410,
+                415
+              ],
+              "elements": [
+                {
+                  "id": "p0326-b6-e1",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "柄。日名。"
+                }
+              ]
+            },
+            {
+              "id": "p0326-b6-l2",
+              "ord": 2,
+              "src": [
+                416,
+                427
+              ],
+              "elements": [
+                {
+                  "id": "p0326-b6-e2",
+                  "class": "large",
+                  "sem": "mark",
+                  "text": "五",
+                  "style": "circled"
+                },
+                {
+                  "id": "p0326-b6-e3",
+                  "class": "large",
+                  "sem": "head",
+                  "text": "㐁"
+                },
+                {
+                  "id": "p0326-b6-e4",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "古文："
+                },
+                {
+                  "id": "p0326-b6-e5",
+                  "class": "large",
+                  "sem": "head",
+                  "text": "𠀬"
+                }
+              ]
+            },
+            {
+              "id": "p0326-b6-l3",
+              "ord": 3,
               "src": [
                 428,
-                432
+                445
+              ],
+              "elements": [
+                {
+                  "id": "p0326-b6-e6",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "集韻",
+                  "ref": "p0326-bk18"
+                },
+                {
+                  "id": "p0326-b6-e7",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "他點切，音忝。以舌鉤取也。"
+                }
               ]
             },
             {
-              "kind": "text",
-              "id": "p0326-b6-s7",
-              "text": "他點切，音忝。以舌鉤取也。"
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "book",
-              "id": "p0326-b6-s8",
-              "parts": [
-                {
-                  "text": "說文",
-                  "band": "p0326-b6"
-                }
-              ],
+              "id": "p0326-b6-l4",
+              "ord": 4,
               "src": [
                 446,
-                450
-              ]
-            },
-            {
-              "kind": "text",
-              "id": "p0326-b6-s9",
-              "text": "舌貌。从谷省，象形。"
-            },
-            {
-              "kind": "book",
-              "id": "p0326-b6-s10",
-              "parts": [
-                {
-                  "text": "精薀",
-                  "band": "p0326-b6"
-                }
+                465
               ],
-              "src": [
-                460,
-                464
+              "elements": [
+                {
+                  "id": "p0326-b6-e8",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "說文",
+                  "ref": "p0326-bk19"
+                },
+                {
+                  "id": "p0326-b6-e9",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "舌貌。从谷省，象形。"
+                },
+                {
+                  "id": "p0326-b6-e10",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "精薀",
+                  "ref": "p0326-bk20"
+                },
+                {
+                  "id": "p0326-b6-e11",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "㐁"
+                }
               ]
-            },
-            {
-              "kind": "text",
-              "id": "p0326-b6-s11",
-              "text": "㐁"
             }
           ]
         },
@@ -669,70 +721,464 @@
             467,
             532
           ],
-          "segments": [
+          "lines": [
             {
-              "kind": "text",
-              "id": "p0326-b7-s0",
-              "text": "以舌在口外，露舌耑舐物。人有持短長術，以言鉤人者，孟子斥"
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "text",
-              "id": "p0326-b7-s1",
-              "text": "爲穿窬。 又"
-            },
-            {
-              "kind": "book",
-              "id": "p0326-b7-s2",
-              "parts": [
+              "id": "p0326-b7-l0",
+              "ord": 0,
+              "src": [
+                467,
+                495
+              ],
+              "elements": [
                 {
+                  "id": "p0326-b7-e0",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "以舌在口外，露舌耑舐物。人有持短長術，以言鉤人者，孟子斥"
+                }
+              ]
+            },
+            {
+              "id": "p0326-b7-l1",
+              "ord": 1,
+              "src": [
+                496,
+                532
+              ],
+              "elements": [
+                {
+                  "id": "p0326-b7-e1",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "爲穿窬。 又"
+                },
+                {
+                  "id": "p0326-b7-e2",
+                  "class": "small",
+                  "sem": "title",
                   "text": "玉篇",
-                  "band": "p0326-b7"
-                }
-              ],
-              "src": [
-                502,
-                506
-              ]
-            },
-            {
-              "kind": "book",
-              "id": "p0326-b7-s3",
-              "parts": [
+                  "ref": "p0326-bk21"
+                },
                 {
+                  "id": "p0326-b7-e3",
+                  "class": "small",
+                  "sem": "title",
                   "text": "唐韻",
-                  "band": "p0326-b7"
-                }
-              ],
-              "src": [
-                506,
-                510
-              ]
-            },
-            {
-              "kind": "book",
-              "id": "p0326-b7-s4",
-              "parts": [
+                  "ref": "p0326-bk22"
+                },
                 {
+                  "id": "p0326-b7-e4",
+                  "class": "small",
+                  "sem": "title",
                   "text": "集韻",
-                  "band": "p0326-b7"
+                  "ref": "p0326-bk23"
+                },
+                {
+                  "id": "p0326-b7-e5",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "𠀤他念切，添去聲。義同。〇按㐁字，"
                 }
-              ],
-              "src": [
-                510,
-                514
               ]
-            },
-            {
-              "kind": "text",
-              "id": "p0326-b7-s5",
-              "text": "𠀤他念切，添去聲。義同。〇按㐁字，"
             }
           ]
         }
-      ]
+      ],
+      "semantics": {
+        "books": [
+          {
+            "id": "p0326-bk0",
+            "spans": [
+              {
+                "line": "p0326-b0-l0",
+                "range": [
+                  14,
+                  16
+                ]
+              }
+            ],
+            "src": [
+              20,
+              24
+            ]
+          },
+          {
+            "id": "p0326-bk1",
+            "spans": [
+              {
+                "line": "p0326-b0-l1",
+                "range": [
+                  2,
+                  9
+                ]
+              }
+            ],
+            "src": [
+              40,
+              49
+            ]
+          },
+          {
+            "id": "p0326-bk2",
+            "spans": [
+              {
+                "line": "p0326-b1-l0",
+                "range": [
+                  10,
+                  15
+                ]
+              }
+            ],
+            "src": [
+              82,
+              89
+            ]
+          },
+          {
+            "id": "p0326-bk3",
+            "spans": [
+              {
+                "line": "p0326-b1-l1",
+                "range": [
+                  20,
+                  27
+                ]
+              }
+            ],
+            "src": [
+              124,
+              133
+            ]
+          },
+          {
+            "id": "p0326-bk4",
+            "spans": [
+              {
+                "line": "p0326-b2-l1",
+                "range": [
+                  5,
+                  9
+                ]
+              }
+            ],
+            "src": [
+              172,
+              178
+            ]
+          },
+          {
+            "id": "p0326-bk5",
+            "spans": [
+              {
+                "line": "p0326-b3-l0",
+                "range": [
+                  6,
+                  8
+                ]
+              }
+            ],
+            "src": [
+              204,
+              208
+            ]
+          },
+          {
+            "id": "p0326-bk6",
+            "spans": [
+              {
+                "line": "p0326-b3-l2",
+                "range": [
+                  2,
+                  5
+                ]
+              }
+            ],
+            "src": [
+              222,
+              227
+            ]
+          },
+          {
+            "id": "p0326-bk7",
+            "spans": [
+              {
+                "line": "p0326-b3-l2",
+                "range": [
+                  8,
+                  11
+                ]
+              }
+            ],
+            "src": [
+              230,
+              235
+            ]
+          },
+          {
+            "id": "p0326-bk8",
+            "spans": [
+              {
+                "line": "p0326-b3-l4",
+                "range": [
+                  2,
+                  4
+                ]
+              }
+            ],
+            "src": [
+              255,
+              259
+            ]
+          },
+          {
+            "id": "p0326-bk9",
+            "spans": [
+              {
+                "line": "p0326-b3-l5",
+                "range": [
+                  2,
+                  3
+                ]
+              },
+              {
+                "line": "p0326-b4-l0",
+                "range": [
+                  0,
+                  1
+                ]
+              }
+            ],
+            "src": [
+              263,
+              269
+            ]
+          },
+          {
+            "id": "p0326-bk10",
+            "spans": [
+              {
+                "line": "p0326-b4-l0",
+                "range": [
+                  1,
+                  3
+                ]
+              }
+            ],
+            "src": [
+              269,
+              273
+            ]
+          },
+          {
+            "id": "p0326-bk11",
+            "spans": [
+              {
+                "line": "p0326-b4-l0",
+                "range": [
+                  3,
+                  5
+                ]
+              }
+            ],
+            "src": [
+              273,
+              277
+            ]
+          },
+          {
+            "id": "p0326-bk12",
+            "spans": [
+              {
+                "line": "p0326-b4-l0",
+                "range": [
+                  20,
+                  25
+                ]
+              }
+            ],
+            "src": [
+              292,
+              299
+            ]
+          },
+          {
+            "id": "p0326-bk13",
+            "spans": [
+              {
+                "line": "p0326-b4-l1",
+                "range": [
+                  10,
+                  12
+                ]
+              }
+            ],
+            "src": [
+              314,
+              318
+            ]
+          },
+          {
+            "id": "p0326-bk14",
+            "spans": [
+              {
+                "line": "p0326-b5-l0",
+                "range": [
+                  12,
+                  16
+                ]
+              }
+            ],
+            "src": [
+              348,
+              354
+            ]
+          },
+          {
+            "id": "p0326-bk15",
+            "spans": [
+              {
+                "line": "p0326-b5-l1",
+                "range": [
+                  2,
+                  8
+                ]
+              }
+            ],
+            "src": [
+              369,
+              377
+            ]
+          },
+          {
+            "id": "p0326-bk16",
+            "spans": [
+              {
+                "line": "p0326-b5-l1",
+                "range": [
+                  18,
+                  19
+                ]
+              }
+            ],
+            "src": [
+              387,
+              390
+            ]
+          },
+          {
+            "id": "p0326-bk17",
+            "spans": [
+              {
+                "line": "p0326-b5-l1",
+                "range": [
+                  27,
+                  29
+                ]
+              }
+            ],
+            "src": [
+              398,
+              402
+            ]
+          },
+          {
+            "id": "p0326-bk18",
+            "spans": [
+              {
+                "line": "p0326-b6-l3",
+                "range": [
+                  0,
+                  2
+                ]
+              }
+            ],
+            "src": [
+              428,
+              432
+            ]
+          },
+          {
+            "id": "p0326-bk19",
+            "spans": [
+              {
+                "line": "p0326-b6-l4",
+                "range": [
+                  0,
+                  2
+                ]
+              }
+            ],
+            "src": [
+              446,
+              450
+            ]
+          },
+          {
+            "id": "p0326-bk20",
+            "spans": [
+              {
+                "line": "p0326-b6-l4",
+                "range": [
+                  12,
+                  14
+                ]
+              }
+            ],
+            "src": [
+              460,
+              464
+            ]
+          },
+          {
+            "id": "p0326-bk21",
+            "spans": [
+              {
+                "line": "p0326-b7-l1",
+                "range": [
+                  6,
+                  8
+                ]
+              }
+            ],
+            "src": [
+              502,
+              506
+            ]
+          },
+          {
+            "id": "p0326-bk22",
+            "spans": [
+              {
+                "line": "p0326-b7-l1",
+                "range": [
+                  8,
+                  10
+                ]
+              }
+            ],
+            "src": [
+              506,
+              510
+            ]
+          },
+          {
+            "id": "p0326-bk23",
+            "spans": [
+              {
+                "line": "p0326-b7-l1",
+                "range": [
+                  10,
+                  12
+                ]
+              }
+            ],
+            "src": [
+              510,
+              514
+            ]
+          }
+        ]
+      }
     }
   ]
 }

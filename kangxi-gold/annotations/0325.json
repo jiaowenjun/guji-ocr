@@ -1,8 +1,8 @@
 {
-  "version": 1,
+  "version": 2,
   "meta": {
     "sourceFormat": "gj",
-    "generatedBy": "guji-ir/1",
+    "generatedBy": "guji-ir/2",
     "fidelity": "full",
     "profile": {
       "stripPunct": [
@@ -26,7 +26,9 @@
           "○"
         ]
       ]
-    }
+    },
+    "lineLayout": "fold",
+    "orientation": "vertical-rtl"
   },
   "pages": [
     {
@@ -44,49 +46,65 @@
             6,
             68
           ],
-          "segments": [
+          "lines": [
             {
-              "kind": "text",
-              "id": "p0325-b0-s0",
-              "text": "曰丘。 又前高後下曰旄丘。"
-            },
-            {
-              "kind": "book",
-              "id": "p0325-b0-s1",
-              "parts": [
+              "id": "p0325-b0-l0",
+              "ord": 0,
+              "src": [
+                6,
+                38
+              ],
+              "elements": [
                 {
+                  "id": "p0325-b0-e0",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "曰丘。 又前高後下曰旄丘。"
+                },
+                {
+                  "id": "p0325-b0-e1",
+                  "class": "small",
+                  "sem": "title",
                   "text": "博雅",
-                  "band": "p0325-b0"
-                }
-              ],
-              "src": [
-                19,
-                23
-              ]
-            },
-            {
-              "kind": "text",
-              "id": "p0325-b0-s2",
-              "text": "小陵曰丘。 又"
-            },
-            {
-              "kind": "book",
-              "id": "p0325-b0-s3",
-              "parts": [
+                  "ref": "p0325-bk0"
+                },
                 {
-                  "text": "周禮·春官·大\n司樂",
-                  "band": "p0325-b0"
+                  "id": "p0325-b0-e2",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "小陵曰丘。 又"
+                },
+                {
+                  "id": "p0325-b0-e3",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "周禮·春官·大",
+                  "ref": "p0325-bk1"
                 }
-              ],
-              "src": [
-                30,
-                42
               ]
             },
             {
-              "kind": "text",
-              "id": "p0325-b0-s4",
-              "text": "凡樂，冬日至，于地上之圜丘而奏之。夏日至，于澤中之方"
+              "id": "p0325-b0-l1",
+              "ord": 1,
+              "src": [
+                39,
+                68
+              ],
+              "elements": [
+                {
+                  "id": "p0325-b0-e4",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "司樂",
+                  "ref": "p0325-bk1"
+                },
+                {
+                  "id": "p0325-b0-e5",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "凡樂，冬日至，于地上之圜丘而奏之。夏日至，于澤中之方"
+                }
+              ]
             }
           ]
         },
@@ -97,38 +115,51 @@
             70,
             131
           ],
-          "segments": [
+          "lines": [
             {
-              "kind": "text",
-              "id": "p0325-b1-s0",
-              "text": "丘而奏之。"
-            },
-            {
-              "kind": "book",
-              "id": "p0325-b1-s1",
-              "parts": [
-                {
-                  "text": "疏",
-                  "band": "p0325-b1"
-                }
-              ],
+              "id": "p0325-b1-l0",
+              "ord": 0,
               "src": [
-                75,
-                78
+                70,
+                100
+              ],
+              "elements": [
+                {
+                  "id": "p0325-b1-e0",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "丘而奏之。"
+                },
+                {
+                  "id": "p0325-b1-e1",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "疏",
+                  "ref": "p0325-bk2"
+                },
+                {
+                  "id": "p0325-b1-e2",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "土之高者曰丘。因高以事天，故於地上。因下以事"
+                }
               ]
             },
             {
-              "kind": "text",
-              "id": "p0325-b1-s2",
-              "text": "土之高者曰丘。因高以事天，故於地上。因下以事"
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "text",
-              "id": "p0325-b1-s3",
-              "text": "地，故於澤中。 又地名。帝丘，本顓頊之墟，今澶州濮陽縣。又營"
+              "id": "p0325-b1-l1",
+              "ord": 1,
+              "src": [
+                101,
+                131
+              ],
+              "elements": [
+                {
+                  "id": "p0325-b1-e3",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "地，故於澤中。 又地名。帝丘，本顓頊之墟，今澶州濮陽縣。又營"
+                }
+              ]
             }
           ]
         },
@@ -139,49 +170,65 @@
             133,
             201
           ],
-          "segments": [
+          "lines": [
             {
-              "kind": "text",
-              "id": "p0325-b2-s0",
-              "text": "丘，商丘，楚丘，靈丘，葵丘，咸丘，虎丘，皆地名。 又三丘。"
-            },
-            {
-              "kind": "book",
-              "id": "p0325-b2-s1",
-              "parts": [
-                {
-                  "text": "張衡·思玄\n賦",
-                  "band": "p0325-b2"
-                }
-              ],
+              "id": "p0325-b2-l0",
+              "ord": 0,
               "src": [
-                162,
-                171
+                133,
+                168
+              ],
+              "elements": [
+                {
+                  "id": "p0325-b2-e0",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "丘，商丘，楚丘，靈丘，葵丘，咸丘，虎丘，皆地名。 又三丘。"
+                },
+                {
+                  "id": "p0325-b2-e1",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "張衡·思玄",
+                  "ref": "p0325-bk3"
+                }
               ]
             },
             {
-              "kind": "text",
-              "id": "p0325-b2-s2",
-              "text": "過少昊之窮野兮，問三丘乎句芒。"
-            },
-            {
-              "kind": "book",
-              "id": "p0325-b2-s3",
-              "parts": [
+              "id": "p0325-b2-l1",
+              "ord": 1,
+              "src": [
+                169,
+                201
+              ],
+              "elements": [
                 {
+                  "id": "p0325-b2-e2",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "賦",
+                  "ref": "p0325-bk3"
+                },
+                {
+                  "id": "p0325-b2-e3",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "過少昊之窮野兮，問三丘乎句芒。"
+                },
+                {
+                  "id": "p0325-b2-e4",
+                  "class": "small",
+                  "sem": "title",
                   "text": "註",
-                  "band": "p0325-b2"
+                  "ref": "p0325-bk4"
+                },
+                {
+                  "id": "p0325-b2-e5",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "蓬萊，方丈，方壺，三者皆"
                 }
-              ],
-              "src": [
-                186,
-                189
               ]
-            },
-            {
-              "kind": "text",
-              "id": "p0325-b2-s4",
-              "text": "蓬萊，方丈，方壺，三者皆"
             }
           ]
         },
@@ -192,76 +239,77 @@
             203,
             269
           ],
-          "segments": [
+          "lines": [
             {
-              "kind": "text",
-              "id": "p0325-b3-s0",
-              "text": "羣仙所居。 又"
-            },
-            {
-              "kind": "book",
-              "id": "p0325-b3-s1",
-              "parts": [
+              "id": "p0325-b3-l0",
+              "ord": 0,
+              "src": [
+                203,
+                236
+              ],
+              "elements": [
                 {
+                  "id": "p0325-b3-e0",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "羣仙所居。 又"
+                },
+                {
+                  "id": "p0325-b3-e1",
+                  "class": "small",
+                  "sem": "title",
                   "text": "前漢·𠛬法志",
-                  "band": "p0325-b3"
+                  "ref": "p0325-bk5"
+                },
+                {
+                  "id": "p0325-b3-e2",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "四井爲邑，四邑爲丘。丘，十六井也。"
                 }
-              ],
-              "src": [
-                210,
-                219
               ]
             },
             {
-              "kind": "text",
-              "id": "p0325-b3-s2",
-              "text": "四井爲邑，四邑爲丘。丘，十六井也。"
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "text",
-              "id": "p0325-b3-s3",
-              "text": " 又"
-            },
-            {
-              "kind": "book",
-              "id": "p0325-b3-s4",
-              "parts": [
+              "id": "p0325-b3-l1",
+              "ord": 1,
+              "src": [
+                237,
+                269
+              ],
+              "elements": [
                 {
+                  "id": "p0325-b3-e3",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": " 又"
+                },
+                {
+                  "id": "p0325-b3-e4",
+                  "class": "small",
+                  "sem": "title",
                   "text": "春秋·成元年",
-                  "band": "p0325-b3"
-                }
-              ],
-              "src": [
-                239,
-                247
-              ]
-            },
-            {
-              "kind": "text",
-              "id": "p0325-b3-s5",
-              "text": "作丘甲。"
-            },
-            {
-              "kind": "book",
-              "id": "p0325-b3-s6",
-              "parts": [
+                  "ref": "p0325-bk6"
+                },
                 {
+                  "id": "p0325-b3-e5",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "作丘甲。"
+                },
+                {
+                  "id": "p0325-b3-e6",
+                  "class": "small",
+                  "sem": "title",
                   "text": "胡傳",
-                  "band": "p0325-b3"
+                  "ref": "p0325-bk7"
+                },
+                {
+                  "id": "p0325-b3-e7",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "益兵也，卽丘出一甲，則一甸之"
                 }
-              ],
-              "src": [
-                251,
-                255
               ]
-            },
-            {
-              "kind": "text",
-              "id": "p0325-b3-s7",
-              "text": "益兵也，卽丘出一甲，則一甸之"
             }
           ]
         },
@@ -272,38 +320,51 @@
             271,
             332
           ],
-          "segments": [
+          "lines": [
             {
-              "kind": "text",
-              "id": "p0325-b4-s0",
-              "text": "中，共百人爲兵矣。 又聚也。"
-            },
-            {
-              "kind": "book",
-              "id": "p0325-b4-s1",
-              "parts": [
-                {
-                  "text": "孔安國·尚書序",
-                  "band": "p0325-b4"
-                }
-              ],
+              "id": "p0325-b4-l0",
+              "ord": 0,
               "src": [
-                285,
-                294
+                271,
+                302
+              ],
+              "elements": [
+                {
+                  "id": "p0325-b4-e0",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "中，共百人爲兵矣。 又聚也。"
+                },
+                {
+                  "id": "p0325-b4-e1",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "孔安國·尚書序",
+                  "ref": "p0325-bk8"
+                },
+                {
+                  "id": "p0325-b4-e2",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "九州之志，謂之九"
+                }
               ]
             },
             {
-              "kind": "text",
-              "id": "p0325-b4-s2",
-              "text": "九州之志，謂之九"
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "text",
-              "id": "p0325-b4-s3",
-              "text": "丘。言九州所有，皆聚此書也。 又崇丘，亡詩篇名。言萬物得極"
+              "id": "p0325-b4-l1",
+              "ord": 1,
+              "src": [
+                303,
+                332
+              ],
+              "elements": [
+                {
+                  "id": "p0325-b4-e3",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "丘。言九州所有，皆聚此書也。 又崇丘，亡詩篇名。言萬物得極"
+                }
+              ]
             }
           ]
         },
@@ -314,103 +375,106 @@
             334,
             431
           ],
-          "segments": [
+          "lines": [
             {
-              "kind": "text",
-              "id": "p0325-b5-s0",
-              "text": "其高大也。 又大也。"
-            },
-            {
-              "kind": "book",
-              "id": "p0325-b5-s1",
-              "parts": [
+              "id": "p0325-b5-l0",
+              "ord": 0,
+              "src": [
+                334,
+                364
+              ],
+              "elements": [
                 {
+                  "id": "p0325-b5-e0",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "其高大也。 又大也。"
+                },
+                {
+                  "id": "p0325-b5-e1",
+                  "class": "small",
+                  "sem": "title",
                   "text": "前漢·楚元王傳",
-                  "band": "p0325-b5"
+                  "ref": "p0325-bk9"
+                },
+                {
+                  "id": "p0325-b5-e2",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "高祖微時，嘗與賓客過其"
                 }
-              ],
-              "src": [
-                344,
-                353
               ]
             },
             {
-              "kind": "text",
-              "id": "p0325-b5-s2",
-              "text": "高祖微時，嘗與賓客過其"
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "text",
-              "id": "p0325-b5-s3",
-              "text": "丘嫂食。"
-            },
-            {
-              "kind": "book",
-              "id": "p0325-b5-s4",
-              "parts": [
+              "id": "p0325-b5-l1",
+              "ord": 1,
+              "src": [
+                365,
+                398
+              ],
+              "elements": [
                 {
+                  "id": "p0325-b5-e3",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "丘嫂食。"
+                },
+                {
+                  "id": "p0325-b5-e4",
+                  "class": "small",
+                  "sem": "title",
                   "text": "註",
-                  "band": "p0325-b5"
-                }
-              ],
-              "src": [
-                369,
-                372
-              ]
-            },
-            {
-              "kind": "text",
-              "id": "p0325-b5-s5",
-              "text": "長嫂之稱。 又空也。"
-            },
-            {
-              "kind": "book",
-              "id": "p0325-b5-s6",
-              "parts": [
+                  "ref": "p0325-bk10"
+                },
                 {
+                  "id": "p0325-b5-e5",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "長嫂之稱。 又空也。"
+                },
+                {
+                  "id": "p0325-b5-e6",
+                  "class": "small",
+                  "sem": "title",
                   "text": "前漢·息夫躬傳",
-                  "band": "p0325-b5"
-                }
-              ],
-              "src": [
-                382,
-                391
-              ]
-            },
-            {
-              "kind": "text",
-              "id": "p0325-b5-s7",
-              "text": "寄居丘亭。 又"
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "text",
-              "id": "p0325-b5-s8",
-              "text": "丘里。"
-            },
-            {
-              "kind": "book",
-              "id": "p0325-b5-s9",
-              "parts": [
+                  "ref": "p0325-bk11"
+                },
                 {
-                  "text": "莊子·則陽篇",
-                  "band": "p0325-b5"
+                  "id": "p0325-b5-e7",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "寄居丘亭。 又"
                 }
-              ],
-              "src": [
-                402,
-                410
               ]
             },
             {
-              "kind": "text",
-              "id": "p0325-b5-s10",
-              "text": "少知問太公調曰：何謂丘里之言。曰：丘里者，"
+              "id": "p0325-b5-l2",
+              "ord": 2,
+              "src": [
+                399,
+                431
+              ],
+              "elements": [
+                {
+                  "id": "p0325-b5-e8",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "丘里。"
+                },
+                {
+                  "id": "p0325-b5-e9",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "莊子·則陽篇",
+                  "ref": "p0325-bk12"
+                },
+                {
+                  "id": "p0325-b5-e10",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "少知問太公調曰：何謂丘里之言。曰：丘里者，"
+                }
+              ]
             }
           ]
         },
@@ -421,38 +485,51 @@
             433,
             498
           ],
-          "segments": [
+          "lines": [
             {
-              "kind": "text",
-              "id": "p0325-b6-s0",
-              "text": "合十姓百名，以爲風俗也。 又比丘。"
-            },
-            {
-              "kind": "book",
-              "id": "p0325-b6-s1",
-              "parts": [
-                {
-                  "text": "魏書·釋老傳",
-                  "band": "p0325-b6"
-                }
-              ],
+              "id": "p0325-b6-l0",
+              "ord": 0,
               "src": [
-                450,
-                458
+                433,
+                464
+              ],
+              "elements": [
+                {
+                  "id": "p0325-b6-e0",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "合十姓百名，以爲風俗也。 又比丘。"
+                },
+                {
+                  "id": "p0325-b6-e1",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "魏書·釋老傳",
+                  "ref": "p0325-bk13"
+                },
+                {
+                  "id": "p0325-b6-e2",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "桑門爲息心，"
+                }
               ]
             },
             {
-              "kind": "text",
-              "id": "p0325-b6-s2",
-              "text": "桑門爲息心，"
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "text",
-              "id": "p0325-b6-s3",
-              "text": "比丘爲行乞。 又姓。又左丘，龍丘，咸丘，虞丘，梁丘，母丘，陶丘，浮"
+              "id": "p0325-b6-l1",
+              "ord": 1,
+              "src": [
+                465,
+                498
+              ],
+              "elements": [
+                {
+                  "id": "p0325-b6-e3",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "比丘爲行乞。 又姓。又左丘，龍丘，咸丘，虞丘，梁丘，母丘，陶丘，浮"
+                }
+              ]
             }
           ]
         },
@@ -463,53 +540,326 @@
             500,
             536
           ],
-          "segments": [
+          "lines": [
             {
-              "kind": "text",
-              "id": "p0325-b7-s0",
-              "text": "丘，麥丘，水丘，吾丘，皆復姓。 又"
-            },
-            {
-              "kind": "book",
-              "id": "p0325-b7-s1",
-              "parts": [
+              "id": "p0325-b7-l0",
+              "ord": 0,
+              "src": [
+                500,
+                536
+              ],
+              "elements": [
                 {
+                  "id": "p0325-b7-e0",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "丘，麥丘，水丘，吾丘，皆復姓。 又"
+                },
+                {
+                  "id": "p0325-b7-e1",
+                  "class": "small",
+                  "sem": "title",
                   "text": "韻補",
-                  "band": "p0325-b7"
-                }
-              ],
-              "src": [
-                517,
-                521
-              ]
-            },
-            {
-              "kind": "text",
-              "id": "p0325-b7-s2",
-              "text": "叶祛其切，音欺。"
-            },
-            {
-              "kind": "book",
-              "id": "p0325-b7-s3",
-              "parts": [
+                  "ref": "p0325-bk14"
+                },
                 {
+                  "id": "p0325-b7-e2",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "叶祛其切，音欺。"
+                },
+                {
+                  "id": "p0325-b7-e3",
+                  "class": "small",
+                  "sem": "title",
                   "text": "詩·衞風",
-                  "band": "p0325-b7"
+                  "ref": "p0325-bk15"
+                },
+                {
+                  "id": "p0325-b7-e4",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "送"
                 }
-              ],
-              "src": [
-                529,
-                535
               ]
-            },
-            {
-              "kind": "text",
-              "id": "p0325-b7-s4",
-              "text": "送"
             }
           ]
         }
-      ]
+      ],
+      "semantics": {
+        "books": [
+          {
+            "id": "p0325-bk0",
+            "spans": [
+              {
+                "line": "p0325-b0-l0",
+                "range": [
+                  13,
+                  15
+                ]
+              }
+            ],
+            "src": [
+              19,
+              23
+            ]
+          },
+          {
+            "id": "p0325-bk1",
+            "spans": [
+              {
+                "line": "p0325-b0-l0",
+                "range": [
+                  22,
+                  29
+                ]
+              },
+              {
+                "line": "p0325-b0-l1",
+                "range": [
+                  0,
+                  2
+                ]
+              }
+            ],
+            "src": [
+              30,
+              42
+            ]
+          },
+          {
+            "id": "p0325-bk2",
+            "spans": [
+              {
+                "line": "p0325-b1-l0",
+                "range": [
+                  5,
+                  6
+                ]
+              }
+            ],
+            "src": [
+              75,
+              78
+            ]
+          },
+          {
+            "id": "p0325-bk3",
+            "spans": [
+              {
+                "line": "p0325-b2-l0",
+                "range": [
+                  29,
+                  34
+                ]
+              },
+              {
+                "line": "p0325-b2-l1",
+                "range": [
+                  0,
+                  1
+                ]
+              }
+            ],
+            "src": [
+              162,
+              171
+            ]
+          },
+          {
+            "id": "p0325-bk4",
+            "spans": [
+              {
+                "line": "p0325-b2-l1",
+                "range": [
+                  16,
+                  17
+                ]
+              }
+            ],
+            "src": [
+              186,
+              189
+            ]
+          },
+          {
+            "id": "p0325-bk5",
+            "spans": [
+              {
+                "line": "p0325-b3-l0",
+                "range": [
+                  7,
+                  14
+                ]
+              }
+            ],
+            "src": [
+              210,
+              219
+            ]
+          },
+          {
+            "id": "p0325-bk6",
+            "spans": [
+              {
+                "line": "p0325-b3-l1",
+                "range": [
+                  2,
+                  8
+                ]
+              }
+            ],
+            "src": [
+              239,
+              247
+            ]
+          },
+          {
+            "id": "p0325-bk7",
+            "spans": [
+              {
+                "line": "p0325-b3-l1",
+                "range": [
+                  12,
+                  14
+                ]
+              }
+            ],
+            "src": [
+              251,
+              255
+            ]
+          },
+          {
+            "id": "p0325-bk8",
+            "spans": [
+              {
+                "line": "p0325-b4-l0",
+                "range": [
+                  14,
+                  21
+                ]
+              }
+            ],
+            "src": [
+              285,
+              294
+            ]
+          },
+          {
+            "id": "p0325-bk9",
+            "spans": [
+              {
+                "line": "p0325-b5-l0",
+                "range": [
+                  10,
+                  17
+                ]
+              }
+            ],
+            "src": [
+              344,
+              353
+            ]
+          },
+          {
+            "id": "p0325-bk10",
+            "spans": [
+              {
+                "line": "p0325-b5-l1",
+                "range": [
+                  4,
+                  5
+                ]
+              }
+            ],
+            "src": [
+              369,
+              372
+            ]
+          },
+          {
+            "id": "p0325-bk11",
+            "spans": [
+              {
+                "line": "p0325-b5-l1",
+                "range": [
+                  15,
+                  22
+                ]
+              }
+            ],
+            "src": [
+              382,
+              391
+            ]
+          },
+          {
+            "id": "p0325-bk12",
+            "spans": [
+              {
+                "line": "p0325-b5-l2",
+                "range": [
+                  3,
+                  9
+                ]
+              }
+            ],
+            "src": [
+              402,
+              410
+            ]
+          },
+          {
+            "id": "p0325-bk13",
+            "spans": [
+              {
+                "line": "p0325-b6-l0",
+                "range": [
+                  17,
+                  23
+                ]
+              }
+            ],
+            "src": [
+              450,
+              458
+            ]
+          },
+          {
+            "id": "p0325-bk14",
+            "spans": [
+              {
+                "line": "p0325-b7-l0",
+                "range": [
+                  17,
+                  19
+                ]
+              }
+            ],
+            "src": [
+              517,
+              521
+            ]
+          },
+          {
+            "id": "p0325-bk15",
+            "spans": [
+              {
+                "line": "p0325-b7-l0",
+                "range": [
+                  27,
+                  31
+                ]
+              }
+            ],
+            "src": [
+              529,
+              535
+            ]
+          }
+        ]
+      }
     }
   ]
 }

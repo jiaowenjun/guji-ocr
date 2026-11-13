@@ -1,8 +1,8 @@
 {
-  "version": 1,
+  "version": 2,
   "meta": {
     "sourceFormat": "gj",
-    "generatedBy": "guji-ir/1",
+    "generatedBy": "guji-ir/2",
     "fidelity": "full",
     "profile": {
       "stripPunct": [
@@ -26,7 +26,9 @@
           "○"
         ]
       ]
-    }
+    },
+    "lineLayout": "fold",
+    "orientation": "vertical-rtl"
   },
   "pages": [
     {
@@ -44,86 +46,84 @@
             6,
             74
           ],
-          "segments": [
+          "lines": [
             {
-              "kind": "book",
-              "id": "p0318-b0-s0",
-              "parts": [
+              "id": "p0318-b0-l0",
+              "ord": 0,
+              "src": [
+                6,
+                39
+              ],
+              "elements": [
                 {
+                  "id": "p0318-b0-e0",
+                  "class": "small",
+                  "sem": "title",
                   "text": "禮·冬官考工記",
-                  "band": "p0318-b0"
-                }
-              ]
-            },
-            {
-              "kind": "text",
-              "id": "p0318-b0-s1",
-              "text": "參分其股圍。"
-            },
-            {
-              "kind": "book",
-              "id": "p0318-b0-s2",
-              "parts": [
+                  "ref": "p0318-bk3"
+                },
                 {
+                  "id": "p0318-b0-e1",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "參分其股圍。"
+                },
+                {
+                  "id": "p0318-b0-e2",
+                  "class": "small",
+                  "sem": "title",
                   "text": "前漢·𠛬法志",
-                  "band": "p0318-b0"
+                  "ref": "p0318-bk0"
+                },
+                {
+                  "id": "p0318-b0-e3",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "秦造參夷之誅。𡘋與"
                 }
-              ],
-              "src": [
-                20,
-                29
               ]
             },
             {
-              "kind": "text",
-              "id": "p0318-b0-s3",
-              "text": "秦造參夷之誅。𡘋與"
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "text",
-              "id": "p0318-b0-s4",
-              "text": "三同。 又"
-            },
-            {
-              "kind": "book",
-              "id": "p0318-b0-s5",
-              "parts": [
+              "id": "p0318-b0-l1",
+              "ord": 1,
+              "src": [
+                40,
+                74
+              ],
+              "elements": [
                 {
+                  "id": "p0318-b0-e4",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "三同。 又"
+                },
+                {
+                  "id": "p0318-b0-e5",
+                  "class": "small",
+                  "sem": "title",
                   "text": "韻補",
-                  "band": "p0318-b0"
-                }
-              ],
-              "src": [
-                45,
-                49
-              ]
-            },
-            {
-              "kind": "text",
-              "id": "p0318-b0-s6",
-              "text": "叶疏簪切，音森。"
-            },
-            {
-              "kind": "book",
-              "id": "p0318-b0-s7",
-              "parts": [
+                  "ref": "p0318-bk1"
+                },
                 {
+                  "id": "p0318-b0-e6",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "叶疏簪切，音森。"
+                },
+                {
+                  "id": "p0318-b0-e7",
+                  "class": "small",
+                  "sem": "title",
                   "text": "詩·召南",
-                  "band": "p0318-b0"
+                  "ref": "p0318-bk2"
+                },
+                {
+                  "id": "p0318-b0-e8",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "摽有梅，其實三兮。下叶"
                 }
-              ],
-              "src": [
-                57,
-                63
               ]
-            },
-            {
-              "kind": "text",
-              "id": "p0318-b0-s8",
-              "text": "摽有梅，其實三兮。下叶"
             }
           ]
         },
@@ -134,132 +134,144 @@
             76,
             142
           ],
-          "segments": [
+          "lines": [
             {
-              "kind": "text",
-              "id": "p0318-b1-s0",
-              "text": "今。"
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "text",
-              "id": "p0318-b1-s1",
-              "text": " "
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "head",
-              "id": "p0318-b1-s2",
-              "char": "上"
-            },
-            {
-              "kind": "text",
-              "id": "p0318-b1-s3",
-              "text": "古文"
-            },
-            {
-              "kind": "head",
-              "id": "p0318-b1-s4",
-              "char": "丄"
-            },
-            {
-              "kind": "text",
-              "id": "p0318-b1-s5",
-              "text": "、"
-            },
-            {
-              "kind": "head",
-              "id": "p0318-b1-s6",
-              "char": "𠄞"
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "book",
-              "id": "p0318-b1-s7",
-              "parts": [
-                {
-                  "text": "廣韻",
-                  "band": "p0318-b1"
-                }
+              "id": "p0318-b1-l0",
+              "ord": 0,
+              "src": [
+                76,
+                78
               ],
+              "elements": [
+                {
+                  "id": "p0318-b1-e0",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "今。"
+                }
+              ]
+            },
+            {
+              "id": "p0318-b1-l1",
+              "ord": 1,
+              "src": [
+                79,
+                80
+              ],
+              "elements": [
+                {
+                  "id": "p0318-b1-e1",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": " "
+                }
+              ]
+            },
+            {
+              "id": "p0318-b1-l2",
+              "ord": 2,
+              "src": [
+                81,
+                91
+              ],
+              "elements": [
+                {
+                  "id": "p0318-b1-e2",
+                  "class": "large",
+                  "sem": "head",
+                  "text": "上"
+                },
+                {
+                  "id": "p0318-b1-e3",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "古文"
+                },
+                {
+                  "id": "p0318-b1-e4",
+                  "class": "large",
+                  "sem": "head",
+                  "text": "丄"
+                },
+                {
+                  "id": "p0318-b1-e5",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "、"
+                },
+                {
+                  "id": "p0318-b1-e6",
+                  "class": "large",
+                  "sem": "head",
+                  "text": "𠄞"
+                }
+              ]
+            },
+            {
+              "id": "p0318-b1-l3",
+              "ord": 3,
               "src": [
                 92,
-                96
-              ]
-            },
-            {
-              "kind": "book",
-              "id": "p0318-b1-s8",
-              "parts": [
+                118
+              ],
+              "elements": [
                 {
+                  "id": "p0318-b1-e7",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "廣韻",
+                  "ref": "p0318-bk4"
+                },
+                {
+                  "id": "p0318-b1-e8",
+                  "class": "small",
+                  "sem": "title",
                   "text": "集韻",
-                  "band": "p0318-b1"
-                }
-              ],
-              "src": [
-                96,
-                100
-              ]
-            },
-            {
-              "kind": "book",
-              "id": "p0318-b1-s9",
-              "parts": [
+                  "ref": "p0318-bk5"
+                },
                 {
+                  "id": "p0318-b1-e9",
+                  "class": "small",
+                  "sem": "title",
                   "text": "韻會",
-                  "band": "p0318-b1"
-                }
-              ],
-              "src": [
-                100,
-                104
-              ]
-            },
-            {
-              "kind": "book",
-              "id": "p0318-b1-s10",
-              "parts": [
+                  "ref": "p0318-bk6"
+                },
                 {
+                  "id": "p0318-b1-e10",
+                  "class": "small",
+                  "sem": "title",
                   "text": "正韻",
-                  "band": "p0318-b1"
+                  "ref": "p0318-bk7"
+                },
+                {
+                  "id": "p0318-b1-e11",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "𡘋時亮切，音尙。在"
                 }
-              ],
-              "src": [
-                104,
-                108
               ]
             },
             {
-              "kind": "text",
-              "id": "p0318-b1-s11",
-              "text": "𡘋時亮切，音尙。在"
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "text",
-              "id": "p0318-b1-s12",
-              "text": "上之上，對下之稱。崇也，尊也。"
-            },
-            {
-              "kind": "book",
-              "id": "p0318-b1-s13",
-              "parts": [
-                {
-                  "text": "易·乾·文言",
-                  "band": "p0318-b1"
-                }
-              ],
+              "id": "p0318-b1-l4",
+              "ord": 4,
               "src": [
-                134,
+                119,
                 142
+              ],
+              "elements": [
+                {
+                  "id": "p0318-b1-e12",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "上之上，對下之稱。崇也，尊也。"
+                },
+                {
+                  "id": "p0318-b1-e13",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "易·乾·文言",
+                  "ref": "p0318-bk8"
+                }
               ]
             }
           ]
@@ -271,89 +283,83 @@
             144,
             212
           ],
-          "segments": [
+          "lines": [
             {
-              "kind": "text",
-              "id": "p0318-b2-s0",
-              "text": "本乎天者親上。 又"
-            },
-            {
-              "kind": "book",
-              "id": "p0318-b2-s1",
-              "parts": [
+              "id": "p0318-b2-l0",
+              "ord": 0,
+              "src": [
+                144,
+                177
+              ],
+              "elements": [
                 {
+                  "id": "p0318-b2-e0",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "本乎天者親上。 又"
+                },
+                {
+                  "id": "p0318-b2-e1",
+                  "class": "small",
+                  "sem": "title",
                   "text": "廣韻",
-                  "band": "p0318-b2"
-                }
-              ],
-              "src": [
-                153,
-                157
-              ]
-            },
-            {
-              "kind": "text",
-              "id": "p0318-b2-s2",
-              "text": "君也。太上極尊之稱。"
-            },
-            {
-              "kind": "book",
-              "id": "p0318-b2-s3",
-              "parts": [
+                  "ref": "p0318-bk9"
+                },
                 {
+                  "id": "p0318-b2-e2",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "君也。太上極尊之稱。"
+                },
+                {
+                  "id": "p0318-b2-e3",
+                  "class": "small",
+                  "sem": "title",
                   "text": "蔡邕·獨斷",
-                  "band": "p0318-b2"
+                  "ref": "p0318-bk10"
+                },
+                {
+                  "id": "p0318-b2-e4",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "上者，"
                 }
-              ],
-              "src": [
-                167,
-                174
               ]
             },
             {
-              "kind": "text",
-              "id": "p0318-b2-s4",
-              "text": "上者，"
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "text",
-              "id": "p0318-b2-s5",
-              "text": "尊位所在。但言上，不敢言尊號。 又上日。"
-            },
-            {
-              "kind": "book",
-              "id": "p0318-b2-s6",
-              "parts": [
-                {
-                  "text": "書·舜典",
-                  "band": "p0318-b2"
-                }
-              ],
+              "id": "p0318-b2-l1",
+              "ord": 1,
               "src": [
-                198,
-                204
-              ]
-            },
-            {
-              "kind": "text",
-              "id": "p0318-b2-s7",
-              "text": "正月上日。"
-            },
-            {
-              "kind": "book",
-              "id": "p0318-b2-s8",
-              "parts": [
-                {
-                  "text": "註",
-                  "band": "p0318-b2"
-                }
-              ],
-              "src": [
-                209,
+                178,
                 212
+              ],
+              "elements": [
+                {
+                  "id": "p0318-b2-e5",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "尊位所在。但言上，不敢言尊號。 又上日。"
+                },
+                {
+                  "id": "p0318-b2-e6",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "書·舜典",
+                  "ref": "p0318-bk11"
+                },
+                {
+                  "id": "p0318-b2-e7",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "正月上日。"
+                },
+                {
+                  "id": "p0318-b2-e8",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "註",
+                  "ref": "p0318-bk12"
+                }
               ]
             }
           ]
@@ -365,38 +371,51 @@
             214,
             280
           ],
-          "segments": [
+          "lines": [
             {
-              "kind": "text",
-              "id": "p0318-b3-s0",
-              "text": "孔氏曰：上日，朔日也。葉氏曰：上旬之日。曾氏曰：如上戊，上辛，上"
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "text",
-              "id": "p0318-b3-s1",
-              "text": "丁之類。 又姓。漢上雄，明上觀，上志。又上官，複姓。 又"
-            },
-            {
-              "kind": "book",
-              "id": "p0318-b3-s2",
-              "parts": [
-                {
-                  "text": "唐韻",
-                  "band": "p0318-b3"
-                }
-              ],
+              "id": "p0318-b3-l0",
+              "ord": 0,
               "src": [
-                275,
-                279
+                214,
+                246
+              ],
+              "elements": [
+                {
+                  "id": "p0318-b3-e0",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "孔氏曰：上日，朔日也。葉氏曰：上旬之日。曾氏曰：如上戊，上辛，上"
+                }
               ]
             },
             {
-              "kind": "text",
-              "id": "p0318-b3-s3",
-              "text": "時"
+              "id": "p0318-b3-l1",
+              "ord": 1,
+              "src": [
+                247,
+                280
+              ],
+              "elements": [
+                {
+                  "id": "p0318-b3-e1",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "丁之類。 又姓。漢上雄，明上觀，上志。又上官，複姓。 又"
+                },
+                {
+                  "id": "p0318-b3-e2",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "唐韻",
+                  "ref": "p0318-bk13"
+                },
+                {
+                  "id": "p0318-b3-e3",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "時"
+                }
+              ]
             }
           ]
         },
@@ -407,116 +426,91 @@
             282,
             355
           ],
-          "segments": [
+          "lines": [
             {
-              "kind": "text",
-              "id": "p0318-b4-s0",
-              "text": "掌切"
-            },
-            {
-              "kind": "book",
-              "id": "p0318-b4-s1",
-              "parts": [
-                {
-                  "text": "集韻",
-                  "band": "p0318-b4"
-                }
-              ],
+              "id": "p0318-b4-l0",
+              "ord": 0,
               "src": [
-                284,
-                288
-              ]
-            },
-            {
-              "kind": "book",
-              "id": "p0318-b4-s2",
-              "parts": [
-                {
-                  "text": "韻會",
-                  "band": "p0318-b4"
-                }
+                282,
+                318
               ],
-              "src": [
-                288,
-                292
-              ]
-            },
-            {
-              "kind": "book",
-              "id": "p0318-b4-s3",
-              "parts": [
+              "elements": [
                 {
-                  "text": "正韻",
-                  "band": "p0318-b4"
-                }
-              ],
-              "src": [
-                292,
-                296
-              ]
-            },
-            {
-              "kind": "text",
-              "id": "p0318-b4-s4",
-              "text": "是掌切，𡘋商上聲。登也，升也，自下而上也。"
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "book",
-              "id": "p0318-b4-s5",
-              "parts": [
-                {
-                  "text": "易·需卦",
-                  "band": "p0318-b4"
-                }
-              ],
-              "src": [
-                319,
-                325
-              ]
-            },
-            {
-              "kind": "text",
-              "id": "p0318-b4-s6",
-              "text": "雲上于天。"
-            },
-            {
-              "kind": "book",
-              "id": "p0318-b4-s7",
-              "parts": [
-                {
-                  "text": "禮·曲禮",
-                  "band": "p0318-b4"
-                }
-              ],
-              "src": [
-                330,
-                336
-              ]
-            },
-            {
-              "kind": "text",
-              "id": "p0318-b4-s8",
-              "text": "拾級聚足，連步以上。 又進也。"
-            },
-            {
-              "kind": "book",
-              "id": "p0318-b4-s9",
-              "parts": [
-                {
-                  "text": "前漢·",
-                  "band": "p0318-b4"
+                  "id": "p0318-b4-e0",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "掌切"
                 },
                 {
-                  "text": "東方朔傳",
-                  "band": "p0318-b5"
+                  "id": "p0318-b4-e1",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "集韻",
+                  "ref": "p0318-bk14"
+                },
+                {
+                  "id": "p0318-b4-e2",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "韻會",
+                  "ref": "p0318-bk15"
+                },
+                {
+                  "id": "p0318-b4-e3",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "正韻",
+                  "ref": "p0318-bk16"
+                },
+                {
+                  "id": "p0318-b4-e4",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "是掌切，𡘋商上聲。登也，升也，自下而上也。"
                 }
-              ],
+              ]
+            },
+            {
+              "id": "p0318-b4-l1",
+              "ord": 1,
               "src": [
-                351,
-                362
+                319,
+                355
+              ],
+              "elements": [
+                {
+                  "id": "p0318-b4-e5",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "易·需卦",
+                  "ref": "p0318-bk17"
+                },
+                {
+                  "id": "p0318-b4-e6",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "雲上于天。"
+                },
+                {
+                  "id": "p0318-b4-e7",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "禮·曲禮",
+                  "ref": "p0318-bk18"
+                },
+                {
+                  "id": "p0318-b4-e8",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "拾級聚足，連步以上。 又進也。"
+                },
+                {
+                  "id": "p0318-b4-e9",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "前漢·",
+                  "ref": "p0318-bk19"
+                }
               ]
             }
           ]
@@ -528,82 +522,85 @@
             357,
             423
           ],
-          "segments": [
+          "lines": [
             {
-              "kind": "book",
-              "id": "p0318-b5-s0",
-              "parts": [
+              "id": "p0318-b5-l0",
+              "ord": 0,
+              "src": [
+                357,
+                390
+              ],
+              "elements": [
                 {
+                  "id": "p0318-b5-e0",
+                  "class": "small",
+                  "sem": "title",
                   "text": "東方朔傳",
-                  "band": "p0318-b5"
-                }
-              ],
-              "src": [
-                351,
-                362
-              ]
-            },
-            {
-              "kind": "text",
-              "id": "p0318-b5-s1",
-              "text": "朔上三千奏牘。 又與尙通。"
-            },
-            {
-              "kind": "book",
-              "id": "p0318-b5-s2",
-              "parts": [
+                  "ref": "p0318-bk19"
+                },
                 {
+                  "id": "p0318-b5-e1",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "朔上三千奏牘。 又與尙通。"
+                },
+                {
+                  "id": "p0318-b5-e2",
+                  "class": "small",
+                  "sem": "title",
                   "text": "詩·魏風",
-                  "band": "p0318-b5"
+                  "ref": "p0318-bk20"
+                },
+                {
+                  "id": "p0318-b5-e3",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "上愼旃哉。"
+                },
+                {
+                  "id": "p0318-b5-e4",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "前漢·",
+                  "ref": "p0318-bk21"
                 }
-              ],
-              "src": [
-                375,
-                381
               ]
             },
             {
-              "kind": "text",
-              "id": "p0318-b5-s3",
-              "text": "上愼旃哉。"
-            },
-            {
-              "kind": "book",
-              "id": "p0318-b5-s4",
-              "parts": [
-                {
-                  "text": "前漢·\n賈誼傳",
-                  "band": "p0318-b5"
-                }
-              ],
+              "id": "p0318-b5-l1",
+              "ord": 1,
               "src": [
-                386,
-                395
-              ]
-            },
-            {
-              "kind": "text",
-              "id": "p0318-b5-s5",
-              "text": "上親，上齒，上賢，上貴。又"
-            },
-            {
-              "kind": "book",
-              "id": "p0318-b5-s6",
-              "parts": [
+                391,
+                423
+              ],
+              "elements": [
                 {
+                  "id": "p0318-b5-e5",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "賈誼傳",
+                  "ref": "p0318-bk21"
+                },
+                {
+                  "id": "p0318-b5-e6",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "上親，上齒，上賢，上貴。又"
+                },
+                {
+                  "id": "p0318-b5-e7",
+                  "class": "small",
+                  "sem": "title",
                   "text": "匡衡傳",
-                  "band": "p0318-b5"
+                  "ref": "p0318-bk22"
+                },
+                {
+                  "id": "p0318-b5-e8",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "治天下者審所上。 又"
                 }
-              ],
-              "src": [
-                408,
-                413
               ]
-            },
-            {
-              "kind": "text",
-              "id": "p0318-b5-s7",
-              "text": "治天下者審所上。 又"
             }
           ]
         },
@@ -614,71 +611,71 @@
             425,
             489
           ],
-          "segments": [
+          "lines": [
             {
-              "kind": "book",
-              "id": "p0318-b6-s0",
-              "parts": [
-                {
-                  "text": "韻補",
-                  "band": "p0318-b6"
-                }
-              ],
+              "id": "p0318-b6-l0",
+              "ord": 0,
               "src": [
                 425,
-                429
-              ]
-            },
-            {
-              "kind": "text",
-              "id": "p0318-b6-s1",
-              "text": "叶辰羊切，音常。"
-            },
-            {
-              "kind": "book",
-              "id": "p0318-b6-s2",
-              "parts": [
+                458
+              ],
+              "elements": [
                 {
+                  "id": "p0318-b6-e0",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "韻補",
+                  "ref": "p0318-bk23"
+                },
+                {
+                  "id": "p0318-b6-e1",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "叶辰羊切，音常。"
+                },
+                {
+                  "id": "p0318-b6-e2",
+                  "class": "small",
+                  "sem": "title",
                   "text": "楚辭·九懷",
-                  "band": "p0318-b6"
-                }
-              ],
-              "src": [
-                437,
-                444
-              ]
-            },
-            {
-              "kind": "text",
-              "id": "p0318-b6-s3",
-              "text": "臨淵兮汪洋，顧林兮忽荒。修予"
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "text",
-              "id": "p0318-b6-s4",
-              "text": "兮袿衣，騎霓兮南上。 又叶時刃切，音愼。"
-            },
-            {
-              "kind": "book",
-              "id": "p0318-b6-s5",
-              "parts": [
+                  "ref": "p0318-bk24"
+                },
                 {
-                  "text": "王微觀海詩",
-                  "band": "p0318-b6"
+                  "id": "p0318-b6-e3",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "臨淵兮汪洋，顧林兮忽荒。修予"
                 }
-              ],
-              "src": [
-                479,
-                486
               ]
             },
             {
-              "kind": "text",
-              "id": "p0318-b6-s6",
-              "text": "照本苟"
+              "id": "p0318-b6-l1",
+              "ord": 1,
+              "src": [
+                459,
+                489
+              ],
+              "elements": [
+                {
+                  "id": "p0318-b6-e4",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "兮袿衣，騎霓兮南上。 又叶時刃切，音愼。"
+                },
+                {
+                  "id": "p0318-b6-e5",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "王微觀海詩",
+                  "ref": "p0318-bk25"
+                },
+                {
+                  "id": "p0318-b6-e6",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "照本苟"
+                }
+              ]
             }
           ]
         },
@@ -689,42 +686,501 @@
             491,
             552
           ],
-          "segments": [
+          "lines": [
             {
-              "kind": "text",
-              "id": "p0318-b7-s0",
-              "text": "不昧，在末理知瑩。忽乗摶角勢，超騰送崖上。 又叶矢忍切，音"
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "text",
-              "id": "p0318-b7-s1",
-              "text": "審。"
-            },
-            {
-              "kind": "book",
-              "id": "p0318-b7-s2",
-              "parts": [
-                {
-                  "text": "郭璞·遊仙詩",
-                  "band": "p0318-b7"
-                }
-              ],
+              "id": "p0318-b7-l0",
+              "ord": 0,
               "src": [
-                523,
-                531
+                491,
+                520
+              ],
+              "elements": [
+                {
+                  "id": "p0318-b7-e0",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "不昧，在末理知瑩。忽乗摶角勢，超騰送崖上。 又叶矢忍切，音"
+                }
               ]
             },
             {
-              "kind": "text",
-              "id": "p0318-b7-s3",
-              "text": "翹首望太淸，朝雲無增景。雖欲思陵化，龍津未"
+              "id": "p0318-b7-l1",
+              "ord": 1,
+              "src": [
+                521,
+                552
+              ],
+              "elements": [
+                {
+                  "id": "p0318-b7-e1",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "審。"
+                },
+                {
+                  "id": "p0318-b7-e2",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "郭璞·遊仙詩",
+                  "ref": "p0318-bk26"
+                },
+                {
+                  "id": "p0318-b7-e3",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "翹首望太淸，朝雲無增景。雖欲思陵化，龍津未"
+                }
+              ]
             }
           ]
         }
-      ]
+      ],
+      "semantics": {
+        "books": [
+          {
+            "id": "p0318-bk0",
+            "spans": [
+              {
+                "line": "p0318-b0-l0",
+                "range": [
+                  13,
+                  20
+                ]
+              }
+            ],
+            "src": [
+              20,
+              29
+            ]
+          },
+          {
+            "id": "p0318-bk1",
+            "spans": [
+              {
+                "line": "p0318-b0-l1",
+                "range": [
+                  5,
+                  7
+                ]
+              }
+            ],
+            "src": [
+              45,
+              49
+            ]
+          },
+          {
+            "id": "p0318-bk2",
+            "spans": [
+              {
+                "line": "p0318-b0-l1",
+                "range": [
+                  15,
+                  19
+                ]
+              }
+            ],
+            "src": [
+              57,
+              63
+            ]
+          },
+          {
+            "id": "p0318-bk3",
+            "spans": [
+              {
+                "line": "p0318-b0-l0",
+                "range": [
+                  0,
+                  7
+                ]
+              }
+            ]
+          },
+          {
+            "id": "p0318-bk4",
+            "spans": [
+              {
+                "line": "p0318-b1-l3",
+                "range": [
+                  0,
+                  2
+                ]
+              }
+            ],
+            "src": [
+              92,
+              96
+            ]
+          },
+          {
+            "id": "p0318-bk5",
+            "spans": [
+              {
+                "line": "p0318-b1-l3",
+                "range": [
+                  2,
+                  4
+                ]
+              }
+            ],
+            "src": [
+              96,
+              100
+            ]
+          },
+          {
+            "id": "p0318-bk6",
+            "spans": [
+              {
+                "line": "p0318-b1-l3",
+                "range": [
+                  4,
+                  6
+                ]
+              }
+            ],
+            "src": [
+              100,
+              104
+            ]
+          },
+          {
+            "id": "p0318-bk7",
+            "spans": [
+              {
+                "line": "p0318-b1-l3",
+                "range": [
+                  6,
+                  8
+                ]
+              }
+            ],
+            "src": [
+              104,
+              108
+            ]
+          },
+          {
+            "id": "p0318-bk8",
+            "spans": [
+              {
+                "line": "p0318-b1-l4",
+                "range": [
+                  15,
+                  21
+                ]
+              }
+            ],
+            "src": [
+              134,
+              142
+            ]
+          },
+          {
+            "id": "p0318-bk9",
+            "spans": [
+              {
+                "line": "p0318-b2-l0",
+                "range": [
+                  9,
+                  11
+                ]
+              }
+            ],
+            "src": [
+              153,
+              157
+            ]
+          },
+          {
+            "id": "p0318-bk10",
+            "spans": [
+              {
+                "line": "p0318-b2-l0",
+                "range": [
+                  21,
+                  26
+                ]
+              }
+            ],
+            "src": [
+              167,
+              174
+            ]
+          },
+          {
+            "id": "p0318-bk11",
+            "spans": [
+              {
+                "line": "p0318-b2-l1",
+                "range": [
+                  20,
+                  24
+                ]
+              }
+            ],
+            "src": [
+              198,
+              204
+            ]
+          },
+          {
+            "id": "p0318-bk12",
+            "spans": [
+              {
+                "line": "p0318-b2-l1",
+                "range": [
+                  29,
+                  30
+                ]
+              }
+            ],
+            "src": [
+              209,
+              212
+            ]
+          },
+          {
+            "id": "p0318-bk13",
+            "spans": [
+              {
+                "line": "p0318-b3-l1",
+                "range": [
+                  28,
+                  30
+                ]
+              }
+            ],
+            "src": [
+              275,
+              279
+            ]
+          },
+          {
+            "id": "p0318-bk14",
+            "spans": [
+              {
+                "line": "p0318-b4-l0",
+                "range": [
+                  2,
+                  4
+                ]
+              }
+            ],
+            "src": [
+              284,
+              288
+            ]
+          },
+          {
+            "id": "p0318-bk15",
+            "spans": [
+              {
+                "line": "p0318-b4-l0",
+                "range": [
+                  4,
+                  6
+                ]
+              }
+            ],
+            "src": [
+              288,
+              292
+            ]
+          },
+          {
+            "id": "p0318-bk16",
+            "spans": [
+              {
+                "line": "p0318-b4-l0",
+                "range": [
+                  6,
+                  8
+                ]
+              }
+            ],
+            "src": [
+              292,
+              296
+            ]
+          },
+          {
+            "id": "p0318-bk17",
+            "spans": [
+              {
+                "line": "p0318-b4-l1",
+                "range": [
+                  0,
+                  4
+                ]
+              }
+            ],
+            "src": [
+              319,
+              325
+            ]
+          },
+          {
+            "id": "p0318-bk18",
+            "spans": [
+              {
+                "line": "p0318-b4-l1",
+                "range": [
+                  9,
+                  13
+                ]
+              }
+            ],
+            "src": [
+              330,
+              336
+            ]
+          },
+          {
+            "id": "p0318-bk19",
+            "spans": [
+              {
+                "line": "p0318-b4-l1",
+                "range": [
+                  28,
+                  31
+                ]
+              },
+              {
+                "line": "p0318-b5-l0",
+                "range": [
+                  0,
+                  4
+                ]
+              }
+            ],
+            "src": [
+              351,
+              362
+            ]
+          },
+          {
+            "id": "p0318-bk20",
+            "spans": [
+              {
+                "line": "p0318-b5-l0",
+                "range": [
+                  17,
+                  21
+                ]
+              }
+            ],
+            "src": [
+              375,
+              381
+            ]
+          },
+          {
+            "id": "p0318-bk21",
+            "spans": [
+              {
+                "line": "p0318-b5-l0",
+                "range": [
+                  26,
+                  29
+                ]
+              },
+              {
+                "line": "p0318-b5-l1",
+                "range": [
+                  0,
+                  3
+                ]
+              }
+            ],
+            "src": [
+              386,
+              395
+            ]
+          },
+          {
+            "id": "p0318-bk22",
+            "spans": [
+              {
+                "line": "p0318-b5-l1",
+                "range": [
+                  16,
+                  19
+                ]
+              }
+            ],
+            "src": [
+              408,
+              413
+            ]
+          },
+          {
+            "id": "p0318-bk23",
+            "spans": [
+              {
+                "line": "p0318-b6-l0",
+                "range": [
+                  0,
+                  2
+                ]
+              }
+            ],
+            "src": [
+              425,
+              429
+            ]
+          },
+          {
+            "id": "p0318-bk24",
+            "spans": [
+              {
+                "line": "p0318-b6-l0",
+                "range": [
+                  10,
+                  15
+                ]
+              }
+            ],
+            "src": [
+              437,
+              444
+            ]
+          },
+          {
+            "id": "p0318-bk25",
+            "spans": [
+              {
+                "line": "p0318-b6-l1",
+                "range": [
+                  20,
+                  25
+                ]
+              }
+            ],
+            "src": [
+              479,
+              486
+            ]
+          },
+          {
+            "id": "p0318-bk26",
+            "spans": [
+              {
+                "line": "p0318-b7-l1",
+                "range": [
+                  2,
+                  8
+                ]
+              }
+            ],
+            "src": [
+              523,
+              531
+            ]
+          }
+        ]
+      }
     }
   ]
 }

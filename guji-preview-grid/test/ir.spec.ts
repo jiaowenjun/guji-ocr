@@ -8,7 +8,7 @@ import { split } from "../src/parser/split-line";
 import { gj2ir } from "../src/ir/gj2ir";
 import { ir2blocks } from "../src/ir/ir2blocks";
 import { irToText } from "../src/ir/text";
-import type { IRDocument, IRSegment } from "../src/ir/types";
+import type { IRDocument } from "../src/ir/types";
 import yibu from "../src/samples/kangxi-yibu.gj?raw";
 
 /** 键序无关的稳定序列化（深比较） */
@@ -54,22 +54,45 @@ describe("IR 对等性：ir2blocks(gj2ir(t)) === parsePages(t)", () => {
   }
 });
 
-describe("IR 保真性", () => {
-  it("text 段保留标点；br 保留折行", () => {
+describe("IR v2 保真性与结构", () => {
+  it("gloss 元素保留标点；小行=物理折行", () => {
     const doc = gj2ir("@9\n\n#甲於悉切，音義。\n");
-    const segs = doc.pages[0].bands[0].segments;
-    expect(segs.some((s) => s.kind === "text" && s.text.includes("，"))).toBe(true);
+    const els = doc.pages[0].bands[0].lines[0].elements;
+    expect(els.some((e) => e.sem === "gloss" && e.text.includes("，"))).toBe(true);
     const doc2 = gj2ir("@10\n\n前文\n後文\n");
-    expect(doc2.pages[0].bands[0].segments.some((s) => s.kind === "br")).toBe(true);
+    const band = doc2.pages[0].bands[0];
+    expect(band.lines).toHaveLength(2);
+    expect(band.lines[0].elements[0].text).toBe("前文");
   });
 
-  it("跨行书名为单一元素，parts 指向两行", () => {
+  it("元素 class/sem 正交（字头大字、注文小字、带圈大字）", () => {
+    const doc = gj2ir("@13\n\n#甲【書】音#(增義\n");
+    const els = doc.pages[0].bands[0].lines[0].elements;
+    expect(els.find((e) => e.sem === "head")).toMatchObject({ class: "large", text: "甲" });
+    expect(els.find((e) => e.sem === "gloss")).toMatchObject({ class: "small" });
+    expect(els.find((e) => e.sem === "mark")).toMatchObject({ class: "large", text: "增", style: "circled" });
+  });
+
+  it("跨行书名为单一 overlay，spans 指向两行且行内区间正确", () => {
     const doc = gj2ir("@11\n\n#乙【跨行書\n\n名測試】後文\n");
-    const segs = doc.pages[0].bands[0].segments;
-    const book = segs.find((s) => s.kind === "book") as Extract<IRSegment, { kind: "book" }>;
-    expect(book.parts).toHaveLength(2);
-    expect(book.parts[0].text).toBe("跨行書");
-    expect(book.parts[1]).toMatchObject({ text: "名測試", band: doc.pages[0].bands[1].id });
+    const [page] = doc.pages;
+    expect(page.semantics.books).toHaveLength(1);
+    const book = page.semantics.books[0];
+    expect(book.spans).toHaveLength(2);
+    const l0 = page.bands[0].lines[0];
+    const l1 = page.bands[1].lines[0];
+    expect(book.spans[0]).toMatchObject({ line: l0.id, range: [1, 4] }); // 行文本“乙跨行書”
+    expect(book.spans[1]).toMatchObject({ line: l1.id, range: [0, 3] });
+    expect(l0.elements.find((e) => e.sem === "title")).toMatchObject({ text: "跨行書", ref: book.id });
+    expect(l1.elements.find((e) => e.sem === "title")).toMatchObject({ text: "名測試", ref: book.id });
+  });
+
+  it("开启行内折行：每行各一个 title 锚", () => {
+    const doc = gj2ir("@14\n\n【開於甲\n帶內折行\n後段】終\n");
+    const band = doc.pages[0].bands[0];
+    expect(band.lines.map((l) => l.elements.map((e) => `${e.sem}:${e.text}`)).join(" | ")).toBe(
+      "title:開於甲 | title:帶內折行 | title:後段,gloss:終",
+    );
   });
 
   it("IR 页/大行结构对齐 split 的页与大行数", () => {
@@ -81,11 +104,14 @@ describe("IR 保真性", () => {
     }
   });
 
-  it("src 偏移覆盖编辑器联动区间（吸收 locate.ts）", () => {
+  it("大行与小行 src 偏移指向原文", () => {
     const doc = gj2ir(yibu);
-    const band = doc.pages[0].bands[0];
-    const [a, b] = band.src!;
-    expect(yibu.slice(a, b).trim().length).toBeGreaterThan(0);
+    const band = doc.pages[0].bands[3];
+    expect(yibu.slice(band.src![0], band.src![1]).trim().length).toBeGreaterThan(0);
+    for (const line of band.lines) {
+      const raw = yibu.slice(line.src![0], line.src![1]);
+      expect(raw).not.toMatch(/\n/); // 小行区间不含换行
+    }
   });
 });
 

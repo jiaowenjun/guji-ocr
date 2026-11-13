@@ -1,8 +1,8 @@
 {
-  "version": 1,
+  "version": 2,
   "meta": {
     "sourceFormat": "gj",
-    "generatedBy": "guji-ir/1",
+    "generatedBy": "guji-ir/2",
     "fidelity": "full",
     "profile": {
       "stripPunct": [
@@ -26,7 +26,9 @@
           "○"
         ]
       ]
-    }
+    },
+    "lineLayout": "fold",
+    "orientation": "vertical-rtl"
   },
   "pages": [
     {
@@ -44,38 +46,51 @@
             6,
             68
           ],
-          "segments": [
+          "lines": [
             {
-              "kind": "text",
-              "id": "p0328-b0-s0",
-              "text": "可爲酎酒。象古文酉之形。古文酉，从丣。丣爲春門，萬物已出。酉"
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "text",
-              "id": "p0328-b0-s1",
-              "text": "爲秋門，萬物已入，一，閉門象也。"
-            },
-            {
-              "kind": "book",
-              "id": "p0328-b0-s2",
-              "parts": [
-                {
-                  "text": "六書正譌",
-                  "band": "p0328-b0"
-                }
-              ],
+              "id": "p0328-b0-l0",
+              "ord": 0,
               "src": [
-                53,
-                59
+                6,
+                36
+              ],
+              "elements": [
+                {
+                  "id": "p0328-b0-e0",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "可爲酎酒。象古文酉之形。古文酉，从丣。丣爲春門，萬物已出。酉"
+                }
               ]
             },
             {
-              "kind": "text",
-              "id": "p0328-b0-s3",
-              "text": "後人以此字類丣，故"
+              "id": "p0328-b0-l1",
+              "ord": 1,
+              "src": [
+                37,
+                68
+              ],
+              "elements": [
+                {
+                  "id": "p0328-b0-e1",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "爲秋門，萬物已入，一，閉門象也。"
+                },
+                {
+                  "id": "p0328-b0-e2",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "六書正譌",
+                  "ref": "p0328-bk0"
+                },
+                {
+                  "id": "p0328-b0-e3",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "後人以此字類丣，故"
+                }
+              ]
             }
           ]
         },
@@ -86,19 +101,38 @@
             70,
             127
           ],
-          "segments": [
+          "lines": [
             {
-              "kind": "text",
-              "id": "p0328-b1-s0",
-              "text": "加酉字別之。酉，乃古酒字，象器中半水。旣以酉字爲丣，復加水"
+              "id": "p0328-b1-l0",
+              "ord": 0,
+              "src": [
+                70,
+                99
+              ],
+              "elements": [
+                {
+                  "id": "p0328-b1-e0",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "加酉字別之。酉，乃古酒字，象器中半水。旣以酉字爲丣，復加水"
+                }
+              ]
             },
             {
-              "kind": "br"
-            },
-            {
-              "kind": "text",
-              "id": "p0328-b1-s1",
-              "text": "旁作酒字。凡畱柳等字皆从丣，醴醪等字會意者皆从酉，二字"
+              "id": "p0328-b1-l1",
+              "ord": 1,
+              "src": [
+                100,
+                127
+              ],
+              "elements": [
+                {
+                  "id": "p0328-b1-e1",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "旁作酒字。凡畱柳等字皆从丣，醴醪等字會意者皆从酉，二字"
+                }
+              ]
             }
           ]
         },
@@ -109,136 +143,187 @@
             129,
             191
           ],
-          "segments": [
+          "lines": [
             {
-              "kind": "text",
-              "id": "p0328-b2-s0",
-              "text": "不可"
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "text",
-              "id": "p0328-b2-s1",
-              "text": "溷用。"
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "head",
-              "id": "p0328-b2-s2",
-              "char": "𠀡"
-            },
-            {
-              "kind": "book",
-              "id": "p0328-b2-s3",
-              "parts": [
+              "id": "p0328-b2-l0",
+              "ord": 0,
+              "src": [
+                129,
+                131
+              ],
+              "elements": [
                 {
+                  "id": "p0328-b2-e0",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "不可"
+                }
+              ]
+            },
+            {
+              "id": "p0328-b2-l1",
+              "ord": 1,
+              "src": [
+                132,
+                135
+              ],
+              "elements": [
+                {
+                  "id": "p0328-b2-e1",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "溷用。"
+                }
+              ]
+            },
+            {
+              "id": "p0328-b2-l2",
+              "ord": 2,
+              "src": [
+                136,
+                148
+              ],
+              "elements": [
+                {
+                  "id": "p0328-b2-e2",
+                  "class": "large",
+                  "sem": "head",
+                  "text": "𠀡"
+                },
+                {
+                  "id": "p0328-b2-e3",
+                  "class": "small",
+                  "sem": "title",
                   "text": "玉篇",
-                  "band": "p0328-b2"
+                  "ref": "p0328-bk1"
+                },
+                {
+                  "id": "p0328-b2-e4",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "古文天字。"
                 }
-              ],
-              "src": [
-                139,
-                143
               ]
             },
             {
-              "kind": "text",
-              "id": "p0328-b2-s4",
-              "text": "古文天字。"
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "text",
-              "id": "p0328-b2-s5",
-              "text": "註詳大部一畫。"
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "mark",
-              "id": "p0328-b2-s6",
-              "text": "增",
-              "style": "circled"
-            },
-            {
-              "kind": "head",
-              "id": "p0328-b2-s7",
-              "char": "𠀢"
-            },
-            {
-              "kind": "book",
-              "id": "p0328-b2-s8",
-              "parts": [
+              "id": "p0328-b2-l3",
+              "ord": 3,
+              "src": [
+                149,
+                156
+              ],
+              "elements": [
                 {
+                  "id": "p0328-b2-e5",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "註詳大部一畫。"
+                }
+              ]
+            },
+            {
+              "id": "p0328-b2-l4",
+              "ord": 4,
+              "src": [
+                157,
+                168
+              ],
+              "elements": [
+                {
+                  "id": "p0328-b2-e6",
+                  "class": "large",
+                  "sem": "mark",
+                  "text": "增",
+                  "style": "circled"
+                },
+                {
+                  "id": "p0328-b2-e7",
+                  "class": "large",
+                  "sem": "head",
+                  "text": "𠀢"
+                },
+                {
+                  "id": "p0328-b2-e8",
+                  "class": "small",
+                  "sem": "title",
                   "text": "海篇",
-                  "band": "p0328-b2"
-                }
-              ],
-              "src": [
-                163,
-                167
-              ]
-            },
-            {
-              "kind": "text",
-              "id": "p0328-b2-s9",
-              "text": "音"
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "text",
-              "id": "p0328-b2-s10",
-              "text": "資。定也。"
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "mark",
-              "id": "p0328-b2-s11",
-              "text": "七",
-              "style": "circled"
-            },
-            {
-              "kind": "head",
-              "id": "p0328-b2-s12",
-              "char": "並"
-            },
-            {
-              "kind": "book",
-              "id": "p0328-b2-s13",
-              "parts": [
+                  "ref": "p0328-bk2"
+                },
                 {
-                  "text": "集韻",
-                  "band": "p0328-b2"
+                  "id": "p0328-b2-e9",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "音"
                 }
-              ],
-              "src": [
-                180,
-                184
               ]
             },
             {
-              "kind": "text",
-              "id": "p0328-b2-s14",
-              "text": "竝，"
+              "id": "p0328-b2-l5",
+              "ord": 5,
+              "src": [
+                169,
+                174
+              ],
+              "elements": [
+                {
+                  "id": "p0328-b2-e10",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "資。定也。"
+                }
+              ]
             },
             {
-              "kind": "br"
+              "id": "p0328-b2-l6",
+              "ord": 6,
+              "src": [
+                175,
+                186
+              ],
+              "elements": [
+                {
+                  "id": "p0328-b2-e11",
+                  "class": "large",
+                  "sem": "mark",
+                  "text": "七",
+                  "style": "circled"
+                },
+                {
+                  "id": "p0328-b2-e12",
+                  "class": "large",
+                  "sem": "head",
+                  "text": "並"
+                },
+                {
+                  "id": "p0328-b2-e13",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "集韻",
+                  "ref": "p0328-bk3"
+                },
+                {
+                  "id": "p0328-b2-e14",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "竝，"
+                }
+              ]
             },
             {
-              "kind": "text",
-              "id": "p0328-b2-s15",
-              "text": "隷作並。"
+              "id": "p0328-b2-l7",
+              "ord": 7,
+              "src": [
+                187,
+                191
+              ],
+              "elements": [
+                {
+                  "id": "p0328-b2-e15",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "隷作並。"
+                }
+              ]
             }
           ]
         },
@@ -249,81 +334,83 @@
             193,
             257
           ],
-          "segments": [
+          "lines": [
             {
-              "kind": "head",
-              "id": "p0328-b3-s0",
-              "char": "𠀬"
-            },
-            {
-              "kind": "text",
-              "id": "p0328-b3-s1",
-              "text": ":"
-            },
-            {
-              "kind": "book",
-              "id": "p0328-b3-s2",
-              "parts": [
+              "id": "p0328-b3-l0",
+              "ord": 0,
+              "src": [
+                193,
+                228
+              ],
+              "elements": [
                 {
+                  "id": "p0328-b3-e0",
+                  "class": "large",
+                  "sem": "head",
+                  "text": "𠀬"
+                },
+                {
+                  "id": "p0328-b3-e1",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": ":"
+                },
+                {
+                  "id": "p0328-b3-e2",
+                  "class": "small",
+                  "sem": "title",
                   "text": "集韻",
-                  "band": "p0328-b3"
-                }
-              ],
-              "src": [
-                197,
-                201
-              ]
-            },
-            {
-              "kind": "text",
-              "id": "p0328-b3-s3",
-              "text": "㐁，古作𠀬。"
-            },
-            {
-              "kind": "book",
-              "id": "p0328-b3-s4",
-              "parts": [
+                  "ref": "p0328-bk4"
+                },
                 {
+                  "id": "p0328-b3-e3",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "㐁，古作𠀬。"
+                },
+                {
+                  "id": "p0328-b3-e4",
+                  "class": "small",
+                  "sem": "title",
                   "text": "說文",
-                  "band": "p0328-b3"
-                }
-              ],
-              "src": [
-                208,
-                212
-              ]
-            },
-            {
-              "kind": "text",
-              "id": "p0328-b3-s5",
-              "text": "讀若三年導服之導。一曰竹上皮，讀"
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "text",
-              "id": "p0328-b3-s6",
-              "text": "若沾。一曰讀若誓，弻字从此。"
-            },
-            {
-              "kind": "book",
-              "id": "p0328-b3-s7",
-              "parts": [
+                  "ref": "p0328-bk5"
+                },
                 {
-                  "text": "正字通",
-                  "band": "p0328-b3"
+                  "id": "p0328-b3-e5",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "讀若三年導服之導。一曰竹上皮，讀"
                 }
-              ],
-              "src": [
-                243,
-                248
               ]
             },
             {
-              "kind": "text",
-              "id": "p0328-b3-s8",
-              "text": "按說文音讀舛誤，訓"
+              "id": "p0328-b3-l1",
+              "ord": 1,
+              "src": [
+                229,
+                257
+              ],
+              "elements": [
+                {
+                  "id": "p0328-b3-e6",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "若沾。一曰讀若誓，弻字从此。"
+                },
+                {
+                  "id": "p0328-b3-e7",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "正字通",
+                  "ref": "p0328-bk6"
+                },
+                {
+                  "id": "p0328-b3-e8",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "按說文音讀舛誤，訓"
+                }
+              ]
             }
           ]
         },
@@ -334,114 +421,164 @@
             259,
             316
           ],
-          "segments": [
+          "lines": [
             {
-              "kind": "text",
-              "id": "p0328-b4-s0",
-              "text": "辭支離，當"
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "text",
-              "id": "p0328-b4-s1",
-              "text": "別詳定。"
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "mark",
-              "id": "p0328-b4-s2",
-              "text": "增",
-              "style": "circled"
-            },
-            {
-              "kind": "head",
-              "id": "p0328-b4-s3",
-              "char": "𠀭"
-            },
-            {
-              "kind": "book",
-              "id": "p0328-b4-s4",
-              "parts": [
+              "id": "p0328-b4-l0",
+              "ord": 0,
+              "src": [
+                259,
+                264
+              ],
+              "elements": [
                 {
+                  "id": "p0328-b4-e0",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "辭支離，當"
+                }
+              ]
+            },
+            {
+              "id": "p0328-b4-l1",
+              "ord": 1,
+              "src": [
+                265,
+                269
+              ],
+              "elements": [
+                {
+                  "id": "p0328-b4-e1",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "別詳定。"
+                }
+              ]
+            },
+            {
+              "id": "p0328-b4-l2",
+              "ord": 2,
+              "src": [
+                270,
+                285
+              ],
+              "elements": [
+                {
+                  "id": "p0328-b4-e2",
+                  "class": "large",
+                  "sem": "mark",
+                  "text": "增",
+                  "style": "circled"
+                },
+                {
+                  "id": "p0328-b4-e3",
+                  "class": "large",
+                  "sem": "head",
+                  "text": "𠀭"
+                },
+                {
+                  "id": "p0328-b4-e4",
+                  "class": "small",
+                  "sem": "title",
                   "text": "玉篇",
-                  "band": "p0328-b4"
-                }
-              ],
-              "src": [
-                276,
-                280
-              ]
-            },
-            {
-              "kind": "text",
-              "id": "p0328-b4-s5",
-              "text": "古文平字。"
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "text",
-              "id": "p0328-b4-s6",
-              "text": "註詳干部二畫。"
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "head",
-              "id": "p0328-b4-s7",
-              "char": "𠀮"
-            },
-            {
-              "kind": "book",
-              "id": "p0328-b4-s8",
-              "parts": [
+                  "ref": "p0328-bk7"
+                },
                 {
-                  "text": "字彙補",
-                  "band": "p0328-b4"
+                  "id": "p0328-b4-e5",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "古文平字。"
                 }
-              ],
-              "src": [
-                297,
-                302
               ]
             },
             {
-              "kind": "text",
-              "id": "p0328-b4-s9",
-              "text": "籀"
+              "id": "p0328-b4-l3",
+              "ord": 3,
+              "src": [
+                286,
+                293
+              ],
+              "elements": [
+                {
+                  "id": "p0328-b4-e6",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "註詳干部二畫。"
+                }
+              ]
             },
             {
-              "kind": "br"
+              "id": "p0328-b4-l4",
+              "ord": 4,
+              "src": [
+                294,
+                303
+              ],
+              "elements": [
+                {
+                  "id": "p0328-b4-e7",
+                  "class": "large",
+                  "sem": "head",
+                  "text": "𠀮"
+                },
+                {
+                  "id": "p0328-b4-e8",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "字彙補",
+                  "ref": "p0328-bk8"
+                },
+                {
+                  "id": "p0328-b4-e9",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "籀"
+                }
+              ]
             },
             {
-              "kind": "text",
-              "id": "p0328-b4-s10",
-              "text": "文箕字。"
+              "id": "p0328-b4-l5",
+              "ord": 5,
+              "src": [
+                304,
+                308
+              ],
+              "elements": [
+                {
+                  "id": "p0328-b4-e10",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "文箕字。"
+                }
+              ]
             },
             {
-              "kind": "br"
-            },
-            {
-              "kind": "mark",
-              "id": "p0328-b4-s11",
-              "text": "十",
-              "style": "circled"
-            },
-            {
-              "kind": "head",
-              "id": "p0328-b4-s12",
-              "char": "𠁁"
-            },
-            {
-              "kind": "text",
-              "id": "p0328-b4-s13",
-              "text": ":"
+              "id": "p0328-b4-l6",
+              "ord": 6,
+              "src": [
+                309,
+                316
+              ],
+              "elements": [
+                {
+                  "id": "p0328-b4-e11",
+                  "class": "large",
+                  "sem": "mark",
+                  "text": "十",
+                  "style": "circled"
+                },
+                {
+                  "id": "p0328-b4-e12",
+                  "class": "large",
+                  "sem": "head",
+                  "text": "𠁁"
+                },
+                {
+                  "id": "p0328-b4-e13",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": ":"
+                }
+              ]
             }
           ]
         },
@@ -452,79 +589,71 @@
             318,
             387
           ],
-          "segments": [
+          "lines": [
             {
-              "kind": "book",
-              "id": "p0328-b5-s0",
-              "parts": [
-                {
-                  "text": "廣韻",
-                  "band": "p0328-b5"
-                }
-              ],
+              "id": "p0328-b5-l0",
+              "ord": 0,
               "src": [
                 318,
-                322
-              ]
-            },
-            {
-              "kind": "book",
-              "id": "p0328-b5-s1",
-              "parts": [
+                353
+              ],
+              "elements": [
                 {
+                  "id": "p0328-b5-e0",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "廣韻",
+                  "ref": "p0328-bk9"
+                },
+                {
+                  "id": "p0328-b5-e1",
+                  "class": "small",
+                  "sem": "title",
                   "text": "集韻",
-                  "band": "p0328-b5"
-                }
-              ],
-              "src": [
-                322,
-                326
-              ]
-            },
-            {
-              "kind": "text",
-              "id": "p0328-b5-s2",
-              "text": "𠀤徒口切，音鋀。禮器也。"
-            },
-            {
-              "kind": "book",
-              "id": "p0328-b5-s3",
-              "parts": [
+                  "ref": "p0328-bk10"
+                },
                 {
+                  "id": "p0328-b5-e2",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "𠀤徒口切，音鋀。禮器也。"
+                },
+                {
+                  "id": "p0328-b5-e3",
+                  "class": "small",
+                  "sem": "title",
                   "text": "轉註古音",
-                  "band": "p0328-b5"
+                  "ref": "p0328-bk11"
+                },
+                {
+                  "id": "p0328-b5-e4",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "石經毛詩：酌以大"
                 }
-              ],
-              "src": [
-                339,
-                345
               ]
             },
             {
-              "kind": "text",
-              "id": "p0328-b5-s4",
-              "text": "石經毛詩：酌以大"
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "text",
-              "id": "p0328-b5-s5",
-              "text": "𠁁，以祈黃考。今文作星斗之斗，非。周禮作豆，蓋此字之譌。"
-            },
-            {
-              "kind": "book",
-              "id": "p0328-b5-s6",
-              "parts": [
-                {
-                  "text": "正譌",
-                  "band": "p0328-b5"
-                }
-              ],
+              "id": "p0328-b5-l1",
+              "ord": 1,
               "src": [
-                383,
+                354,
                 387
+              ],
+              "elements": [
+                {
+                  "id": "p0328-b5-e5",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "𠁁，以祈黃考。今文作星斗之斗，非。周禮作豆，蓋此字之譌。"
+                },
+                {
+                  "id": "p0328-b5-e6",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "正譌",
+                  "ref": "p0328-bk12"
+                }
               ]
             }
           ]
@@ -536,65 +665,96 @@
             389,
             432
           ],
-          "segments": [
+          "lines": [
             {
-              "kind": "text",
-              "id": "p0328-b6-s0",
-              "text": "斲字从此。"
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "text",
-              "id": "p0328-b6-s1",
-              "text": "隸作鋀。"
-            },
-            {
-              "kind": "br"
-            },
-            {
-              "kind": "mark",
-              "id": "p0328-b6-s2",
-              "text": "十五",
-              "style": "circled"
-            },
-            {
-              "kind": "head",
-              "id": "p0328-b6-s3",
-              "char": "𠁕"
-            },
-            {
-              "kind": "text",
-              "id": "p0328-b6-s4",
-              "text": ":"
-            },
-            {
-              "kind": "book",
-              "id": "p0328-b6-s5",
-              "parts": [
-                {
-                  "text": "正字通",
-                  "band": "p0328-b6"
-                }
-              ],
+              "id": "p0328-b6-l0",
+              "ord": 0,
               "src": [
-                409,
-                414
+                389,
+                394
+              ],
+              "elements": [
+                {
+                  "id": "p0328-b6-e0",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "斲字从此。"
+                }
               ]
             },
             {
-              "kind": "text",
-              "id": "p0328-b6-s6",
-              "text": "俗壺字。○按正"
+              "id": "p0328-b6-l1",
+              "ord": 1,
+              "src": [
+                395,
+                399
+              ],
+              "elements": [
+                {
+                  "id": "p0328-b6-e1",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "隸作鋀。"
+                }
+              ]
             },
             {
-              "kind": "br"
+              "id": "p0328-b6-l2",
+              "ord": 2,
+              "src": [
+                400,
+                421
+              ],
+              "elements": [
+                {
+                  "id": "p0328-b6-e2",
+                  "class": "large",
+                  "sem": "mark",
+                  "text": "十五",
+                  "style": "circled"
+                },
+                {
+                  "id": "p0328-b6-e3",
+                  "class": "large",
+                  "sem": "head",
+                  "text": "𠁕"
+                },
+                {
+                  "id": "p0328-b6-e4",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": ":"
+                },
+                {
+                  "id": "p0328-b6-e5",
+                  "class": "small",
+                  "sem": "title",
+                  "text": "正字通",
+                  "ref": "p0328-bk13"
+                },
+                {
+                  "id": "p0328-b6-e6",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "俗壺字。○按正"
+                }
+              ]
             },
             {
-              "kind": "text",
-              "id": "p0328-b6-s7",
-              "text": "字通收士部，今改入。"
+              "id": "p0328-b6-l3",
+              "ord": 3,
+              "src": [
+                422,
+                432
+              ],
+              "elements": [
+                {
+                  "id": "p0328-b6-e7",
+                  "class": "small",
+                  "sem": "gloss",
+                  "text": "字通收士部，今改入。"
+                }
+              ]
             }
           ]
         },
@@ -605,9 +765,247 @@
             434,
             435
           ],
-          "segments": []
+          "lines": [
+            {
+              "id": "p0328-b7-l0",
+              "ord": 0,
+              "src": [
+                434,
+                435
+              ],
+              "elements": []
+            }
+          ]
         }
-      ]
+      ],
+      "semantics": {
+        "books": [
+          {
+            "id": "p0328-bk0",
+            "spans": [
+              {
+                "line": "p0328-b0-l1",
+                "range": [
+                  16,
+                  20
+                ]
+              }
+            ],
+            "src": [
+              53,
+              59
+            ]
+          },
+          {
+            "id": "p0328-bk1",
+            "spans": [
+              {
+                "line": "p0328-b2-l2",
+                "range": [
+                  2,
+                  4
+                ]
+              }
+            ],
+            "src": [
+              139,
+              143
+            ]
+          },
+          {
+            "id": "p0328-bk2",
+            "spans": [
+              {
+                "line": "p0328-b2-l4",
+                "range": [
+                  3,
+                  5
+                ]
+              }
+            ],
+            "src": [
+              163,
+              167
+            ]
+          },
+          {
+            "id": "p0328-bk3",
+            "spans": [
+              {
+                "line": "p0328-b2-l6",
+                "range": [
+                  2,
+                  4
+                ]
+              }
+            ],
+            "src": [
+              180,
+              184
+            ]
+          },
+          {
+            "id": "p0328-bk4",
+            "spans": [
+              {
+                "line": "p0328-b3-l0",
+                "range": [
+                  3,
+                  5
+                ]
+              }
+            ],
+            "src": [
+              197,
+              201
+            ]
+          },
+          {
+            "id": "p0328-bk5",
+            "spans": [
+              {
+                "line": "p0328-b3-l0",
+                "range": [
+                  12,
+                  14
+                ]
+              }
+            ],
+            "src": [
+              208,
+              212
+            ]
+          },
+          {
+            "id": "p0328-bk6",
+            "spans": [
+              {
+                "line": "p0328-b3-l1",
+                "range": [
+                  14,
+                  17
+                ]
+              }
+            ],
+            "src": [
+              243,
+              248
+            ]
+          },
+          {
+            "id": "p0328-bk7",
+            "spans": [
+              {
+                "line": "p0328-b4-l2",
+                "range": [
+                  3,
+                  5
+                ]
+              }
+            ],
+            "src": [
+              276,
+              280
+            ]
+          },
+          {
+            "id": "p0328-bk8",
+            "spans": [
+              {
+                "line": "p0328-b4-l4",
+                "range": [
+                  2,
+                  5
+                ]
+              }
+            ],
+            "src": [
+              297,
+              302
+            ]
+          },
+          {
+            "id": "p0328-bk9",
+            "spans": [
+              {
+                "line": "p0328-b5-l0",
+                "range": [
+                  0,
+                  2
+                ]
+              }
+            ],
+            "src": [
+              318,
+              322
+            ]
+          },
+          {
+            "id": "p0328-bk10",
+            "spans": [
+              {
+                "line": "p0328-b5-l0",
+                "range": [
+                  2,
+                  4
+                ]
+              }
+            ],
+            "src": [
+              322,
+              326
+            ]
+          },
+          {
+            "id": "p0328-bk11",
+            "spans": [
+              {
+                "line": "p0328-b5-l0",
+                "range": [
+                  17,
+                  21
+                ]
+              }
+            ],
+            "src": [
+              339,
+              345
+            ]
+          },
+          {
+            "id": "p0328-bk12",
+            "spans": [
+              {
+                "line": "p0328-b5-l1",
+                "range": [
+                  29,
+                  31
+                ]
+              }
+            ],
+            "src": [
+              383,
+              387
+            ]
+          },
+          {
+            "id": "p0328-bk13",
+            "spans": [
+              {
+                "line": "p0328-b6-l2",
+                "range": [
+                  5,
+                  8
+                ]
+              }
+            ],
+            "src": [
+              409,
+              414
+            ]
+          }
+        ]
+      }
     }
   ]
 }

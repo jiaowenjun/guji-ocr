@@ -47,10 +47,10 @@ kangxi-gold/
   同步 json/txt（样例外附加页自动处理），`verify_dataset.py` 默认按 manifest 页清单校验
 - 页标签：`draft` 草稿（爬取生成）→ `first` 初校（人工校对过）→ `final` 精校
   （复核确认）；v1 的 17 页（312–328）定为初校
-- `NNNN.json` 为 **Guji IR v1**（语义结构：页→大行→段流；书名以 parts 表达跨行；
-  text 段保留标点，清洗口径在 `meta.profile`；设计见
+- `NNNN.json` 为 **Guji IR v2**（物理层级：页→大行→小行；元素为大字/小字×语义双轴；书名为页级 overlay（spans 精确到行内区间），
+  text 保留标点，清洗口径在 `meta.profile`，`lineLayout: fold` 声明小行=转写折行；设计见
   [docs/design/guji-ir.md](../docs/design/guji-ir.md)），manifest 记
-  `annotations_schema: guji-ir/1`；`eval_cer.py --from-ir` 可直接读 IR 作参考文本
+  `annotations_schema: guji-ir/2`；`eval_cer.py --from-ir` 可直接读 IR 作参考文本
 
 ## 标注规范
 
