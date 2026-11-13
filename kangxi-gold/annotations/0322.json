@@ -805,7 +805,7 @@
         }
       ],
       "openedHere": true,
-      "closed": false,
+      "closed": true,
       "src": [
         143,
         154
@@ -919,7 +919,7 @@
         }
       ],
       "openedHere": true,
-      "closed": false,
+      "closed": true,
       "src": [
         275,
         283
@@ -1033,7 +1033,7 @@
         }
       ],
       "openedHere": true,
-      "closed": false,
+      "closed": true,
       "src": [
         341,
         347

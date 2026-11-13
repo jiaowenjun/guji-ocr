@@ -767,7 +767,7 @@
         }
       ],
       "openedHere": true,
-      "closed": false,
+      "closed": true,
       "src": [
         333,
         341

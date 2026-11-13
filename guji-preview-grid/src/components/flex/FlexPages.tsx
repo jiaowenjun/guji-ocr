@@ -260,7 +260,15 @@ function FlexBand({
 
   return (
     <div className={cls} onClick={onClick}>
-      {nodes}
+      {nodes.length > 0 ? (
+        nodes
+      ) : (
+        // 空大字列（独立 # 行等：行内无元素）：渲染空的 2×2 大字格，
+        // 否则空 .line 塌缩为零宽（旧 flex 行为为 Large text=" "）
+        <div className="large">
+          <div className="grid"> </div>
+        </div>
+      )}
     </div>
   );
 }

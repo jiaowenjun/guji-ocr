@@ -324,6 +324,9 @@ export function gj2ir(text: string): IRDocument {
         }
         overlays.push(overlay);
       }
+      // 挂接已有 overlay 的延续段：区域含 】则书已闭合（创建时的标志只反映
+      // 开启区域形态——跨 band wrap 的闭合信息在延续段到达时才补全）
+      if (region.kind !== "opener") overlay.closed = true;
       for (const run of regionRuns.get(ri) ?? []) {
         overlay.spans.push({
           line: run.line.id,

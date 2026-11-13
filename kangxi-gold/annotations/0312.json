@@ -578,7 +578,7 @@
         }
       ],
       "openedHere": true,
-      "closed": false,
+      "closed": true,
       "src": [
         161,
         171
@@ -623,7 +623,7 @@
         }
       ],
       "openedHere": true,
-      "closed": false,
+      "closed": true,
       "src": [
         226,
         239

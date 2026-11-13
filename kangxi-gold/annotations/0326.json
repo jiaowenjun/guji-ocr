@@ -686,7 +686,7 @@
         }
       ],
       "openedHere": true,
-      "closed": false,
+      "closed": true,
       "src": [
         263,
         269
