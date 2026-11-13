@@ -1,0 +1,877 @@
+{
+  "version": 3,
+  "meta": {
+    "sourceFormat": "gj",
+    "generatedBy": "guji-ir/3",
+    "fidelity": "full",
+    "profile": {
+      "stripPunct": [
+        "。",
+        "，",
+        "·",
+        "\"",
+        ":",
+        "：",
+        "、",
+        "《",
+        "》"
+      ],
+      "normalize": [
+        [
+          "◎",
+          "○"
+        ],
+        [
+          "〇",
+          "○"
+        ]
+      ]
+    },
+    "lineLayout": "fold",
+    "orientation": "vertical-rtl",
+    "rangeUnit": "codepoint",
+    "srcUnit": "utf-16"
+  },
+  "pages": [
+    {
+      "id": "p0332",
+      "no": 332,
+      "src": [
+        0,
+        4
+      ],
+      "bands": [
+        {
+          "id": "p0332-b0",
+          "ord": 0,
+          "src": [
+            6,
+            70
+          ],
+          "lines": [
+            {
+              "id": "p0332-b0-l0",
+              "ord": 0,
+              "src": [
+                6,
+                40
+              ],
+              "elements": [
+                {
+                  "id": "p0332-b0-e0",
+                  "class": "small",
+                  "text": "民則不惑。註舉中氣也。 又司中，星名。在太微垣。周禮·春官·大"
+                }
+              ]
+            },
+            {
+              "id": "p0332-b0-l1",
+              "ord": 1,
+              "src": [
+                41,
+                70
+              ],
+              "elements": [
+                {
+                  "id": "p0332-b0-e1",
+                  "class": "small",
+                  "text": "宗伯以槱燎祀司中司命飌師雨師。 又前漢·律歷志春爲陽"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "p0332-b1",
+          "ord": 1,
+          "src": [
+            72,
+            138
+          ],
+          "lines": [
+            {
+              "id": "p0332-b1-l0",
+              "ord": 0,
+              "src": [
+                72,
+                104
+              ],
+              "elements": [
+                {
+                  "id": "p0332-b1-e0",
+                  "class": "small",
+                  "text": "中，萬物以生。秋爲隂中，萬物以成。 又中央，四方之中也。書·召"
+                }
+              ]
+            },
+            {
+              "id": "p0332-b1-l1",
+              "ord": 1,
+              "src": [
+                105,
+                138
+              ],
+              "elements": [
+                {
+                  "id": "p0332-b1-e1",
+                  "class": "small",
+                  "text": "誥王來紹上帝，自服于土中。註洛爲天地之中。張衡·東京賦宅"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "p0332-b2",
+          "ord": 2,
+          "src": [
+            140,
+            205
+          ],
+          "lines": [
+            {
+              "id": "p0332-b2-l0",
+              "ord": 0,
+              "src": [
+                140,
+                174
+              ],
+              "elements": [
+                {
+                  "id": "p0332-b2-e0",
+                  "class": "small",
+                  "text": "中圖大。 又正也。禮·儒行儒有衣冠中。周禮·春官·司刺以刺宥"
+                }
+              ]
+            },
+            {
+              "id": "p0332-b2-l1",
+              "ord": 1,
+              "src": [
+                175,
+                205
+              ],
+              "elements": [
+                {
+                  "id": "p0332-b2-e1",
+                  "class": "small",
+                  "text": "三法求民情，斷民中，施上服下服之罪。註斷民罪，使輕重得中"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "p0332-b3",
+          "ord": 3,
+          "src": [
+            207,
+            274
+          ],
+          "lines": [
+            {
+              "id": "p0332-b3-l0",
+              "ord": 0,
+              "src": [
+                207,
+                241
+              ],
+              "elements": [
+                {
+                  "id": "p0332-b3-e0",
+                  "class": "small",
+                  "text": "也。 又心也。史記·韓安國傳深中寬厚。 又內也。易·坤卦黃裳"
+                }
+              ]
+            },
+            {
+              "id": "p0332-b3-l1",
+              "ord": 1,
+              "src": [
+                242,
+                274
+              ],
+              "elements": [
+                {
+                  "id": "p0332-b3-e1",
+                  "class": "small",
+                  "text": "元吉，文在中也。又老子·道德經多言數窮，不如守中。 又半也。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "p0332-b4",
+          "ord": 4,
+          "src": [
+            276,
+            346
+          ],
+          "lines": [
+            {
+              "id": "p0332-b4-l0",
+              "ord": 0,
+              "src": [
+                276,
+                311
+              ],
+              "elements": [
+                {
+                  "id": "p0332-b4-e0",
+                  "class": "small",
+                  "text": "列子·力命篇得亦中，亡亦中。魏志·管輅傳鼓一中。註猶言鼓一"
+                }
+              ]
+            },
+            {
+              "id": "p0332-b4-l1",
+              "ord": 1,
+              "src": [
+                312,
+                346
+              ],
+              "elements": [
+                {
+                  "id": "p0332-b4-e1",
+                  "class": "small",
+                  "text": "半也。 又成也。禮·禮器因名山升中于天。註中，猶成也。燔柴祭"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "p0332-b5",
+          "ord": 5,
+          "src": [
+            348,
+            413
+          ],
+          "lines": [
+            {
+              "id": "p0332-b5-l0",
+              "ord": 0,
+              "src": [
+                348,
+                381
+              ],
+              "elements": [
+                {
+                  "id": "p0332-b5-e0",
+                  "class": "small",
+                  "text": "天，告以諸侯之成功也。 又滿也。前漢·百官表制中二千石。註"
+                }
+              ]
+            },
+            {
+              "id": "p0332-b5-l1",
+              "ord": 1,
+              "src": [
+                382,
+                413
+              ],
+              "elements": [
+                {
+                  "id": "p0332-b5-e1",
+                  "class": "small",
+                  "text": "謂滿二千石也。索隱漢制，九卿已上，秩一歲，滿二千石。 又穿"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "p0332-b6",
+          "ord": 6,
+          "src": [
+            415,
+            483
+          ],
+          "lines": [
+            {
+              "id": "p0332-b6-l0",
+              "ord": 0,
+              "src": [
+                415,
+                451
+              ],
+              "elements": [
+                {
+                  "id": "p0332-b6-e0",
+                  "class": "small",
+                  "text": "也。周禮·冬官考工記中其莖。註謂穿之也。 又盛算器。禮·投壺"
+                }
+              ]
+            },
+            {
+              "id": "p0332-b6-l1",
+              "ord": 1,
+              "src": [
+                452,
+                483
+              ],
+              "elements": [
+                {
+                  "id": "p0332-b6-e1",
+                  "class": "small",
+                  "text": "主人奉矢，司射奉中。註士鹿中，大夫兕中，刻木如兕鹿而伏，背"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "p0332-b7",
+          "ord": 7,
+          "src": [
+            485,
+            547
+          ],
+          "lines": [
+            {
+              "id": "p0332-b7-l0",
+              "ord": 0,
+              "src": [
+                485,
+                516
+              ],
+              "elements": [
+                {
+                  "id": "p0332-b7-e0",
+                  "class": "small",
+                  "text": "上立圓圈，以盛算也。 又禮·深衣註衣有表者，謂之中衣。與衷"
+                }
+              ]
+            },
+            {
+              "id": "p0332-b7-l1",
+              "ord": 1,
+              "src": [
+                517,
+                547
+              ],
+              "elements": [
+                {
+                  "id": "p0332-b7-e1",
+                  "class": "small",
+                  "text": "通。 又俚語。以不可爲不中。蕭參希通錄引左傳成公二年，無"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "overlays": [
+    {
+      "id": "o0",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0332-b0-l0",
+          "range": [
+            5,
+            6
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        11,
+        14
+      ]
+    },
+    {
+      "id": "o1",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0332-b0-l0",
+          "range": [
+            24,
+            31
+          ]
+        },
+        {
+          "line": "p0332-b0-l1",
+          "range": [
+            0,
+            2
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        32,
+        44
+      ]
+    },
+    {
+      "id": "o2",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0332-b0-l1",
+          "range": [
+            17,
+            23
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        59,
+        67
+      ]
+    },
+    {
+      "id": "o3",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0332-b1-l0",
+          "range": [
+            28,
+            31
+          ]
+        },
+        {
+          "line": "p0332-b1-l1",
+          "range": [
+            0,
+            1
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        100,
+        107
+      ]
+    },
+    {
+      "id": "o4",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0332-b1-l1",
+          "range": [
+            13,
+            14
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        119,
+        122
+      ]
+    },
+    {
+      "id": "o5",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0332-b1-l1",
+          "range": [
+            21,
+            27
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        129,
+        137
+      ]
+    },
+    {
+      "id": "o6",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0332-b2-l0",
+          "range": [
+            9,
+            13
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        149,
+        155
+      ]
+    },
+    {
+      "id": "o7",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0332-b2-l0",
+          "range": [
+            19,
+            27
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        161,
+        171
+      ]
+    },
+    {
+      "id": "o8",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0332-b2-l1",
+          "range": [
+            18,
+            19
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        193,
+        196
+      ]
+    },
+    {
+      "id": "o9",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0332-b3-l0",
+          "range": [
+            7,
+            14
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        214,
+        223
+      ]
+    },
+    {
+      "id": "o10",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0332-b3-l0",
+          "range": [
+            24,
+            28
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        233,
+        239
+      ]
+    },
+    {
+      "id": "o11",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0332-b3-l1",
+          "range": [
+            9,
+            15
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        251,
+        259
+      ]
+    },
+    {
+      "id": "o12",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0332-b4-l0",
+          "range": [
+            0,
+            6
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        276,
+        284
+      ]
+    },
+    {
+      "id": "o13",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0332-b4-l0",
+          "range": [
+            14,
+            20
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        292,
+        300
+      ]
+    },
+    {
+      "id": "o14",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0332-b4-l0",
+          "range": [
+            24,
+            25
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        304,
+        307
+      ]
+    },
+    {
+      "id": "o15",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0332-b4-l1",
+          "range": [
+            8,
+            12
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        320,
+        326
+      ]
+    },
+    {
+      "id": "o16",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0332-b4-l1",
+          "range": [
+            20,
+            21
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        334,
+        337
+      ]
+    },
+    {
+      "id": "o17",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0332-b5-l0",
+          "range": [
+            16,
+            22
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        364,
+        372
+      ]
+    },
+    {
+      "id": "o18",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0332-b5-l0",
+          "range": [
+            28,
+            29
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        378,
+        381
+      ]
+    },
+    {
+      "id": "o19",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0332-b5-l1",
+          "range": [
+            7,
+            9
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        389,
+        393
+      ]
+    },
+    {
+      "id": "o20",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0332-b6-l0",
+          "range": [
+            2,
+            10
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        417,
+        427
+      ]
+    },
+    {
+      "id": "o21",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0332-b6-l0",
+          "range": [
+            14,
+            15
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        431,
+        434
+      ]
+    },
+    {
+      "id": "o22",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0332-b6-l0",
+          "range": [
+            26,
+            30
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        445,
+        451
+      ]
+    },
+    {
+      "id": "o23",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0332-b6-l1",
+          "range": [
+            10,
+            11
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        462,
+        465
+      ]
+    },
+    {
+      "id": "o24",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0332-b7-l0",
+          "range": [
+            12,
+            17
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        497,
+        504
+      ]
+    },
+    {
+      "id": "o25",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0332-b7-l1",
+          "range": [
+            14,
+            19
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        531,
+        538
+      ]
+    }
+  ]
+}

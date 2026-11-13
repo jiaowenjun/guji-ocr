@@ -62,9 +62,14 @@ def _norm(text: str) -> str:
 def continuation_from_prev(
     page: int, store: kangxi_store.KangxiStore
 ) -> tuple[list[str], dict]:
-    """前页（page-1）未完字头续入：取前页 .gj 最后一个字头之后的尾部文本，
-    在库内该字头的全量释义（段落拼接）中定位，返回余下的段落列表
-    （首段可为半段，保留原文标点与未闭合书名的闭合括号）。
+    """前页（page-1）未完字头续入：取「宿主字头之后已放置的全部文本」在库内
+    该字头的全量释义（段落拼接）中定位，返回余下的段落列表（首段可为半段，
+    保留原文标点与未闭合书名的闭合括号）。
+
+    宿主定位两级回溯：前页有字头则在前页找最后一个有库内详情者（行内
+    「古文」变体无详情，溢出的是宿主字头）；前页是纯延续页（无字头标记，
+    如 @332 整页是 @331「中」的续文）则逐页向前找宿主页，尾部 = 宿主页
+    该字头之后 + 其后相邻页到 page-1 的全文拼接（已放置文本跨页累计）。
 
     跨页书名靠 per-page 语义边界自然衔接：前页未闭合书名渲染为下开口，
     本页行首的孤儿】延续渲染为上开口（无需跨文件机制）。
@@ -74,20 +79,47 @@ def continuation_from_prev(
     if not prev_gj.exists():
         info["skipped"] = f"前页 {page - 1} 不在数据集"
         return [], info
+
+    def host_in(raw_text: str):
+        """在单页文本中找最后一个有库内详情的字头；返回 (head, entry, tail_raw)"""
+        marks = list(re.finditer(r"#([^#(\s【□])", raw_text))
+        for m in reversed(marks):
+            cand = m.group(1)
+            e = store.get_entry(ord(cand)) if len(cand) == 1 else None
+            if e is not None:
+                return cand, e, raw_text[m.end():]
+        return None, None, ""
+
     raw = prev_gj.read_text(encoding="utf-8")
-    # 行内/独立字头统一识别：# 后跟普通字符（含「#(二#个」的行内「个」）
-    marks = list(re.finditer(r"#([^#(\s【])", raw))
-    if not marks:
-        info["skipped"] = "前页无字头行"
-        return [], info
-    last = marks[-1]
-    head = last.group(1)
-    info["head"] = head
-    tail_raw = raw[last.end():]
-    entry = store.get_entry(ord(head)) if len(head) == 1 else None
+    head, entry, tail_raw = host_in(raw)
+    info["host_page"] = page - 1
     if entry is None:
-        info["skipped"] = f"字头「{head}」库中无详情"
+        # 前页是纯延续页：逐页向前找宿主页，边回溯边累计纯延续页全文（正序），
+        # 尾部 = 宿主页字头后文本 + 其后各页（含前页）全文拼接——支持任意长延续链
+        chained: list[str] = [raw]  # 回溯途经的纯延续页（倒序收集，最后正序拼接）
+        back = page - 2
+        while back >= 1:
+            cand_gj = ANNOTATIONS / f"{back:04d}.gj"
+            if not cand_gj.exists():
+                break  # 数据集不连续，回溯终止
+            cand_raw = cand_gj.read_text(encoding="utf-8")
+            h, e, t = host_in(cand_raw)
+            if e is not None:
+                head, entry = h, e
+                tail_raw = t + "\n" + "\n".join(reversed(chained))
+                info["host_page"] = back
+                break
+            chained.append(cand_raw)
+            back -= 1
+        if entry is None:
+            info["skipped"] = "前页及回溯各页的字头在库中均无详情"
+            return [], info
+    if entry is None:
+        info["skipped"] = "前页字头在库中均无详情"
         return [], info
+    info["head"] = head
+    # 剥离尾部的「古文#变体…」前缀：变体字头是词条页元数据，不在释义段文本内
+    tail_raw = re.sub(r"^\s*古文(?:#[^#\s【(]){1,4}", "", tail_raw)
     paragraphs = [
         p for p in (json.loads(entry["record_json"]).get("text_paragraphs") or []) if p.strip()
     ]
@@ -131,7 +163,12 @@ def continuation_from_prev(
         return [], info
     end = max(b.a + b.size for b in blocks)
     if end >= len(entry_n):
-        info["skipped"] = "前页已完整收录该字头，无需续入"
+        info["skipped"] = (
+            f"前页 {page - 1} 的 .gj 已完整收录字头「{head}」全部 {len(paragraphs)} 段"
+            f"（物理上可能延伸到本页及以后）——请先在校对中把前页裁剪到其物理页界，"
+            f"再添加本页，余段将自动续入"
+        )
+        info["fully_included"] = True
         return [], info
     pi0, ci0 = idx_map[end]
     out: list[str] = []
@@ -153,8 +190,11 @@ def build_draft_gj(
     未完字头的续文行（置于新字头之前，符合阅读顺序）；skip_head 防重复收录
     延续字头（站点 page_chars 通常不标延续，此为保险）。"""
     chars = store.get_page_chars(page)
-    if not chars:
-        raise RuntimeError(f"页 {page} 无字头索引（page_chars 为空）——阅读页数据不完整")
+    if not chars and not continuation:
+        raise RuntimeError(
+            f"页 {page} 无字头索引（page_chars 为空）且无前页续文——"
+            "阅读页数据不完整或该页既无新字头也无延续内容"
+        )
 
     parts = [
         f"// 草稿：kangxizidian.com 爬取生成 {date.today()}，未经人工校对（状态：草稿）",

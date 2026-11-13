@@ -324,6 +324,40 @@
         "txt": "0331.txt"
       },
       "origin": "kangxizidian.com 爬取草稿（kangxi_page_tool.py add）"
+    },
+    {
+      "page": 332,
+      "image": "0332.jpg",
+      "url": "https://p.kangxizidian.com/kangxi2/0332.jpg",
+      "size_bytes": 552173,
+      "sha256": "ce3bb67ac089703501d96a6fa786df810328a1acd6f27ac43e7e1ed9c89eac7a",
+      "width": 1130,
+      "height": 1709,
+      "downloaded_at": "2026-11-13",
+      "status": "first",
+      "annotations": {
+        "gj": "0332.gj",
+        "json": "0332.json",
+        "txt": "0332.txt"
+      },
+      "origin": "kangxizidian.com 爬取草稿（kangxi_page_tool.py add）"
+    },
+    {
+      "page": 333,
+      "image": "0333.jpg",
+      "url": "https://p.kangxizidian.com/kangxi2/0333.jpg",
+      "size_bytes": 568641,
+      "sha256": "5d98bcccbada8bac40086f494d6f68001f154020c1076e3453e6ebf0424244c1",
+      "width": 1130,
+      "height": 1711,
+      "downloaded_at": "2026-11-13",
+      "status": "first",
+      "annotations": {
+        "gj": "0333.gj",
+        "json": "0333.json",
+        "txt": "0333.txt"
+      },
+      "origin": "kangxizidian.com 爬取草稿（kangxi_page_tool.py add）"
     }
   ],
   "annotation_source": "guji-preview/src/samples/kangxi-yibu.gj（人工精标，源自 vscode-guji-preview/example；零漂移对照通过）",
