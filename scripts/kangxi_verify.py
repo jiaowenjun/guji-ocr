@@ -63,7 +63,7 @@ def verify(db_path: Path, verbose: bool = False) -> bool:
     by_page: dict[int, list[dict]] = {}
     for r in chars:
         by_page.setdefault(r["page"], []).append(r)
-        svg_head = r["svg"].split("-")[0]
+        svg_head = r["svg"].split("/")[-1].split("-")[0]  # svg 可能含千位桶目录前缀
         if svg_head != f"{r['page']:04d}":
             problems.append(f"[索引] 页 {r['page']} 的 svg 名 {r['svg']} 首段不符")
             chars_bad += 1

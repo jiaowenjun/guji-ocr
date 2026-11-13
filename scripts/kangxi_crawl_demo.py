@@ -33,7 +33,7 @@ import kangxi_store  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CACHE = REPO_ROOT / "datasets" / "kangxi-demo-cache"
-THUMB_URL_PREFIX = "https://www.kangxizidian.com/kxzt/0000s/"
+THUMB_URL_PREFIX = "https://www.kangxizidian.com/kxzt/"  # svg 字段含千位桶目录（如 1000s/…）
 NET_LOCK = threading.Lock()  # 串行化网络请求，保持限速礼仪
 
 PAGE_HTML = """<!DOCTYPE html>
@@ -201,10 +201,10 @@ async function fetchPage() {
     $('pageRange').textContent = `全书 1–${d.total_pages} 页`;
     const chips = d.thumbs.map(t => t.char
       ? `<div class="chip" data-char="${esc(t.char)}" title="${esc(t.svg)}">
-           <img src="${esc(t.thumb_url)}" loading="lazy" alt="${esc(t.char)}">
+           <img src="${esc(t.thumb_url)}" alt="${esc(t.char)}">
            <span class="no">#${esc(t.entry_no)}</span></div>`
       : `<div class="chip k" title="真·未编码字，详情端点不可查（${esc(t.svg)}）">
-           <img src="${esc(t.thumb_url)}" loading="lazy">
+           <img src="${esc(t.thumb_url)}">
            <span class="no"><span class="badge">未编码</span> ${esc(t.k_code)}</span></div>`
     ).join('');
     $('thumbs').innerHTML = chips || '<div class="state">本页无字头</div>';

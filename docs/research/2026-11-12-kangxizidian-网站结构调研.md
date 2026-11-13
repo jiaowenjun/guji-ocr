@@ -11,7 +11,7 @@
 | 阅读页（本次对象） | `/v2/index2.php?page={N}` | 整页扫描 + 字头缩略图 + 目录，N 为 1–7738 |
 | 大图页 | `/v2/index.php?page={N}` | 另一变体，本次未解析其结构差异 |
 | 整页扫描图 | `https://p.kangxizidian.com/kangxi2/{N:04d}.jpg` | 直链完全规则；即 WD-2T `kangxizidian-wuyingdian` 与 kangxi-gold 的图片来源（已在[图片证据](evidence/2026-11-12-kangxi-gold-images.json)核查） |
-| 字头缩略图 | `https://www.kangxizidian.com/kxzt/0000s/{…}.svg` | 命名规则见第 3 节 |
+| 字头缩略图 | `https://www.kangxizidian.com/kxzt/{N}000s/{…}.svg` | **目录按千位分桶**（N=页码千位，如 1075 页在 `1000s/`）；命名规则见第 3 节 |
 
 ## 2. 阅读页三列结构
 

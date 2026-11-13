@@ -93,11 +93,17 @@ def parse_thumb_items(page_html: str) -> list[dict]:
     4 段 {页}-{序}-{流水号}-{码位}.svg（主字头）、3 段 {页}-{序}-K####.svg、
     2 段 {页}-{序}.svg（后两类为未编码字，链接实体破损 &#x）；
     未编码字与编码字可能共用同一 page_seq，页内唯一键是 svg 文件名。
+    缩略图目录按千位分桶（src 形如 ../kxzt/{N}000s/{文件名}.svg），
+    svg 字段保留桶相对路径（如 1000s/1075-01-….svg）。
     """
     items = []
     for ord_, m in enumerate(THUMB_PAIR_RE.finditer(page_html)):
-        hexcode, svg = m.group(1), m.group(2).split("/")[-1]
-        stem = svg[:-4].split("-") if svg.endswith(".svg") else svg.split("-")
+        hexcode = m.group(1)
+        rel = re.sub(r"^(\.\./)+", "", m.group(2))  # ../kxzt/{桶}/{名}.svg
+        if rel.startswith("kxzt/"):
+            rel = rel[len("kxzt/"):]
+        name = rel.split("/")[-1]
+        stem = name[:-4].split("-") if name.endswith(".svg") else name.split("-")
         entry_no = stem[2] if len(stem) >= 3 else None
         k_code = entry_no if entry_no and entry_no.startswith("K") else None
         items.append({
@@ -108,7 +114,7 @@ def parse_thumb_items(page_html: str) -> list[dict]:
             "k_code": k_code,
             "codepoint": int(hexcode, 16) if hexcode else None,
             "char": chr(int(hexcode, 16)) if hexcode else None,
-            "svg": svg,
+            "svg": rel,
         })
     return items
 
