@@ -10,7 +10,7 @@
 | 布局模型 | 流式：`row-reverse` flex，行对齐由内容"涌现" | 严格矩阵：布局引擎推导 1em 字格坐标，显式 grid 轨道 |
 | 跨行书名 | `book-start/middle/end` 三态 + 负边距阶梯 + `:has()` 按边删 border 拼接 | 同列连续片段合并为**单个跨行矩形项**（单一边框）；仅 wrap 连接边开口 |
 | 行线贯通 | 无（仅外框） | 大行之间界栏全页高（`border-left` + subgrid 占满行，可开关） |
-| 渲染管线 | `parsePages → React 组件` | `gj2ir → layout3（骨架布局）→ overlay 装饰 → 矩阵组件`（[Guji IR v3](../docs/design/guji-ir.md) 双层结构） |
+| 渲染管线 | `parsePages → React 组件`（旧版，姊妹项目保留） | 主路径 `gj2ir → layout3（骨架布局）→ overlay 装饰 → 矩阵组件`；Flex 对照为 v3 原生 `FlexPages`（同一骨架+overlay 的流式渲染）（[Guji IR v3](../docs/design/guji-ir.md) 双层结构） |
 
 解析器、CodeMirror 编辑器与 guji-preview 完全一致；应用外壳已分叉——本项目自
 2026-11-12 起移除独立「编辑」双栏模式，打开即数据集对照视图（通用编辑/预览用 guji-preview）。
