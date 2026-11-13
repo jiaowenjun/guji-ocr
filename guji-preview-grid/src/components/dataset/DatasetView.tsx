@@ -143,8 +143,9 @@ function useDatasetText() {
 }
 
 function ColumnHeader({ children }: { children: ReactNode }) {
+  // 单行截断：折行会让各栏头部行数不一，破坏左右栏滚动区顶边的对齐基准
   return (
-    <div className="text-muted-foreground bg-background/60 border-b px-3 py-1 text-xs">
+    <div className="text-muted-foreground bg-background/60 border-b px-3 py-1 text-xs whitespace-nowrap overflow-hidden text-ellipsis">
       {children}
     </div>
   );
@@ -240,20 +241,18 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
   };
   const frameWidth = displayWidth - paperPad.left - paperPad.right;
 
-  // 纸层高度与扫描显示高一致（网格行数 × 宽度字格 ≠ 版框实际高，会矮一截，
-  // 在深色主题下表现为纸层上下的黑边）：显式 minHeight = 图片等比高，
-  // 纵向富余按版框实测上/下边距比例分配（左右边距不变，纸宽本就相等）
+  // 纸面纵向与扫描版框对齐：上 padding = 版框上边距等比值（内容顶边对齐版框上沿）；
+  // 下 padding = 版框内容高 − 渲染内容实际高（网格行数 × 宽度字格 ≠ 版框实际高，
+  // 会矮一截——纸面下边缘因此对齐版框下沿，内容超出时退为 0 由内容撑高）。
+  // minHeight = 版框下沿位置，内容量出前先撑住纸面
   const { ref: paperContentRef, height: paperContentH } = useContentSize<HTMLDivElement>();
-  const paperHeight = entry ? Math.floor((displayWidth * entry.height) / entry.width) : 0;
-  const verticalBudget = paperHeight - paperContentH;
-  const marginSum = SCAN_FRAME_MARGIN.top + SCAN_FRAME_MARGIN.bottom;
-  const paperPadY =
-    verticalBudget > paperPad.top + paperPad.bottom && paperContentH > 0
-      ? {
-          top: (verticalBudget * SCAN_FRAME_MARGIN.top) / marginSum,
-          bottom: (verticalBudget * SCAN_FRAME_MARGIN.bottom) / marginSum,
-        }
-      : { top: paperPad.top, bottom: paperPad.bottom };
+  const paperBottomY = entry
+    ? Math.floor((displayWidth * (entry.height - SCAN_FRAME_MARGIN.bottom)) / entry.width)
+    : 0;
+  const frameContentH = entry
+    ? (entry.height - SCAN_FRAME_MARGIN.top - SCAN_FRAME_MARGIN.bottom) * scanScale
+    : 0;
+  const padBottom = Math.max(0, frameContentH - paperContentH);
   const unit = cols > 0 ? (frameWidth - 2) / cols : 25;
 
   const onChange = useCallback(
@@ -567,13 +566,14 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
               <div className="flex justify-center p-2">
                 {laidPages.length > 0 ? (
                   <div
+                    data-paper
                     className="relative shrink-0"
                     style={{
                       width: displayWidth,
-                      minHeight: paperHeight,
-                      paddingTop: paperPadY.top,
+                      minHeight: paperBottomY,
+                      paddingTop: paperPad.top,
                       paddingRight: paperPad.right,
-                      paddingBottom: paperPadY.bottom,
+                      paddingBottom: padBottom,
                       paddingLeft: paperPad.left,
                       background: PAPER_BG,
                     }}
