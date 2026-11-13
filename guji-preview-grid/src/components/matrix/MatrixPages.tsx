@@ -148,7 +148,8 @@ function MatrixPageView({
         style={
           {
             gridTemplateColumns: `repeat(${page.totalCols}, calc(var(--guji-unit) * 1))`,
-            gridTemplateRows: `repeat(${page.rows}, calc(var(--guji-unit) * 1))`,
+            // 行轨用纵向微调后的字格高（版框内容高 ÷ 行数；未注入时回落正方形）
+            gridTemplateRows: `repeat(${page.rows}, calc(var(--guji-unit-v, var(--guji-unit)) * 1))`,
           } as CSSProperties
         }
       >

@@ -253,13 +253,17 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
   const frameWidth = displayWidth - paperPad.left - paperPad.right;
 
   // 纸面纵向：上 padding = 版框上边距等比值（内容顶边对齐版框上沿）；
-  // 纸面本身顶天立地撑满渲染列视口（minHeight = 视口高 − p-2×2），
-  // 内容框（.lines）由 --guji-frame-h 拉到版框内容高，下边缘大致对齐版框下沿
+  // 纸面本身顶天立地撑满渲染列视口（minHeight = 视口高 − p-2×2）。
+  // 矩阵行高纵向微调：unit 由宽度反推（正方形格），行数 × unit 比版框内容高矮约 6%，
+  // 行高单独放大到 版框内容高 ÷ 行数（--guji-unit-v），文字填满版框、底部无空白；
+  // 列宽不变，左右版框对齐不受影响
   const { ref: scrollVPRef, height: scrollVPH } = useContentSize<HTMLDivElement>();
   const frameContentH = entry
     ? (entry.height - SCAN_FRAME_MARGIN.top - SCAN_FRAME_MARGIN.bottom) * scanScale
     : 0;
   const unit = cols > 0 ? (frameWidth - 2) / cols : 25;
+  const matrixRows = laidPages.length > 0 ? laidPages[0].rows : 0;
+  const unitV = matrixRows > 0 ? frameContentH / matrixRows : unit;
 
   const onChange = useCallback(
     (value: string) => {
@@ -623,7 +627,7 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
                       style={
                         {
                           "--guji-scale": `${unit}px`,
-                          "--guji-frame-h": `${frameContentH}px`,
+                          "--guji-unit-v": `${unitV}px`,
                         } as CSSProperties
                       }
                     >

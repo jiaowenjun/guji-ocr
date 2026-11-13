@@ -23,11 +23,11 @@
   border-left: 0;
 }
 
-/* 大字：单个 2×2 格 */
+/* 大字：单个 2×2 格（行向用纵向字格高 --guji-unit-v，字号/圆环等按列宽基准不变形） */
 .m-large {
   font-family: "GujiLarge", "康熙傳承版 KangXiZiDian.com", "HanaMinA", serif;
   font-size: calc(var(--guji-unit) * 1.8);
-  line-height: calc(var(--guji-unit) * 2);
+  line-height: calc(var(--guji-unit-v, var(--guji-unit)) * 2);
   text-align: center;
 }
 
@@ -63,8 +63,8 @@
   font-size: calc(var(--guji-unit) * 0.8);
 }
 .m-cell {
-  height: var(--guji-unit);
-  line-height: var(--guji-unit);
+  height: var(--guji-unit-v, var(--guji-unit));
+  line-height: var(--guji-unit-v, var(--guji-unit));
   text-align: center;
 }
 
