@@ -147,7 +147,7 @@ function LargeCell({ el, circled }: { el: IRElement; circled: boolean }) {
   );
 }
 
-/** 一个小行：字符片 → 逐字格 / 书名框段（书名段纵排逐字入框） */
+/** 一个小行：字符片 → 逐字格 / 书名框段（均为块级字格，纵向堆叠） */
 function SmallLineView({ pieces, activeBookId }: { pieces: Piece[]; activeBookId: string | null }) {
   return (
     <div className="small-line">
@@ -165,13 +165,11 @@ function SmallLineView({ pieces, activeBookId }: { pieces: Piece[]; activeBookId
             ))}
           </div>
         ) : (
-          <span key={i} className="grid-seq">
-            {[...p.text].map((ch, j) => (
-              <span key={j} className="grid" style={{ display: "inline-block" } as CSSProperties}>
-                {ch}
-              </span>
-            ))}
-          </span>
+          [...p.text].map((ch, j) => (
+            <div key={`${i}-${j}`} className="grid">
+              {ch}
+            </div>
+          ))
         ),
       )}
     </div>
