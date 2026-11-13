@@ -24,6 +24,54 @@ export function normalizeInput(text: string): string {
     );
 }
 
+// 【本仓库扩展】校对格式化（编辑器「格式化」按钮；只动源文本排版，字符流不变）：
+//   1. normalizeInput（全角括号/速记归一）
+//   2. 未闭合带圈补右括号：#(X → #(X)
+//   3. 字头组独占一行（对齐 @335 初校排版）：#A、#(A)、#A古文#B、#(A)#B、
+//      #(三)#中古文#𠁧#𠁩 …… 与前后释文断行。只插入折行，不增删空行（band 结构不变）
+//   4. 首尾空行与注释行删除，EOF 归一为单个换行（中间的空行/注释不动）
+const HEAD_TOKEN = "#\\([^()（）#\\n]{1,2}\\)?|#[^\\s#【】()（）/]";
+const HEAD_CLUSTER = new RegExp(
+  `(?:${HEAD_TOKEN})(?:(?:古文)?(?:${HEAD_TOKEN}))*(?:古文)?`,
+  "gu",
+);
+export function formatGj(text: string): string {
+  const closed = normalizeInput(text).replace(
+    /#\(([^()（）#\n]{1,2})(\)?)/g,
+    (m, inner: string, close: string) => (close ? m : `#(${inner})`),
+  );
+  const lines = closed.split("\n").map((line) => {
+      // 标题行（# 标题）与行内注释不参与
+      if (/^\s*#+ /.test(line)) return line;
+      const cut = line.indexOf("//");
+      const src = cut >= 0 ? line.slice(0, cut) : line;
+      const comment = cut >= 0 ? line.slice(cut) : "";
+      let out = "";
+      let last = 0;
+      let afterCluster = false;
+      for (const m of src.matchAll(HEAD_CLUSTER)) {
+        // 断口两侧的空白修剪（解析时行首尾本会 trim，源文本直接写净）
+        const between = src.slice(last, m.index);
+        out += `${afterCluster ? between.trim() : between.trimEnd()}\n${m[0]}\n`;
+        last = m.index + m[0].length;
+        afterCluster = true;
+      }
+      out += afterCluster ? src.slice(last).trimStart() : src.slice(last);
+      return out.replace(/\n+/g, "\n").replace(/^\n|\n$/g, "") + comment;
+    });
+  // 首尾空行/注释行删除（中间不动）；EOF 归一为单个换行
+  const blankish = (l: string) => {
+    const t = l.trim();
+    return t === "" || t.startsWith("//");
+  };
+  let s = 0;
+  let e = lines.length;
+  while (s < e && blankish(lines[s])) s++;
+  while (e > s && blankish(lines[e - 1])) e--;
+  const body = lines.slice(s, e).join("\n").replace(/[ \t]+$/, "");
+  return body ? `${body}\n` : "";
+}
+
 export function split(text: string) {
   text = normalizeInput(text);
   let clean = text

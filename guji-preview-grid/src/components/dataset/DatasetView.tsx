@@ -35,7 +35,7 @@ import { formatCircles } from "@/components/dataset/format-circles";
 import { MatrixPages } from "@/components/matrix/MatrixPages";
 import { FlexPages } from "@/components/flex/FlexPages";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
-import { normalizeInput } from "@/parser/split-line";
+import { formatGj } from "@/parser/split-line";
 import { gj2ir } from "@/ir/gj2ir";
 import { layout3 } from "@/ir/layout3";
 import { bandCursorTarget, highlightAt } from "@/ir/linkage";
@@ -398,16 +398,16 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
     return () => window.removeEventListener("keydown", onKey);
   }, [save, dirty, busy]);
 
-  /** 格式化：全角带圈括号 → 半角；z/数字速记 → 汉字（规范化为标准写法） */
+  /** 格式化：全角括号/速记归一；#(X 补右括号；字头组（#A、#(A)#B、#A古文#B…）独占一行 */
   const formatText = () => {
     if (page === undefined || text === undefined) return;
-    const formatted = normalizeInput(text);
+    const formatted = formatGj(text);
     if (formatted === text) {
       setStatus({ ok: true, msg: `@${page} 已是标准写法，无需格式化` });
       return;
     }
     setEdits((prev) => ({ ...prev, [page]: formatted }));
-    setStatus({ ok: true, msg: `@${page} 已格式化（全角括号/速记归一）——检查后保存` });
+    setStatus({ ok: true, msg: `@${page} 已格式化（括号归一/补全、字头独占一行）——检查后保存` });
   };
 
   /** OCR 自动断行：对已保存的当前页 .gj 重折行（先保存修改再触发） */

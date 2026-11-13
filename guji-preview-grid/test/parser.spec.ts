@@ -153,3 +153,89 @@ describe("输入规范化（全角括号与速记）", () => {
     expect(marks.map((m) => m.text)).toEqual(["增", "十五"]);
   });
 });
+
+// 校对格式化 formatGj：补全 #(X 右括号 + 字头组独占一行（@335 排版）
+// 不变量口径：折行只改行结构，字符流/大字序列/圆圈与书名 overlay/带数不变
+import { readFileSync, readdirSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+import { formatGj } from "../src/parser/split-line";
+import { gj2ir } from "../src/ir/gj2ir";
+import type { IRDocument } from "../src/ir/types";
+
+describe("formatGj 规则", () => {
+  const fmt = (s: string) => formatGj(`@1\n\n${s}\n`);
+
+  it("#(X → #(X)：补右括号（1/2 字内），已闭合不重复", () => {
+    expect(fmt("#(增#𠁦 音義").split("\n")).toEqual(["@1", "", "#(增)#𠁦", "音義", ""]);
+    expect(fmt("#(十一 音義")).toContain("#(十一)");
+    expect(fmt("#(十五) 音義")).not.toContain("))");
+  });
+
+  it("字头组独占一行：#A / #(A) / #A古文#B / #(A)#B / 多token", () => {
+    expect(fmt("去聲。#丮【唐韻】几劇").split("\n"))
+      .toEqual(["@1", "", "去聲。", "#丮", "【唐韻】几劇", ""]);
+    expect(fmt("#丯【廣韻】拜切").split("\n"))
+      .toEqual(["@1", "", "#丯", "【廣韻】拜切", ""]);
+    expect(fmt("非。#丰古文#𫵮【集韻】符風").split("\n"))
+      .toEqual(["@1", "", "非。", "#丰古文#𫵮", "【集韻】符風", ""]);
+    expect(fmt("丨部，非。#(三)#中古文#𠁧#𠁩【唐韻】陟弓切").split("\n"))
+      .toEqual(["@1", "", "丨部，非。", "#(三)#中古文#𠁧#𠁩", "【唐韻】陟弓切", ""]);
+  });
+
+  it("行尾 # (增 标记：补括号并独立成行（仍在本 band 内折行）", () => {
+    expect(fmt("遣花開。*【正字通】或作㭍。#(增").split("\n"))
+      .toEqual(["@1", "", "遣花開。*【正字通】或作㭍。", "#(增)", ""]);
+  });
+
+  it("首尾空行与注释行删除，EOF 单换行；中间的不动", () => {
+    expect(formatGj("\n\n// 页首注\n@1\n\n釋文。\n// 页中注保留\n\n釋文二。\n\n// 页尾注\n\n"))
+      .toBe("@1\n\n釋文。\n// 页中注保留\n\n釋文二。\n");
+    expect(formatGj("  // 缩进注释  \n@1\n\n正文  ")).toBe("@1\n\n正文\n");
+    expect(formatGj("\n \n//\n")).toBe("");
+  });
+
+  it("标题行与注释不动；已是独占一行的不变；幂等", () => {
+    expect(fmt("# 一部 #甲")).toBe(`@1\n\n# 一部 #甲\n`);
+    expect(fmt("釋文。 // 註：#甲不動")).toBe(`@1\n\n釋文。 // 註：#甲不動\n`);
+    expect(fmt("#(增)#𠁦\n【字彙補】籀")).toBe(`@1\n\n#(增)#𠁦\n【字彙補】籀\n`);
+    const once = fmt("去聲。#丮【唐韻】几劇");
+    expect(formatGj(once)).toBe(once);
+  });
+});
+
+describe("formatGj 全语料不变量：字符流/大字/overlay/带数不变", () => {
+  const dir = fileURLToPath(new URL("../../kangxi-gold/annotations", import.meta.url));
+  const files = readdirSync(dir).filter((f) => f.endsWith(".gj"));
+
+  const charStream = (doc: IRDocument) =>
+    doc.pages
+      .flatMap((p) => p.bands.flatMap((b) => b.lines.flatMap((l) => l.elements.map((e) => e.text))))
+      .join("")
+      .replace(/\s/g, "");
+  const largeSeq = (doc: IRDocument) =>
+    JSON.stringify(
+      doc.pages.flatMap((p) =>
+        p.bands.flatMap((b) => b.lines.flatMap((l) => l.elements.filter((e) => e.class === "large").map((e) => e.text))),
+      ),
+    );
+  const bandCounts = (doc: IRDocument) =>
+    JSON.stringify(doc.pages.map((p) => p.bands.length));
+  const overlayKinds = (doc: IRDocument) =>
+    JSON.stringify(doc.overlays.map((o) => o.kind).sort());
+
+  it("语料文件非空", () => expect(files.length).toBeGreaterThan(0));
+
+  for (const f of files) {
+    it(f, () => {
+      const src = readFileSync(`${dir}/${f}`, "utf-8");
+      const a = gj2ir(src);
+      const b = gj2ir(formatGj(src));
+      expect(charStream(b)).toBe(charStream(a));
+      expect(largeSeq(b)).toBe(largeSeq(a));
+      expect(bandCounts(b)).toBe(bandCounts(a));
+      expect(overlayKinds(b)).toBe(overlayKinds(a));
+      // 幂等：格式化两遍 = 一遍
+      expect(formatGj(formatGj(src))).toBe(formatGj(src));
+    });
+  }
+});
