@@ -358,6 +358,23 @@
         "txt": "0333.txt"
       },
       "origin": "kangxizidian.com 爬取草稿（kangxi_page_tool.py add）"
+    },
+    {
+      "page": 334,
+      "image": "0334.jpg",
+      "url": "https://p.kangxizidian.com/kangxi2/0334.jpg",
+      "size_bytes": 543060,
+      "sha256": "c58918c096126b8f25f897735949c06545f9b743742f70b5e7c84eae9bb4e3e9",
+      "width": 1130,
+      "height": 1711,
+      "downloaded_at": "2026-11-13",
+      "status": "draft",
+      "annotations": {
+        "gj": "0334.gj",
+        "json": "0334.json",
+        "txt": "0334.txt"
+      },
+      "origin": "kangxizidian.com 爬取草稿（kangxi_page_tool.py add）"
     }
   ],
   "annotation_source": "guji-preview/src/samples/kangxi-yibu.gj（人工精标，源自 vscode-guji-preview/example；零漂移对照通过）",
