@@ -37,30 +37,45 @@
       "id": "p0333",
       "no": 333,
       "src": [
-        54,
-        58
+        0,
+        4
       ],
       "bands": [
         {
           "id": "p0333-b0",
           "ord": 0,
           "src": [
-            60,
-            158
+            6,
+            70
           ],
           "lines": [
             {
               "id": "p0333-b0-l0",
               "ord": 0,
               "src": [
-                60,
-                158
+                6,
+                36
               ],
               "elements": [
                 {
                   "id": "p0333-b0-e0",
                   "class": "small",
-                  "text": "能爲役。杜預註：不中爲之役使。 又禮·鄕飲酒義冬之爲言中也。中者，藏也。 又姓。漢少府卿中京。又中行，中英，中梁，中壘，中野，皆複姓。 又廣韻集韻韻會𠀤陟仲切，音妕。矢至的曰中。"
+                  "text": "能爲役。杜預註：不中爲之役使。 又禮·鄕飲酒義冬之爲言中"
+                }
+              ]
+            },
+            {
+              "id": "p0333-b0-l1",
+              "ord": 1,
+              "src": [
+                37,
+                70
+              ],
+              "elements": [
+                {
+                  "id": "p0333-b0-e1",
+                  "class": "small",
+                  "text": "也。中者，藏也。 又姓。漢少府卿中京。又中行，中英，中梁，中壘，中"
                 }
               ]
             }
@@ -70,22 +85,37 @@
           "id": "p0333-b1",
           "ord": 1,
           "src": [
-            160,
-            193
+            72,
+            139
           ],
           "lines": [
             {
               "id": "p0333-b1-l0",
               "ord": 0,
               "src": [
-                160,
-                193
+                72,
+                109
               ],
               "elements": [
                 {
                   "id": "p0333-b1-e0",
                   "class": "small",
-                  "text": "史記·周本紀養由基去柳葉百步，射之，百發百中。 又著其中曰中。"
+                  "text": "野，皆複姓。 又廣韻集韻韻會𠀤陟仲切，音妕。矢至的曰中。史"
+                }
+              ]
+            },
+            {
+              "id": "p0333-b1-l1",
+              "ord": 1,
+              "src": [
+                110,
+                139
+              ],
+              "elements": [
+                {
+                  "id": "p0333-b1-e1",
+                  "class": "small",
+                  "text": "記·周本紀養由基去柳葉百步，射之，百發百中。 又著其中曰"
                 }
               ]
             }
@@ -95,22 +125,37 @@
           "id": "p0333-b2",
           "ord": 2,
           "src": [
-            195,
-            227
+            141,
+            205
           ],
           "lines": [
             {
               "id": "p0333-b2-l0",
               "ord": 0,
               "src": [
-                195,
-                227
+                141,
+                172
               ],
               "elements": [
                 {
                   "id": "p0333-b2-e0",
                   "class": "small",
-                  "text": "莊子·達生篇中身當心則爲病，猶醫書中風，中暑是也。 又要也。"
+                  "text": "中。莊子·達生篇中身當心則爲病，猶醫書中風，中暑是也。 又"
+                }
+              ]
+            },
+            {
+              "id": "p0333-b2-l1",
+              "ord": 1,
+              "src": [
+                173,
+                205
+              ],
+              "elements": [
+                {
+                  "id": "p0333-b2-e1",
+                  "class": "small",
+                  "text": "要也。周禮·春官凡官府鄕州及都鄙之治中，受而藏之。註謂治"
                 }
               ]
             }
@@ -120,22 +165,37 @@
           "id": "p0333-b3",
           "ord": 3,
           "src": [
-            229,
-            253
+            207,
+            272
           ],
           "lines": [
             {
               "id": "p0333-b3-l0",
               "ord": 0,
               "src": [
-                229,
-                253
+                207,
+                240
               ],
               "elements": [
                 {
                   "id": "p0333-b3-e0",
                   "class": "small",
-                  "text": "周禮·春官凡官府鄕州及都鄙之治中，受而藏之。"
+                  "text": "職簿書之要也。 又應也。禮·月令律中大簇。註中猶應也。 又"
+                }
+              ]
+            },
+            {
+              "id": "p0333-b3-l1",
+              "ord": 1,
+              "src": [
+                241,
+                272
+              ],
+              "elements": [
+                {
+                  "id": "p0333-b3-e1",
+                  "class": "small",
+                  "text": "合也。左傳·定元年季孫曰：子家亟言於我，未嘗不中吾志也。 "
                 }
               ]
             }
@@ -145,22 +205,37 @@
           "id": "p0333-b4",
           "ord": 4,
           "src": [
-            255,
-            272
+            274,
+            345
           ],
           "lines": [
             {
               "id": "p0333-b4-l0",
               "ord": 0,
               "src": [
-                255,
-                272
+                274,
+                310
               ],
               "elements": [
                 {
                   "id": "p0333-b4-e0",
                   "class": "small",
-                  "text": "註謂治職簿書之要也。 又應也。"
+                  "text": "又類篇正韻𠀤直衆切。與仲通。禮·月令中呂，卽仲呂， 又讀作"
+                }
+              ]
+            },
+            {
+              "id": "p0333-b4-l1",
+              "ord": 1,
+              "src": [
+                311,
+                345
+              ],
+              "elements": [
+                {
+                  "id": "p0333-b4-e1",
+                  "class": "small",
+                  "text": "得。周禮·地官師氏掌國中失之事。註故書中爲得。陸德明云：中，"
                 }
               ]
             }
@@ -170,22 +245,37 @@
           "id": "p0333-b5",
           "ord": 5,
           "src": [
-            274,
-            285
+            347,
+            411
           ],
           "lines": [
             {
               "id": "p0333-b5-l0",
               "ord": 0,
               "src": [
-                274,
-                285
+                347,
+                380
               ],
               "elements": [
                 {
                   "id": "p0333-b5-e0",
                   "class": "small",
-                  "text": "禮·月令律中大簇。"
+                  "text": "杜音得。 又韻補叶陟良切，音章。師古曰：古讀中爲章。吳志·胡"
+                }
+              ]
+            },
+            {
+              "id": "p0333-b5-l1",
+              "ord": 1,
+              "src": [
+                381,
+                411
+              ],
+              "elements": [
+                {
+                  "id": "p0333-b5-e1",
+                  "class": "small",
+                  "text": "綜傳·黃龍大牙賦四靈旣布，黃龍處中。周制日月，是曰太常。 "
                 }
               ]
             }
@@ -195,22 +285,37 @@
           "id": "p0333-b6",
           "ord": 6,
           "src": [
-            287,
-            300
+            413,
+            480
           ],
           "lines": [
             {
               "id": "p0333-b6-l0",
               "ord": 0,
               "src": [
-                287,
-                300
+                413,
+                447
               ],
               "elements": [
                 {
                   "id": "p0333-b6-e0",
                   "class": "small",
-                  "text": "註中猶應也。 又合也。"
+                  "text": "又叶諸仍切，音征。劉貢父·詩話關中讀中爲𤇏。詩·大雅泉之竭"
+                }
+              ]
+            },
+            {
+              "id": "p0333-b6-l1",
+              "ord": 1,
+              "src": [
+                448,
+                480
+              ],
+              "elements": [
+                {
+                  "id": "p0333-b6-e1",
+                  "class": "small",
+                  "text": "兮，不云自中。叶上頻。班固·高祖泗水亭𥓓天期乗祚受爵漢中。"
                 }
               ]
             }
@@ -220,222 +325,37 @@
           "id": "p0333-b7",
           "ord": 7,
           "src": [
-            302,
-            350
+            482,
+            542
           ],
           "lines": [
             {
               "id": "p0333-b7-l0",
               "ord": 0,
               "src": [
-                302,
-                350
+                482,
+                509
               ],
               "elements": [
                 {
                   "id": "p0333-b7-e0",
                   "class": "small",
-                  "text": "左傳·定元年季孫曰：子家子亟言於我，未嘗不中吾志也。 又類篇正韻𠀤直衆切。與仲通。"
+                  "text": "叶下秦。古東韻與庚陽通。 俗讀中酒之中爲去聲。中與之中"
                 }
               ]
-            }
-          ]
-        },
-        {
-          "id": "p0333-b8",
-          "ord": 8,
-          "src": [
-            352,
-            371
-          ],
-          "lines": [
+            },
             {
-              "id": "p0333-b8-l0",
-              "ord": 0,
+              "id": "p0333-b7-l1",
+              "ord": 1,
               "src": [
-                352,
-                371
+                510,
+                542
               ],
               "elements": [
                 {
-                  "id": "p0333-b8-e0",
+                  "id": "p0333-b7-e1",
                   "class": "small",
-                  "text": "禮·月令中呂，卽仲呂， 又讀作得。"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "p0333-b9",
-          "ord": 9,
-          "src": [
-            373,
-            389
-          ],
-          "lines": [
-            {
-              "id": "p0333-b9-l0",
-              "ord": 0,
-              "src": [
-                373,
-                389
-              ],
-              "elements": [
-                {
-                  "id": "p0333-b9-e0",
-                  "class": "small",
-                  "text": "周禮·地官師氏掌國中失之事。"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "p0333-b10",
-          "ord": 10,
-          "src": [
-            391,
-            435
-          ],
-          "lines": [
-            {
-              "id": "p0333-b10-l0",
-              "ord": 0,
-              "src": [
-                391,
-                435
-              ],
-              "elements": [
-                {
-                  "id": "p0333-b10-e0",
-                  "class": "small",
-                  "text": "註故書中爲得。陸德明云：中，杜音得。 又韻補叶陟良切，音章。師古曰：古讀中爲章。"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "p0333-b11",
-          "ord": 11,
-          "src": [
-            437,
-            481
-          ],
-          "lines": [
-            {
-              "id": "p0333-b11-l0",
-              "ord": 0,
-              "src": [
-                437,
-                481
-              ],
-              "elements": [
-                {
-                  "id": "p0333-b11-e0",
-                  "class": "small",
-                  "text": "吳志·胡綜傳·黃龍大牙賦四靈旣布，黃龍處中。周制日月，是曰太常。 又叶諸仍切，音征。"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "p0333-b12",
-          "ord": 12,
-          "src": [
-            483,
-            499
-          ],
-          "lines": [
-            {
-              "id": "p0333-b12-l0",
-              "ord": 0,
-              "src": [
-                483,
-                499
-              ],
-              "elements": [
-                {
-                  "id": "p0333-b12-e0",
-                  "class": "small",
-                  "text": "劉貢父·詩話關中讀中爲𤇏。"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "p0333-b13",
-          "ord": 13,
-          "src": [
-            501,
-            521
-          ],
-          "lines": [
-            {
-              "id": "p0333-b13-l0",
-              "ord": 0,
-              "src": [
-                501,
-                521
-              ],
-              "elements": [
-                {
-                  "id": "p0333-b13-e0",
-                  "class": "small",
-                  "text": "詩·大雅泉之竭兮，不云自中。叶上頻。"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "p0333-b14",
-          "ord": 14,
-          "src": [
-            523,
-            556
-          ],
-          "lines": [
-            {
-              "id": "p0333-b14-l0",
-              "ord": 0,
-              "src": [
-                523,
-                556
-              ],
-              "elements": [
-                {
-                  "id": "p0333-b14-e0",
-                  "class": "small",
-                  "text": "班固·高祖泗水亭𥓓天期乗祚受爵漢中。叶下秦。古東韻與庚陽通。"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "p0333-b15",
-          "ord": 15,
-          "src": [
-            558,
-            706
-          ],
-          "lines": [
-            {
-              "id": "p0333-b15-l0",
-              "ord": 0,
-              "src": [
-                558,
-                706
-              ],
-              "elements": [
-                {
-                  "id": "p0333-b15-e0",
-                  "class": "small",
-                  "text": "俗讀中酒之中爲去聲。中與之中爲平聲。◎按《魏志·徐邈傳》：邈爲尚書郞，時禁酒。邈私飮沈醉，趙達問以曹事，曰中聖人。時謂酒淸爲聖人，濁者爲賢人。蘇軾詩：公特未知其趣耳，臣今時復一中之。則中酒之中，亦可讀平聲。《通鑑》：周宣王成中與之名，註：當也。杜詩：今朝漢社稷，新數中與年。則中與之中亦可讀去聲。"
+                  "text": "爲平聲。◎按《魏志·徐邈傳》：邈爲尚書郞，時禁酒。邈私飮沈醉，趙"
                 }
               ]
             }
@@ -460,8 +380,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        77,
-        85
+        23,
+        31
       ]
     },
     {
@@ -469,18 +389,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0333-b0-l0",
+          "line": "p0333-b1-l0",
           "range": [
-            69,
-            71
+            8,
+            10
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        131,
-        135
+        80,
+        84
       ]
     },
     {
@@ -488,18 +408,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0333-b0-l0",
+          "line": "p0333-b1-l0",
           "range": [
-            71,
-            73
+            10,
+            12
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        135,
-        139
+        84,
+        88
       ]
     },
     {
@@ -507,18 +427,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0333-b0-l0",
+          "line": "p0333-b1-l0",
           "range": [
-            73,
-            75
+            12,
+            14
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        139,
-        143
+        88,
+        92
       ]
     },
     {
@@ -528,16 +448,23 @@
         {
           "line": "p0333-b1-l0",
           "range": [
+            28,
+            29
+          ]
+        },
+        {
+          "line": "p0333-b1-l1",
+          "range": [
             0,
-            6
+            5
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        160,
-        168
+        107,
+        116
       ]
     },
     {
@@ -547,16 +474,16 @@
         {
           "line": "p0333-b2-l0",
           "range": [
-            0,
-            6
+            2,
+            8
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        195,
-        203
+        143,
+        151
       ]
     },
     {
@@ -564,18 +491,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0333-b3-l0",
+          "line": "p0333-b2-l1",
           "range": [
-            0,
-            5
+            3,
+            8
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        229,
-        236
+        176,
+        183
       ]
     },
     {
@@ -583,18 +510,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0333-b4-l0",
+          "line": "p0333-b2-l1",
           "range": [
-            0,
-            1
+            25,
+            26
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        255,
-        258
+        200,
+        203
       ]
     },
     {
@@ -602,18 +529,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0333-b5-l0",
+          "line": "p0333-b3-l0",
           "range": [
-            0,
-            4
+            12,
+            16
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        274,
-        280
+        219,
+        225
       ]
     },
     {
@@ -621,142 +548,9 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0333-b6-l0",
+          "line": "p0333-b3-l0",
           "range": [
-            0,
-            1
-          ]
-        }
-      ],
-      "openedHere": true,
-      "closed": true,
-      "src": [
-        287,
-        290
-      ]
-    },
-    {
-      "id": "o10",
-      "kind": "book-title",
-      "spans": [
-        {
-          "line": "p0333-b7-l0",
-          "range": [
-            0,
-            6
-          ]
-        }
-      ],
-      "openedHere": true,
-      "closed": true,
-      "src": [
-        302,
-        310
-      ]
-    },
-    {
-      "id": "o11",
-      "kind": "book-title",
-      "spans": [
-        {
-          "line": "p0333-b7-l0",
-          "range": [
-            28,
-            30
-          ]
-        }
-      ],
-      "openedHere": true,
-      "closed": true,
-      "src": [
-        332,
-        336
-      ]
-    },
-    {
-      "id": "o12",
-      "kind": "book-title",
-      "spans": [
-        {
-          "line": "p0333-b7-l0",
-          "range": [
-            30,
-            32
-          ]
-        }
-      ],
-      "openedHere": true,
-      "closed": true,
-      "src": [
-        336,
-        340
-      ]
-    },
-    {
-      "id": "o13",
-      "kind": "book-title",
-      "spans": [
-        {
-          "line": "p0333-b8-l0",
-          "range": [
-            0,
-            4
-          ]
-        }
-      ],
-      "openedHere": true,
-      "closed": true,
-      "src": [
-        352,
-        358
-      ]
-    },
-    {
-      "id": "o14",
-      "kind": "book-title",
-      "spans": [
-        {
-          "line": "p0333-b9-l0",
-          "range": [
-            0,
-            5
-          ]
-        }
-      ],
-      "openedHere": true,
-      "closed": true,
-      "src": [
-        373,
-        380
-      ]
-    },
-    {
-      "id": "o15",
-      "kind": "book-title",
-      "spans": [
-        {
-          "line": "p0333-b10-l0",
-          "range": [
-            0,
-            1
-          ]
-        }
-      ],
-      "openedHere": true,
-      "closed": true,
-      "src": [
-        391,
-        394
-      ]
-    },
-    {
-      "id": "o16",
-      "kind": "book-title",
-      "spans": [
-        {
-          "line": "p0333-b10-l0",
-          "range": [
-            20,
+            21,
             22
           ]
         }
@@ -764,75 +558,18 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        413,
-        417
+        230,
+        233
       ]
     },
     {
-      "id": "o17",
+      "id": "o10",
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0333-b11-l0",
+          "line": "p0333-b3-l1",
           "range": [
-            0,
-            12
-          ]
-        }
-      ],
-      "openedHere": true,
-      "closed": true,
-      "src": [
-        437,
-        451
-      ]
-    },
-    {
-      "id": "o18",
-      "kind": "book-title",
-      "spans": [
-        {
-          "line": "p0333-b12-l0",
-          "range": [
-            0,
-            6
-          ]
-        }
-      ],
-      "openedHere": true,
-      "closed": true,
-      "src": [
-        483,
-        491
-      ]
-    },
-    {
-      "id": "o19",
-      "kind": "book-title",
-      "spans": [
-        {
-          "line": "p0333-b13-l0",
-          "range": [
-            0,
-            4
-          ]
-        }
-      ],
-      "openedHere": true,
-      "closed": true,
-      "src": [
-        501,
-        507
-      ]
-    },
-    {
-      "id": "o20",
-      "kind": "book-title",
-      "spans": [
-        {
-          "line": "p0333-b14-l0",
-          "range": [
-            0,
+            3,
             9
           ]
         }
@@ -840,8 +577,205 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        523,
-        535
+        244,
+        252
+      ]
+    },
+    {
+      "id": "o11",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0333-b4-l0",
+          "range": [
+            1,
+            3
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        275,
+        279
+      ]
+    },
+    {
+      "id": "o12",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0333-b4-l0",
+          "range": [
+            3,
+            5
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        279,
+        283
+      ]
+    },
+    {
+      "id": "o13",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0333-b4-l0",
+          "range": [
+            14,
+            18
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        293,
+        299
+      ]
+    },
+    {
+      "id": "o14",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0333-b4-l1",
+          "range": [
+            2,
+            7
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        313,
+        320
+      ]
+    },
+    {
+      "id": "o15",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0333-b4-l1",
+          "range": [
+            16,
+            17
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        329,
+        332
+      ]
+    },
+    {
+      "id": "o16",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0333-b5-l0",
+          "range": [
+            6,
+            8
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        353,
+        357
+      ]
+    },
+    {
+      "id": "o17",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0333-b5-l0",
+          "range": [
+            26,
+            30
+          ]
+        },
+        {
+          "line": "p0333-b5-l1",
+          "range": [
+            0,
+            8
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        375,
+        390
+      ]
+    },
+    {
+      "id": "o18",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0333-b6-l0",
+          "range": [
+            9,
+            15
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        422,
+        430
+      ]
+    },
+    {
+      "id": "o19",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0333-b6-l0",
+          "range": [
+            22,
+            26
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        438,
+        444
+      ]
+    },
+    {
+      "id": "o20",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0333-b6-l1",
+          "range": [
+            11,
+            20
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        459,
+        471
       ]
     }
   ]
