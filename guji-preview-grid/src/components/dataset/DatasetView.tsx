@@ -11,7 +11,7 @@ import {
   type CSSProperties,
   type ReactNode,
 } from "react";
-import { ChevronLeft, ChevronRight, Circle, Database, Download, Minus, Plus, RotateCcw, Save, ScanText, Scissors, Space, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, Circle, Database, Download, Minus, Plus, RotateCcw, Save, ScanText, Scissors, Space, Wand2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -652,10 +652,6 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
             <Download data-icon="inline-start" />
             下载 .gj
           </Button>
-          <Button size="sm" variant="outline" disabled={text === undefined} onClick={formatText}
-            title="规范化为标准写法：#（X）→#(X)；括号内 z→增、数字→汉字（如 15→十五）">
-            格式化
-          </Button>
           <Button size="sm" variant="outline" disabled={page === undefined || folding || dirty} onClick={ocrFold}
             title="按 OCR 行组在当前页 .gj 内插入折行换行（只插入换行不改字符；需先保存修改）">
             <Scissors data-icon="inline-start" />
@@ -756,6 +752,16 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
             </ColumnHeader>
             {/* 编辑器工具栏：作用于 .gj 源码的快捷操作（改入编辑缓冲，不自动保存） */}
             <div className="flex flex-wrap items-center gap-2 border-b px-2 py-1">
+              <Button
+                size="sm"
+                variant="outline"
+                disabled={text === undefined}
+                onClick={formatText}
+                title="规范化为校对标准写法：#（X）→#(X)；括号内 z→增、数字→汉字；#(X 补右括号；字头组（#A、#(A)#B、#A古文#B…）独占一行；首尾空行/注释行删除（不自动保存）"
+              >
+                <Wand2 data-icon="inline-start" />
+                格式化
+              </Button>
               <Button
                 size="sm"
                 variant="outline"

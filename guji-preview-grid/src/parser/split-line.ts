@@ -31,8 +31,10 @@ export function normalizeInput(text: string): string {
 //      #(三)#中古文#𠁧#𠁩 …… 与前后释文断行。只插入折行，不增删空行（band 结构不变）
 //   4. 首尾空行与注释行删除，EOF 归一为单个换行（中间的空行/注释不动）
 const HEAD_TOKEN = "#\\([^()（）#\\n]{1,2}\\)?|#[^\\s#【】()（）/]";
+// token 间可夹「古文」（异体标注）或「、」（异体并列，如 #丅、#𠄟）；
+// 尾部可拖「古文」、跨 band 断开的半个「古」（#下古↵文#丅…）或字头注音冒号（#与:）
 const HEAD_CLUSTER = new RegExp(
-  `(?:${HEAD_TOKEN})(?:(?:古文)?(?:${HEAD_TOKEN}))*(?:古文)?`,
+  `(?:${HEAD_TOKEN})(?:(?:古文|、)?(?:${HEAD_TOKEN}))*(?:古文?)?[:：]?`,
   "gu",
 );
 export function formatGj(text: string): string {
