@@ -41,6 +41,7 @@ ANNOTATIONS = REPO / "kangxi-gold" / "annotations"
 INDEX_JSON = REPO / "guji-preview-grid" / "public" / "dataset" / "index.json"
 
 STATUS_LABELS = {"draft": "草稿", "first": "初校", "final": "精校"}
+_PREFETCH_THREADS: list = []
 
 
 def run_fetch(script: str, page: int, label: str) -> str:
@@ -530,6 +531,53 @@ def write_index(manifest: dict) -> None:
     )
 
 
+def prefetch_next_page(page: int) -> None:
+    """后台预取 page+1：爬取（阅读页+图）→ OCR → 持久缓存。
+
+    添加第 n 页后自动调用，用户校对完第 n 页再添加 n+1 时 OCR 已就绪。
+    全部静默：失败只写日志文件不影响 add 结果；进程退出前等待完成（最长
+    ~10 分钟），add 本身的返回不被拖延。
+    """
+    import logging
+
+    nxt = page + 1
+    if not 1 <= nxt <= 7738:
+        return
+    log_path = REPO / "paddleocr-baseline" / "data" / "ocr-markdown" / "prefetch.log"
+    logging.basicConfig(
+        filename=log_path, filemode="a", level=logging.INFO,
+        format="%(asctime)s %(message)s",
+    )
+    try:
+        # ① 爬取（库里有则零网络；fetch 脚本自带 robots/限速/重试）
+        fetch = subprocess.run(
+            [sys.executable, str(SCRIPTS / "fetch_kangxi_page.py"), "--pages", str(nxt)],
+            capture_output=True, text=True, timeout=600,
+        )
+        if fetch.returncode != 0:
+            logging.info(f"@{nxt} fetch 退出码 {fetch.returncode}: {fetch.stderr[-200:]}")
+            return
+        # ② 字头详情（增量；page_chars 为空时 skip）
+        store = kangxi_store.KangxiStore()
+        chars = store.get_page_chars(nxt)
+        missing = [c["char"] for c in chars if c["char"] and store.get_entry(c["codepoint"]) is None]
+        if missing:
+            e = subprocess.run(
+                [sys.executable, str(SCRIPTS / "fetch_kangxi_entry.py"), "--pages", str(nxt)],
+                capture_output=True, text=True, timeout=900,
+            )
+            if e.returncode != 0:
+                logging.info(f"@{nxt} entry 退出码 {e.returncode}: {e.stderr[-200:]}")
+        # ③ OCR 预取（服务可用才跑；缓存命中则秒过）
+        pre = subprocess.run(
+            [sys.executable, str(SCRIPTS / "prefetch_ocr.py"), "--pages", str(nxt), "--limit", "1"],
+            capture_output=True, text=True, timeout=900,
+        )
+        logging.info(f"@{nxt} prefetch 完成: {pre.stdout.strip().splitlines()[-1] if pre.stdout.strip() else pre.stderr[-200:]}")
+    except Exception as e:  # noqa: BLE001 —— 预取绝不影响 add
+        logging.info(f"@{nxt} prefetch 异常: {e}")
+
+
 def cmd_add(page: int) -> dict:
     manifest = load_manifest()
     existing = {p["page"] for p in manifest.get("pages", [])}
@@ -606,6 +654,13 @@ def cmd_add(page: int) -> dict:
     MANIFEST.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     write_index(manifest)
 
+    # 后台预取 n+1（爬取+OCR+缓存）；不阻塞返回，进程退出前自然等待完成
+    import threading
+
+    t = threading.Thread(target=prefetch_next_page, args=(page,), daemon=True)
+    t.start()
+    _PREFETCH_THREADS.append(t)
+
     return {
         "ok": True,
         "page": page,
@@ -645,6 +700,9 @@ def main() -> int:
     try:
         result = cmd_add(args.page) if args.cmd == "add" else cmd_status(args.page, args.to)
         print(json.dumps(result, ensure_ascii=False))
+        # add 触发的后台预取（爬取+OCR）在此等待完成（不拖慢上面的结果输出）
+        for t in _PREFETCH_THREADS:
+            t.join()
         return 0
     except Exception as e:  # noqa: BLE001 —— 桥接给 HTTP 层
         print(json.dumps({"ok": False, "error": str(e)}, ensure_ascii=False))
