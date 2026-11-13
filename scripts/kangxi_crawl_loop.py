@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """全书慢速循环爬取：每页之间以「截断正态分布」随机间隔（默认均值 2 分钟，
-落在 1–10 分钟内）持续抓取，直至 7738 页全部入库。
+落在 1–5 分钟内）持续抓取，直至 7738 页全部入库。
 
 选页策略：默认 random（在未完成页中均匀随机选下一页，分散抓取顺序）；
 --order sequential 恢复从小到大顺序抓取。配合 kangxi_store 去重：已入库
@@ -65,7 +65,7 @@ def main() -> int:
     ap.add_argument("--mean-seconds", type=float, default=120.0, help="间隔均值（秒，默认 120）")
     ap.add_argument("--sigma-seconds", type=float, default=60.0, help="间隔标准差（秒，默认 60）")
     ap.add_argument("--min-seconds", type=float, default=60.0, help="间隔下限（秒，默认 60）")
-    ap.add_argument("--max-seconds", type=float, default=600.0, help="间隔上限（秒，默认 600）")
+    ap.add_argument("--max-seconds", type=float, default=300.0, help="间隔上限（秒，默认 300）")
     ap.add_argument("--max-pages", type=int, default=0, help="试运行上限页数（0 = 不限，跑完全书）")
     ap.add_argument("--max-consecutive-failures", type=int, default=5,
                     help="连续整页失败退出阈值（默认 5）")
