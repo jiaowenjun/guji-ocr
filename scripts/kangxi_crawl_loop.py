@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-"""全书慢速循环爬取：每页之间以「截断正态分布」随机间隔（默认均值 3 分钟，
+"""全书慢速循环爬取：每页之间以「截断正态分布」随机间隔（默认均值 2 分钟，
 落在 1–10 分钟内）持续抓取，直至 7738 页全部入库。
 
 选页策略：默认 random（在未完成页中均匀随机选下一页，分散抓取顺序）；
 --order sequential 恢复从小到大顺序抓取。配合 kangxi_store 去重：已入库
 页/字头零网络，中断重启自动续抓（random 下从不完整集合重抽）。
 
-间隔采样：N(μ=180s, σ=90s) 拒绝采样至落在 [60s, 600s]（真截断，非钳制，
-边界无点质量；σ 可调）。每轮动作与 kangxi_crawl_next.py 相同（阅读页 +
+间隔采样：N(μ=120s, σ=60s) 拒绝采样至落在 [60s, 600s]（真截断，非钳制，
+边界无点质量；μ/σ 可调；2026-11-13 应要求由 μ=180s/σ=90s 调整）。每轮动作与 kangxi_crawl_next.py 相同（阅读页 +
 原图 + 页→字头索引 + 该页缺失字头详情，内建 ≥1.2s 请求限速）。连续失败
 达到上限退出（站点故障/磁盘错误），避免死循环重试同一页。
 
@@ -62,8 +62,8 @@ def main() -> int:
     ap.add_argument("--from-page", type=int, default=1, help="起始页码（默认 1）")
     ap.add_argument("--order", choices=["random", "sequential"], default="random",
                     help="选页策略：random 未完成页中均匀随机（默认）；sequential 最小未完成页")
-    ap.add_argument("--mean-seconds", type=float, default=180.0, help="间隔均值（秒，默认 180）")
-    ap.add_argument("--sigma-seconds", type=float, default=90.0, help="间隔标准差（秒，默认 90）")
+    ap.add_argument("--mean-seconds", type=float, default=120.0, help="间隔均值（秒，默认 120）")
+    ap.add_argument("--sigma-seconds", type=float, default=60.0, help="间隔标准差（秒，默认 60）")
     ap.add_argument("--min-seconds", type=float, default=60.0, help="间隔下限（秒，默认 60）")
     ap.add_argument("--max-seconds", type=float, default=600.0, help="间隔上限（秒，默认 600）")
     ap.add_argument("--max-pages", type=int, default=0, help="试运行上限页数（0 = 不限，跑完全书）")
