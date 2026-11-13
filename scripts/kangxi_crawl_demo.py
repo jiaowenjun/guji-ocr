@@ -30,6 +30,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import fetch_kangxi_entry as fe  # noqa: E402
 import fetch_kangxi_page as fp  # noqa: E402
 import kangxi_store  # noqa: E402
+from kangxi_crawl_next import pick_dir  # noqa: E402
+from kangxi_svg_cache import FALLBACK_SVG_DIR, fetch_svg  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CACHE = REPO_ROOT / "datasets" / "kangxi-demo-cache"
@@ -42,6 +44,8 @@ FONT_FILES = {
     "hana-b.ttf": Path.home() / "Library" / "Fonts" / "HanaMinB.ttf",
 }
 THUMB_URL_PREFIX = "https://www.kangxizidian.com/kxzt/"  # svg 字段含千位桶目录（如 1000s/…）
+# 缩略图经 /api/thumb/ 本地优先下发（缓存目录见 main() 注入的 svg_dir）；
+# 站方直链仅作缓存目录也不可达时的最终回退（onerror）
 NET_LOCK = threading.Lock()  # 串行化网络请求，保持限速礼仪
 
 PAGE_HTML = """<!DOCTYPE html>
@@ -229,10 +233,12 @@ async function fetchPage() {
     $('pageRange').textContent = `全书 1–${d.total_pages} 页`;
     const chips = d.thumbs.map(t => t.char
       ? `<div class="chip" data-char="${esc(t.char)}" title="${esc(t.svg)}">
-           <img src="${esc(t.thumb_url)}" alt="${esc(t.char)}">
+           <img src="${esc(t.thumb_url)}" alt="${esc(t.char)}" loading="lazy"
+                onerror="if(this.dataset.f!==undefined)return;this.dataset.f=1;this.src='${esc(t.thumb_fallback)}'">
            <span class="no">#${esc(t.entry_no)}</span></div>`
       : `<div class="chip k" title="真·未编码字，详情端点不可查（${esc(t.svg)}）">
-           <img src="${esc(t.thumb_url)}">
+           <img src="${esc(t.thumb_url)}" loading="lazy"
+                onerror="if(this.dataset.f!==undefined)return;this.dataset.f=1;this.src='${esc(t.thumb_fallback)}'">
            <span class="no"><span class="badge">未编码</span> ${esc(t.k_code)}</span></div>`
     ).join('');
     $('thumbs').innerHTML = chips || '<div class="state">本页无字头</div>';
@@ -335,6 +341,7 @@ $('charBox').addEventListener('keydown', e => { if (e.key === 'Enter') $('fetchC
 class DemoHandler(BaseHTTPRequestHandler):
     store: kangxi_store.KangxiStore  # main() 注入
     img_dir: Path = DEFAULT_CACHE / "pages"  # 本演示的原图落盘目录（路径同时入库）
+    svg_dir: Path = FALLBACK_SVG_DIR  # 字头 svg 缓存目录（main() 注入，与爬取器共用）
 
     def log_message(self, fmt, *args):  # 静默默认访问日志，轨迹走 /api 响应
         pass
@@ -365,6 +372,18 @@ class DemoHandler(BaseHTTPRequestHandler):
             while chunk := f.read(1 << 20):
                 self.wfile.write(chunk)
 
+    def _serve_thumb(self, rel: str):
+        """本地优先下发字头缩略图 svg；缺失时回源抓取并落缓存。"""
+        if not re.fullmatch(r"\d{4}s/[\w\-.]+\.svg", rel):  # rel 即 page_chars.svg 字段
+            self._json({"error": "bad svg path"}, 400)
+            return
+        path = DemoHandler.svg_dir / rel
+        if not path.exists():  # 缓存缺：串行回源（限速礼仪），成功即入缓存
+            with NET_LOCK:
+                if not path.exists():
+                    fetch_svg(rel, DemoHandler.svg_dir)
+        self._send(200, path.read_bytes(), "image/svg+xml")
+
     def _serve_scan(self, page: int):
         """输出库中登记的整页原图（由 /api/page 预先抓取/采纳）。"""
         row = DemoHandler.store.get_page(page)
@@ -391,6 +410,8 @@ class DemoHandler(BaseHTTPRequestHandler):
                 self._json(api_page(int(m.group(1))))
             elif m := re.fullmatch(r"/api/scan/(\d{1,4})", self.path):
                 self._serve_scan(int(m.group(1)))
+            elif m := re.fullmatch(r"/api/thumb/(\d{4}s/[\w\-.]+\.svg)", self.path):
+                self._serve_thumb(m.group(1))
             elif m := re.fullmatch(r"/api/entry/([^/]+)", self.path):
                 self._json(api_entry(urllib.parse.unquote(m.group(1))))
             else:
@@ -401,7 +422,8 @@ class DemoHandler(BaseHTTPRequestHandler):
 
 def _ui_thumbs(items: list[dict]) -> list[dict]:
     """page_chars 行 → 前端字头条目（附缩略图直链）。"""
-    return [{**it, "thumb_url": THUMB_URL_PREFIX + it["svg"]} for it in items]
+    return [{**it, "thumb_url": "/api/thumb/" + it["svg"],
+             "thumb_fallback": THUMB_URL_PREFIX + it["svg"]} for it in items]
 
 
 def api_page(page: int) -> dict:
@@ -503,6 +525,7 @@ def main() -> int:
     args = ap.parse_args()
 
     DemoHandler.img_dir = args.cache / "pages"
+    DemoHandler.svg_dir = pick_dir(None, FALLBACK_SVG_DIR, "svg")  # 与爬取器共用 WD-2T 缓存
     DemoHandler.img_dir.mkdir(parents=True, exist_ok=True)
     DemoHandler.store = kangxi_store.KangxiStore(args.db)
 

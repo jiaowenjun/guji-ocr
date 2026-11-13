@@ -21,10 +21,17 @@ import fetch_kangxi_entry as fe
 import fetch_kangxi_page as fp
 import kangxi_log
 import kangxi_store
+import kangxi_svg_cache
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 FALLBACK_IMAGES_DIR = REPO_ROOT / "datasets" / "kangxi-crawl" / "pages"
 FALLBACK_ENTRIES_DIR = REPO_ROOT / "datasets" / "kangxi-crawl" / "entries"
+FALLBACK_SVG_DIR = kangxi_svg_cache.FALLBACK_SVG_DIR
+WD_DIRS = {  # WD-2T 上各类落盘目录（外置盘未挂载时回退仓库内 FALLBACK_*）
+    "images": fp.DEFAULT_OUT_DIR,
+    "entries": Path("/Volumes/WD-2T/guji-ocr/datasets/kangxizidian-entries"),
+    "svg": kangxi_svg_cache.WD_SVG_DIR,
+}
 
 
 def pick_dir(preferred: Path | None, fallback: Path, label: str) -> Path:
@@ -33,8 +40,7 @@ def pick_dir(preferred: Path | None, fallback: Path, label: str) -> Path:
         preferred.mkdir(parents=True, exist_ok=True)
         return preferred
     if fp.DEFAULT_OUT_DIR.parent.is_dir():  # WD-2T 已挂载
-        wd = fp.DEFAULT_OUT_DIR if label == "images" else Path(
-            "/Volumes/WD-2T/guji-ocr/datasets/kangxizidian-entries")
+        wd = WD_DIRS[label]
         wd.mkdir(parents=True, exist_ok=True)
         return wd
     print(f"⚠ WD-2T 未挂载，{label} 回退到 {fallback}")
@@ -43,11 +49,13 @@ def pick_dir(preferred: Path | None, fallback: Path, label: str) -> Path:
 
 
 def crawl_next_page(store: kangxi_store.KangxiStore, images_dir: Path, entries_dir: Path,
-                    from_page: int = 1, order: str = "random") -> int:
+                    from_page: int = 1, order: str = "random",
+                    svg_dir: Path | None = None) -> int:
     """抓取下一个未完成页（页 + 该页缺失字头详情）。
 
     order：random = 在未完成页中均匀随机选（默认）；sequential = 取最小未完成页。
-    返回：0 成功；1 该页抓取失败（下轮重新选页）；42 全部完成。
+    svg_dir：非 None 时页入库后缓存该页未编码字头的缩略图 svg（字形源保全，
+    失败降级不中断）。返回：0 成功；1 该页抓取失败（下轮重新选页）；42 全部完成。
     """
     pick = store.random_missing_page if order == "random" else store.next_missing_page
     page = pick(from_page)
@@ -61,6 +69,15 @@ def crawl_next_page(store: kangxi_store.KangxiStore, images_dir: Path, entries_d
     if not fp.fetch_page(page, images_dir, store, save_html=False, force=False):
         print(f"页 {page:04d} 抓取失败", file=sys.stderr)
         return 1
+
+    if svg_dir is not None:
+        try:
+            svg_stat = kangxi_svg_cache.cache_page_svgs(store, page, svg_dir)
+            if any(svg_stat.values()):
+                print(f"页 {page:04d} 字头 svg 缓存：{svg_stat}")
+        except Exception as e:  # 缩略图缓存失败不杀页流程（同 fetch_entry 副本韧性）
+            print(f"⚠ 页 {page:04d} 字头 svg 缓存异常（{type(e).__name__}: {e}），已跳过",
+                  file=sys.stderr, flush=True)
 
     chars = store.coded_chars_missing_entries(page)
     failed = []
@@ -81,6 +98,8 @@ def main() -> int:
                     help="原图目录（默认 WD-2T，未挂载时回退 datasets/kangxi-crawl/pages）")
     ap.add_argument("--entries-dir", type=Path, default=None,
                     help="详情 JSON 副本目录（默认 WD-2T，未挂载时回退 datasets/kangxi-crawl/entries）")
+    ap.add_argument("--svg-dir", type=Path, default=None,
+                    help="字头 svg 缓存目录（默认 WD-2T kangxizidian-heads-svg，未挂载时回退仓库内）")
     ap.add_argument("--from-page", type=int, default=1, help="起始页码（默认 1）")
     ap.add_argument("--order", choices=["random", "sequential"], default="random",
                     help="选页策略：random 未完成页中均匀随机（默认）；sequential 最小未完成页")
@@ -90,8 +109,9 @@ def main() -> int:
     fp.check_robots()  # 禁止即 sys.exit(2)
     images_dir = pick_dir(args.images_dir, FALLBACK_IMAGES_DIR, "images")
     entries_dir = pick_dir(args.entries_dir, FALLBACK_ENTRIES_DIR, "entries")
+    svg_dir = pick_dir(args.svg_dir, FALLBACK_SVG_DIR, "svg")
 
-    rc = crawl_next_page(store, images_dir, entries_dir, args.from_page, args.order)
+    rc = crawl_next_page(store, images_dir, entries_dir, args.from_page, args.order, svg_dir)
     if rc == 0:
         print(json.dumps(store.stats(), ensure_ascii=False))
     return rc

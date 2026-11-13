@@ -32,7 +32,7 @@ from pathlib import Path
 import fetch_kangxi_page as fp
 import kangxi_log
 import kangxi_store
-from kangxi_crawl_next import FALLBACK_ENTRIES_DIR, FALLBACK_IMAGES_DIR, crawl_next_page, pick_dir
+from kangxi_crawl_next import FALLBACK_ENTRIES_DIR, FALLBACK_IMAGES_DIR, FALLBACK_SVG_DIR, crawl_next_page, pick_dir
 
 HEARTBEAT_EVERY = 50  # 每完成 N 页输出一次心跳快照（控制台 + 事件日志）
 
@@ -59,6 +59,9 @@ def main() -> int:
                     help="原图目录（默认 WD-2T，未挂载时回退 datasets/kangxi-crawl/pages）")
     ap.add_argument("--entries-dir", type=Path, default=None,
                     help="详情 JSON 副本目录（默认 WD-2T，未挂载时回退 datasets/kangxi-crawl/entries）")
+    ap.add_argument("--svg-dir", type=Path, default=None,
+                    help="字头 svg 缓存目录（默认 WD-2T kangxizidian-heads-svg，未挂载时回退仓库内；"
+                         "随爬缓存该页未编码字头，作字体补录字形源）")
     ap.add_argument("--from-page", type=int, default=1, help="起始页码（默认 1）")
     ap.add_argument("--order", choices=["random", "sequential"], default="random",
                     help="选页策略：random 未完成页中均匀随机（默认）；sequential 最小未完成页")
@@ -86,6 +89,7 @@ def main() -> int:
     store = kangxi_store.KangxiStore(args.db)
     images_dir = pick_dir(args.images_dir, FALLBACK_IMAGES_DIR, "images")
     entries_dir = pick_dir(args.entries_dir, FALLBACK_ENTRIES_DIR, "entries")
+    svg_dir = pick_dir(args.svg_dir, FALLBACK_SVG_DIR, "svg")
 
     print(f"[{stamp()}] 循环爬取启动：选页={args.order}，间隔 ~ N(μ={args.mean_seconds:.0f}s, "
           f"σ={args.sigma_seconds:.0f}s) 截断于 [{args.min_seconds:.0f}s, {args.max_seconds:.0f}s]，"
@@ -97,7 +101,7 @@ def main() -> int:
     try:
         while True:
             try:
-                rc = crawl_next_page(store, images_dir, entries_dir, args.from_page, args.order)
+                rc = crawl_next_page(store, images_dir, entries_dir, args.from_page, args.order, svg_dir)
             except KeyboardInterrupt:
                 raise
             except Exception as e:  # 单页异常（如重试耗尽/磁盘错误）不杀循环，计入熔断
