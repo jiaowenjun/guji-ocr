@@ -28,6 +28,9 @@
   border: 1px solid;
   display: flex;
   flex-direction: row-reverse;
+  /* 【新增】内容框下边缘对齐版框下沿：数据集对照页注入版框内容高，
+     网格/行不拉伸（行数 × 字格 < 版框内容高时底部留空）；默认 0 不影响其他用途 */
+  min-height: var(--guji-frame-h, 0);
 }
 
 /* 【新增】页码标题（原插件中无样式） */
