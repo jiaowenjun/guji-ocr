@@ -194,17 +194,53 @@ def continuation_from_prev(
     return out, info
 
 
+_OCR_CACHE: dict[int, str] = {}
+_OCR_CACHE_DIR = REPO / "paddleocr-baseline" / "data" / "ocr-markdown"
+
+
+def _ocr_cache_read(page: int, store: kangxi_store.KangxiStore) -> str | None:
+    """持久缓存命中（sha256 与扫描图一致）→ markdown；空串哨兵=None；未命中=None。"""
+    f = _OCR_CACHE_DIR / f"{page:04d}.json"
+    if not f.exists():
+        return None
+    try:
+        entry = json.loads(f.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return None
+    if not entry.get("sha256") or entry["sha256"] != (store.get_page(page) or {}).get("scan_sha256"):
+        return None  # 图已变（重爬），缓存失效
+    md = entry.get("markdown") or ""
+    return md or None
+
+
+def _ocr_cache_write(page: int, store: kangxi_store.KangxiStore, markdown: str) -> None:
+    sha = (store.get_page(page) or {}).get("scan_sha256") or ""
+    if not sha:
+        return
+    _OCR_CACHE_DIR.mkdir(parents=True, exist_ok=True)
+    (_OCR_CACHE_DIR / f"{page:04d}.json").write_text(
+        json.dumps({"page": page, "sha256": sha, "markdown": markdown,
+                    "fetched_at": date.today().isoformat()}, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
+
+
 def _ocr_markdown(page: int, store: kangxi_store.KangxiStore) -> str | None:
     """取该页扫描图的 OCR markdown（本地 paddleocr-baseline 服务）。
 
+    读取顺序：进程内缓存 → 本地持久缓存（scripts/prefetch_ocr.py 预填，
+    sha256 校验）→ 提交新 job（成功后回写持久缓存）。全程 ~0 网络等待当缓存命中。
     服务未运行 / 提交失败 / 轮询超时 / 无文本 → 返回 None（调用方按需回退）。
-    结果按页缓存（同一次 add 内 trim 与 fold 共用一次 OCR job）。
     """
     import urllib.request
 
     cached = _OCR_CACHE.get(page)
     if cached is not None:
         return cached if cached != "" else None
+    persistent = _ocr_cache_read(page, store)
+    if persistent is not None:
+        _OCR_CACHE[page] = persistent
+        return persistent
     base = "http://127.0.0.1:8010"
     row = store.get_page(page) or {}
     img = Path(row.get("scan_file") or "")
@@ -269,10 +305,10 @@ def _ocr_markdown(page: int, store: kangxi_store.KangxiStore) -> str | None:
         _OCR_CACHE[page] = ""
         return None
     _OCR_CACHE[page] = md_text
+    _ocr_cache_write(page, store, md_text)
     return md_text
 
 
-_OCR_CACHE: dict[int, str] = {}
 
 
 def ocr_trim_continuation(

@@ -101,7 +101,8 @@ pnpm build
 已随仓库入库（`public/fonts/`，~129MB，无需额外步骤）：
 
 ```sh
-bash scripts/link-dataset.sh   # 需挂载存放扫描图的外置盘（manifest.images_dir）
+bash scripts/link-dataset.sh        # 需挂载存放扫描图的外置盘（manifest.images_dir）
+python3 scripts/prefetch_ocr.py      # 可选：预识别近期页（默认数据集末页起，限 20 页/次）
 ```
 
 Guji 语法、字体安装说明见 [guji-preview README](../guji-preview/README.md)。
