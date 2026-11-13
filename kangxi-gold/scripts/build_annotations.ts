@@ -190,7 +190,7 @@ for (const entry of manifest.pages ?? []) {
   const stem = String(entry.page).padStart(4, "0");
   entry.annotations = { gj: `${stem}.gj`, json: `${stem}.json`, txt: `${stem}.txt` };
 }
-manifest["annotations_schema"] = "guji-ir/2"; // NNNN.json 为 Guji IR v2（页→大行→小行；v1 前为 PageModel）
+manifest["annotations_schema"] = "guji-ir/3"; // NNNN.json 为 Guji IR v3（骨架+overlay 双层；v2 前为段流/PageModel）
 manifest["annotation_source"] =
   "guji-preview/src/samples/kangxi-yibu.gj（人工精标，源自 vscode-guji-preview/example；零漂移对照通过）";
 writeFileSync(MANIFEST, JSON.stringify(manifest, null, 2) + "\n", "utf-8");

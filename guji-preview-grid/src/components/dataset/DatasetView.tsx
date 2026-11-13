@@ -30,12 +30,10 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Slider } from "@/components/ui/slider";
 import { GujiEditor } from "@/components/editor/GujiEditor";
-import { Pages as FlexPages } from "@/components/flex/Pages";
-import { MatrixPages, pageColumns } from "@/components/matrix/MatrixPages";
+import { MatrixPages } from "@/components/matrix/MatrixPages";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
-import { layoutPages } from "@/matrix/layout";
 import { gj2ir } from "@/ir/gj2ir";
-import { ir2blocks } from "@/ir/ir2blocks";
+import { layout3 } from "@/ir/layout3";
 import { bandCursorTarget, highlightAt } from "@/ir/linkage";
 
 interface PageEntry {
@@ -157,7 +155,6 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
   const [edits, setEdits] = useState<Record<number, string>>({});
   const { texts, ensure, put } = useDatasetText();
   const [rules, setRules] = useState(false); // 界栏默认关（默认 Flex 视图下也不可用）
-  const [flexView, setFlexView] = useState(true); // 默认 Flex 布局
   const [zoom, setZoom] = useState<number | "fit">("fit"); // 默认按原图高度适配视口
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState<{ ok: boolean; msg: string } | null>(null);
@@ -204,10 +201,10 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
 
   const debouncedText = useDebouncedValue(text ?? "", 200);
   // 渲染管线：.gj → IR（语义）→ PageModel（版面适配）→ 矩阵布局
+  // 渲染主路径：骨架 → 字格布局（layout3，无 overlay 参与）→ 渲染期装饰
   const irDoc = useMemo(() => gj2ir(debouncedText), [debouncedText]);
-  const pageModels = useMemo(() => ir2blocks(irDoc), [irDoc]);
-  const matrixPages = useMemo(() => layoutPages(pageModels), [pageModels]);
-  const cols = matrixPages[0] ? pageColumns(matrixPages[0]) : 0;
+  const laidPages = useMemo(() => layout3(irDoc), [irDoc]);
+  const cols = laidPages[0]?.totalCols ?? 0;
 
   // ---- 编辑器 ↔ 渲染列联动（IR src 偏移；实时文本，防抖期 200ms 内自愈） ----
   const [cursor, setCursor] = useState<number | null>(null);
@@ -482,9 +479,7 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
 
         <Separator orientation="vertical" className="h-5" />
 
-        <Button size="sm" variant={flexView ? "ghost" : "default"} onClick={() => setFlexView(false)}>矩阵</Button>
-        <Button size="sm" variant={flexView ? "default" : "ghost"} onClick={() => setFlexView(true)}>Flex 对照</Button>
-        <Button size="sm" variant="outline" disabled={flexView} aria-pressed={rules} onClick={() => setRules((v) => !v)}>
+        <Button size="sm" variant="outline" aria-pressed={rules} onClick={() => setRules((v) => !v)}>
           界栏{rules ? "开" : "关"}
         </Button>
 
@@ -561,12 +556,11 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
         <ResizablePanel defaultSize={28.5} minSize={20}>
           <div className="flex h-full flex-col">
             <ColumnHeader>
-              {flexView ? "Flex" : `矩阵 · ${cols} 列`} · 字格 {unit.toFixed(1)}px ·{" "}
-              {flexView ? "版框近似对齐（行宽按内容混合，精确对照请用矩阵）" : "与原图版框对齐（含等比纸边）"}
+              `矩阵 · ${cols} 列` · 字格 {unit.toFixed(1)}px · 与原图版框对齐（含等比纸边）
             </ColumnHeader>
             <ScrollArea className="min-h-0 flex-1">
               <div className="flex justify-center p-2">
-                {matrixPages.length > 0 ? (
+                {laidPages.length > 0 ? (
                   <div
                     className="relative shrink-0"
                     style={{
@@ -584,20 +578,13 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
                       className="flex justify-center"
                       style={{ "--guji-scale": `${unit}px` } as CSSProperties}
                     >
-                      {flexView ? (
-                        <FlexPages
-                          pageModels={pageModels}
-                          highlight={highlight}
-                          onBandClick={onBandClick}
-                        />
-                      ) : (
-                        <MatrixPages
-                          pages={matrixPages}
-                          rules={rules}
-                          highlight={highlight}
-                          onBandClick={onBandClick}
-                        />
-                      )}
+                      <MatrixPages
+                        pages={laidPages}
+                        overlays={irDoc.overlays}
+                        rules={rules}
+                        highlight={highlight}
+                        onBandClick={onBandClick}
+                      />
                     </div>
                   </div>
                 ) : (

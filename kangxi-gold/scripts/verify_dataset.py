@@ -121,18 +121,17 @@ def main() -> int:
         if js.is_file():
             try:
                 obj = json.loads(js.read_text(encoding="utf-8"))
-                # Guji IR v2：{version:2, meta, pages:[{no, bands:[{lines}]}]}
+                # Guji IR v3：{version:3, meta, pages:[{no, bands:[{lines}]}], overlays[]}
                 ir_pages = obj.get("pages") if isinstance(obj, dict) else None
                 bands = ir_pages[0].get("bands") if ir_pages else None
                 if (
-                    obj.get("version") != 2
+                    obj.get("version") != 3
                     or not isinstance(ir_pages, list)
                     or len(ir_pages) != 1
                     or ir_pages[0].get("no") != page
                     or not isinstance(bands, list)
-                    or not all(
-                        isinstance(b.get("lines"), list) for b in bands
-                    )
+                    or not all(isinstance(b.get("lines"), list) for b in bands)
+                    or not isinstance(obj.get("overlays"), list)
                 ):
                     errors.append(f"{stem}: .json 非 guji-ir/1 结构（version={obj.get('version')}）")
             except json.JSONDecodeError as e:

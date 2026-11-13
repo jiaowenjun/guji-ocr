@@ -73,10 +73,10 @@ def align(ref: str, hyp: str):
 
 
 def ir_reference(path: Path) -> str:
-    """从 Guji IR v2（NNNN.json）抽取阅读序文本并按文档自带 profile 清洗。
+    """从 Guji IR v3（NNNN.json）抽取阅读序文本并按文档自带 profile 清洗。
 
     与 irPageToText（guji-preview-grid/src/ir/text.ts）同构：大行一行 =
-    各小行元素文本依序拼接；head 元素文本原样，其余经 profile 清洗。"""
+    各小行元素文本依序拼接；v3 元素无语义轴，统一 profile 清洗。"""
     doc = json.loads(path.read_text(encoding="utf-8"))
     profile = doc.get("meta", {}).get("profile", {})
     strip = set(profile.get("stripPunct", []))
@@ -96,10 +96,7 @@ def ir_reference(path: Path) -> str:
             parts = []
             for line in band.get("lines", []):
                 for el in line.get("elements", []):
-                    if el.get("sem") == "head":
-                        parts.append(el.get("text", ""))
-                    else:
-                        parts.append(clean(el.get("text", "")))
+                    parts.append(clean(el.get("text", "")))
             lines.append("".join(parts))
     return "\n".join(lines) + "\n" if lines else ""
 
