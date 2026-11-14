@@ -1,0 +1,529 @@
+{
+ "checked_at": "2026-11-14",
+ "purpose": "列裁剪 regroup 可行性：自动断行后按大列分组（.gj 空行=大列界）能否减轻人工带重组工作量（记忆④遗留的「段落→大行重组」）",
+ "premise_verified": {
+  "band_counts": "23 页金标带数 = 覆盖大列数（全部 ≤8：21 页 8 带、@312 5 带=5 个已转写大列、@328/@330 7 带）；带行数众数 2（=一大列两小列），4/6/8=人工合并的连续大列",
+  "subset": "金标带界 ⊆ 大列界（金标从不在大列内部断带：oracle 中 0 处 gold-split-proposal-merge 之外的界）",
+  "no_head_rule": "金标断带 142 处中 141 处界后行无字头标记（#）——带法是机械物理分组而非语义分组；14 处大列界被人工合并（内容流续+变体区，占界总数 9%）"
+ },
+ "method": {
+  "oracle": "金标行 → 16 槽（eval_column_seg DP 字数分配）→ 大列带 vs 金标带",
+  "realistic": "VL markdown 组（现行断行输出）→ 槽 → 大列界，经 VL↔金标对齐映射回金标行空间（就近行界；注意映射差一：组界落在行首时界=li 而非 li+1）"
+ },
+ "results": {
+  "oracle": "命中 142/156（R 91%），残差 14 合并 0 拆分，F1 0.913；16/23 页 F1=1.0",
+  "realistic": "命中 124/156（R 79%），残差 31 合并 32 拆分，F1 0.797；11/23 页 F1=1.0（零修正）",
+  "failure_pages": "@320 0.0、@330 0.15、@322 0.31、@334 0.43、@327 0.57——与 chars_est/VL 分组已知盲区（增字头/变体密集页）完全重合；正文页几乎全对",
+  "pages_oracle": [
+   {
+    "page": 312,
+    "n_bands": 5,
+    "n_lines": 10,
+    "gold_b": 4,
+    "prop_b": 4,
+    "hit": 4,
+    "merge_fix": 0,
+    "split_fix": 0,
+    "f1": 1.0
+   },
+   {
+    "page": 313,
+    "n_bands": 8,
+    "n_lines": 16,
+    "gold_b": 7,
+    "prop_b": 7,
+    "hit": 7,
+    "merge_fix": 0,
+    "split_fix": 0,
+    "f1": 1.0
+   },
+   {
+    "page": 314,
+    "n_bands": 8,
+    "n_lines": 16,
+    "gold_b": 7,
+    "prop_b": 7,
+    "hit": 7,
+    "merge_fix": 0,
+    "split_fix": 0,
+    "f1": 1.0
+   },
+   {
+    "page": 315,
+    "n_bands": 8,
+    "n_lines": 20,
+    "gold_b": 7,
+    "prop_b": 7,
+    "hit": 7,
+    "merge_fix": 0,
+    "split_fix": 0,
+    "f1": 1.0
+   },
+   {
+    "page": 316,
+    "n_bands": 8,
+    "n_lines": 22,
+    "gold_b": 7,
+    "prop_b": 7,
+    "hit": 7,
+    "merge_fix": 0,
+    "split_fix": 0,
+    "f1": 1.0
+   },
+   {
+    "page": 317,
+    "n_bands": 8,
+    "n_lines": 18,
+    "gold_b": 7,
+    "prop_b": 7,
+    "hit": 7,
+    "merge_fix": 0,
+    "split_fix": 0,
+    "f1": 1.0
+   },
+   {
+    "page": 318,
+    "n_bands": 8,
+    "n_lines": 18,
+    "gold_b": 7,
+    "prop_b": 7,
+    "hit": 6,
+    "merge_fix": 1,
+    "split_fix": 1,
+    "f1": 0.857
+   },
+   {
+    "page": 319,
+    "n_bands": 8,
+    "n_lines": 19,
+    "gold_b": 7,
+    "prop_b": 7,
+    "hit": 6,
+    "merge_fix": 1,
+    "split_fix": 1,
+    "f1": 0.857
+   },
+   {
+    "page": 320,
+    "n_bands": 8,
+    "n_lines": 20,
+    "gold_b": 7,
+    "prop_b": 7,
+    "hit": 6,
+    "merge_fix": 1,
+    "split_fix": 1,
+    "f1": 0.857
+   },
+   {
+    "page": 321,
+    "n_bands": 8,
+    "n_lines": 20,
+    "gold_b": 7,
+    "prop_b": 7,
+    "hit": 7,
+    "merge_fix": 0,
+    "split_fix": 0,
+    "f1": 1.0
+   },
+   {
+    "page": 322,
+    "n_bands": 8,
+    "n_lines": 26,
+    "gold_b": 7,
+    "prop_b": 7,
+    "hit": 3,
+    "merge_fix": 4,
+    "split_fix": 4,
+    "f1": 0.429
+   },
+   {
+    "page": 323,
+    "n_bands": 8,
+    "n_lines": 18,
+    "gold_b": 7,
+    "prop_b": 7,
+    "hit": 7,
+    "merge_fix": 0,
+    "split_fix": 0,
+    "f1": 1.0
+   },
+   {
+    "page": 324,
+    "n_bands": 8,
+    "n_lines": 21,
+    "gold_b": 7,
+    "prop_b": 7,
+    "hit": 7,
+    "merge_fix": 0,
+    "split_fix": 0,
+    "f1": 1.0
+   },
+   {
+    "page": 325,
+    "n_bands": 8,
+    "n_lines": 16,
+    "gold_b": 7,
+    "prop_b": 7,
+    "hit": 5,
+    "merge_fix": 2,
+    "split_fix": 2,
+    "f1": 0.714
+   },
+   {
+    "page": 326,
+    "n_bands": 8,
+    "n_lines": 22,
+    "gold_b": 7,
+    "prop_b": 7,
+    "hit": 7,
+    "merge_fix": 0,
+    "split_fix": 0,
+    "f1": 1.0
+   },
+   {
+    "page": 327,
+    "n_bands": 8,
+    "n_lines": 28,
+    "gold_b": 7,
+    "prop_b": 7,
+    "hit": 4,
+    "merge_fix": 3,
+    "split_fix": 3,
+    "f1": 0.571
+   },
+   {
+    "page": 328,
+    "n_bands": 7,
+    "n_lines": 26,
+    "gold_b": 6,
+    "prop_b": 6,
+    "hit": 6,
+    "merge_fix": 0,
+    "split_fix": 0,
+    "f1": 1.0
+   },
+   {
+    "page": 330,
+    "n_bands": 7,
+    "n_lines": 20,
+    "gold_b": 6,
+    "prop_b": 6,
+    "hit": 6,
+    "merge_fix": 0,
+    "split_fix": 0,
+    "f1": 1.0
+   },
+   {
+    "page": 331,
+    "n_bands": 8,
+    "n_lines": 22,
+    "gold_b": 7,
+    "prop_b": 7,
+    "hit": 5,
+    "merge_fix": 2,
+    "split_fix": 2,
+    "f1": 0.714
+   },
+   {
+    "page": 332,
+    "n_bands": 8,
+    "n_lines": 16,
+    "gold_b": 7,
+    "prop_b": 7,
+    "hit": 7,
+    "merge_fix": 0,
+    "split_fix": 0,
+    "f1": 1.0
+   },
+   {
+    "page": 333,
+    "n_bands": 8,
+    "n_lines": 16,
+    "gold_b": 7,
+    "prop_b": 7,
+    "hit": 7,
+    "merge_fix": 0,
+    "split_fix": 0,
+    "f1": 1.0
+   },
+   {
+    "page": 334,
+    "n_bands": 8,
+    "n_lines": 24,
+    "gold_b": 7,
+    "prop_b": 7,
+    "hit": 7,
+    "merge_fix": 0,
+    "split_fix": 0,
+    "f1": 1.0
+   },
+   {
+    "page": 335,
+    "n_bands": 8,
+    "n_lines": 26,
+    "gold_b": 7,
+    "prop_b": 7,
+    "hit": 7,
+    "merge_fix": 0,
+    "split_fix": 0,
+    "f1": 1.0
+   }
+  ],
+  "pages_realistic": [
+   {
+    "page": 312,
+    "n_bands": 5,
+    "n_lines": 10,
+    "gold_b": 4,
+    "prop_b": 5,
+    "hit": 4,
+    "merge_fix": 1,
+    "split_fix": 0,
+    "f1": 0.889
+   },
+   {
+    "page": 313,
+    "n_bands": 8,
+    "n_lines": 16,
+    "gold_b": 7,
+    "prop_b": 6,
+    "hit": 6,
+    "merge_fix": 0,
+    "split_fix": 1,
+    "f1": 0.923
+   },
+   {
+    "page": 314,
+    "n_bands": 8,
+    "n_lines": 16,
+    "gold_b": 7,
+    "prop_b": 7,
+    "hit": 7,
+    "merge_fix": 0,
+    "split_fix": 0,
+    "f1": 1.0
+   },
+   {
+    "page": 315,
+    "n_bands": 8,
+    "n_lines": 20,
+    "gold_b": 7,
+    "prop_b": 7,
+    "hit": 7,
+    "merge_fix": 0,
+    "split_fix": 0,
+    "f1": 1.0
+   },
+   {
+    "page": 316,
+    "n_bands": 8,
+    "n_lines": 22,
+    "gold_b": 7,
+    "prop_b": 7,
+    "hit": 7,
+    "merge_fix": 0,
+    "split_fix": 0,
+    "f1": 1.0
+   },
+   {
+    "page": 317,
+    "n_bands": 8,
+    "n_lines": 18,
+    "gold_b": 7,
+    "prop_b": 7,
+    "hit": 7,
+    "merge_fix": 0,
+    "split_fix": 0,
+    "f1": 1.0
+   },
+   {
+    "page": 318,
+    "n_bands": 8,
+    "n_lines": 18,
+    "gold_b": 7,
+    "prop_b": 7,
+    "hit": 6,
+    "merge_fix": 1,
+    "split_fix": 1,
+    "f1": 0.857
+   },
+   {
+    "page": 319,
+    "n_bands": 8,
+    "n_lines": 19,
+    "gold_b": 7,
+    "prop_b": 7,
+    "hit": 7,
+    "merge_fix": 0,
+    "split_fix": 0,
+    "f1": 1.0
+   },
+   {
+    "page": 320,
+    "n_bands": 8,
+    "n_lines": 20,
+    "gold_b": 7,
+    "prop_b": 7,
+    "hit": 0,
+    "merge_fix": 7,
+    "split_fix": 7,
+    "f1": 0.0
+   },
+   {
+    "page": 321,
+    "n_bands": 8,
+    "n_lines": 20,
+    "gold_b": 7,
+    "prop_b": 7,
+    "hit": 7,
+    "merge_fix": 0,
+    "split_fix": 0,
+    "f1": 1.0
+   },
+   {
+    "page": 322,
+    "n_bands": 8,
+    "n_lines": 26,
+    "gold_b": 7,
+    "prop_b": 6,
+    "hit": 2,
+    "merge_fix": 4,
+    "split_fix": 5,
+    "f1": 0.308
+   },
+   {
+    "page": 323,
+    "n_bands": 8,
+    "n_lines": 18,
+    "gold_b": 7,
+    "prop_b": 7,
+    "hit": 7,
+    "merge_fix": 0,
+    "split_fix": 0,
+    "f1": 1.0
+   },
+   {
+    "page": 324,
+    "n_bands": 8,
+    "n_lines": 21,
+    "gold_b": 7,
+    "prop_b": 7,
+    "hit": 6,
+    "merge_fix": 1,
+    "split_fix": 1,
+    "f1": 0.857
+   },
+   {
+    "page": 325,
+    "n_bands": 8,
+    "n_lines": 16,
+    "gold_b": 7,
+    "prop_b": 7,
+    "hit": 5,
+    "merge_fix": 2,
+    "split_fix": 2,
+    "f1": 0.714
+   },
+   {
+    "page": 326,
+    "n_bands": 8,
+    "n_lines": 22,
+    "gold_b": 7,
+    "prop_b": 7,
+    "hit": 7,
+    "merge_fix": 0,
+    "split_fix": 0,
+    "f1": 1.0
+   },
+   {
+    "page": 327,
+    "n_bands": 8,
+    "n_lines": 28,
+    "gold_b": 7,
+    "prop_b": 7,
+    "hit": 4,
+    "merge_fix": 3,
+    "split_fix": 3,
+    "f1": 0.571
+   },
+   {
+    "page": 328,
+    "n_bands": 7,
+    "n_lines": 26,
+    "gold_b": 6,
+    "prop_b": 6,
+    "hit": 6,
+    "merge_fix": 0,
+    "split_fix": 0,
+    "f1": 1.0
+   },
+   {
+    "page": 330,
+    "n_bands": 7,
+    "n_lines": 20,
+    "gold_b": 6,
+    "prop_b": 7,
+    "hit": 1,
+    "merge_fix": 6,
+    "split_fix": 5,
+    "f1": 0.154
+   },
+   {
+    "page": 331,
+    "n_bands": 8,
+    "n_lines": 22,
+    "gold_b": 7,
+    "prop_b": 7,
+    "hit": 5,
+    "merge_fix": 2,
+    "split_fix": 2,
+    "f1": 0.714
+   },
+   {
+    "page": 332,
+    "n_bands": 8,
+    "n_lines": 16,
+    "gold_b": 7,
+    "prop_b": 7,
+    "hit": 7,
+    "merge_fix": 0,
+    "split_fix": 0,
+    "f1": 1.0
+   },
+   {
+    "page": 333,
+    "n_bands": 8,
+    "n_lines": 16,
+    "gold_b": 7,
+    "prop_b": 7,
+    "hit": 7,
+    "merge_fix": 0,
+    "split_fix": 0,
+    "f1": 1.0
+   },
+   {
+    "page": 334,
+    "n_bands": 8,
+    "n_lines": 24,
+    "gold_b": 7,
+    "prop_b": 7,
+    "hit": 3,
+    "merge_fix": 4,
+    "split_fix": 4,
+    "f1": 0.429
+   },
+   {
+    "page": 335,
+    "n_bands": 8,
+    "n_lines": 26,
+    "gold_b": 7,
+    "prop_b": 6,
+    "hit": 6,
+    "merge_fix": 0,
+    "split_fix": 1,
+    "f1": 0.923
+   }
+  ]
+ },
+ "conclusion": "可行且正中记忆④遗留的 regroup 缺口：初校带≈大列是机械约定（141/142 无字头判定），实现无需语义。端到端 79% 带界自动命中、10 页零修正、残差全部是可见的空行合并/边界±1 行修正（平均 2.7 处/页，集中在最难版式页）。实施=ocr_fold_page_lines 后追加 regroup pass（segment() 槽位 + DP 分配折叠行 → 空行分隔大列）。"
+}
