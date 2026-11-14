@@ -39,6 +39,29 @@
     font-display: swap;
 }
 
+/* 字头条字符格（DatasetView 工具栏下方）：大字栈同 .m-large；缺字格虚线警示 */
+.hw-char {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    font-family: "GujiLarge", "康熙傳承版 KangXiZiDian.com", "HanaMinA", serif;
+    font-size: 20px;
+    line-height: 1;
+}
+.hw-char img {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+}
+.hw-char-missing {
+    border: 1px dashed var(--color-destructive, oklch(0.577 0.245 27.325));
+    border-radius: 4px;
+    color: var(--color-destructive, oklch(0.577 0.245 27.325));
+    font-family: "HanaMinA", serif; /* 系统兜底：GujiLarge 已判缺字 */
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {

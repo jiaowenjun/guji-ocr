@@ -31,6 +31,8 @@ import { Separator } from "@/components/ui/separator";
 import { Slider } from "@/components/ui/slider";
 import { GujiEditor } from "@/components/editor/GujiEditor";
 import { formatDocument } from "@/components/dataset/format-document";
+import { HeadwordStrip } from "@/components/dataset/HeadwordStrip";
+import { resolvePageHeadwords } from "@/components/dataset/headwords";
 import { MatrixPages } from "@/components/matrix/MatrixPages";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
 import { gj2ir } from "@/ir/gj2ir";
@@ -202,6 +204,16 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
       (p): p is number => p !== undefined,
     ));
   }, [index, idx, ensure]);
+
+  // ---- 页面字头条：本页字头；纯延续页按清单序回溯宿主（当前页用编辑缓冲，实时反映增删） ----
+  const headwords = useMemo(() => {
+    if (!index || page === undefined) return { state: "loading" } as const;
+    return resolvePageHeadwords(text, page, index.map((p) => p.page), texts);
+  }, [index, page, text, texts]);
+  // 宿主候选页文本缺失 → 补取后 texts 更新自动重算
+  useEffect(() => {
+    if (headwords.state === "pending") ensure(headwords.needPages);
+  }, [headwords, ensure]);
 
   // ←/→、Ctrl-N/P 翻页（编辑器/表单聚焦时不劫持——Ctrl-N/P 是 CodeMirror 行移动）
   useEffect(() => {
@@ -655,6 +667,8 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
           </Button>
         </div>
       </div>
+
+      <HeadwordStrip resolved={headwords} />
 
       <ResizablePanelGroup orientation="horizontal" className="min-h-0 flex-1">
         {/* 三栏默认宽度 2:2:3（原图:渲染:编辑器），可拖动调整 */}
