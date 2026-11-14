@@ -126,6 +126,8 @@ async function loadPages() {
   }
   selEl.value = 333;
   if (!r.pages.includes(333) && r.pages.length) selEl.value = r.pages[Math.floor(r.pages.length/2)];
+  if (!r.mounted || !r.pages.length)
+    $("hoverbar").textContent = "WD-2T 未挂载或 " + r.imgdir + " 无扫描图";
   selEl.onchange = () => load(+selEl.value);
   $("prev").onclick = () => { const i = r.pages.indexOf(+selEl.value); if (i>0){selEl.value=r.pages[i-1]; load(r.pages[i-1]);} };
   $("next").onclick = () => { const i = r.pages.indexOf(+selEl.value); if (i<r.pages.length-1){selEl.value=r.pages[i+1]; load(r.pages[i+1]);} };
@@ -133,14 +135,32 @@ async function loadPages() {
 }
 
 async function load(page) {
-  const r = await fetch("/api/seg?page=" + page);
-  DATA = await r.json();
+  let d = null;
+  try {
+    const r = await fetch("/api/seg?page=" + page);
+    d = await r.json();
+    if (!r.ok || !d || !d.seg || !d.seg.majors)
+      throw new Error((d && (d.error || d.seg && d.seg.error)) || ("HTTP " + r.status));
+  } catch (e) {
+    DATA = null; sel = null; slots = [];
+    $("pitch").textContent = "加载失败";
+    $("hoverbar").textContent = "@" + page + " 分割失败：" + e.message +
+      "（检查 WD-2T 挂载 / raw/kangxizidian/pages 有无该页图）";
+    $("stats").innerHTML = "<span class='bad'>分割失败：" + e.message + "</span>";
+    $("tbl").tBodies[0].innerHTML = "";
+    $("scan").removeAttribute("src");
+    return;
+  }
+  DATA = d;
   sel = null;
   const s = DATA.seg;
   $("pitch").textContent = `pitch ${s.pitch} · 证据 ${s.lines_evidence} · 大列 ${s.n_majors} 小列 ${s.n_minors}`;
   const img = $("scan");
-  img.src = `/image/${String(page).padStart(4,"0")}.jpg`;
-  img.onload = () => { layout(); draw(); };
+  img.onerror = () => {
+    $("hoverbar").textContent = "@" + page + " 扫描图加载失败（/image/NNNN.jpg 404）";
+  };
+  img.onload = () => { $("hoverbar").textContent = "悬停小列查看详情"; layout(); draw(); };
+  img.src = `/image/${String(page).padStart(4,"0")}.jpg?${Date.now()}`;
   buildSlots();
   renderStats();
   renderTable();
