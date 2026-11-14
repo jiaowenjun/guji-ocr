@@ -37,30 +37,45 @@
       "id": "p0339",
       "no": 339,
       "src": [
-        54,
-        58
+        0,
+        4
       ],
       "bands": [
         {
           "id": "p0339-b0",
           "ord": 0,
           "src": [
-            60,
-            70
+            6,
+            73
           ],
           "lines": [
             {
               "id": "p0339-b0-l0",
               "ord": 0,
               "src": [
-                60,
-                70
+                6,
+                37
               ],
               "elements": [
                 {
                   "id": "p0339-b0-e0",
                   "class": "small",
-                  "text": "用安息。 又通作垸。"
+                  "text": "用安息。 又通作垸。周禮·冬官考工記冶氏爲殺矢，刃重三垸。"
+                }
+              ]
+            },
+            {
+              "id": "p0339-b0-l1",
+              "ord": 1,
+              "src": [
+                38,
+                73
+              ],
+              "elements": [
+                {
+                  "id": "p0339-b0-e1",
+                  "class": "small",
+                  "text": "淮南子·時則訓圓而不垸。註轉也。列子·黃帝篇佝僂承蜩者，累"
                 }
               ]
             }
@@ -70,22 +85,37 @@
           "id": "p0339-b1",
           "ord": 1,
           "src": [
-            72,
-            93
+            75,
+            146
           ],
           "lines": [
             {
               "id": "p0339-b1-l0",
               "ord": 0,
               "src": [
-                72,
-                93
+                75,
+                109
               ],
               "elements": [
                 {
                   "id": "p0339-b1-e0",
                   "class": "small",
-                  "text": "周禮·冬官考工記冶氏爲殺矢，刃重三垸。"
+                  "text": "五垸而不墜。𠀤與𠁽同。 又叶胡絭切，音延。詩·商頌陟彼景山，"
+                }
+              ]
+            },
+            {
+              "id": "p0339-b1-l1",
+              "ord": 1,
+              "src": [
+                110,
+                146
+              ],
+              "elements": [
+                {
+                  "id": "p0339-b1-e1",
+                  "class": "small",
+                  "text": "松柏𠁽𠁽。叶下遷虔。說文𠁽，傾仄而轉者，从反仄。徐曰仄者，"
                 }
               ]
             }
@@ -95,22 +125,117 @@
           "id": "p0339-b2",
           "ord": 2,
           "src": [
-            95,
-            109
+            148,
+            199
           ],
           "lines": [
             {
               "id": "p0339-b2-l0",
               "ord": 0,
               "src": [
-                95,
-                109
+                148,
+                159
               ],
               "elements": [
                 {
                   "id": "p0339-b2-e0",
                   "class": "small",
-                  "text": "淮南子·時則訓圓而不垸。"
+                  "text": "一面敧而不可回。故仄而"
+                }
+              ]
+            },
+            {
+              "id": "p0339-b2-l1",
+              "ord": 1,
+              "src": [
+                160,
+                175
+              ],
+              "elements": [
+                {
+                  "id": "p0339-b2-e1",
+                  "class": "small",
+                  "text": "可反爲𠁽。𠁽，可左可右也。"
+                }
+              ]
+            },
+            {
+              "id": "p0339-b2-l2",
+              "ord": 2,
+              "src": [
+                176,
+                178
+              ],
+              "elements": [
+                {
+                  "id": "p0339-b2-e2",
+                  "class": "large",
+                  "text": "丸"
+                }
+              ]
+            },
+            {
+              "id": "p0339-b2-l3",
+              "ord": 3,
+              "src": [
+                179,
+                182
+              ],
+              "elements": [
+                {
+                  "id": "p0339-b2-e3",
+                  "class": "small",
+                  "text": "俗𠁽"
+                }
+              ]
+            },
+            {
+              "id": "p0339-b2-l4",
+              "ord": 4,
+              "src": [
+                183,
+                185
+              ],
+              "elements": [
+                {
+                  "id": "p0339-b2-e4",
+                  "class": "small",
+                  "text": "字。"
+                }
+              ]
+            },
+            {
+              "id": "p0339-b2-l5",
+              "ord": 5,
+              "src": [
+                186,
+                199
+              ],
+              "elements": [
+                {
+                  "id": "p0339-b2-e5",
+                  "class": "large",
+                  "text": "三"
+                },
+                {
+                  "id": "p0339-b2-e6",
+                  "class": "large",
+                  "text": "丹"
+                },
+                {
+                  "id": "p0339-b2-e7",
+                  "class": "small",
+                  "text": "古文"
+                },
+                {
+                  "id": "p0339-b2-e8",
+                  "class": "large",
+                  "text": "𠁿"
+                },
+                {
+                  "id": "p0339-b2-e9",
+                  "class": "large",
+                  "text": "㣋"
                 }
               ]
             }
@@ -120,22 +245,52 @@
           "id": "p0339-b3",
           "ord": 3,
           "src": [
-            111,
-            117
+            201,
+            269
           ],
           "lines": [
             {
               "id": "p0339-b3-l0",
               "ord": 0,
               "src": [
-                111,
-                117
+                201,
+                204
               ],
               "elements": [
                 {
                   "id": "p0339-b3-e0",
+                  "class": "large",
+                  "text": "𠕑"
+                }
+              ]
+            },
+            {
+              "id": "p0339-b3-l1",
+              "ord": 1,
+              "src": [
+                205,
+                238
+              ],
+              "elements": [
+                {
+                  "id": "p0339-b3-e1",
                   "class": "small",
-                  "text": "註轉也。"
+                  "text": "唐韻都寒切集韻韻會多寒切正韻都艱切，𠀤音單。赤色"
+                }
+              ]
+            },
+            {
+              "id": "p0339-b3-l2",
+              "ord": 2,
+              "src": [
+                239,
+                269
+              ],
+              "elements": [
+                {
+                  "id": "p0339-b3-e2",
+                  "class": "small",
+                  "text": "丹砂也。書·禹貢礪砥砮丹。山海經丹以赤爲主，黑白皆丹"
                 }
               ]
             }
@@ -145,22 +300,22 @@
           "id": "p0339-b4",
           "ord": 4,
           "src": [
-            119,
-            158
+            271,
+            336
           ],
           "lines": [
             {
               "id": "p0339-b4-l0",
               "ord": 0,
               "src": [
-                119,
-                134
+                271,
+                300
               ],
               "elements": [
                 {
                   "id": "p0339-b4-e0",
                   "class": "small",
-                  "text": "列子·黃帝篇佝僂承蜩者，累"
+                  "text": "之類。陶弘景曰卽朱砂也。 又道家以烹鼎金石爲外丹，吐故"
                 }
               ]
             },
@@ -168,14 +323,14 @@
               "id": "p0339-b4-l1",
               "ord": 1,
               "src": [
-                135,
-                158
+                301,
+                336
               ],
               "elements": [
                 {
                   "id": "p0339-b4-e1",
                   "class": "small",
-                  "text": "五垸而不墜。𠀤與𠁽同。 又叶胡絭切，音延。"
+                  "text": "納新爲內丹。黃庭經九轉八瓊丹。註八者：朱砂，雄黃，空靑，硫黃，"
                 }
               ]
             }
@@ -185,22 +340,22 @@
           "id": "p0339-b5",
           "ord": 5,
           "src": [
-            160,
-            184
+            338,
+            402
           ],
           "lines": [
             {
               "id": "p0339-b5-l0",
               "ord": 0,
               "src": [
-                160,
-                171
+                338,
+                370
               ],
               "elements": [
                 {
                   "id": "p0339-b5-e0",
                   "class": "small",
-                  "text": "詩·商頌陟彼景山，"
+                  "text": "雲母，戎鹽，硝石，雌黃也。 又博物志和氣相感，則陵出黑丹。仁"
                 }
               ]
             },
@@ -208,14 +363,14 @@
               "id": "p0339-b5-l1",
               "ord": 1,
               "src": [
-                172,
-                184
+                371,
+                402
               ],
               "elements": [
                 {
                   "id": "p0339-b5-e1",
                   "class": "small",
-                  "text": "松柏𠁽𠁽。叶下遷虔。"
+                  "text": "主壽昌，民延壽命，天下太平。 又以朱色塗物曰丹。揚雄·解嘲"
                 }
               ]
             }
@@ -225,22 +380,37 @@
           "id": "p0339-b6",
           "ord": 6,
           "src": [
-            186,
-            203
+            404,
+            467
           ],
           "lines": [
             {
               "id": "p0339-b6-l0",
               "ord": 0,
               "src": [
-                186,
-                203
+                404,
+                434
               ],
               "elements": [
                 {
                   "id": "p0339-b6-e0",
                   "class": "small",
-                  "text": "說文𠁽，傾仄而轉者，从反仄。"
+                  "text": "朱丹其轂。 又容美曰渥丹。詩·秦風顏如渥丹。 又赤心無僞"
+                }
+              ]
+            },
+            {
+              "id": "p0339-b6-l1",
+              "ord": 1,
+              "src": [
+                435,
+                467
+              ],
+              "elements": [
+                {
+                  "id": "p0339-b6-e1",
+                  "class": "small",
+                  "text": "曰丹。謝朓詩旣秉丹石心，寧流素絲涕。 又姓。漢丹玉，宋丹山，"
                 }
               ]
             }
@@ -250,22 +420,22 @@
           "id": "p0339-b7",
           "ord": 7,
           "src": [
-            205,
-            240
+            469,
+            529
           ],
           "lines": [
             {
               "id": "p0339-b7-l0",
               "ord": 0,
               "src": [
-                205,
-                212
+                469,
+                497
               ],
               "elements": [
                 {
                   "id": "p0339-b7-e0",
                   "class": "small",
-                  "text": "徐曰仄者，"
+                  "text": "明丹衷。 又丹陽，郡名。漢武帝攺鄣郡爲丹陽郡。晉武帝分立"
                 }
               ]
             },
@@ -273,482 +443,12 @@
               "id": "p0339-b7-l1",
               "ord": 1,
               "src": [
-                213,
-                224
+                498,
+                529
               ],
               "elements": [
                 {
                   "id": "p0339-b7-e1",
-                  "class": "small",
-                  "text": "一面敧而不可回。故仄而"
-                }
-              ]
-            },
-            {
-              "id": "p0339-b7-l2",
-              "ord": 2,
-              "src": [
-                225,
-                240
-              ],
-              "elements": [
-                {
-                  "id": "p0339-b7-e2",
-                  "class": "small",
-                  "text": "可反爲𠁽。𠁽，可左可右也。"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "p0339-b8",
-          "ord": 8,
-          "src": [
-            242,
-            244
-          ],
-          "lines": [
-            {
-              "id": "p0339-b8-l0",
-              "ord": 0,
-              "src": [
-                242,
-                244
-              ],
-              "elements": [
-                {
-                  "id": "p0339-b8-e0",
-                  "class": "large",
-                  "text": "丸"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "p0339-b9",
-          "ord": 9,
-          "src": [
-            288,
-            293
-          ],
-          "lines": [
-            {
-              "id": "p0339-b9-l0",
-              "ord": 0,
-              "src": [
-                288,
-                293
-              ],
-              "elements": [
-                {
-                  "id": "p0339-b9-e0",
-                  "class": "small",
-                  "text": "俗𠁽字。"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "p0339-b10",
-          "ord": 10,
-          "src": [
-            295,
-            307
-          ],
-          "lines": [
-            {
-              "id": "p0339-b10-l0",
-              "ord": 0,
-              "src": [
-                295,
-                307
-              ],
-              "elements": [
-                {
-                  "id": "p0339-b10-e0",
-                  "class": "large",
-                  "text": "丹"
-                },
-                {
-                  "id": "p0339-b10-e1",
-                  "class": "small",
-                  "text": "古文"
-                },
-                {
-                  "id": "p0339-b10-e2",
-                  "class": "large",
-                  "text": "𠁿"
-                },
-                {
-                  "id": "p0339-b10-e3",
-                  "class": "large",
-                  "text": "㣋"
-                },
-                {
-                  "id": "p0339-b10-e4",
-                  "class": "large",
-                  "text": "𠕑"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "p0339-b11",
-          "ord": 11,
-          "src": [
-            456,
-            494
-          ],
-          "lines": [
-            {
-              "id": "p0339-b11-l0",
-              "ord": 0,
-              "src": [
-                456,
-                489
-              ],
-              "elements": [
-                {
-                  "id": "p0339-b11-e0",
-                  "class": "small",
-                  "text": "唐韻都寒切集韻韻會多寒切正韻都艱切，𠀤音單。赤色"
-                }
-              ]
-            },
-            {
-              "id": "p0339-b11-l1",
-              "ord": 1,
-              "src": [
-                490,
-                494
-              ],
-              "elements": [
-                {
-                  "id": "p0339-b11-e1",
-                  "class": "small",
-                  "text": "丹砂也。"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "p0339-b12",
-          "ord": 12,
-          "src": [
-            496,
-            507
-          ],
-          "lines": [
-            {
-              "id": "p0339-b12-l0",
-              "ord": 0,
-              "src": [
-                496,
-                507
-              ],
-              "elements": [
-                {
-                  "id": "p0339-b12-e0",
-                  "class": "small",
-                  "text": "書·禹貢礪砥砮丹。"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "p0339-b13",
-          "ord": 13,
-          "src": [
-            509,
-            528
-          ],
-          "lines": [
-            {
-              "id": "p0339-b13-l0",
-              "ord": 0,
-              "src": [
-                509,
-                524
-              ],
-              "elements": [
-                {
-                  "id": "p0339-b13-e0",
-                  "class": "small",
-                  "text": "山海經丹以赤爲主，黑白皆丹"
-                }
-              ]
-            },
-            {
-              "id": "p0339-b13-l1",
-              "ord": 1,
-              "src": [
-                525,
-                528
-              ],
-              "elements": [
-                {
-                  "id": "p0339-b13-e1",
-                  "class": "small",
-                  "text": "之類。"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "p0339-b14",
-          "ord": 14,
-          "src": [
-            530,
-            563
-          ],
-          "lines": [
-            {
-              "id": "p0339-b14-l0",
-              "ord": 0,
-              "src": [
-                530,
-                556
-              ],
-              "elements": [
-                {
-                  "id": "p0339-b14-e0",
-                  "class": "small",
-                  "text": "陶弘景曰卽朱砂也。 又道家以烹鼎金石爲外丹，吐故"
-                }
-              ]
-            },
-            {
-              "id": "p0339-b14-l1",
-              "ord": 1,
-              "src": [
-                557,
-                563
-              ],
-              "elements": [
-                {
-                  "id": "p0339-b14-e1",
-                  "class": "small",
-                  "text": "納新爲內丹。"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "p0339-b15",
-          "ord": 15,
-          "src": [
-            565,
-            576
-          ],
-          "lines": [
-            {
-              "id": "p0339-b15-l0",
-              "ord": 0,
-              "src": [
-                565,
-                576
-              ],
-              "elements": [
-                {
-                  "id": "p0339-b15-e0",
-                  "class": "small",
-                  "text": "黃庭經九轉八瓊丹。"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "p0339-b16",
-          "ord": 16,
-          "src": [
-            578,
-            654
-          ],
-          "lines": [
-            {
-              "id": "p0339-b16-l0",
-              "ord": 0,
-              "src": [
-                578,
-                596
-              ],
-              "elements": [
-                {
-                  "id": "p0339-b16-e0",
-                  "class": "small",
-                  "text": "註八者：朱砂，雄黃，空靑，硫黃，"
-                }
-              ]
-            },
-            {
-              "id": "p0339-b16-l1",
-              "ord": 1,
-              "src": [
-                597,
-                629
-              ],
-              "elements": [
-                {
-                  "id": "p0339-b16-e1",
-                  "class": "small",
-                  "text": "雲母，戎鹽，硝石，雌黃也。 又博物志和氣相感，則陵出黑丹。仁"
-                }
-              ]
-            },
-            {
-              "id": "p0339-b16-l2",
-              "ord": 2,
-              "src": [
-                630,
-                654
-              ],
-              "elements": [
-                {
-                  "id": "p0339-b16-e2",
-                  "class": "small",
-                  "text": "主壽昌，民延壽命，天下太平。 又以朱色塗物曰丹。"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "p0339-b17",
-          "ord": 17,
-          "src": [
-            656,
-            677
-          ],
-          "lines": [
-            {
-              "id": "p0339-b17-l0",
-              "ord": 0,
-              "src": [
-                656,
-                663
-              ],
-              "elements": [
-                {
-                  "id": "p0339-b17-e0",
-                  "class": "small",
-                  "text": "揚雄·解嘲"
-                }
-              ]
-            },
-            {
-              "id": "p0339-b17-l1",
-              "ord": 1,
-              "src": [
-                664,
-                677
-              ],
-              "elements": [
-                {
-                  "id": "p0339-b17-e1",
-                  "class": "small",
-                  "text": "朱丹其轂。 又容美曰渥丹。"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "p0339-b18",
-          "ord": 18,
-          "src": [
-            679,
-            700
-          ],
-          "lines": [
-            {
-              "id": "p0339-b18-l0",
-              "ord": 0,
-              "src": [
-                679,
-                696
-              ],
-              "elements": [
-                {
-                  "id": "p0339-b18-e0",
-                  "class": "small",
-                  "text": "詩·秦風顏如渥丹。 又赤心無僞"
-                }
-              ]
-            },
-            {
-              "id": "p0339-b18-l1",
-              "ord": 1,
-              "src": [
-                697,
-                700
-              ],
-              "elements": [
-                {
-                  "id": "p0339-b18-e1",
-                  "class": "small",
-                  "text": "曰丹。"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "p0339-b19",
-          "ord": 19,
-          "src": [
-            702,
-            792
-          ],
-          "lines": [
-            {
-              "id": "p0339-b19-l0",
-              "ord": 0,
-              "src": [
-                702,
-                731
-              ],
-              "elements": [
-                {
-                  "id": "p0339-b19-e0",
-                  "class": "small",
-                  "text": "謝朓詩旣秉丹石心，寧流素絲涕。 又姓。漢丹玉，宋丹山，"
-                }
-              ]
-            },
-            {
-              "id": "p0339-b19-l1",
-              "ord": 1,
-              "src": [
-                732,
-                760
-              ],
-              "elements": [
-                {
-                  "id": "p0339-b19-e1",
-                  "class": "small",
-                  "text": "明丹衷。 又丹陽，郡名。漢武帝攺鄣郡爲丹陽郡。晉武帝分立"
-                }
-              ]
-            },
-            {
-              "id": "p0339-b19-l2",
-              "ord": 2,
-              "src": [
-                761,
-                792
-              ],
-              "elements": [
-                {
-                  "id": "p0339-b19-e2",
                   "class": "small",
                   "text": "宣城，毗陵二郡。又州名。本赤翟地，元魏置汾州，後改丹州。又崔"
                 }
@@ -765,18 +465,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0339-b1-l0",
+          "line": "p0339-b0-l0",
           "range": [
-            0,
-            8
+            10,
+            18
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        72,
-        82
+        16,
+        26
       ]
     },
     {
@@ -784,7 +484,7 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0339-b2-l0",
+          "line": "p0339-b0-l1",
           "range": [
             0,
             7
@@ -794,8 +494,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        95,
-        104
+        38,
+        47
       ]
     },
     {
@@ -803,18 +503,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0339-b3-l0",
+          "line": "p0339-b0-l1",
           "range": [
-            0,
-            1
+            12,
+            13
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        111,
-        114
+        52,
+        55
       ]
     },
     {
@@ -822,18 +522,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0339-b4-l0",
+          "line": "p0339-b0-l1",
           "range": [
-            0,
-            6
+            16,
+            22
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        119,
-        127
+        58,
+        66
       ]
     },
     {
@@ -841,18 +541,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0339-b5-l0",
+          "line": "p0339-b1-l0",
           "range": [
-            0,
-            4
+            21,
+            25
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        160,
-        166
+        98,
+        104
       ]
     },
     {
@@ -860,18 +560,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0339-b6-l0",
+          "line": "p0339-b1-l1",
           "range": [
-            0,
-            2
+            10,
+            12
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        186,
-        190
+        122,
+        126
       ]
     },
     {
@@ -879,7 +579,31 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0339-b7-l0",
+          "line": "p0339-b1-l1",
+          "range": [
+            24,
+            26
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        139,
+        143
+      ]
+    },
+    {
+      "id": "o7",
+      "kind": "circle",
+      "target": "p0339-b2-e5"
+    },
+    {
+      "id": "o8",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0339-b3-l1",
           "range": [
             0,
             2
@@ -894,30 +618,11 @@
       ]
     },
     {
-      "id": "o7",
+      "id": "o9",
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0339-b11-l0",
-          "range": [
-            0,
-            2
-          ]
-        }
-      ],
-      "openedHere": true,
-      "closed": true,
-      "src": [
-        456,
-        460
-      ]
-    },
-    {
-      "id": "o8",
-      "kind": "book-title",
-      "spans": [
-        {
-          "line": "p0339-b11-l0",
+          "line": "p0339-b3-l1",
           "range": [
             5,
             7
@@ -927,16 +632,16 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        463,
-        467
+        212,
+        216
       ]
     },
     {
-      "id": "o9",
+      "id": "o10",
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0339-b11-l0",
+          "line": "p0339-b3-l1",
           "range": [
             7,
             9
@@ -946,16 +651,16 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        467,
-        471
+        216,
+        220
       ]
     },
     {
-      "id": "o10",
+      "id": "o11",
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0339-b11-l0",
+          "line": "p0339-b3-l1",
           "range": [
             12,
             14
@@ -965,27 +670,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        474,
-        478
-      ]
-    },
-    {
-      "id": "o11",
-      "kind": "book-title",
-      "spans": [
-        {
-          "line": "p0339-b12-l0",
-          "range": [
-            0,
-            4
-          ]
-        }
-      ],
-      "openedHere": true,
-      "closed": true,
-      "src": [
-        496,
-        502
+        223,
+        227
       ]
     },
     {
@@ -993,18 +679,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0339-b13-l0",
+          "line": "p0339-b3-l2",
           "range": [
-            0,
-            3
+            4,
+            8
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        509,
-        514
+        243,
+        249
       ]
     },
     {
@@ -1012,18 +698,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0339-b14-l0",
+          "line": "p0339-b3-l2",
           "range": [
-            0,
-            4
+            13,
+            16
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        530,
-        536
+        254,
+        259
       ]
     },
     {
@@ -1031,18 +717,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0339-b15-l0",
+          "line": "p0339-b4-l0",
           "range": [
-            0,
-            3
+            3,
+            7
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        565,
-        570
+        274,
+        280
       ]
     },
     {
@@ -1050,18 +736,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0339-b16-l0",
+          "line": "p0339-b4-l1",
           "range": [
-            0,
-            1
+            6,
+            9
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        578,
-        581
+        307,
+        312
       ]
     },
     {
@@ -1069,7 +755,26 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0339-b16-l1",
+          "line": "p0339-b4-l1",
+          "range": [
+            15,
+            16
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        318,
+        321
+      ]
+    },
+    {
+      "id": "o17",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0339-b5-l0",
           "range": [
             15,
             18
@@ -1079,27 +784,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        612,
-        617
-      ]
-    },
-    {
-      "id": "o17",
-      "kind": "book-title",
-      "spans": [
-        {
-          "line": "p0339-b17-l0",
-          "range": [
-            0,
-            5
-          ]
-        }
-      ],
-      "openedHere": true,
-      "closed": true,
-      "src": [
-        656,
-        663
+        353,
+        358
       ]
     },
     {
@@ -1107,18 +793,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0339-b18-l0",
+          "line": "p0339-b5-l1",
           "range": [
-            0,
-            4
+            24,
+            29
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        679,
-        685
+        395,
+        402
       ]
     },
     {
@@ -1126,18 +812,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0339-b19-l0",
+          "line": "p0339-b6-l0",
           "range": [
-            0,
-            3
+            13,
+            17
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        702,
-        707
+        417,
+        423
       ]
     },
     {
@@ -1145,7 +831,26 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0339-b19-l2",
+          "line": "p0339-b6-l1",
+          "range": [
+            3,
+            6
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        438,
+        443
+      ]
+    },
+    {
+      "id": "o21",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0339-b7-l1",
           "range": [
             29,
             30
@@ -1155,8 +860,8 @@
       "openedHere": true,
       "closed": false,
       "src": [
-        790,
-        793
+        527,
+        530
       ]
     }
   ]

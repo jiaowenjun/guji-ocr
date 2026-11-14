@@ -1,0 +1,991 @@
+{
+  "version": 3,
+  "meta": {
+    "sourceFormat": "gj",
+    "generatedBy": "guji-ir/3",
+    "fidelity": "full",
+    "profile": {
+      "stripPunct": [
+        "。",
+        "，",
+        "·",
+        "\"",
+        ":",
+        "：",
+        "、",
+        "《",
+        "》"
+      ],
+      "normalize": [
+        [
+          "◎",
+          "○"
+        ],
+        [
+          "〇",
+          "○"
+        ]
+      ]
+    },
+    "lineLayout": "fold",
+    "orientation": "vertical-rtl",
+    "rangeUnit": "codepoint",
+    "srcUnit": "utf-16"
+  },
+  "pages": [
+    {
+      "id": "p0341",
+      "no": 341,
+      "src": [
+        0,
+        4
+      ],
+      "bands": [
+        {
+          "id": "p0341-b0",
+          "ord": 0,
+          "src": [
+            6,
+            75
+          ],
+          "lines": [
+            {
+              "id": "p0341-b0-l0",
+              "ord": 0,
+              "src": [
+                6,
+                37
+              ],
+              "elements": [
+                {
+                  "id": "p0341-b0-e0",
+                  "class": "small",
+                  "text": "練主用栗。又匰主。周禮·春官司巫，掌羣巫之政令，祭祀則供匰"
+                }
+              ]
+            },
+            {
+              "id": "p0341-b0-l1",
+              "ord": 1,
+              "src": [
+                38,
+                75
+              ],
+              "elements": [
+                {
+                  "id": "p0341-b0-e1",
+                  "class": "small",
+                  "text": "主。註主神所依也。匰，盛主之器。 又禮·曲禮居不主奧。疏主，猶"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "p0341-b1",
+          "ord": 1,
+          "src": [
+            77,
+            145
+          ],
+          "lines": [
+            {
+              "id": "p0341-b1-l0",
+              "ord": 0,
+              "src": [
+                77,
+                110
+              ],
+              "elements": [
+                {
+                  "id": "p0341-b1-e0",
+                  "class": "small",
+                  "text": "坐也。 又晉語陽子剛而主能。註上也。 又姓。隋主胄，明主問"
+                }
+              ]
+            },
+            {
+              "id": "p0341-b1-l1",
+              "ord": 1,
+              "src": [
+                111,
+                145
+              ],
+              "elements": [
+                {
+                  "id": "p0341-b1-e1",
+                  "class": "small",
+                  "text": "禮。又主父，複姓。 又正韻陟慮切。同注。荀子·宥坐篇主量必平"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "p0341-b2",
+          "ord": 2,
+          "src": [
+            147,
+            225
+          ],
+          "lines": [
+            {
+              "id": "p0341-b2-l0",
+              "ord": 0,
+              "src": [
+                147,
+                153
+              ],
+              "elements": [
+                {
+                  "id": "p0341-b2-e0",
+                  "class": "small",
+                  "text": "似法。註"
+                }
+              ]
+            },
+            {
+              "id": "p0341-b2-l1",
+              "ord": 1,
+              "src": [
+                154,
+                159
+              ],
+              "elements": [
+                {
+                  "id": "p0341-b2-e1",
+                  "class": "small",
+                  "text": "主，同註。"
+                }
+              ]
+            },
+            {
+              "id": "p0341-b2-l2",
+              "ord": 2,
+              "src": [
+                160,
+                162
+              ],
+              "elements": [
+                {
+                  "id": "p0341-b2-e2",
+                  "class": "large",
+                  "text": "丼"
+                }
+              ]
+            },
+            {
+              "id": "p0341-b2-l3",
+              "ord": 3,
+              "src": [
+                163,
+                195
+              ],
+              "elements": [
+                {
+                  "id": "p0341-b2-e3",
+                  "class": "small",
+                  "text": "廣韻集韻韻會正韻𠀤同井。說文八家一井，象構"
+                }
+              ]
+            },
+            {
+              "id": "p0341-b2-l4",
+              "ord": 4,
+              "src": [
+                196,
+                225
+              ],
+              "elements": [
+                {
+                  "id": "p0341-b2-e4",
+                  "class": "small",
+                  "text": "𩏑形，丶𦉥之象也。徐曰𩏑，井垣也。周禮謂之井樹。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "p0341-b3",
+          "ord": 3,
+          "src": [
+            227,
+            291
+          ],
+          "lines": [
+            {
+              "id": "p0341-b3-l0",
+              "ord": 0,
+              "src": [
+                227,
+                247
+              ],
+              "elements": [
+                {
+                  "id": "p0341-b3-e0",
+                  "class": "small",
+                  "text": "古者以瓶𦉥汲。本作丼，省作井。 又姓。"
+                }
+              ]
+            },
+            {
+              "id": "p0341-b3-l1",
+              "ord": 1,
+              "src": [
+                248,
+                267
+              ],
+              "elements": [
+                {
+                  "id": "p0341-b3-e1",
+                  "class": "small",
+                  "text": " 又集韻都感切，音黕。投物井中聲。"
+                }
+              ]
+            },
+            {
+              "id": "p0341-b3-l2",
+              "ord": 2,
+              "src": [
+                268,
+                275
+              ],
+              "elements": [
+                {
+                  "id": "p0341-b3-e2",
+                  "class": "large",
+                  "text": "增"
+                },
+                {
+                  "id": "p0341-b3-e3",
+                  "class": "large",
+                  "text": "𠁿"
+                }
+              ]
+            },
+            {
+              "id": "p0341-b3-l3",
+              "ord": 3,
+              "src": [
+                276,
+                283
+              ],
+              "elements": [
+                {
+                  "id": "p0341-b3-e4",
+                  "class": "small",
+                  "text": "玉篇古文丹"
+                }
+              ]
+            },
+            {
+              "id": "p0341-b3-l4",
+              "ord": 4,
+              "src": [
+                284,
+                291
+              ],
+              "elements": [
+                {
+                  "id": "p0341-b3-e5",
+                  "class": "small",
+                  "text": "字。註詳三畫。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "p0341-b4",
+          "ord": 4,
+          "src": [
+            293,
+            352
+          ],
+          "lines": [
+            {
+              "id": "p0341-b4-l0",
+              "ord": 0,
+              "src": [
+                293,
+                304
+              ],
+              "elements": [
+                {
+                  "id": "p0341-b4-e0",
+                  "class": "large",
+                  "text": "五"
+                },
+                {
+                  "id": "p0341-b4-e1",
+                  "class": "large",
+                  "text": "增"
+                },
+                {
+                  "id": "p0341-b4-e2",
+                  "class": "large",
+                  "text": "𠂂"
+                }
+              ]
+            },
+            {
+              "id": "p0341-b4-l1",
+              "ord": 1,
+              "src": [
+                305,
+                326
+              ],
+              "elements": [
+                {
+                  "id": "p0341-b4-e3",
+                  "class": "small",
+                  "text": "字彙補古文終字。亢倉子·全道篇𥛜"
+                }
+              ]
+            },
+            {
+              "id": "p0341-b4-l2",
+              "ord": 2,
+              "src": [
+                327,
+                343
+              ],
+              "elements": [
+                {
+                  "id": "p0341-b4-e4",
+                  "class": "small",
+                  "text": "乎堯舜之閒，其𠂂存乎千代之後。"
+                }
+              ]
+            },
+            {
+              "id": "p0341-b4-l3",
+              "ord": 3,
+              "src": [
+                344,
+                352
+              ],
+              "elements": [
+                {
+                  "id": "p0341-b4-e5",
+                  "class": "large",
+                  "text": "七"
+                },
+                {
+                  "id": "p0341-b4-e6",
+                  "class": "large",
+                  "text": "增"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "p0341-b5",
+          "ord": 5,
+          "src": [
+            354,
+            414
+          ],
+          "lines": [
+            {
+              "id": "p0341-b5-l0",
+              "ord": 0,
+              "src": [
+                354,
+                356
+              ],
+              "elements": [
+                {
+                  "id": "p0341-b5-e0",
+                  "class": "large",
+                  "text": "丽"
+                }
+              ]
+            },
+            {
+              "id": "p0341-b5-l1",
+              "ord": 1,
+              "src": [
+                357,
+                366
+              ],
+              "elements": [
+                {
+                  "id": "p0341-b5-e1",
+                  "class": "small",
+                  "text": "集韻麗古作丽。"
+                }
+              ]
+            },
+            {
+              "id": "p0341-b5-l2",
+              "ord": 2,
+              "src": [
+                367,
+                374
+              ],
+              "elements": [
+                {
+                  "id": "p0341-b5-e2",
+                  "class": "small",
+                  "text": "註詳鹿部八畫。"
+                }
+              ]
+            },
+            {
+              "id": "p0341-b5-l3",
+              "ord": 3,
+              "src": [
+                375,
+                387
+              ],
+              "elements": [
+                {
+                  "id": "p0341-b5-e3",
+                  "class": "large",
+                  "text": "十二",
+                  "ligature": true
+                },
+                {
+                  "id": "p0341-b5-e4",
+                  "class": "large",
+                  "text": "增"
+                },
+                {
+                  "id": "p0341-b5-e5",
+                  "class": "large",
+                  "text": "𠂄"
+                }
+              ]
+            },
+            {
+              "id": "p0341-b5-l4",
+              "ord": 4,
+              "src": [
+                388,
+                401
+              ],
+              "elements": [
+                {
+                  "id": "p0341-b5-e6",
+                  "class": "small",
+                  "text": "唐韻𠂄兜，四凶名。卽"
+                }
+              ]
+            },
+            {
+              "id": "p0341-b5-l5",
+              "ord": 5,
+              "src": [
+                402,
+                414
+              ],
+              "elements": [
+                {
+                  "id": "p0341-b5-e7",
+                  "class": "small",
+                  "text": "讙兜。古文尚書作鴅。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "p0341-b6",
+          "ord": 6,
+          "src": [
+            416,
+            417
+          ],
+          "lines": [
+            {
+              "id": "p0341-b6-l0",
+              "ord": 0,
+              "src": [
+                416,
+                417
+              ],
+              "elements": []
+            }
+          ]
+        },
+        {
+          "id": "p0341-b7",
+          "ord": 7,
+          "src": [
+            419,
+            420
+          ],
+          "lines": [
+            {
+              "id": "p0341-b7-l0",
+              "ord": 0,
+              "src": [
+                419,
+                420
+              ],
+              "elements": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "overlays": [
+    {
+      "id": "o0",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0341-b0-l0",
+          "range": [
+            9,
+            14
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        15,
+        22
+      ]
+    },
+    {
+      "id": "o1",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0341-b0-l1",
+          "range": [
+            2,
+            3
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        40,
+        43
+      ]
+    },
+    {
+      "id": "o2",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0341-b0-l1",
+          "range": [
+            18,
+            22
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        58,
+        64
+      ]
+    },
+    {
+      "id": "o3",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0341-b0-l1",
+          "range": [
+            27,
+            28
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        69,
+        72
+      ]
+    },
+    {
+      "id": "o4",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0341-b1-l0",
+          "range": [
+            5,
+            7
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        82,
+        86
+      ]
+    },
+    {
+      "id": "o5",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0341-b1-l0",
+          "range": [
+            14,
+            15
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        93,
+        96
+      ]
+    },
+    {
+      "id": "o6",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0341-b1-l1",
+          "range": [
+            11,
+            13
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        122,
+        126
+      ]
+    },
+    {
+      "id": "o7",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0341-b1-l1",
+          "range": [
+            20,
+            26
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        133,
+        141
+      ]
+    },
+    {
+      "id": "o8",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0341-b2-l0",
+          "range": [
+            3,
+            4
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        150,
+        153
+      ]
+    },
+    {
+      "id": "o9",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0341-b2-l3",
+          "range": [
+            0,
+            2
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        163,
+        167
+      ]
+    },
+    {
+      "id": "o10",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0341-b2-l3",
+          "range": [
+            2,
+            4
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        167,
+        171
+      ]
+    },
+    {
+      "id": "o11",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0341-b2-l3",
+          "range": [
+            4,
+            6
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        171,
+        175
+      ]
+    },
+    {
+      "id": "o12",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0341-b2-l3",
+          "range": [
+            6,
+            8
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        175,
+        179
+      ]
+    },
+    {
+      "id": "o13",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0341-b2-l3",
+          "range": [
+            12,
+            14
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        184,
+        188
+      ]
+    },
+    {
+      "id": "o14",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0341-b2-l4",
+          "range": [
+            9,
+            11
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        207,
+        211
+      ]
+    },
+    {
+      "id": "o15",
+      "kind": "circle",
+      "target": "p0341-b3-e2"
+    },
+    {
+      "id": "o16",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0341-b3-l1",
+          "range": [
+            2,
+            4
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        250,
+        254
+      ]
+    },
+    {
+      "id": "o17",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0341-b3-l3",
+          "range": [
+            0,
+            2
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        276,
+        280
+      ]
+    },
+    {
+      "id": "o18",
+      "kind": "circle",
+      "target": "p0341-b4-e0"
+    },
+    {
+      "id": "o19",
+      "kind": "circle",
+      "target": "p0341-b4-e1"
+    },
+    {
+      "id": "o20",
+      "kind": "circle",
+      "target": "p0341-b4-e5"
+    },
+    {
+      "id": "o21",
+      "kind": "circle",
+      "target": "p0341-b4-e6"
+    },
+    {
+      "id": "o22",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0341-b4-l1",
+          "range": [
+            0,
+            3
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        305,
+        310
+      ]
+    },
+    {
+      "id": "o23",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0341-b4-l1",
+          "range": [
+            8,
+            15
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        315,
+        324
+      ]
+    },
+    {
+      "id": "o24",
+      "kind": "circle",
+      "target": "p0341-b5-e3"
+    },
+    {
+      "id": "o25",
+      "kind": "circle",
+      "target": "p0341-b5-e4"
+    },
+    {
+      "id": "o26",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0341-b5-l1",
+          "range": [
+            0,
+            2
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        357,
+        361
+      ]
+    },
+    {
+      "id": "o27",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0341-b5-l4",
+          "range": [
+            0,
+            2
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        388,
+        392
+      ]
+    },
+    {
+      "id": "o28",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0341-b5-l5",
+          "range": [
+            3,
+            7
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        405,
+        411
+      ]
+    }
+  ]
+}

@@ -77,7 +77,7 @@
           "ord": 1,
           "src": [
             14,
-            75
+            76
           ],
           "lines": [
             {
@@ -85,14 +85,24 @@
               "ord": 0,
               "src": [
                 14,
-                47
+                16
               ],
               "elements": [
                 {
                   "id": "p0338-b1-e0",
                   "class": "large",
                   "text": "丶"
-                },
+                }
+              ]
+            },
+            {
+              "id": "p0338-b1-l1",
+              "ord": 1,
+              "src": [
+                17,
+                48
+              ],
+              "elements": [
                 {
                   "id": "p0338-b1-e1",
                   "class": "small",
@@ -101,11 +111,11 @@
               ]
             },
             {
-              "id": "p0338-b1-l1",
-              "ord": 1,
+              "id": "p0338-b1-l2",
+              "ord": 2,
               "src": [
-                48,
-                75
+                49,
+                76
               ],
               "elements": [
                 {
@@ -121,16 +131,16 @@
           "id": "p0338-b2",
           "ord": 2,
           "src": [
-            77,
-            219
+            78,
+            146
           ],
           "lines": [
             {
               "id": "p0338-b2-l0",
               "ord": 0,
               "src": [
-                77,
-                106
+                78,
+                85
               ],
               "elements": [
                 {
@@ -142,7 +152,17 @@
                   "id": "p0338-b2-e1",
                   "class": "large",
                   "text": "𠁼"
-                },
+                }
+              ]
+            },
+            {
+              "id": "p0338-b2-l1",
+              "ord": 1,
+              "src": [
+                86,
+                108
+              ],
+              "elements": [
                 {
                   "id": "p0338-b2-e2",
                   "class": "small",
@@ -151,11 +171,11 @@
               ]
             },
             {
-              "id": "p0338-b2-l1",
-              "ord": 1,
+              "id": "p0338-b2-l2",
+              "ord": 2,
               "src": [
-                107,
-                126
+                109,
+                128
               ],
               "elements": [
                 {
@@ -166,11 +186,11 @@
               ]
             },
             {
-              "id": "p0338-b2-l2",
-              "ord": 2,
+              "id": "p0338-b2-l3",
+              "ord": 3,
               "src": [
-                127,
-                130
+                129,
+                132
               ],
               "elements": [
                 {
@@ -181,11 +201,11 @@
               ]
             },
             {
-              "id": "p0338-b2-l3",
-              "ord": 3,
+              "id": "p0338-b2-l4",
+              "ord": 4,
               "src": [
-                131,
-                137
+                133,
+                139
               ],
               "elements": [
                 {
@@ -196,62 +216,17 @@
               ]
             },
             {
-              "id": "p0338-b2-l4",
-              "ord": 4,
+              "id": "p0338-b2-l5",
+              "ord": 5,
               "src": [
-                138,
-                144
+                140,
+                146
               ],
               "elements": [
                 {
                   "id": "p0338-b2-e6",
                   "class": "small",
                   "text": "韻韻會"
-                }
-              ]
-            },
-            {
-              "id": "p0338-b2-l5",
-              "ord": 5,
-              "src": [
-                145,
-                180
-              ],
-              "elements": [
-                {
-                  "id": "p0338-b2-e7",
-                  "class": "small",
-                  "text": "正韻𠀤胡官切，音完。彈𠁽也。凡物員轉者皆曰𠁽。元人著凡經"
-                }
-              ]
-            },
-            {
-              "id": "p0338-b2-l6",
-              "ord": 6,
-              "src": [
-                181,
-                212
-              ],
-              "elements": [
-                {
-                  "id": "p0338-b2-e8",
-                  "class": "small",
-                  "text": "言捶𠁽之制，有讓釆索窩，忘攛成算諸名。又莊子·徐無鬼市南"
-                }
-              ]
-            },
-            {
-              "id": "p0338-b2-l7",
-              "ord": 7,
-              "src": [
-                213,
-                219
-              ],
-              "elements": [
-                {
-                  "id": "p0338-b2-e9",
-                  "class": "small",
-                  "text": "宜僚弄𠁽。"
                 }
               ]
             }
@@ -261,22 +236,22 @@
           "id": "p0338-b3",
           "ord": 3,
           "src": [
-            221,
-            308
+            148,
+            215
           ],
           "lines": [
             {
               "id": "p0338-b3-l0",
               "ord": 0,
               "src": [
-                221,
-                249
+                148,
+                183
               ],
               "elements": [
                 {
                   "id": "p0338-b3-e0",
                   "class": "small",
-                  "text": "前漢·尹賞傳長安少年，羣輩相與爲探𠁽。得赤𠁽者，"
+                  "text": "正韻𠀤胡官切，音完。彈𠁽也。凡物員轉者皆曰𠁽。元人著凡經"
                 }
               ]
             },
@@ -284,29 +259,14 @@
               "id": "p0338-b3-l1",
               "ord": 1,
               "src": [
-                250,
-                283
+                184,
+                215
               ],
               "elements": [
                 {
                   "id": "p0338-b3-e1",
                   "class": "small",
-                  "text": "斫武吏。黑𠁽者，斫文吏。白𠁽者，主治喪。賞收捕數百人，納虎穴。"
-                }
-              ]
-            },
-            {
-              "id": "p0338-b3-l2",
-              "ord": 2,
-              "src": [
-                284,
-                308
-              ],
-              "elements": [
-                {
-                  "id": "p0338-b3-e2",
-                  "class": "small",
-                  "text": "又屑米麪摶如彈𠁽，煑烝噉之曰牢𠁽。俗譌作九。"
+                  "text": "言捶𠁽之制，有讓釆索窩，忘攛成算諸名。又莊子·徐無鬼市南"
                 }
               ]
             }
@@ -316,22 +276,22 @@
           "id": "p0338-b4",
           "ord": 4,
           "src": [
-            310,
-            328
+            217,
+            285
           ],
           "lines": [
             {
               "id": "p0338-b4-l0",
               "ord": 0,
               "src": [
-                310,
-                317
+                217,
+                251
               ],
               "elements": [
                 {
                   "id": "p0338-b4-e0",
                   "class": "small",
-                  "text": "束皙·餠賦"
+                  "text": "宜僚弄𠁽。前漢·尹賞傳長安少年，羣輩相與爲探𠁽。得赤𠁽者，"
                 }
               ]
             },
@@ -339,14 +299,14 @@
               "id": "p0338-b4-l1",
               "ord": 1,
               "src": [
-                318,
-                328
+                252,
+                285
               ],
               "elements": [
                 {
                   "id": "p0338-b4-e1",
                   "class": "small",
-                  "text": "終日飽食，其牢九乎。"
+                  "text": "斫武吏。黑𠁽者，斫文吏。白𠁽者，主治喪。賞收捕數百人，納虎穴。"
                 }
               ]
             }
@@ -356,22 +316,37 @@
           "id": "p0338-b5",
           "ord": 5,
           "src": [
-            330,
-            345
+            287,
+            352
           ],
           "lines": [
             {
               "id": "p0338-b5-l0",
               "ord": 0,
               "src": [
-                330,
-                345
+                287,
+                319
               ],
               "elements": [
                 {
                   "id": "p0338-b5-e0",
                   "class": "small",
-                  "text": "歐陽修·歸田錄不能辨其誤。"
+                  "text": " 又屑米麪摶如彈𠁽，煑烝噉之曰牢𠁽。俗譌作九。束皙·餠賦"
+                }
+              ]
+            },
+            {
+              "id": "p0338-b5-l1",
+              "ord": 1,
+              "src": [
+                320,
+                352
+              ],
+              "elements": [
+                {
+                  "id": "p0338-b5-e1",
+                  "class": "small",
+                  "text": "終日飽食，其牢九乎。歐陽修·歸田錄不能辨其誤。隂氏韻譜收"
                 }
               ]
             }
@@ -381,22 +356,22 @@
           "id": "p0338-b6",
           "ord": 6,
           "src": [
-            347,
-            393
+            354,
+            423
           ],
           "lines": [
             {
               "id": "p0338-b6-l0",
               "ord": 0,
               "src": [
-                347,
-                354
+                354,
+                386
               ],
               "elements": [
                 {
                   "id": "p0338-b6-e0",
                   "class": "small",
-                  "text": "隂氏韻譜收"
+                  "text": "牢九，入上聲九韻，𠀤非。 又呂氏春秋流沙之西，丹山之南，有"
                 }
               ]
             },
@@ -404,29 +379,14 @@
               "id": "p0338-b6-l1",
               "ord": 1,
               "src": [
-                355,
-                387
+                387,
+                423
               ],
               "elements": [
                 {
                   "id": "p0338-b6-e1",
                   "class": "small",
-                  "text": "牢九，入上聲九韻，𠀤非。 又呂氏春秋流沙之西，丹山之南，有"
-                }
-              ]
-            },
-            {
-              "id": "p0338-b6-l2",
-              "ord": 2,
-              "src": [
-                388,
-                393
-              ],
-              "elements": [
-                {
-                  "id": "p0338-b6-e2",
-                  "class": "small",
-                  "text": "鳳之𠁽。"
+                  "text": "鳳之𠁽。正字通𠁽者，鳥卵別名。象其圓形。讀若完。韻會及轉註"
                 }
               ]
             }
@@ -436,102 +396,37 @@
           "id": "p0338-b7",
           "ord": 7,
           "src": [
-            395,
-            418
+            425,
+            490
           ],
           "lines": [
             {
               "id": "p0338-b7-l0",
               "ord": 0,
               "src": [
-                395,
-                418
+                425,
+                457
               ],
               "elements": [
                 {
                   "id": "p0338-b7-e0",
-                  "class": "small",
-                  "text": "正字通𠁽者，鳥卵別名。象其圓形。讀若完。"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "p0338-b8",
-          "ord": 8,
-          "src": [
-            420,
-            468
-          ],
-          "lines": [
-            {
-              "id": "p0338-b8-l0",
-              "ord": 0,
-              "src": [
-                420,
-                428
-              ],
-              "elements": [
-                {
-                  "id": "p0338-b8-e0",
-                  "class": "small",
-                  "text": "韻會及轉註"
-                }
-              ]
-            },
-            {
-              "id": "p0338-b8-l1",
-              "ord": 1,
-              "src": [
-                429,
-                461
-              ],
-              "elements": [
-                {
-                  "id": "p0338-b8-e1",
                   "class": "small",
                   "text": "古音引此句，𠁽攺音卵，附旱韻，非。 又姓。 又塞外有烏桓山。"
                 }
               ]
             },
             {
-              "id": "p0338-b8-l2",
-              "ord": 2,
+              "id": "p0338-b7-l1",
+              "ord": 1,
               "src": [
-                462,
-                468
+                458,
+                490
               ],
               "elements": [
                 {
-                  "id": "p0338-b8-e2",
+                  "id": "p0338-b7-e1",
                   "class": "small",
-                  "text": "一作烏𠁽。"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "p0338-b9",
-          "ord": 9,
-          "src": [
-            470,
-            496
-          ],
-          "lines": [
-            {
-              "id": "p0338-b9-l0",
-              "ord": 0,
-              "src": [
-                470,
-                496
-              ],
-              "elements": [
-                {
-                  "id": "p0338-b9-e0",
-                  "class": "small",
-                  "text": "魏志·烏丸傳太祖引烏𠁽之衆，服從征討，而邊民得"
+                  "text": "一作烏𠁽。魏志·烏丸傳太祖引烏𠁽之衆，服從征討，而邊民得"
                 }
               ]
             }
@@ -546,18 +441,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0338-b1-l0",
+          "line": "p0338-b1-l1",
           "range": [
-            1,
-            3
+            0,
+            2
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        16,
-        20
+        17,
+        21
       ]
     },
     {
@@ -565,18 +460,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0338-b1-l0",
+          "line": "p0338-b1-l1",
           "range": [
-            6,
-            8
+            5,
+            7
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        23,
-        27
+        24,
+        28
       ]
     },
     {
@@ -584,7 +479,7 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0338-b1-l1",
+          "line": "p0338-b1-l2",
           "range": [
             1,
             5
@@ -594,8 +489,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        49,
-        55
+        50,
+        56
       ]
     },
     {
@@ -608,71 +503,7 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0338-b2-l0",
-          "range": [
-            2,
-            4
-          ]
-        }
-      ],
-      "openedHere": true,
-      "closed": true,
-      "src": [
-        84,
-        88
-      ]
-    },
-    {
-      "id": "o5",
-      "kind": "book-title",
-      "spans": [
-        {
-          "line": "p0338-b2-l0",
-          "range": [
-            14,
-            17
-          ]
-        }
-      ],
-      "openedHere": true,
-      "closed": true,
-      "src": [
-        98,
-        103
-      ]
-    },
-    {
-      "id": "o6",
-      "kind": "book-title",
-      "spans": [
-        {
-          "line": "p0338-b2-l0",
-          "range": [
-            17,
-            19
-          ]
-        },
-        {
           "line": "p0338-b2-l1",
-          "range": [
-            0,
-            1
-          ]
-        }
-      ],
-      "openedHere": true,
-      "closed": true,
-      "src": [
-        103,
-        109
-      ]
-    },
-    {
-      "id": "o7",
-      "kind": "book-title",
-      "spans": [
-        {
-          "line": "p0338-b2-l3",
           "range": [
             0,
             2
@@ -682,23 +513,42 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        131,
-        135
+        86,
+        90
       ]
     },
     {
-      "id": "o8",
+      "id": "o5",
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0338-b2-l3",
+          "line": "p0338-b2-l1",
           "range": [
-            2,
-            3
+            12,
+            15
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        100,
+        105
+      ]
+    },
+    {
+      "id": "o6",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0338-b2-l1",
+          "range": [
+            15,
+            17
           ]
         },
         {
-          "line": "p0338-b2-l4",
+          "line": "p0338-b2-l2",
           "range": [
             0,
             1
@@ -708,8 +558,53 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        135,
-        140
+        105,
+        111
+      ]
+    },
+    {
+      "id": "o7",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0338-b2-l4",
+          "range": [
+            0,
+            2
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        133,
+        137
+      ]
+    },
+    {
+      "id": "o8",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0338-b2-l4",
+          "range": [
+            2,
+            3
+          ]
+        },
+        {
+          "line": "p0338-b2-l5",
+          "range": [
+            0,
+            1
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        137,
+        142
       ]
     },
     {
@@ -717,7 +612,7 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0338-b2-l4",
+          "line": "p0338-b2-l5",
           "range": [
             1,
             3
@@ -727,8 +622,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        140,
-        144
+        142,
+        146
       ]
     },
     {
@@ -736,7 +631,7 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0338-b2-l5",
+          "line": "p0338-b3-l0",
           "range": [
             0,
             2
@@ -746,8 +641,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        145,
-        149
+        148,
+        152
       ]
     },
     {
@@ -755,7 +650,7 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0338-b2-l5",
+          "line": "p0338-b3-l0",
           "range": [
             26,
             28
@@ -765,8 +660,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        176,
-        180
+        179,
+        183
       ]
     },
     {
@@ -774,7 +669,7 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0338-b2-l6",
+          "line": "p0338-b3-l1",
           "range": [
             20,
             26
@@ -784,8 +679,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        202,
-        210
+        205,
+        213
       ]
     },
     {
@@ -793,18 +688,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0338-b3-l0",
+          "line": "p0338-b4-l0",
           "range": [
-            0,
-            6
+            5,
+            11
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        221,
-        229
+        223,
+        231
       ]
     },
     {
@@ -812,18 +707,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0338-b4-l0",
+          "line": "p0338-b5-l0",
           "range": [
-            0,
-            5
+            23,
+            28
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        310,
-        317
+        312,
+        319
       ]
     },
     {
@@ -831,10 +726,10 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0338-b5-l0",
+          "line": "p0338-b5-l1",
           "range": [
-            0,
-            7
+            10,
+            17
           ]
         }
       ],
@@ -850,18 +745,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0338-b6-l0",
+          "line": "p0338-b5-l1",
           "range": [
-            0,
-            4
+            23,
+            27
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        347,
-        353
+        345,
+        351
       ]
     },
     {
@@ -869,7 +764,7 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0338-b6-l1",
+          "line": "p0338-b6-l0",
           "range": [
             14,
             18
@@ -879,8 +774,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        370,
-        376
+        369,
+        375
       ]
     },
     {
@@ -888,18 +783,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0338-b7-l0",
+          "line": "p0338-b6-l1",
           "range": [
-            0,
-            3
+            4,
+            7
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        395,
-        400
+        392,
+        397
       ]
     },
     {
@@ -907,7 +802,33 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0338-b8-l0",
+          "line": "p0338-b6-l1",
+          "range": [
+            24,
+            26
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        415,
+        419
+      ]
+    },
+    {
+      "id": "o20",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0338-b6-l1",
+          "range": [
+            27,
+            29
+          ]
+        },
+        {
+          "line": "p0338-b7-l0",
           "range": [
             0,
             2
@@ -918,33 +839,7 @@
       "closed": true,
       "src": [
         420,
-        424
-      ]
-    },
-    {
-      "id": "o20",
-      "kind": "book-title",
-      "spans": [
-        {
-          "line": "p0338-b8-l0",
-          "range": [
-            3,
-            5
-          ]
-        },
-        {
-          "line": "p0338-b8-l1",
-          "range": [
-            0,
-            2
-          ]
-        }
-      ],
-      "openedHere": true,
-      "closed": true,
-      "src": [
-        425,
-        432
+        428
       ]
     },
     {
@@ -952,18 +847,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0338-b9-l0",
+          "line": "p0338-b7-l1",
           "range": [
-            0,
-            6
+            5,
+            11
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        470,
-        478
+        464,
+        472
       ]
     }
   ]
