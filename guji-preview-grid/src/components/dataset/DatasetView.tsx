@@ -35,7 +35,7 @@ import { MatrixPages } from "@/components/matrix/MatrixPages";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
 import { gj2ir } from "@/ir/gj2ir";
 import { layout3 } from "@/ir/layout3";
-import { bandCursorTarget, highlightAt } from "@/ir/linkage";
+import { bandCursorTarget, buildCharIndex, charHighlightAt, highlightAt } from "@/ir/linkage";
 
 interface PageEntry {
   page: number;
@@ -230,7 +230,15 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
   const [cursor, setCursor] = useState<number | null>(null);
   const [requestCursor, setRequestCursor] = useState<number | null>(null);
   const irLive = useMemo(() => gj2ir(text ?? ""), [text]);
-  const highlight = useMemo(() => highlightAt(irLive, cursor), [irLive, cursor]);
+  // 单字联动：charIndex 随文本重建（词法产物），光标移动只做二分定位
+  const charIndex = useMemo(() => buildCharIndex(irLive), [irLive]);
+  const highlight = useMemo(
+    () => ({
+      ...highlightAt(irLive, cursor),
+      char: charHighlightAt(irLive, charIndex, text ?? "", cursor),
+    }),
+    [irLive, charIndex, text, cursor],
+  );
   const onBandClick = useCallback(
     (p: number, i: number) => {
       const target = bandCursorTarget(irLive, text ?? "", p, i);

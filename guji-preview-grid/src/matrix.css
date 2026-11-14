@@ -166,10 +166,15 @@
   margin-left: 0;
 }
 
-/* 编辑器光标联动高亮（.m-band = 大行；.m-book-active = 光标所在书名区间） */
+/* 编辑器光标联动高亮（.m-band = 大行；.m-book-active = 光标所在书名区间；
+   .m-char-active = 光标前一字符的单字格——三层由淡到浓，单字最醒目） */
 .m-band.m-band-active {
   background: rgba(217, 119, 6, 0.14);
 }
 .m-book.m-book-active {
   background: rgba(217, 119, 6, 0.3);
+}
+.m-char-active {
+  background: rgba(217, 119, 6, 0.5);
+  box-shadow: inset 0 0 0 1.5px rgba(217, 119, 6, 0.9);
 }

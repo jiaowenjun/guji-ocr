@@ -23,8 +23,34 @@ const chunkTransform = (s: string) =>
     .replace(/\/\/.*/, "")
     .replace(/[◎〇]/g, "○");
 
-const lineTransform = (line: string) =>
-  line.replace(/　/g, "*").trim().replace(/[ \t]+/, " ");
+/** lineTransform 带原文偏移映射：transform 后各 UTF-16 单位 → 原文单位偏移。
+ *  trim 删首尾、空白串压缩（无 g 标志仅第一处）会使文本与原文不等长，
+ *  cpSrcs 溯源编辑器原文所需的换算在此统一维护（lineTransform 即其 text 视图） */
+function lineTransformMap(line: string): { text: string; map: number[] } {
+  let text = "";
+  const map: number[] = [];
+  for (let i = 0; i < line.length; i++) {
+    text += line[i] === "　" ? "*" : line[i];
+    map.push(i);
+  }
+  let a = 0;
+  let b = text.length;
+  while (a < b && /\s/.test(text[a])) a++;
+  while (b > a && /\s/.test(text[b - 1])) b--;
+  text = text.slice(a, b);
+  const m = map.slice(a, b);
+  const sp = /[ \t]+/.exec(text);
+  if (sp) {
+    text = text.slice(0, sp.index) + " " + text.slice(sp.index + sp[0].length);
+    return {
+      text,
+      map: [...m.slice(0, sp.index), m[sp.index], ...m.slice(sp.index + sp[0].length)],
+    };
+  }
+  return { text, map: m };
+}
+
+const lineTransform = (line: string) => lineTransformMap(line).text;
 
 interface RawChunk {
   from: number;
@@ -178,18 +204,23 @@ export function gj2ir(text: string): IRDocument {
 
     const headingM = /^(#+) (.*)$/.exec(c.text.trim());
     if (headingM && !c.text.trim().includes("\n")) {
-      // 标题入骨架：逐字大字元素；层级为元数据
+      // 标题入骨架：逐字大字元素；层级为元数据。
+      // 单行 band 的 c.text.trim() 即变换后行文本——标题字偏移经映射回原文记 cpSrcs
       band.level = Math.min(3, headingM[1].length) as 1 | 2 | 3;
-      const seg = 0;
+      const [h0, h1] = c.lineRanges[0];
+      const { map: headMap } = lineTransformMap(text.slice(h0, h1));
+      let u = headingM[1].length + 1;
+      const cpSrcs: number[] = [];
       band.lines.push({
         id: `${bandId}-l0`,
         ord: 0,
         src: c.lineRanges[0],
-        elements: [...headingM[2]].map((ch) => ({
-          id: `${bandId}-e${seg}`,
-          class: "large" as const,
-          text: ch,
-        })),
+        elements: [...headingM[2]].map((ch, k) => {
+          cpSrcs.push(h0 + headMap[u]);
+          u += ch.length;
+          return { id: `${bandId}-e${k}`, class: "large" as const, text: ch };
+        }),
+        cpSrcs,
       });
       page.bands.push(band);
       continue;
@@ -202,12 +233,15 @@ export function gj2ir(text: string): IRDocument {
     const regionRuns = new Map<number, Array<{ line: IRLine; startCp: number; text: string }>>();
     const circleTargets: string[] = [];
 
-    const lineSources = c.text.split("\n");
     let base = 0;
-    lineSources.forEach((lineSource, li) => {
+    c.lineRanges.forEach(([r0, r1], li) => {
+      // 重算行变换取原文映射（cpSrcs 溯源用）；与 c.text 各行逐字节一致（同一纯函数）
+      const { text: lineSource, map } = lineTransformMap(text.slice(r0, r1));
+      const srcAt = (t: number) => r0 + map[t];
       const elements: IRElement[] = [];
       let plainBuf = "";
       let cp = 0; // 行文本码点游标
+      const cpSrcs: number[] = [];
       const runsThisLine: Array<{ ri: number; startCp: number; text: string }> = [];
 
       const flushPlain = () => {
@@ -237,6 +271,7 @@ export function gj2ir(text: string): IRDocument {
           if (mapped !== null) {
             plainBuf += mapped;
             run.text += mapped;
+            cpSrcs.push(srcAt(i));
             cp += 1;
           }
           i += chu.length;
@@ -276,6 +311,8 @@ export function gj2ir(text: string): IRDocument {
               };
               elements.push(el);
               circleTargets.push(el.id);
+              // 合字/速记（z→增 等）文本与源不 1:1，各字统一记 token 内文起点
+              for (let q = 0; q < cpLen(inner); q++) cpSrcs.push(srcAt(i + 2));
               cp += cpLen(inner);
             }
             i = j;
@@ -286,6 +323,7 @@ export function gj2ir(text: string): IRDocument {
           if (hc !== undefined && isOrdinary(hc)) {
             const text = hc === "*" ? " " : hc;
             elements.push({ id: nextId(), class: "large", text });
+            cpSrcs.push(srcAt(i + 1));
             cp += 1;
             i += 1 + hc.length;
             continue;
@@ -297,6 +335,7 @@ export function gj2ir(text: string): IRDocument {
         const cpNow = lineSource.codePointAt(i)!;
         const chu = String.fromCodePoint(cpNow);
         plainBuf += chu === "*" ? " " : chu;
+        cpSrcs.push(srcAt(i));
         cp += 1;
         i += chu.length;
       }
@@ -307,6 +346,7 @@ export function gj2ir(text: string): IRDocument {
         ord: li,
         src: c.lineRanges[li],
         elements,
+        ...(cpSrcs.length > 0 ? { cpSrcs } : {}),
       };
       band.lines.push(line);
       for (const run of runsThisLine) {

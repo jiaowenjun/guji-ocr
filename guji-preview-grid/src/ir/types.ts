@@ -62,6 +62,9 @@ export interface IRLine {
   id: string; // p0312-b3-l0
   ord: number;
   src?: [number, number]; // UTF-16，原文该行区间
+  /** 行规范文本各码点 → 原文 UTF-16 偏移（仅溯源/编辑器联动，渲染不得依赖）。
+   *  语法字符（#、【】等）不产出码点故无条目——联动回退语义见 linkage */
+  cpSrcs?: number[];
   elements: IRElement[];
 }
 
@@ -124,10 +127,18 @@ export function lineText(line: { elements: IRElement[] }): string {
 
 // ---- 渲染联动接口（v3：书名高亮按 overlay id，由渲染器点亮其全部覆盖矩形） ----
 
+/** 单字定位：large=大字/合字格（元素 id——合字 n 字共享一格）；cell=小字格
+ *  （行 + 行规范文本码点，渲染层经 run.rawOffsets 对位，清洗字符回退前一渲染字） */
+export type CharHighlight =
+  | { kind: "large"; elId: string }
+  | { kind: "cell"; lineId: string; cp: number };
+
 export interface RenderHighlight {
   band: { page: number; index: number } | null;
   /** 光标所在书名 overlay id（null=不在任何书名内） */
   book: string | null;
+  /** 光标前一字符的字格（null=文件头或无产出字符处） */
+  char: CharHighlight | null;
 }
 
 export type { PageModel };

@@ -139,6 +139,26 @@ function MatrixPageView({
 }) {
   const boxes = books.flatMap((ov) => bookBoxesFor(page, ov));
 
+  // 单字高亮解析：large 按元素 id 直查；cell 经 run.rawOffsets 对位——
+  // 光标前一字若被清洗（标点）无精确条目，回退到 ≤cp 的最大偏移（前一渲染字）
+  let activeLargeEl: string | null = null;
+  let activeCell: { lineId: string; index: number } | null = null;
+  const ch = highlight?.char;
+  if (ch?.kind === "large") activeLargeEl = ch.elId;
+  else if (ch) {
+    const bandIdx = bandIndexOfLine(page, ch.lineId);
+    if (bandIdx !== undefined) {
+      for (const item of page.bands[bandIdx].items) {
+        if (item.kind !== "run" || item.lineId !== ch.lineId) continue;
+        const offs = item.rawOffsets ?? [];
+        let k = -1;
+        for (let x = 0; x < offs.length; x++) if (offs[x] <= ch.cp) k = x;
+        if (k >= 0) activeCell = { lineId: ch.lineId, index: k };
+        break;
+      }
+    }
+  }
+
   return (
     <div className="page">
       <div className="page-title">{page.no}</div>
@@ -167,9 +187,21 @@ function MatrixPageView({
               } as CSSProperties
             }
           >
-            {band.items.map((item, ii) => (
-              <ItemView key={ii} item={item} circled={circled} />
-            ))}
+            {band.items.map((item, ii) => {
+              const cellIdx =
+                activeCell && item.kind === "run" && item.lineId === activeCell.lineId
+                  ? activeCell.index
+                  : undefined;
+              return (
+                <ItemView
+                  key={ii}
+                  item={item}
+                  circled={circled}
+                  activeLarge={item.kind === "large" && item.elId === activeLargeEl}
+                  activeCell={cellIdx}
+                />
+              );
+            })}
           </div>
         ))}
         {boxes.map((box, i) => (
@@ -205,7 +237,19 @@ function MatrixPageView({
   );
 }
 
-function ItemView({ item, circled }: { item: L3Item; circled: Set<string> }) {
+function ItemView({
+  item,
+  circled,
+  activeLarge,
+  activeCell,
+}: {
+  item: L3Item;
+  circled: Set<string>;
+  /** 单字联动：光标前一字符为该大字/合字格 */
+  activeLarge?: boolean;
+  /** 单字联动：光标前一字符为该 run 的第 activeCell 字 */
+  activeCell?: number;
+}) {
   // 注意：ItemView 是 .m-band（subgrid 项）的子元素，列号用 band 局部坐标；
   // 页级换算（colStarts）只用于书名框等 .m-lines 直接子元素
   if (item.kind === "large") {
@@ -215,15 +259,16 @@ function ItemView({ item, circled }: { item: L3Item; circled: Set<string> }) {
       gridRow: `${item.r + 1} / span 2`,
       gridColumn: `${item.c + 1} / span 2`,
     } as CSSProperties;
+    const active = activeLarge ? " m-char-active" : "";
     if (circled.has(item.elId ?? "")) {
       return (
-        <div className="m-circle" style={gridPos}>
+        <div className={`m-circle${active}`} style={gridPos}>
           <div className="m-ring">{stacked ? <span className="stack">{text}</span> : text}</div>
         </div>
       );
     }
     return (
-      <div className="m-large" style={gridPos}>
+      <div className={`m-large${active}`} style={gridPos}>
         {stacked ? <span className="stack">{text}</span> : text}
       </div>
     );
@@ -243,7 +288,7 @@ function ItemView({ item, circled }: { item: L3Item; circled: Set<string> }) {
       }
     >
       {item.cells?.map((ch, i) => (
-        <div key={i} className="m-cell">
+        <div key={i} className={i === activeCell ? "m-cell m-char-active" : "m-cell"}>
           {ch}
         </div>
       ))}
