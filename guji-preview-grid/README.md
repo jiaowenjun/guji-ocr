@@ -52,7 +52,7 @@
 ```sh
 pnpm install
 pnpm dev      # 开发服务器
-pnpm test     # 32 个测试：parser 19（与原插件 fixture 严格比对）+ 矩阵引擎 13
+pnpm test     # 199 个测试：parser 67（与原插件 fixture 严格比对）+ 格式化 3 组 110 + IR 验收 22
 pnpm build
 ```
 

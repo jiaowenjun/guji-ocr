@@ -244,7 +244,7 @@
         "homepage": "https://github.com/ziqian2001/AncientDoc_OCR"
       },
       "license": "未确认明确许可证；来源于AncientDoc，不是独立新增金标库",
-      "verification": "2026-11-11 已下载 main 分支（commit 1f71655）至本地 datasets/。",
+      "verification": "2026-11-11 已下载 main 分支（commit 1f71655）；现位于移动硬盘 WD-2T datasets/ancientdoc-ocr-mini/（见 docs/data-storage.md）。",
       "notes": "11张PNG及11条参考转录；1829个CJK统一表意字符。notebook按图片字节大小匹配GT、仅保留U+4E00–9FA5，复用需修正。无微信dots.mocr测试完整输出与脚本。",
       "evidence": "evidence/2026-11-11-wechat-source-checks.json",
       "checked_at": "2026-11-11"
