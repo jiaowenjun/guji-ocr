@@ -11,7 +11,7 @@ import {
   type CSSProperties,
   type ReactNode,
 } from "react";
-import { ChevronLeft, ChevronRight, Circle, Database, Download, Minus, Plus, RotateCcw, Save, ScanText, Scissors, Space, Wand2, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, Database, Download, Minus, Plus, RotateCcw, Save, ScanText, Scissors, Wand2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -30,12 +30,10 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Slider } from "@/components/ui/slider";
 import { GujiEditor } from "@/components/editor/GujiEditor";
-import { formatSpaces } from "@/components/dataset/format-spaces";
-import { formatCircles } from "@/components/dataset/format-circles";
+import { formatDocument } from "@/components/dataset/format-document";
 import { MatrixPages } from "@/components/matrix/MatrixPages";
 import { FlexPages } from "@/components/flex/FlexPages";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
-import { formatGj } from "@/parser/split-line";
 import { gj2ir } from "@/ir/gj2ir";
 import { layout3 } from "@/ir/layout3";
 import { bandCursorTarget, highlightAt } from "@/ir/linkage";
@@ -289,30 +287,6 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
     setStatus(null);
   };
 
-  /** 空格格式化：行内空格（全角 1:1、半角串合并）改为显式 *；只进编辑缓冲，不自动保存 */
-  const formatAllSpaces = () => {
-    if (text === undefined) return;
-    const { text: next, count } = formatSpaces(text);
-    if (count === 0) {
-      setStatus({ ok: true, msg: `@${page} 没有需要转换的行内空格` });
-      return;
-    }
-    onChange(next);
-    setStatus({ ok: true, msg: `已将 ${count} 处行内空格转为 *（未保存，可校对后保存）` });
-  };
-
-  /** 〇格式化：按语标记 ◎ 规范化为语料标准写法 〇；只进编辑缓冲，不自动保存 */
-  const formatAllCircles = () => {
-    if (text === undefined) return;
-    const { text: next, count } = formatCircles(text);
-    if (count === 0) {
-      setStatus({ ok: true, msg: `@${page} 没有需要转换的 ◎` });
-      return;
-    }
-    onChange(next);
-    setStatus({ ok: true, msg: `已将 ${count} 处 ◎ 转为 〇（未保存，可校对后保存）` });
-  };
-
   /** 添加新页：桥接 kangxi_page_tool.py（sqlite 优先，缺则增量爬取），完成后刷新清单并跳转 */
   const addPage = async () => {
     const n = Number(pageInput);
@@ -403,16 +377,24 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
     return () => window.removeEventListener("keydown", onKey);
   }, [save, dirty, busy]);
 
-  /** 格式化：全角括号/速记归一；#(X 补右括号；字头组（#A、#(A)#B、#A古文#B…）独占一行 */
+  /** 格式化（一键）：行内空格→*、◎→〇、全角括号/速记归一、#(X 补右括号、
+   *  字头组（#A、#(A)#B、#A古文#B…）独占一行、首尾空行/注释行删除 */
   const formatText = () => {
     if (page === undefined || text === undefined) return;
-    const formatted = formatGj(text);
+    const { text: formatted, spaces, circles } = formatDocument(text);
     if (formatted === text) {
       setStatus({ ok: true, msg: `@${page} 已是标准写法，无需格式化` });
       return;
     }
     setEdits((prev) => ({ ...prev, [page]: formatted }));
-    setStatus({ ok: true, msg: `@${page} 已格式化（括号归一/补全、字头独占一行）——检查后保存` });
+    const detail = [
+      spaces > 0 ? `行内空格→* ${spaces} 处` : "",
+      circles > 0 ? `◎→〇 ${circles} 处` : "",
+      "括号归一/补全、字头独占一行",
+    ]
+      .filter(Boolean)
+      .join("；");
+    setStatus({ ok: true, msg: `@${page} 已格式化（${detail}）——检查后保存` });
   };
 
   /** OCR 自动断行：对已保存的当前页 .gj 重折行（先保存修改再触发） */
@@ -762,30 +744,10 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
                 variant="outline"
                 disabled={text === undefined}
                 onClick={formatText}
-                title="规范化为校对标准写法：#（X）→#(X)；括号内 z→增、数字→汉字；#(X 补右括号；字头组（#A、#(A)#B、#A古文#B…）独占一行；首尾空行/注释行删除（不自动保存）"
+                title="规范化为校对标准写法：行内空格→*（半角连续空格合并为一个）；按语 ◎→〇；#（X）→#(X)；括号内 z→增、数字→汉字；#(X 补右括号；字头组（#A、#(A)#B、#A古文#B…）独占一行；首尾空行/注释行删除（不自动保存）"
               >
                 <Wand2 data-icon="inline-start" />
                 格式化
-              </Button>
-              <Button
-                size="sm"
-                variant="outline"
-                disabled={text === undefined}
-                onClick={formatAllSpaces}
-                title="行内全角/半角空格 → *（半角连续空格合并为一个；标题行与注释不动；不自动保存）"
-              >
-                <Space data-icon="inline-start" />
-                空格格式化
-              </Button>
-              <Button
-                size="sm"
-                variant="outline"
-                disabled={text === undefined}
-                onClick={formatAllCircles}
-                title="按语标记 ◎ → 〇（语料标准写法；已是 〇/○ 的不动；标题行与注释不动；不自动保存）"
-              >
-                <Circle data-icon="inline-start" />
-                〇格式化
               </Button>
             </div>
             <div className="min-h-0 flex-1 overflow-hidden">
