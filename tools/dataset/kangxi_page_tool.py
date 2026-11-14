@@ -14,8 +14,20 @@
                         时自动续入）→ 回补本页未编码字形 svg 缓存 →
                         manifest.json 追加该页（status=draft）→ 重写
                         guji-preview-grid/public/dataset/index.json
+                        → 后台预取 N+1（_prefetch_pipeline）
   status --page N --to draft|first|final
                         改页标签（草稿/初校/精校）并同步 manifest 与 index.json
+  ocr-pages             各页 OCR/预取浅状态清单（预取调试视图数据源）：
+                        数据集页 ∪ 已爬页 ∪ OCR 缓存页，每页含采集完整度、
+                        OCR 缓存三态（valid/stale/none）与元数据
+  prefetch-status --page N
+                        单页预取四步深查（只读现状，不抓取）：爬取/字头详情/
+                        OCR/svg 存在性
+  prefetch-run --page N
+                        手动执行单页预取链路（同 add 后台预取的四步，同步等待；
+                        未爬页会联网爬取）——独立验证 prefetch_next_page 行为
+  prefetch-log --tail 50
+                        var/ocr-cache/prefetch.log 尾部行（时间线展示）
 
 状态值：draft=草稿 / first=初校 / final=精校。
 用法：python3 kangxi_page_tool.py add --page 329
@@ -266,6 +278,27 @@ def _ocr_cache_read(page: int, store: kangxi_store.KangxiStore) -> str | None:
         return None  # 图已变（重爬），缓存失效
     md = entry.get("markdown") or ""
     return md or None
+
+
+def _ocr_cache_meta(page: int, cur_sha: str) -> dict:
+    """缓存三态与元数据（预取调试视图）：state ∈ valid|stale|none。
+
+    判据同 _ocr_cache_read（sha256 与当前图一致才 valid）；markdown 本身
+    不返回（体积），详情展示走 ocr-view。
+    """
+    f = paths.OCR_CACHE_DIR / f"{page:04d}.json"
+    if not f.exists():
+        return {"state": "none", "fetched_at": None, "chars": 0}
+    try:
+        entry = json.loads(f.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return {"state": "none", "fetched_at": None, "chars": 0}
+    state = "valid" if (entry.get("sha256") and cur_sha and entry["sha256"] == cur_sha) else "stale"
+    return {
+        "state": state,
+        "fetched_at": entry.get("fetched_at"),
+        "chars": len(entry.get("markdown") or ""),
+    }
 
 
 def _ocr_cache_write(page: int, store: kangxi_store.KangxiStore, markdown: str) -> None:
@@ -543,18 +576,36 @@ def ocr_fold_page_lines(page: int, bands: list[list[str]], store: kangxi_store.K
     # ——少折一处可见可补，拆断字头行/注释行则破坏语义（@339 丹字头行实测
     # 被 OCR 变体字形组界拆成 #\n丹\n古文\n#𠁿#㣋#𠕑）。字头簇在页面上是
     # 一列，人工校对惯例也是整行不折。
+    # 行级保护（与分带布局无关）：任何 # / // 起始的行保护其自身跨度。
+    # 旧的「带首行 # → 整带保护」对分带布局敏感——同一字符内容在
+    # 「字头行居带中」时无保护（一击拆成 #丁/古文/#𠆤…），regroup 把
+    # 字头行挪到带首后又有保护（二击并回）→ 按钮不幂等、行数逐击递减
+    # （@313 实测 17→15；全库 12/28 页不收敛）。
     structural: list[tuple[int, int]] = []
     _pos = 0
     for b in bands:
         _fb = _flatten(b)
-        if b and (b[0].lstrip().startswith("#") or b[0].lstrip().startswith("//")):
-            structural.append((_pos, _pos + len(_fb)))
+        _has_comment = any("//" in l for l in b)
+        _off = 0
+        for l in b:
+            _ls = l.lstrip(" \t")
+            if _ls.startswith("#") or _ls.startswith("//"):
+                structural.append((_pos + _off, _pos + _off + len(_ls)))
+            _off += len(_ls) + (1 if _has_comment else 0)
         _pos += len(_fb) + 1  # \u0001 分隔符
 
     def _structural_at(i: int) -> bool:
-        return any(s <= i < e for s, e in structural)
+        # 只挡结构行内部（s < i < e）：i == s（头的首字符）放行——把字头行
+        # 与前行分开不破坏头本身；若连起点都挡，字头行会与前行融合成
+        # 「…正文。#丁古文」，该行不再以 # 起始 → 下一击失去保护被拆开
+        # → 周期 2 振荡（@313 实测 16→18→16 行）。
+        return any(s < i < e for s, e in structural)
 
-    full_n = _norm(full)
+    # 对齐空间剔除 \u0001 带界符：它永远匹配不上 OCR 文本，只会把匹配块
+    # 打碎；且其数量随分带布局变化（regroup 后带界移动）→ 同一字符内容
+    # 的折点映射随布局漂移 → 按钮不幂等（@313 实测周期 2 摆动 16→18→16）。
+    # 下方折点游标同样跳过 \u0001 不计数。
+    full_n = "".join(ch for ch in full if ch not in PUNCT_STRIP and ch != "\u0001")
     sm = difflib.SequenceMatcher(None, full_n, ocr_n, autojunk=False)
     blocks = [b for b in sm.get_matching_blocks() if b.size > 0]
     cover = sum(b.size for b in blocks)
@@ -603,12 +654,11 @@ def ocr_fold_page_lines(page: int, bands: list[list[str]], store: kangxi_store.K
     cut_norm = sorted(set(merged))
     ci = 0
     for i, ch in enumerate(full):
-        if ch in PUNCT_STRIP:
-            continue
+        if ch in PUNCT_STRIP or ch == "\u0001":
+            continue  # \u0001 不计入 norm 序号（对齐空间已剔除，见上）
         if ci < len(cut_norm) and norm_idx == cut_norm[ci]:
-            # \u0001 带界本身有 norm 序号（不在剔除集）：在其上折行会把带界复制
-            # 成一个空行 band（@339 续文段间双空行实测），跳过即可——带界本就是行界
-            if full[i] != "\u0001" and not _structural_at(i):
+            # 结构行内不折（整点丢弃——少折一处可见可补，拆断字头行破坏语义）
+            if not _structural_at(i):
                 # 括号贴字：归一化剥掉【】，切点可能落在书名号内侧。判定须越过剥离带
                 # （句读/空格/旧折行换行）扫描：带内含【则 cut 移到最左【之前（开书名
                 # 号随下文起行），带内含】则 cut 移到最右】之后（闭书名号随上文收尾）；
@@ -653,14 +703,26 @@ def ocr_regroup_bands(page: int, bands: list[list[str]]) -> tuple[list[list[str]
     零修正。实现：折叠行按归一字数 DP 单调分配到 16 小列槽
     （kangxi_column_seg.assign_lines），槽 2k/2k+1 并为大列 k——
     只重新划分行→带归属，字符流逐字不变；分割失败/退化时原样返回。
-    已知限制：regroup 自身幂等，但改变带界后再「OCR自动断行」重折时，
-    个别折点可能偏移 1 行（fold 切点映射对带界位置非完全不变，
-    @338 实测二遍 13→12 行、字符流不变）——校对者点一次即可。
+    幂等性（2026-11-14 修复，全库 28 页实测）：fold∘regroup 二击内必达
+    不动点（14 页严格幂等 + 14 页二击收敛），字符流恒不变。三处根因
+    修复见 ocr_fold_page_lines 的结构保护注释与本文 // 附着/部题行独立
+    成带逻辑；旧的「重折个别折点偏移」限制已随 \u0001 对齐剔除消除。
     """
     sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "eval"))
     import kangxi_column_seg  # noqa: E402
 
-    lines = [l for b in bands for l in b if l.strip() and not l.strip().startswith("//")]
+    # // 注释行不参与分配，但必须保留（附着到其前一个正文行所在的大列带）
+    # ——早期版本直接丢弃会破坏字符流（草稿 #□ 占位常带 //未编码字 说明）。
+    # 部题行（## / ### / 「# 」带空格）永远独立成带且不参与分配：它们不是
+    # 列内容，并进大列带后会被下一击 flatten 融合（部题间无 OCR 折点支持，
+    # @312 实测「## 子集上### 一部」周期 2 振荡）。
+    def _is_section_header(l: str) -> bool:
+        ls = l.lstrip(" \t")
+        return ls.startswith("##") or ls.startswith("# ")
+
+    body = [l for b in bands for l in b if l.strip()]
+    lines = [l for l in body
+             if not l.strip().startswith("//") and not _is_section_header(l)]
     if len(lines) < 2:
         return bands, "行数不足，未按大列重组"
     res = kangxi_column_seg.segment(page)
@@ -669,15 +731,41 @@ def ocr_regroup_bands(page: int, bands: list[list[str]]) -> tuple[list[list[str]
     ests = [m["chars_est"] for maj in res["majors"] for m in maj["minors"]]
     lens = [len("".join(ch for ch in l if ch not in PUNCT_STRIP)) for l in lines]
     ranges = kangxi_column_seg.assign_lines(lens, ests)
-    groups: list[list[str]] = []
+    # 每个正文行（lines 序）→ 大列号
+    line_major: dict[int, int] = {}
     for j in range(len(res["majors"])):
-        members: list[str] = []
         for rng in (ranges[2 * j], ranges[2 * j + 1]):
             if rng and rng[1] > rng[0]:
-                members.extend(lines[rng[0]:rng[1]])
-        if members:
-            groups.append(members)
-    if len(groups) < 2 or sum(len(g) for g in groups) != len(lines):
+                for k in range(rng[0], rng[1]):
+                    line_major[k] = j
+    if len(line_major) != len(lines):
+        return bands, "大列分配退化，未重组"
+    groups: list[list[str]] = []
+    buf: list[str] = []
+    buf_major = -1
+    seen = 0
+    for l in body:
+        ls = l.strip()
+        if _is_section_header(l):
+            if buf:
+                groups.append(buf)
+                buf = []
+            groups.append([l])
+            continue
+        if ls.startswith("//"):
+            if buf or seen < len(lines):
+                buf.append(l)
+            continue
+        m = line_major[seen]
+        seen += 1
+        if buf and m != buf_major:
+            groups.append(buf)
+            buf = []
+        buf_major = m
+        buf.append(l)
+    if buf:
+        groups.append(buf)
+    if len(groups) < 2:
         return bands, "大列分配退化，未重组"
     sizes = ",".join(str(len(g)) for g in groups)
     return groups, f"大列重组：{len(groups)} 带（各行数 {sizes}）"
@@ -943,8 +1031,107 @@ def cmd_ocr_view(page: int) -> dict:
         entry = _ocr_markdown(page, store)
     if entry is None:
         return {"ok": True, "page": page, "markdown": None,
-                "hint": "OCR 缓存未命中且服务未运行——先跑 scripts/prefetch_ocr.py 或启动服务"}
+                "hint": "OCR 缓存未命中且服务未运行——先跑 tools/eval/prefetch_ocr.py 或启动服务"}
     return {"ok": True, "page": page, "markdown": entry}
+
+
+def cmd_ocr_pages() -> dict:
+    """各页 OCR/预取浅状态清单（预取调试视图数据源）。
+
+    页集合 = 数据集页 ∪ 库内已爬页 ∪ OCR 缓存页。每页不含 markdown 本身
+    （体积控制，详情走 ocr-view / prefetch-status）。当前图 sha 库内优先，
+    未爬但有缓存的页回退 manifest（同 _scan_for 口径）。
+    """
+    store = kangxi_store.KangxiStore()
+    rows = {r["page"]: r for r in store.page_rows()}
+    manifest = load_manifest()
+    ds_status = {p["page"]: p.get("status", "first") for p in manifest.get("pages", [])}
+    ds_sha = {p["page"]: p.get("sha256") or "" for p in manifest.get("pages", [])}
+    cached_pages: set[int] = set()
+    if paths.OCR_CACHE_DIR.is_dir():
+        for f in paths.OCR_CACHE_DIR.glob("*.json"):
+            if f.stem.isdigit():
+                cached_pages.add(int(f.stem))
+    pages = []
+    for page in sorted(set(rows) | set(ds_status) | cached_pages):
+        r = rows.get(page) or {}
+        cur_sha = r.get("scan_sha256") or ds_sha.get(page) or ""
+        ocr = _ocr_cache_meta(page, cur_sha)
+        pages.append({
+            "page": page,
+            "dataset_status": ds_status.get(page),
+            "has_reading": bool(r.get("has_reading")),
+            "has_scan": bool(r.get("scan_sha256") and r.get("scan_file")),
+            "chars_n": r.get("chars_n", 0),
+            "entries_missing_n": r.get("entries_missing_n", 0),
+            "ocr_state": ocr["state"],
+            "ocr_fetched_at": ocr["fetched_at"],
+            "ocr_chars": ocr["chars"],
+        })
+    return {"ok": True, "pages": pages, "total": len(pages)}
+
+
+def cmd_prefetch_status(page: int) -> dict:
+    """单页预取四步深查（只读现状，不执行任何抓取）。
+
+    四步与 _prefetch_pipeline 一一对应：fetch（阅读页+原图）/ entries
+    （字头详情）/ ocr（缓存三态）/ svg（未编码字形 svg 存在性——与回补
+    scope 同口径，只查 codepoint 为空者）。
+    """
+    store = kangxi_store.KangxiStore()
+    row = store.get_page(page) or {}
+    missing = store.page_missing(page, ("reading", "scan"))
+    chars = store.get_page_chars(page)
+    miss_entries = store.coded_chars_missing_entries(page)
+    cur_sha = row.get("scan_sha256") or ""
+    if not cur_sha:
+        for e in load_manifest().get("pages", []):
+            if e["page"] == page:
+                cur_sha = e.get("sha256") or ""
+                break
+    ocr = _ocr_cache_meta(page, cur_sha)
+    wanted = [c["svg"] for c in chars if c["codepoint"] is None and c.get("svg")]
+    have = sum(1 for rel in wanted if (paths.RAW_KANGXI_SVG / rel).is_file())
+    ocr_detail = {
+        "valid": f"缓存有效（{ocr['chars']} 字，{ocr['fetched_at']}）",
+        "stale": f"缓存失效（图已变或无图可比对，{ocr['chars']} 字）",
+        "none": "无 OCR 缓存（需预取或启动服务现算）",
+    }[ocr["state"]]
+    return {
+        "ok": True,
+        "page": page,
+        "steps": {
+            "fetch": {"ok": not missing,
+                      "detail": "阅读页+原图齐全" if not missing else f"缺 {sorted(missing)}"},
+            "entries": {"ok": not miss_entries,
+                        "detail": (f"字头 {len(chars)}，缺详情 {len(miss_entries)}"
+                                   + (f"（{''.join(miss_entries[:8])}…）" if miss_entries else ""))},
+            "ocr": {"ok": ocr["state"] == "valid", "detail": ocr_detail},
+            "svg": {"ok": have == len(wanted),
+                    "detail": (f"未编码字形 svg {have}/{len(wanted)}" if wanted
+                               else "本页无未编码字形")},
+        },
+        "ocr": ocr,
+    }
+
+
+def cmd_prefetch_run(page: int) -> dict:
+    """手动执行单页预取链路（同 add 后台预取的四步，同步等待完成）。
+
+    调试用：不依赖真实 add 即可验证 prefetch_next_page 行为。未爬页会
+    联网爬取（fetch 自带限速），OCR 需本地服务在线。
+    """
+    if not 1 <= page <= 7738:
+        raise RuntimeError(f"页码 {page} 超出站点范围 1-7738")
+    steps = _prefetch_pipeline(page)
+    return {"ok": all(s["ok"] for s in steps), "page": page, "steps": steps}
+
+
+def cmd_prefetch_log(tail_n: int = 50) -> dict:
+    """prefetch.log 尾部行（时间线展示）。"""
+    f = paths.OCR_CACHE_DIR / "prefetch.log"
+    lines = f.read_text(encoding="utf-8", errors="replace").splitlines() if f.exists() else []
+    return {"ok": True, "total": len(lines), "lines": lines[-tail_n:]}
 
 
 def load_manifest() -> dict:
@@ -973,23 +1160,26 @@ def write_index(manifest: dict) -> None:
     )
 
 
-def prefetch_next_page(page: int) -> None:
-    """后台预取 page+1：爬取（阅读页+图）→ OCR → 持久缓存。
+def _prefetch_pipeline(nxt: int) -> list[dict]:
+    """对单页执行完整预取链路：爬取 → 字头详情 → OCR → svg 回补。
 
-    添加第 n 页后自动调用，用户校对完第 n 页再添加 n+1 时 OCR 已就绪。
-    全部静默：失败只写日志文件不影响 add 结果；进程退出前等待完成（最长
-    ~10 分钟），add 本身的返回不被拖延。
+    add 后台预取（prefetch_next_page）与 prefetch-run 子命令共用本函数——
+    调试视图据此逐步核验链路是否正确。每步结果 {step, ok, detail}；
+    日志行为不变：失败写 var/ocr-cache/prefetch.log，③④ 完成各写一行汇总。
     """
     import logging
 
-    nxt = page + 1
-    if not 1 <= nxt <= 7738:
-        return
-    log_path = paths.OCR_CACHE_DIR / "prefetch.log"
     logging.basicConfig(
-        filename=log_path, filemode="a", level=logging.INFO,
-        format="%(asctime)s %(message)s",
+        filename=paths.OCR_CACHE_DIR / "prefetch.log", filemode="a",
+        level=logging.INFO, format="%(asctime)s %(message)s",
     )
+    steps: list[dict] = []
+
+    def done(step: str, ok: bool, detail: str) -> None:
+        steps.append({"step": step, "ok": ok, "detail": detail})
+        if not ok:
+            logging.info(f"@{nxt} {step} 失败: {detail}")
+
     try:
         # ① 爬取（库里有则零网络；fetch 脚本自带 robots/限速/重试）
         fetch = subprocess.run(
@@ -997,25 +1187,32 @@ def prefetch_next_page(page: int) -> None:
             capture_output=True, text=True, timeout=600,
         )
         if fetch.returncode != 0:
-            logging.info(f"@{nxt} fetch 退出码 {fetch.returncode}: {fetch.stderr[-200:]}")
-            return
-        # ② 字头详情（增量；page_chars 为空时 skip）
+            done("fetch", False, f"退出码 {fetch.returncode}: {fetch.stderr[-200:]}")
+            return steps
         store = kangxi_store.KangxiStore()
-        chars = store.get_page_chars(nxt)
-        missing = [c["char"] for c in chars if c["char"] and store.get_entry(c["codepoint"]) is None]
+        missing = store.coded_chars_missing_entries(nxt)
+        done("fetch", True, "阅读页+原图已就绪（库内有则零网络）")
+        # ② 字头详情（增量；page_chars 为空时 skip）
         if missing:
             e = subprocess.run(
                 [sys.executable, str(CRAWL / "fetch_kangxi_entry.py"), "--pages", str(nxt)],
                 capture_output=True, text=True, timeout=900,
             )
             if e.returncode != 0:
-                logging.info(f"@{nxt} entry 退出码 {e.returncode}: {e.stderr[-200:]}")
+                done("entries", False, f"退出码 {e.returncode}: {e.stderr[-200:]}")
+            else:
+                rest = store.coded_chars_missing_entries(nxt)
+                done("entries", True, f"补抓 {len(missing)} 个字头详情，余缺 {len(rest)}")
+        else:
+            done("entries", True, "字头详情齐全（或该页无字头）")
         # ③ OCR 预取（服务可用才跑；缓存命中则秒过）
         pre = subprocess.run(
             [sys.executable, str(EVAL / "prefetch_ocr.py"), "--pages", str(nxt), "--limit", "1"],
             capture_output=True, text=True, timeout=900,
         )
-        logging.info(f"@{nxt} prefetch 完成: {pre.stdout.strip().splitlines()[-1] if pre.stdout.strip() else pre.stderr[-200:]}")
+        last = pre.stdout.strip().splitlines()[-1] if pre.stdout.strip() else pre.stderr[-200:]
+        logging.info(f"@{nxt} prefetch 完成: {last}")
+        done("ocr", pre.returncode == 0, last)
         # ④ 字头 svg 回补（未编码字形图；缓存命中则零网络，失败仅记日志）
         try:
             import kangxi_svg_cache
@@ -1025,10 +1222,28 @@ def prefetch_next_page(page: int) -> None:
             )
             if any(stat.values()):
                 logging.info(f"@{nxt} svg 缓存: {stat}")
-        except Exception as e:  # noqa: BLE001
+            done("svg", stat["error"] == 0,
+                 f"命中 {stat['hit']} 采纳 {stat['adopt']} 抓取 {stat['fetch']} 失败 {stat['error']}")
+        except (Exception, SystemExit) as e:  # noqa: BLE001 —— SystemExit：外置盘未挂载
             logging.info(f"@{nxt} svg 缓存异常: {e}")
+            done("svg", False, f"异常 {type(e).__name__}: {e}")
     except Exception as e:  # noqa: BLE001 —— 预取绝不影响 add
         logging.info(f"@{nxt} prefetch 异常: {e}")
+        steps.append({"step": "pipeline", "ok": False, "detail": f"异常 {type(e).__name__}: {e}"})
+    return steps
+
+
+def prefetch_next_page(page: int) -> None:
+    """后台预取 page+1：爬取（阅读页+图）→ OCR → 持久缓存。
+
+    添加第 n 页后自动调用，用户校对完第 n 页再添加 n+1 时 OCR 已就绪。
+    全部静默：失败只写日志文件不影响 add 结果；进程退出前等待完成（最长
+    ~10 分钟），add 本身的返回不被拖延。
+    """
+    nxt = page + 1
+    if not 1 <= nxt <= 7738:
+        return
+    _prefetch_pipeline(nxt)
 
 
 def cmd_add(page: int) -> dict:
@@ -1168,6 +1383,13 @@ def main() -> int:
     f.add_argument("--page", type=int, required=True)
     v = sub.add_parser("ocr-view")
     v.add_argument("--page", type=int, required=True)
+    sub.add_parser("ocr-pages")
+    ps = sub.add_parser("prefetch-status")
+    ps.add_argument("--page", type=int, required=True)
+    pr = sub.add_parser("prefetch-run")
+    pr.add_argument("--page", type=int, required=True)
+    pl = sub.add_parser("prefetch-log")
+    pl.add_argument("--tail", type=int, default=50)
     args = ap.parse_args()
 
     try:
@@ -1177,6 +1399,14 @@ def main() -> int:
             result = cmd_ocr_fold(args.page)
         elif args.cmd == "ocr-view":
             result = cmd_ocr_view(args.page)
+        elif args.cmd == "ocr-pages":
+            result = cmd_ocr_pages()
+        elif args.cmd == "prefetch-status":
+            result = cmd_prefetch_status(args.page)
+        elif args.cmd == "prefetch-run":
+            result = cmd_prefetch_run(args.page)
+        elif args.cmd == "prefetch-log":
+            result = cmd_prefetch_log(args.tail)
         else:
             result = cmd_status(args.page, args.to)
         print(json.dumps(result, ensure_ascii=False))
