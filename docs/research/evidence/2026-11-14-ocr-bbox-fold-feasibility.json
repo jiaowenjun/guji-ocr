@@ -1,0 +1,31 @@
+{
+  "checked_at": "2026-11-14",
+  "purpose": "Feasibility: does the OCR output carry bounding boxes, and can bbox geometry merge multiple OCR boxes that belong to the same physical line (大行)? Motivation: the OCR fold pass inherits over-splits from VL markdown line groups (29 false boundaries across 23 proofread pages, 19 of them on the 增字头 page @320).",
+  "q1_bbox_availability": {
+    "paddleocr_vl_1_6_current": "block-level only. prunedResult.parsing_res_list[].block_bbox gives 7 layout blocks per page — the whole body is ONE vertical_text block spanning the text area; markdown lines carry no coordinates. useLayoutDetection:false (tested via optionalPayload) degrades to a single 'ocr' block with all lines joined — still no per-line boxes.",
+    "pp_ocrv5_same_job_api": "line-level rec_boxes ARE returned: POST /api/v2/ocr/jobs with model=PP-OCRv5 → ocrResults[0].prunedResult.{rec_texts,rec_boxes,rec_polys,dt_polys}. ~10 s/page, same Bearer token. Vertical columns come out as tall thin boxes (w≈60–110, h≈300–1600). Recognition text on ancient script is poor (garbage on 部首 pages) but geometry is what we wanted.",
+    "scan_projection": "no 界行 exists in this edition (only outer frame lines), but column gaps show as ink-profile valleys ~every 60–70 px — a deterministic column grid can be detected without any OCR."
+  },
+  "q2_merge_same_column": {
+    "structural_blocker": "gold .gj lines are NOT physical columns. In variant/增字头 regions the human proofreading intentionally splits ONE column into several .gj lines — e.g. @327 lines 18–21 「【玉篇】古文 / 不字。註詳 / 三 / 畫。」 are a single visual column. Any 'same column → merge' rule destroys exactly these lines (same failure family as the dropped <8-merge rule, which deleted 63% true boundaries).",
+    "measured_net_negative": [
+      "pairwise same-column test on PP-OCRv5 boxes (12 alignment-reliable pages): 44 true boundaries deleted vs 12 false merged",
+      "capacity DP over v5-assembled columns (grid-tuned): 误删 197 / 合并 67",
+      "capacity DP over scan-projection column grid (best tuned: under=0.1, over=2.0, slack_under=4.0, empty=0.3, drop_pen=0.4): 误删 159 true / 正确合并 81 false — still 2:1 negative"
+    ],
+    "v5_det_quality_variance": "@333: 23 clean per-column boxes; @313: overlapping shifted boxes with empty rec_texts; @320: cross-column wide-flat boxes. Line-box evidence itself is unreliable page-to-page.",
+    "grid_limits": "projection grid is exact on body-text pages (@333: 16 columns = 16 gold lines, per-column y-extents even flag true short lines) but blind to narrow variant columns (undercounts: @327 14 vs ~16+, @335 13 vs ~16+)"
+  },
+  "baseline_recheck_23_proofread_pages": {
+    "tool": "scripts/eval_ocr_fold.py (new, persisted)",
+    "gold_physical_lines": 460,
+    "ocr_groups": 593,
+    "mappable_boundaries": 509,
+    "true_boundaries": 480,
+    "precision_of_group_boundaries": "94.3% of mappable boundaries are true line boundaries",
+    "false_boundaries_overall": "29 (19 on @320 alone; @312/318/319/322/328/330/332/334 have 1–2 each)",
+    "missed_folds": "13 (VL merged two lines into one group; bbox cannot help these either)",
+    "missed_fold_flag_test": "groups-minus-columns signal does not separate missed-fold pages (variant regions break the column count)"
+  },
+  "conclusion": "bbox-based same-line merging is structurally mismatched with the proofreading line semantics and measured net-negative in every variant tried — do not implement. The VL markdown groups (94.3% precision) remain the fold signal; over-splits are visible newlines cheap to delete in the editor, and the philosophy 'only insert newlines, never change characters' already caps the damage. The 19-of-29 concentration on @320-style 增字头 pages suggests the only worthwhile follow-up: detect that page style and hint the proofer to fold manually. Artifacts kept: scripts/eval_ocr_fold.py (rebuildable 23-page ground-truth harness); PP-OCRv5 line boxes confirmed reachable through the existing job API for any future layout work."
+}
