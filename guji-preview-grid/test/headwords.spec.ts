@@ -52,10 +52,10 @@ describe("headwordEntry", () => {
   });
 
   it("同一行多个字头组（未格式化稿）：前组止于行尾，后组到下一组行首；末组取到页尾", () => {
-    const gj = "#甲釋甲#乙釋乙\n後行\n#丙\n丙釋";
+    const gj = "#甲：釋甲#乙：釋乙\n後行\n#丙\n丙釋";
     const [a, b, c] = extractHeadwordClusters(gj);
-    expect(headwordEntry(gj, a)).toBe("#甲釋甲#乙釋乙"); // 后组同行 → 止于行尾
-    expect(headwordEntry(gj, b)).toBe("#甲釋甲#乙釋乙\n後行"); // 释义到 #丙 行首（与 a 共享行首）
+    expect(headwordEntry(gj, a)).toBe("#甲：釋甲#乙：釋乙"); // 后组同行 → 止于行尾
+    expect(headwordEntry(gj, b)).toBe("#甲：釋甲#乙：釋乙\n後行"); // 释义到 #丙 行首（与 a 共享行首）
     expect(headwordEntry(gj, c)).toBe("#丙\n丙釋");
   });
 });

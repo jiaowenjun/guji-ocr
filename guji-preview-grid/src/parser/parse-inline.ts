@@ -158,8 +158,9 @@ export function parseInline(line: string) {
           lastLarge = null;
           skipUntil = i + mm[0].length;
         }
-        // 糖：裸字大写——带圈 token 后一字（字头）或标记/、 后（变体，连串）
-        else if (isBareLargeChar(c) && (lastLarge === "circled" || variantMode)) {
+        // 糖：裸字大写——任意大字 token 后（字头连写串）或标记/、 后（变体，
+        // 连串）。「古」排除：「古文」标记首字/跨行半个标记，不参与裸写
+        else if (isBareLargeChar(c) && (variantMode || (lastLarge !== null && c !== "古"))) {
           consumeFrag(); // 挂起小字先入列（保阅读序）
           blocks.push({ t: c, si: "large" });
           lastLarge = "bare";

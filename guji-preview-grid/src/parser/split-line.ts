@@ -32,11 +32,12 @@ const halfwidthParens = (line: string) => line.replace(/（/g, "(").replace(/）
 // .gj 字头簇 = 大字 token 序 + 「古文」异体标注 + 、/： 胶水 + 尾部（半个「古」/注音冒号）。
 // 糖语法（2026-11-14，与 gj2ir 词法镜像）：
 //   - 带圈续写：簇内带圈 token 的 # 可省——#(五)#(增)#𠂂 ≡ #(五)(增)𠂂
-//   - 裸字大写：带圈 token 后恰好一字（字头）、「古文」标记或 、 后（变体）可裸写——
-//     #(三)#丹古文#𠁿#㣋 ≡ #(三)丹，古文：𠁿㣋（，：两侧可省）
-//   - 普通 #X 后不可裸写（#丸俗… 的释义小字不受影响）；状态不跨行
-//   - 行首「古文：」承接跨行异体（须带冒号——正文「古文酉」无冒号不误判）
-// 标准形（formatGj 归一目标）：#(五)(增)𠂂、#(三)丹，古文：𠁿㣋——，：补全、
+//   - 裸字大写：任意大字 token 后可裸写（字头连写串 #丶#宔 ≡ #丶宔；带圈后一字、
+//     「古文」标记或 、 后为变体连串）——#(三)#丹古文#𠁿#㣋 ≡ #(三)丹，古文：𠁿㣋
+//     （，：两侧可省）。「古」不参与裸写：它是「古文」标记首字/跨行半个标记
+//    （#下古↵文#丅），全语料 #X 后紧邻内容字仅字头连写与「古」尾两类
+//   - 状态不跨行；行首「古文：」承接跨行异体（须带冒号——正文「古文酉」不误判）
+// 标准形（formatGj 归一目标）：#(五)(增)𠂂、#(三)丹，古文：𠁿㣋、#丶宔——，：补全、
 // 簇内冗余 # 删除、带圈括号补全；悬尾标记（变体在后续行，如 #丁古文）原样保留
 export type HeadToken =
   /** 带圈 token（#(X)/#(X/(X)/(X；inner 为速记归一后内容） */
@@ -66,10 +67,10 @@ const MARKER_LEAD = /^古文[:：]/u;
 const DUNHAO = /^、/u;
 const CLUSTER_TAIL = /^(古文?)?[:：]?/u;
 
-/** 裸字大写触发字符：内容字（CJK/ext-B 等），排除语法符、空白、标点、速记字母数字。
- *  gj2ir 与 parse-inline 的裸字判定共用此一口径 */
+/** 裸字大写触发字符：内容字（CJK/ext-B 等），排除语法符、空白、标点（含半角
+ *  : ; , . ! ? ' "）、速记字母数字。gj2ir 与 parse-inline 的裸字判定共用此一口径 */
 export const isBareLargeChar = (ch: string): boolean =>
-  /^[^\s#【】()（）、。，：；！？·,.!?;'"《》*◎〇○a-zA-Z0-9]$/u.test(ch);
+  /^[^\s#【】()（）、。，：:；！？·,.!?;'"《》*◎〇○a-zA-Z0-9]$/u.test(ch);
 
 const shorthand = (inner: string) =>
   inner.replace(/z/gi, "增").replace(/\d+/g, (d) => numberToCn(Number(d)) ?? d);
@@ -117,10 +118,16 @@ export function scanHeadCluster(src: string, from = 0): HeadClusterMatch | null 
       i += m[0].length;
       continue;
     }
-    // 糖：裸字大写——带圈 token 后（字头，一字）或标记/、 后（变体，连串）。
-    // 无需 sawToken 前置：variantMode 只在簇内（标记/、后）为真，行首裸字不触发
+    // 糖：裸字大写——任意大字 token 后（字头连写串，如 #丶#宔 ≡ #丶宔）或
+    // 标记/、 后（变体，连串）。「古」一律排除：是「古文」标记首字/跨行半个
+    // 标记（#下古↵文#丅），不是可裸写的字头。无需 sawToken 前置：variantMode
+    // 只在簇内（标记/、后）为真，行首裸字不触发
     const one = [...rest][0];
-    if (one !== undefined && isBareLargeChar(one) && (lastLarge === "circled" || variantMode)) {
+    if (
+      one !== undefined &&
+      isBareLargeChar(one) &&
+      (variantMode || (lastLarge !== null && one !== "古"))
+    ) {
       tokens.push({ kind: "bare", ch: one, start: i, end: i + one.length });
       lastLarge = "bare";
       sawToken = true;
@@ -165,17 +172,15 @@ export function scanAllClusters(line: string): HeadClusterMatch[] {
 export function canonicalCluster(cl: HeadClusterMatch): string {
   let out = "";
   let first = true;
-  let prev: HeadToken["kind"] | null = null;
-  let variantCtx = false; // 标记/、 之后：裸写合法（含 plain 拼写的变体，如 古文：#𠁿#㣋）
   for (const [k, t] of cl.tokens.entries()) {
     switch (t.kind) {
       case "circled":
         out += `${first ? "#" : ""}(${t.inner})`;
         break;
       case "plain": {
-        // 裸写合法位置（带圈后 / 变体语境）省 #；#丶#宔 类保留
-        const bare = !first && (prev === "circled" || variantCtx);
-        out += bare ? t.ch : t.raw;
+        // 非首 plain 均可省 #（扫描器已验证该位置裸写合法：带圈/普通字头后、
+        // 标记/、 后——#丶#宔 → #丶宔）；首 token 保留
+        out += first ? t.raw : t.ch;
         break;
       }
       case "bare":
@@ -193,8 +198,6 @@ export function canonicalCluster(cl: HeadClusterMatch): string {
         out += t.ch;
         break;
     }
-    prev = t.kind;
-    if (t.kind === "marker" || t.kind === "sep") variantCtx = true;
     first = false;
   }
   return out + cl.tail;

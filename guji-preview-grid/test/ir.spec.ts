@@ -74,8 +74,8 @@ describe("v3 骨架独立（核心原则）", () => {
   });
 
   it("书名括号不产生骨架内容：【A】b 与 Ab 骨架相同", () => {
-    const a = gj2ir("@2\n\n#甲【書】音義\n");
-    const b = gj2ir("@2\n\n#甲書音義\n");
+    const a = gj2ir("@2\n\n#甲：【書】音義\n");
+    const b = gj2ir("@2\n\n#甲：書音義\n");
     const stripNo = (d: IRDocument) =>
       JSON.parse(JSON.stringify(d.pages), (k, v) => (k === "src" || k === "cpSrcs" ? undefined : v));
     expect(stable(stripNo(a))).toBe(stable(stripNo(b)));
@@ -310,6 +310,7 @@ describe("v3 字头簇糖", () => {
     ["#(增)#𠀃", "#(增)𠀃"],
     ["#丅、#𠄟", "#丅、𠄟"],
     ["古文：#㘳", "古文：㘳"],
+    ["#丶#宔", "#丶宔"],
     ["#(二)#万", "#(二)万"],
   ];
 
@@ -366,17 +367,23 @@ describe("v3 字头簇糖", () => {
     }
   });
 
-  it("反例：普通 #X 后裸字不连大（#丸俗 → 俗为小字）；正文「古文」不误判", () => {
-    const a = gj2ir("@1\n\n#丸俗\n");
+  it("反例：标点/书名隔开后裸字不连大（#丸：俗 → 俗为小字）；正文「古文」不误判", () => {
+    const a = gj2ir("@1\n\n#丸：俗\n");
     expect(a.pages[0].bands[0].lines[0].elements.map((e) => `${e.class}:${e.text}`)).toEqual([
       "large:丸",
-      "small:俗",
+      "small:：俗",
     ]);
     // 【字彙補】隔开：古文下 为正文小字
     const b = gj2ir("@1\n\n#丅【字彙補】古文下\n");
     expect(b.pages[0].bands[0].lines[0].elements.map((e) => `${e.class}:${e.text}`)).toEqual([
       "large:丅",
       "small:字彙補古文下",
+    ]);
+    // 「古」不参与裸写：跨行半个「古文」标记仍是小字（#下古↵文#丅）
+    const t1 = gj2ir("@1\n\n#下古\n");
+    expect(t1.pages[0].bands[0].lines[0].elements.map((e) => `${e.class}:${e.text}`)).toEqual([
+      "large:下",
+      "small:古",
     ]);
     // 折行把正文「古文酉」折到行首：无冒号不认标记
     const c = gj2ir("@1\n\n古文酉，从丣。\n");

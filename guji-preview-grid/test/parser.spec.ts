@@ -82,7 +82,7 @@ describe("parseInline", () => {
     expect(parseInline("#(一口舌")).toEqual([
       { t: "一", si: "large", st: "circle" },
       { t: "口", si: "large" },
-      { t: "舌" },
+      { t: "舌", si: "large" },
     ]);
   });
 
@@ -92,7 +92,7 @@ describe("parseInline", () => {
     expect(parseInline("#(一)音義")).toEqual([
       { t: "一", si: "large", st: "circle" },
       { t: "音", si: "large" },
-      { t: "義" },
+      { t: "義", si: "large" },
     ]);
     expect(parseInline("#(一)：音義")).toEqual([
       { t: "一", si: "large", st: "circle" },
@@ -244,6 +244,9 @@ describe("formatGj 规则", () => {
     expect(fmt("#(三)丹古文𠁿㣋")).toBe("@1\n\n#(三)丹，古文：𠁿㣋\n");
     expect(fmt("#(三)#丹古文#𠁿#㣋")).toBe("@1\n\n#(三)丹，古文：𠁿㣋\n");
     expect(fmt("#(三)丹，古文：𠁿㣋")).toBe("@1\n\n#(三)丹，古文：𠁿㣋\n");
+    // 字头连写串：普通 #X 后的 # 亦省（@340 #丶#宔）；「古」尾不并入（跨行半个标记）
+    expect(fmt("#丶#宔")).toBe("@1\n\n#丶宔\n");
+    expect(fmt("#下古")).toBe("@1\n\n#下古\n");
   });
 });
 

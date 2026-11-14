@@ -26,6 +26,17 @@ describe("字头簇糖高亮", () => {
     ]);
   });
 
+  it("字头连写串 #丶宔 全 strong（普通 #X 后裸写）；「古」尾随簇尾 comment 淡显", () => {
+    expect(segments("#丶宔")).toEqual([
+      ["#丶", "strong"],
+      ["宔", "strong"],
+    ]);
+    expect(segments("#下古")).toEqual([
+      ["#下", "strong"],
+      ["古", "comment"],
+    ]);
+  });
+
   it("古文标记=keyword（糖可无标点），变体裸字=strong", () => {
     expect(segments("#(三)丹，古文：𠁿㣋")).toEqual([
       ["#(三)", "strong"],
@@ -52,8 +63,9 @@ describe("字头簇糖高亮", () => {
     expect(segments("#(z)#(15)音義")).toEqual([
       ["#(z)", "strong"],
       ["#(15)", "strong"],
+      // 字头连写串：裸字连续（音義 两字头）
       ["音", "strong"],
-      ["義", "plain"],
+      ["義", "strong"],
     ]);
   });
 
@@ -92,9 +104,10 @@ describe("字头簇糖高亮", () => {
     ]);
   });
 
-  it("普通 #X 后裸字不连大（#丸俗 的俗为 plain）；释义中小字无 sugar 误亮", () => {
-    expect(segments("#丸俗")).toEqual([
+  it("标点隔开后裸字不连大（#丸：俗 的俗为 plain）；释义中小字无 sugar 误亮", () => {
+    expect(segments("#丸：俗")).toEqual([
       ["#丸", "strong"],
+      ["：", "comment"],
       ["俗", "plain"],
     ]);
     expect(segments("#丅【字彙補】古文下")).toEqual([

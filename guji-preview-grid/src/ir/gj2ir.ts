@@ -384,8 +384,10 @@ export function gj2ir(text: string): IRDocument {
         const cpNow = lineSource.codePointAt(i)!;
         const chu = String.fromCodePoint(cpNow);
 
-        // 糖：裸字大写——带圈 token 后一字（字头）或标记/、 后（变体，连串）
-        if (isBareLargeChar(chu) && (lastLargeKind === "circled" || variantMode)) {
+        // 糖：裸字大写——任意大字 token 后（字头连写串，#丶#宔 ≡ #丶宔）或
+        // 标记/、 后（变体，连串）。「古」排除：是「古文」标记首字/跨行半个
+        // 标记（#下古↵文#丅），不参与裸写
+        if (isBareLargeChar(chu) && (variantMode || (lastLargeKind !== null && chu !== "古"))) {
           flushPlain();
           elements.push({ id: nextId(), class: "large", text: chu });
           cpSrcs.push(srcAt(i));

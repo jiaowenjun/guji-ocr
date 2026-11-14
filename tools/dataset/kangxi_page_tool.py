@@ -140,13 +140,17 @@ def continuation_from_prev(
           独占式 #頭古文 一行、变体各自成 #行（如 @313 丁/𠆤）
         糖写法（2026-11-14 语法扩展）同样要认：簇内 token 的 # 可省——
           #(三)丹，古文：𠁿㣋 / #(五)(增)𠂂。圈注前缀随字头一并匹配
-          （#(?:圈)*頭）；裸字变体不产生 # 标记，天然不是宿主候选。
+          （#(?:圈)*頭）；裸字头连写（#丶宔 ≡ #丶#宔）头部串延伸、宿主取
+          串末字；裸字变体不产生 # 标记，天然不是宿主候选。
         古文变体不是宿主候选（@331 #𠁩 自带详情曾被误选为宿主致锚定失败）：
         上一标记到本标记之间只有「古文」或空白（变体链）即判变体；紧贴本
         字头的 #(注) 前缀（(增)/(二)/(三)…）先剥掉再判。
         """
         _circ = r"\([^)#\n]{1,2}\)?"
-        marks = list(re.finditer(rf"#(?:{_circ})*([^#(\s【□])", raw_text))
+        # 糖裸字头连写（#丶宔 ≡ #丶#宔）：头部串延伸到首个非内容字符，宿主取
+        # 串末字。「古」截断——是「古文」标记首字/跨行半个标记（#下古↵文#丅）
+        _bare = r"[^\s#【】()（）、。，：；！？·,.!?;\"'《》*◎〇○古a-zA-Z0-9]"
+        marks = list(re.finditer(rf"#(?:{_circ})*([^#()\s【□])", raw_text))
         heads: list[tuple[str, int]] = []  # (主字头, 尾部起点)
         guwen_open = False  # 上一主字头带「古文」，紧随的 # 段是变体链
         for i, m in enumerate(marks):
@@ -158,9 +162,13 @@ def continuation_from_prev(
             if re.fullmatch(r"古文[：:]?", seg_cmp):
                 guwen_open = True
                 continue  # 「#頭古文(：)」后的首个变体
+            head, end = m.group(1), m.end()
+            ext = re.match(rf"{_bare}+", raw_text[end:])
+            if ext:
+                head, end = ext.group(0)[-1], end + len(ext.group(0))
             # 糖写法标记可带「，」前缀（#(三)丹，古文：…）
-            guwen_open = re.match(r"[，\s]*古文", raw_text[m.end():]) is not None
-            heads.append((m.group(1), m.end()))
+            guwen_open = re.match(r"[，\s]*古文", raw_text[end:]) is not None
+            heads.append((head, end))
         for cand, end in reversed(heads):
             e = store.get_entry(ord(cand)) if len(cand) == 1 else None
             if e is not None:
