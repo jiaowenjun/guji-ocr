@@ -2,6 +2,9 @@
 // Ctrl-J 下一行并入本行末尾——先去本行行尾空格与下一行行首空格（含全角），
 //   删除中间换行完成拼接，光标落在接缝处；
 // Ctrl-O 在本行上方插入空行，光标移到空行行首。
+// Ctrl-K 删光标到行尾；已在行尾时删换行（emacs kill-line，同 CM deleteToLineEnd）。
+// Ctrl-U 删光标到行首；已在行首时删前一换行（对称语义，同 CM deleteToLineStart）。
+//   有选区时两者均只删选区（CM deleteBy 语义）。
 // Alt/Option-Z 插入 #(增)，Alt/Option-数字插入 #(数字)（如 Alt-1 → #(1)）。
 // \s 含 U+3000 全角空格，无需另列。
 import { Prec } from "@codemirror/state";
@@ -61,11 +64,39 @@ const altInsertHandler = EditorView.domEventHandlers({
   },
 });
 
+const killToLineEnd: Command = (view) => {
+  const sel = view.state.selection.main;
+  if (!sel.empty) {
+    view.dispatch({ changes: { from: sel.from, to: sel.to } });
+    return true;
+  }
+  const line = view.state.doc.lineAt(sel.head);
+  const to = sel.head < line.to ? line.to : Math.min(view.state.doc.length, sel.head + 1);
+  if (sel.head === to) return false;
+  view.dispatch({ changes: { from: sel.head, to } });
+  return true;
+};
+
+const killToLineStart: Command = (view) => {
+  const sel = view.state.selection.main;
+  if (!sel.empty) {
+    view.dispatch({ changes: { from: sel.from, to: sel.to } });
+    return true;
+  }
+  const line = view.state.doc.lineAt(sel.head);
+  const from = sel.head > line.from ? line.from : Math.max(0, sel.head - 1);
+  if (sel.head === from) return false;
+  view.dispatch({ changes: { from, to: sel.head } });
+  return true;
+};
+
 export const gujiKeymap = [
   Prec.highest(
     keymap.of([
       { key: "Ctrl-j", run: joinNextLine },
       { key: "Ctrl-o", run: insertBlankAbove },
+      { key: "Ctrl-k", run: killToLineEnd },
+      { key: "Ctrl-u", run: killToLineStart },
     ]),
   ),
   altInsertHandler,
