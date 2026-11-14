@@ -362,22 +362,24 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
     }
   };
 
-  // useCallback：⌘S/Ctrl+S 监听可直接依赖（identity 只随 page/text 变化）
-  const save = useCallback(async () => {
-    if (page === undefined || text === undefined) return;
+  // useCallback：⌘S/Ctrl+S 监听可直接依赖（identity 只随 page/text 变化）。
+  // content 覆写参数：格式化后立即保存新文本（setEdits 尚未落入闭包里的 text）
+  const save = useCallback(async (content?: string, okMsg?: string) => {
+    const body = content ?? text;
+    if (page === undefined || body === undefined) return;
     setBusy(true);
     setStatus(null);
     try {
       const res = await fetch("/dataset/save", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ page, content: text }),
+        body: JSON.stringify({ page, content: body }),
       });
       const data = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string };
       if (!res.ok || !data.ok) throw new Error(data.error ?? `HTTP ${res.status}`);
-      put(page, text); // 立即可见，避免再等 fetch
+      put(page, body); // 立即可见，避免再等 fetch
       setEdits(({ [page]: _drop, ...rest }) => rest);
-      setStatus({ ok: true, msg: `已保存 ${stem(page)}.gj；重跑 build_annotations.ts 同步 json/txt` });
+      setStatus({ ok: true, msg: okMsg ?? `已保存 ${stem(page)}.gj；重跑 build_annotations.ts 同步 json/txt` });
     } catch (e) {
       setStatus({ ok: false, msg: e instanceof Error ? e.message : String(e) });
     } finally {
@@ -397,7 +399,9 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
   }, [save, dirty, busy]);
 
   /** 格式化（一键）：行内空格→*、◎→〇、全角括号/速记归一、#(X 补右括号、
-   *  字头组（#A、#(A)#B、#A古文#B…）独占一行、首尾空行/注释行删除 */
+   *  字头组（#A、#(A)#B、#A古文#B…）独占一行、首尾空行/注释行删除。
+   *  格式化即保存（2026-11-15）：缓冲与磁盘同形，省去手动「保存回数据集」；
+   *  保存失败时缓冲保持未保存态，可 ⌘S 重试 */
   const formatText = () => {
     if (page === undefined || text === undefined) return;
     const { text: formatted, spaces, circles } = formatDocument(text);
@@ -413,7 +417,7 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
     ]
       .filter(Boolean)
       .join("；");
-    setStatus({ ok: true, msg: `@${page} 已格式化（${detail}）——检查后保存` });
+    void save(formatted, `@${page} 已格式化（${detail}）并保存 ${stem(page)}.gj；重跑 build_annotations.ts 同步 json/txt`);
   };
 
   /** 显示 OCR 结果：弹窗展示该页 OCR markdown */
@@ -614,7 +618,7 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
             </span>
           ) : null}
           {dirty ? <span className="text-xs text-amber-600">● 未保存</span> : null}
-          <Button size="sm" disabled={!dirty || busy} onClick={save} title={SAVE_SHORTCUT_HINT}>
+          <Button size="sm" disabled={!dirty || busy} onClick={() => void save()} title={SAVE_SHORTCUT_HINT}>
             <Save data-icon="inline-start" />
             保存回数据集
           </Button>
@@ -715,14 +719,14 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
             <ColumnHeader>
               .gj 编辑器 · @{page} · {dirty ? "未保存" : original !== undefined ? "与数据集一致" : "加载中…"}
             </ColumnHeader>
-            {/* 编辑器工具栏：作用于 .gj 源码的快捷操作（改入编辑缓冲，不自动保存） */}
+            {/* 编辑器工具栏：作用于 .gj 源码的快捷操作（格式化即保存） */}
             <div className="flex flex-wrap items-center gap-2 border-b px-2 py-1">
               <Button
                 size="sm"
                 variant="outline"
-                disabled={text === undefined}
+                disabled={text === undefined || busy}
                 onClick={formatText}
-                title="规范化为校对标准写法：行内空格→*（半角连续空格合并为一个）；按语 ◎→〇；#（X）→#(X)；括号内 z→增、数字→汉字；#(X 补右括号；字头组（#A、#(A)#B、#A古文#B…）独占一行；首尾空行/注释行删除（不自动保存）"
+                title="规范化为校对标准写法并自动保存：行内空格→*（半角连续空格合并为一个）；按语 ◎→〇；#（X）→#(X)；括号内 z→增、数字→汉字；#(X 补右括号；字头组（#A、#(A)#B、#A古文#B…）独占一行；首尾空行/注释行删除；快捷键 Ctrl-⌥-F"
               >
                 <Wand2 data-icon="inline-start" />
                 格式化
@@ -736,6 +740,7 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
                   theme={editorTheme}
                   onCursor={setCursor}
                   requestCursor={requestCursor}
+                  onFormat={formatText}
                 />
               ) : (
                 <div className="text-muted-foreground flex h-full items-center justify-center text-sm">

@@ -1,7 +1,7 @@
 // 左侧 .gj 编辑器：CodeMirror 6 + Guji 语法高亮
 import { useEffect, useRef } from "react";
 import CodeMirror from "@uiw/react-codemirror";
-import { EditorView } from "@codemirror/view";
+import { EditorView, keymap } from "@codemirror/view";
 import { syntaxHighlighting } from "@codemirror/language";
 import { gujiHighlight, gujiLanguage } from "./guji-language";
 import { gujiKeymap } from "./keymap";
@@ -13,6 +13,7 @@ export function GujiEditor({
   theme = "light",
   onCursor,
   requestCursor,
+  onFormat,
 }: {
   value: string;
   onChange: (value: string) => void;
@@ -22,6 +23,8 @@ export function GujiEditor({
   onCursor?: (pos: number) => void;
   /** 请求把光标设到该偏移（如点击渲染行反向定位）；变化时生效一次 */
   requestCursor?: number | null;
+  /** Ctrl-Alt-F 格式化（父级实现：归一 + 保存） */
+  onFormat?: () => void;
 }) {
   const viewRef = useRef<EditorView | null>(null);
 
@@ -44,6 +47,16 @@ export function GujiEditor({
       theme={theme}
       extensions={[
         gujiKeymap,
+        // Ctrl-Alt-F 格式化（每渲染重建闭包取最新 onFormat，与 extensions 现状一致）
+        keymap.of([
+          {
+            key: "Ctrl-Alt-f",
+            run: () => {
+              onFormat?.();
+              return true;
+            },
+          },
+        ]),
         gujiLanguage,
         syntaxHighlighting(gujiHighlight),
         gujiLargeCharDecoration,
