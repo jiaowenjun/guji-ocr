@@ -1,10 +1,13 @@
 // 编辑器快捷键：
 // Ctrl-J 下一行并入本行末尾——先去本行行尾空格与下一行行首空格（含全角），
-//   删除中间换行完成拼接，光标落在接缝处；
-// Ctrl-O 在本行上方插入空行，光标移到空行行首。
+//   删除中间换行完成拼接，光标落在接缝处。
+// Ctrl-O 光标后插换行、光标不动（emacs open-line / 原生 NSTextView 语义，
+//   新空行在下方；行中按即劈行）；Ctrl-Alt-O 本行上方插空行，光标不动
+//   （列不变，随本行下移）。
 // Ctrl-K 删光标到行尾；已在行尾时删换行（emacs kill-line，同 CM deleteToLineEnd）。
 // Ctrl-U 删光标到行首；已在行首时删前一换行（对称语义，同 CM deleteToLineStart）。
 //   有选区时两者均只删选区（CM deleteBy 语义）。
+// Ctrl-A/E/F/B/N/P/D/H/T/V/W 等 emacs 键位经 WKWebView 原生生效，无需绑定。
 // Alt/Option-Z 插入 #(增)，Alt/Option-数字插入 #(数字)（如 Alt-1 → #(1)）。
 // \s 含 U+3000 全角空格，无需另列。
 import { Prec } from "@codemirror/state";
@@ -27,14 +30,21 @@ const joinNextLine: Command = (view) => {
   return true;
 };
 
-const insertBlankAbove: Command = (view) => {
+const openLineBelow: Command = (view) => {
+  const { head } = view.state.selection.main;
+  // 光标处插换行、光标不动（位于插入点的选区按映射保持原位）
+  view.dispatch({ changes: { from: head, insert: "\n" } });
+  return true;
+};
+
+const insertLineAboveKeepCursor: Command = (view) => {
   const { state } = view;
-  const line = state.doc.lineAt(state.selection.main.head);
-  // 行首前插入换行即得空行；插入后 line.from 恰为新空行行首
+  const { head } = state.selection.main;
+  const line = state.doc.lineAt(head);
+  // 行首前插换行；本行整体下移一行，光标 +1 即保持原列不动
   view.dispatch({
     changes: { from: line.from, insert: "\n" },
-    selection: { anchor: line.from },
-    scrollIntoView: true,
+    selection: { anchor: head + 1 },
   });
   return true;
 };
@@ -94,7 +104,8 @@ export const gujiKeymap = [
   Prec.highest(
     keymap.of([
       { key: "Ctrl-j", run: joinNextLine },
-      { key: "Ctrl-o", run: insertBlankAbove },
+      { key: "Ctrl-o", run: openLineBelow },
+      { key: "Ctrl-Alt-o", run: insertLineAboveKeepCursor },
       { key: "Ctrl-k", run: killToLineEnd },
       { key: "Ctrl-u", run: killToLineStart },
     ]),
