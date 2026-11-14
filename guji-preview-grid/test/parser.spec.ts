@@ -85,10 +85,11 @@ describe("parseInline", () => {
     ]);
   });
 
-  it("单字后多写的右括号会残留为小字（原实现行为）", () => {
-    expect(parseInline("#(一)")).toEqual([
+  it("单字带圈闭合 #(一) 右括号被消费，不再残留杂散小字（与 IR 词法对齐；原实现缺陷已修）", () => {
+    expect(parseInline("#(一)")).toEqual([{ t: "一", si: "large", st: "circle" }]);
+    expect(parseInline("#(一)音義")).toEqual([
       { t: "一", si: "large", st: "circle" },
-      { t: ")" },
+      { t: "音義" },
     ]);
   });
 

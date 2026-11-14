@@ -64,7 +64,8 @@ export function parseInline(line: string) {
         break;
 
       case "large-circle":
-        if (line.at(i + 2) === ")" || line.at(i + 3) === ")") {
+        // 闭合判定前瞻 i+1（单字符内芯 #(增)——原先漏看产生杂散 )）
+        if (line.at(i + 1) === ")" || line.at(i + 2) === ")" || line.at(i + 3) === ")") {
           state = "large-circle-stack";
           if (isChar(c)) {
             frag += c;
