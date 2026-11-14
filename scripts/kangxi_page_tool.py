@@ -385,6 +385,22 @@ def _ocr_groups(md_text: str) -> list[str]:
     return groups
 
 
+_TAIL_WINDOW = 30  # 末段判信窗口（归一化字数）
+
+
+def _tail_stats(blocks: list, e: int, window: int = _TAIL_WINDOW) -> tuple[int, int, int]:
+    """块尾 e 前一窗的 (匹配字数, 窗长, 末端连续匹配长度)。blocks 为归一化
+    候选坐标上互不重叠的匹配块（difflib.get_matching_blocks 过滤 0 后天然如此）。"""
+    lo = max(0, e - window)
+    m = sum(min(b.a + b.size, e) - max(b.a, lo) for b in blocks if b.a < e and b.a + b.size > lo)
+    run = 0
+    i = e - 1
+    while i >= lo and any(b.a <= i < b.a + b.size for b in blocks):
+        run += 1
+        i -= 1
+    return m, e - lo, run
+
+
 def ocr_page_cut(
     page: int, text: str, store: kangxi_store.KangxiStore, full_page: bool = False
 ) -> tuple[int | None, int, str]:
@@ -396,6 +412,14 @@ def ocr_page_cut(
     full_page=True 用于整页草稿候选（含溢出到下页的全量词条）：此时候选天然
     大于页面，判信改按 OCR 侧——页面文本须过半被候选解释（@334 实测：候选
     961 字仅 ~270 字在页上，按候选侧判信会误拒正确裁点 924）。
+
+    末段局部判信（2026-11-14 加）：全局 cover 门槛拦不住「末界后的伪匹配」
+    ——库文尾段比书页长时（@331 个条库文多 84 字、@324 丕条多 6 字，站点
+    版本差异），真匹配在物理页界处断流，其后是「切集韻韻會正韻」类韻書
+    套话碎块（@331 实测 GT 后 13/52 字真匹配）或孤字（山/从不），把末界
+    虚增。回缩规则：从最大块尾向左找首个「末窗密度 ≥0.5 且非孤字收尾
+    （末端连续匹配 ≥2）」的块尾作裁点；全部不达标 → 不可信不裁。好页实测
+    末窗密度 0.83–1.00 且以 ≥2 连续块收尾，不受影响。
     """
     md_text = _ocr_markdown(page, store)
     cand_n = _norm(text)
@@ -409,7 +433,18 @@ def ocr_page_cut(
     sm = difflib.SequenceMatcher(None, cand_n, ocr_n, autojunk=False)
     blocks = [b for b in sm.get_matching_blocks() if b.size > 0]
     cover = sum(b.size for b in blocks)
-    end = max(b.a + b.size for b in blocks)
+    end0 = max(b.a + b.size for b in blocks)
+    # 末段局部判信回缩（见 docstring）
+    end, why_tail = end0, ""
+    for e in sorted({b.a + b.size for b in blocks}, reverse=True):
+        m, wlen, run = _tail_stats(blocks, e)
+        if wlen >= 10 and m >= wlen * 0.5 and run >= 2:
+            end = e
+            break
+    else:
+        return None, len(cand_n), "对齐不可信（末段匹配稀疏）"
+    if end < end0:
+        why_tail = f"，末段判信回缩 {end0 - end} 字"
     # 门槛按「裁点前区域」判信而非 OCR 全长：页面含新字头时匹配数天然小于
     # OCR 全文（334：候选末段 375 字，页面上只有前 ~79 字）。要求裁点区域
     # 至少 20 字且其中过半是真实匹配（连续性证据），否则放弃裁剪回退全量
@@ -418,7 +453,7 @@ def ocr_page_cut(
     span = len(ocr_n) if full_page else end
     if cover < span * 0.5:
         return None, len(cand_n), f"对齐不可信（页面 {span} 字中匹配 {cover}）"
-    return end, len(cand_n), ""
+    return end, len(cand_n), why_tail
 
 
 def _cut_mapped(paragraphs: list[str], end: int) -> list[str]:
@@ -456,10 +491,10 @@ def ocr_trim_to_page(
     if end is None:
         return paragraphs, f"{what}未裁剪：{why}"
     if end >= total:
-        return paragraphs, f"{what}已在页面范围内，无需裁剪"
+        return paragraphs, f"{what}已在页面范围内，无需裁剪{why}"
     trimmed = _cut_mapped(paragraphs, end)
     return trimmed, (
-        f"OCR 裁剪：保留 {end}/{total} 字（页面物理末界），溢出 {total - end} 字留给下页"
+        f"OCR 裁剪：保留 {end}/{total} 字（页面物理末界{why}），溢出 {total - end} 字留给下页"
     )
 
 
@@ -683,7 +718,7 @@ def _trim_bands_to_page(
             head_bands.append(band_cut)
         trimmed = head_bands
     return trimmed, (
-        f"OCR 尾裁：保留 {end}/{total} 字（页面物理末界），"
+        f"OCR 尾裁：保留 {end}/{total} 字（页面物理末界{why}），"
         f"溢出 {total - end} 字留给下页自动续入"
     )
 
