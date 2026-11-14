@@ -534,7 +534,9 @@ def ocr_fold_page_lines(page: int, bands: list[list[str]], store: kangxi_store.K
     def _flatten(band: list[str]) -> str:
         if any("//" in l for l in band):
             return "\n".join(band)
-        return "".join(l.strip() for l in band)
+        # 只剥半角空白：全角空格 U+3000 是内容字符（空字格 ≡*），
+        # @312 老样式行尾「入聲。　/【說文】」经 strip 丢字实测（331→330）
+        return "".join(l.strip(" \t") for l in band)
 
     full = "\u0001".join(_flatten(b) for b in bands)
     # 结构大行（字头行 # / 注释行 //）不可被折行打断：折点落其内则整点丢弃
