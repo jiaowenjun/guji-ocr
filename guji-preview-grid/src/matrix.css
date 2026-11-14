@@ -41,12 +41,15 @@
 
 /* band（大行）：subgrid 占满整页高；界栏 = 左缘 1px 伪元素（纯视觉叠加）。
    不能用 border-left：border 占盒模型空间，subgrid 下会压缩 band 首列字格
-   （25px→24px、文字中心偏右 0.5px，实测 public/rules-test.html）。伪元素
-   画在 band 背景之上，高亮（m-band-active）下界栏仍可见。 */
+   （25px→24px、文字中心偏右 0.5px，实测 public/rules-test.html）。
+   层序：band 指定 z-index（grid item 无需 position 即成层叠上下文），
+   界栏 z-index:-1 压到 band 背景之下（高亮时被半透明橙色罩着透出），
+   书名框 z-index:1 在界栏之上——框边线与界栏共线处由框线着色。 */
 .m-band {
   display: grid;
   grid-template-columns: subgrid;
   grid-template-rows: subgrid;
+  z-index: 0;
 }
 .m-lines[data-rules="on"] .m-band {
   position: relative;
@@ -58,7 +61,9 @@
   top: 0;
   bottom: 0;
   width: 1px;
-  background: currentColor;
+  /* 淡于墨字/版框一档（与 .page-title 页码同色）：界栏是参考线不是版面元素 */
+  background: #8a8a8a;
+  z-index: -1;
 }
 /* 最左 band 的左缘与版框重合，不画界栏（避免相邻双线）。m-band-last 由
    渲染层挂——books 渲染在 bands 之后且同为 div，:last-child 永不匹配 */
@@ -119,6 +124,8 @@
   flex-direction: column;
   border: 1px solid;
   border-radius: calc(var(--guji-unit) * 0.3);
+  /* 高于 band（z:0）/界栏（z:-1）：共线处框线着色，界栏只作底衬 */
+  z-index: 1;
 }
 .m-book .m-cell {
   height: auto;
