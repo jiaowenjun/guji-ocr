@@ -946,11 +946,10 @@ def build_draft_gj(
         bands, note = ocr_regroup_bands(page, bands)
         notes.append(note)
 
-    parts = [
-        f"// 草稿：kangxizidian.com 爬取生成 {date.today()}，未经人工校对（状态：草稿）",
-        "",  # 注释与 @页码 之间必须空行，否则并入同一大行致页声明不解析
-        f"@{page}",
-    ]
+    # 不写首行草稿注释：页状态以 manifest status 为准，且人工校对页同样
+    # 直接以 @页码 开头（若日后加回头注，注释与 @页码 间必须空行，否则
+    # 并入同一大行致页声明不解析）
+    parts = [f"@{page}"]
     for band in bands:
         parts.append("")
         parts.extend(band)
