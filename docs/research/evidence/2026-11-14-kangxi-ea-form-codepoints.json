@@ -1,0 +1,83 @@
+{
+  "checked_at": "2026-11-14",
+  "purpose": "判定〈歺㐱〉（殄的康熙歺旁刻形，触发于 @344 字头 𠂈 注文「古文殄字。註詳歺部」）在小字字体中的存在性，并沉淀康熙 歹部 歺旁刻形的码位映射规律。结论：⿰歺㐱 无 Unicode 专码，殄 U+6B84（kKangXi 0579.450 唯一占主）即其码位；U+6B84 与 U+6B7A 均在 GujiPlane0 cmap 中不缺字，但 U+6B84 在 plane0/GujiLarge 中渲染为标准歹旁；歹部 歺旁独有条目有 Ext-B U+239B5–239F7 专码 67 字，GujiPlane2 全覆盖、GujiLarge 缺 5。",
+  "method": "用户刻本裁图目视定位对象；Unihan.zip 本地 grep kKangXi 做 classic 578–580 歹部槽位名册仲裁；CHISE IDS（github.com/chise/ids 镜像 Basic+Ext-B-1/-2）检索 ⿰歺㐱 与 ⿰X㐱 全表排除专码；爬取库 page_chars site 2766 页名册与 Unihan 槽位对照印证站方映射；fontTools getBestCmap 实测四字体覆盖；字形判读以同字体 Ext-B ⿰歺X/⿰歹X 左旁为参照、scipy EDT 对称 chamfer（等高缩放）裁决，视觉模型判读仅作辅助（两次矛盾，已弃）。",
+  "trigger": {
+    "page": "kangxi-gold/annotations/0344.gj:23-25",
+    "text": "#(增)𠂈 / 【說文】古文殄 / 字。註詳歺部",
+    "question": "〈歺㐱〉字在小字字体中是否存在"
+  },
+  "identity": {
+    "ea_zhen_dedicated_codepoint": false,
+    "zhen_kkangxi": "U+6B84 0579.450 唯一占主，无 .451 重出",
+    "ids_search": {
+      "source": "chise/ids master (raw.githubusercontent.com), 2026-11-14 拉取",
+      "ea_left_ids_hits": 18,
+      "ea_zhen_hit": 0,
+      "zhen_family_in_x_zhen_table": "⿰X㐱 共 23 条，歹族仅 殄 U+6B84=⿰歹㐱",
+      "note": "Ext-B IDS 文件行首格式为 U-0002xxxx，非 U+"
+    },
+    "paired_examples": ["⿰歺人 U+239B8 vs ⿰歹人 U+239B9", "⿰歺徂 U+23A16@kKangXi 0581.140 与 徂 U+6B82@0579.340 康熙并存独立条目"],
+    "roster_excerpt_classic_578_580": {
+      "0578.150": "U+6B79 歹", "0578.170": "U+239B5", "0578.180": "U+6B7A 歺",
+      "0578.190": "U+239B6", "0578.200": "U+239B7", "0578.210": "U+3C59",
+      "0578.220": "U+6B7B 死", "0579.340": "U+6B82 徂", "0579.410": "U+6B83 殃",
+      "0579.450": "U+6B84 殄（唯一占主）", "0579.540": "U+6B85 殅", "0580.040": "U+6B86 殆",
+      "规律": "BMP 标准码位与 Ext-B 歺形专码按槽交错：G 源逐条目识别，能等同者落标准码位，歺旁独有形落 239xx 专码"
+    }
+  },
+  "site_mapping": {
+    "db": "var/crawl/kangxi-crawl.sqlite3 page_chars",
+    "page_2766": [
+      ["13150", "6B79", "歹", "0578.150"], ["13151", "239B5", "𣦵", "0578.170"],
+      ["13152", "6B7A", "歺", "0578.180"], ["13153", "239B6", "𣦶", "0578.190"],
+      ["13154", "239B7", "𣦷", "0578.200"], ["13155", "3C59", "㱙", "0578.210"]
+    ],
+    "note": "站方映射与 Unihan 槽位可见段逐一吻合；殄槽（site ~2767–2769）爬取未及"
+  },
+  "font_coverage": {
+    "fonts": {
+      "guji-large.ttf": "cmap 49408（=KX_47043_14 的 49407 + 补录 U+2BD6E）",
+      "guji-plane0.ttf": "cmap 30706",
+      "guji-plane2.ttf": "cmap 61228",
+      "guji-planef.ttf": "cmap 42620"
+    },
+    "points": {
+      "U+6B7A_歺": {"large": true, "plane0": true, "plane2": false, "planef": false},
+      "U+6B84_殄": {"large": true, "plane0": true, "plane2": false, "planef": false},
+      "区段_U+239B5-U+239F7_67字": {"large": 62, "plane0": 0, "plane2": 67, "planef": 0}
+    },
+    "large_missing_in_range": ["U+239BE", "U+239D7", "U+239D8", "U+239EF", "U+239F1"]
+  },
+  "glyph_form": {
+    "verdict": "U+6B84 在 plane0 与 guji-large 均渲染标准歹旁（左上带短撇），非刻本歺旁",
+    "vision_reads": "整表判读 large=歹/plane0=歹；放大判读 large=歹/plane0=歺——矛盾，弃用视觉裁决",
+    "chamfer_radical_vs_references": {
+      "refs": "⿰歺X={239B8,239BC}, ⿰歹X={239B9,239BA}，等高 160px 缩放，同字体参照（plane0 参照取 plane2 同族）",
+      "guji-large": {"zhen": {"vs_ea": 2.14, "vs_dai": 1.3, "verdict": "歹旁"},
+                     "ea_sanity": {"vs_ea": 1.76, "vs_dai": 3.38, "verdict": "歺旁 ✓"}},
+      "plane0": {"zhen": {"vs_ea": 2.56, "vs_dai": 1.95, "verdict": "歹旁"},
+                 "ea_sanity": {"vs_ea": 2.33, "vs_dai": 2.71, "verdict": "歺旁 ✓"}},
+      "pitfall": "独体字 歹 U+6B79 作被检对象时反而更贴 ⿰歺X 参照（宽高比差异压过笔画差，1.94 vs 2.18）——参照必须同为左部件"
+    }
+  },
+  "verdict": {
+    "小字字体存在性": "存在——U+6B84 ∈ GujiPlane0，渲染正常非缺字；但字形为标准歹旁，码位层无法表达歺旁刻形",
+    "0344gj_现行写法": "殄=U+6B84（24 行）、歺=U+6B7A（25 行）均正确，无需改动",
+    "补录建议": "否决——U+6B84 为共用常用码位，补改字形波及所有标准殄；保真留给 .gj 部件描述语法",
+    "将来 歹部 页面": "字头用站方/Unihan 映射码位（239xx 专码 plane2 全覆盖）；guji-large 缺的 5 字届时按 K0000 流程核验"
+  },
+  "artifacts": {
+    "base_dir": "var/unihan/（gitignore 内）",
+    "files": {
+      "check_fonts.py": {"sha256": "bfc264d9742f490d758a3aeed6455e777710f1f5d7d681a8b54190ec1d4bd519", "bytes": 2489, "desc": "cmap 覆盖检查 + 字形渲染对比脚本"},
+      "eana_zhen_render_rgb.png": {"sha256": "96e7f4d1f9972ef7fc4a912b7f0cde31bc5eed51a61080cb16ce070d71cc8877", "bytes": 91491, "desc": "13 码位 × 4 字体字形对比图（缺字格红框）"},
+      "zhen_zoom.png": {"sha256": "be39f9f64e1b857c93417a8494ac7ab5db6f1b8f9e79f44d2775188ca0ffbe11", "bytes": 30319, "desc": "殄/歺 × large/plane0 放大对比"},
+      "IDS-UCS-Basic.txt": {"sha256": "83f9ba1ebc51ec99a436403e180ac1ebce78de48845e25ca8a29de347f4f2323"},
+      "IDS-UCS-Ext-B-1.txt": {"sha256": "19d03e23487d56500a944281334cff8c535cf32cd1947fdc3e627de091c6c519"},
+      "IDS-UCS-Ext-B-2.txt": {"sha256": "551150fa2bd8886c17b5af40ad1d7876026d477349e7d636b0fbfc7306d26b81"},
+      "Unihan_DictionaryIndices.txt": {"sha256": "b41c7c5ca3a01d833ed4fe0c7b9cdf41c4ec08cb11a0fd1df6e92ed666ce00e1", "desc": "Unihan.zip 2026-07-31 版解包，复用于后续槽位仲裁"}
+    },
+    "chamfer_scripts": "为一次性内联 python（本 JSON glyph_form 字段存全部数值），未另存脚本"
+  }
+}
