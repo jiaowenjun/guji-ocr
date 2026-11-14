@@ -6,6 +6,7 @@
 import type { CSSProperties } from "react";
 import type { IRBookOverlay, IROverlay, RenderHighlight } from "@/ir/types";
 import type { L3Item, L3Page } from "@/ir/layout3";
+import { PAGE_ROW_CAP } from "@/ir/layout3";
 
 interface BookBox {
   overlayId: string;
@@ -139,6 +140,11 @@ function MatrixPageView({
 }) {
   const boxes = books.flatMap((ov) => bookBoxesFor(page, ov));
 
+  // 行轨封顶：超 PAGE_ROW_CAP 的行不建轨道（版框恒 24 格高）；条目跨度按可见行
+  // 钳制（run 内多余 .m-cell 靠 overflow 裁、半截大字裁字形），不出网格线范围
+  // → 不触发隐式轨道，容器高度精确 = 封顶行数，无需容器级 overflow hack
+  const rows = Math.min(page.rows, PAGE_ROW_CAP);
+
   // 单字高亮解析：large 按元素 id 直查；cell 经 run.rawOffsets 对位——
   // 光标前一字若被清洗（标点）无精确条目，回退到 ≤cp 的最大偏移（前一渲染字）
   let activeLargeEl: string | null = null;
@@ -169,42 +175,53 @@ function MatrixPageView({
           {
             gridTemplateColumns: `repeat(${page.totalCols}, calc(var(--guji-unit) * 1))`,
             // 行轨用纵向微调后的字格高（版框内容高 ÷ 行数；未注入时回落正方形）
-            gridTemplateRows: `repeat(${page.rows}, calc(var(--guji-unit-v, var(--guji-unit)) * 1))`,
+            gridTemplateRows: `repeat(${rows}, calc(var(--guji-unit-v, var(--guji-unit)) * 1))`,
           } as CSSProperties
         }
       >
-        {page.bands.map((band, bi) => (
-          <div
-            key={bi}
-            className={`m-band${
-              highlight?.band?.page === page.no && highlight.band.index === bi ? " m-band-active" : ""
-            }${bi === page.bands.length - 1 ? " m-band-last" : ""}`}
-            onClick={onBandClick ? () => onBandClick(page.no, bi) : undefined}
-            style={
-              {
-                gridColumn: `${page.colStarts[bi] + 1} / span ${band.cols}`,
-                gridRow: "1 / -1",
-              } as CSSProperties
-            }
-          >
-            {band.items.map((item, ii) => {
-              const cellIdx =
-                activeCell && item.kind === "run" && item.lineId === activeCell.lineId
-                  ? activeCell.index
-                  : undefined;
-              return (
-                <ItemView
-                  key={ii}
-                  item={item}
-                  circled={circled}
-                  activeLarge={item.kind === "large" && item.elId === activeLargeEl}
-                  activeCell={cellIdx}
-                />
-              );
-            })}
-          </div>
-        ))}
-        {boxes.map((box, i) => (
+        {page.bands.map((band, bi) => {
+          const over = band.rows > PAGE_ROW_CAP;
+          return (
+            <div
+              key={bi}
+              className={`m-band${
+                highlight?.band?.page === page.no && highlight.band.index === bi ? " m-band-active" : ""
+              }${bi === page.bands.length - 1 ? " m-band-last" : ""}${over ? " m-band-over" : ""}`}
+              title={over
+                ? `此列 ${band.rows} 格，超出版面 ${PAGE_ROW_CAP} 格，底部 ${band.rows - PAGE_ROW_CAP} 格已隐藏`
+                : undefined}
+              onClick={onBandClick ? () => onBandClick(page.no, bi) : undefined}
+              style={
+                {
+                  gridColumn: `${page.colStarts[bi] + 1} / span ${band.cols}`,
+                  gridRow: "1 / -1",
+                } as CSSProperties
+              }
+            >
+              {band.items.map((item, ii) => {
+                const cellIdx =
+                  activeCell && item.kind === "run" && item.lineId === activeCell.lineId
+                    ? activeCell.index
+                    : undefined;
+                return (
+                  <ItemView
+                    key={ii}
+                    item={item}
+                    circled={circled}
+                    activeLarge={item.kind === "large" && item.elId === activeLargeEl}
+                    activeCell={cellIdx}
+                    rowCap={rows}
+                  />
+                );
+              })}
+            </div>
+          );
+        })}
+        {boxes.map((box, i) => {
+          // 封顶同款钳制：框底不越版面下线；整框在裁剪区则不渲染
+          const span = Math.min(box.rowEnd, rows) - box.rowStart;
+          if (span <= 0) return null;
+          return (
           <div
             key={`bk${i}`}
             className={[
@@ -223,7 +240,7 @@ function MatrixPageView({
               .join(" ")}
             style={
               {
-                gridRow: `${box.rowStart + 1} / span ${box.rowEnd - box.rowStart}`,
+                gridRow: `${box.rowStart + 1} / span ${span}`,
                 gridColumn: `${box.col + 1} / span 1`,
                 ...(box.halfShift
                   ? { transform: `translateX(calc(var(--guji-unit) * ${box.halfShift}))` }
@@ -231,7 +248,8 @@ function MatrixPageView({
               } as CSSProperties
             }
           />
-        ))}
+          );
+        })}
       </div>
     </div>
   );
@@ -242,6 +260,7 @@ function ItemView({
   circled,
   activeLarge,
   activeCell,
+  rowCap,
 }: {
   item: L3Item;
   circled: Set<string>;
@@ -249,36 +268,45 @@ function ItemView({
   activeLarge?: boolean;
   /** 单字联动：光标前一字符为该 run 的第 activeCell 字 */
   activeCell?: number;
+  /** 页面可见行数（封顶后）；条目跨度超出部分被裁剪 */
+  rowCap: number;
 }) {
   // 注意：ItemView 是 .m-band（subgrid 项）的子元素，列号用 band 局部坐标；
   // 页级换算（colStarts）只用于书名框等 .m-lines 直接子元素
   if (item.kind === "large") {
+    const span = Math.min(2, rowCap - item.r);
+    if (span <= 0) return null;
+    const clipped = span < 2;
     const text = item.text ?? "";
     const stacked = item.ligature && [...text].length > 1;
     const gridPos = {
-      gridRow: `${item.r + 1} / span 2`,
+      gridRow: `${item.r + 1} / span ${span}`,
       gridColumn: `${item.c + 1} / span 2`,
     } as CSSProperties;
     const active = activeLarge ? " m-char-active" : "";
+    const cut = clipped ? " m-clipped" : "";
     if (circled.has(item.elId ?? "")) {
       return (
-        <div className={`m-circle${active}`} style={gridPos}>
+        <div className={`m-circle${active}${cut}`} style={gridPos}>
           <div className="m-ring">{stacked ? <span className="stack">{text}</span> : text}</div>
         </div>
       );
     }
     return (
-      <div className={`m-large${active}`} style={gridPos}>
+      <div className={`m-large${active}${cut}`} style={gridPos}>
         {stacked ? <span className="stack">{text}</span> : text}
       </div>
     );
   }
+  const full = item.cells?.length ?? 0;
+  const span = Math.min(full, rowCap - item.r);
+  if (span <= 0) return null;
   return (
     <div
-      className="m-run"
+      className={`m-run${span < full ? " m-clipped" : ""}`}
       style={
         {
-          gridRow: `${item.r + 1} / span ${item.cells?.length ?? 0}`,
+          gridRow: `${item.r + 1} / span ${span}`,
           gridColumn: `${item.c + 1}`,
           // 奇数余量小字组的亚格居中（transform 平移——margin 会挤压固定轨道内的内容宽）
           ...(item.halfShift

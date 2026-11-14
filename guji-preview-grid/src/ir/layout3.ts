@@ -38,6 +38,11 @@ export interface L3Band {
   items: L3Item[];
 }
 
+/** 版面每列字格数上限（武英殿刻本物理版框；29 页金标实测均 24）。
+ *  仅渲染层封顶裁剪（展示规则），layout3 骨架保真不裁——超长列是转写
+ *  与物理版面不符的错误信号，由渲染层挂警示条暴露 */
+export const PAGE_ROW_CAP = 24;
+
 export interface L3Page {
   no: number;
   rows: number;

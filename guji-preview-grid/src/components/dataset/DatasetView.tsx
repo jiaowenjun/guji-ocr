@@ -36,7 +36,7 @@ import { resolvePageHeadwords } from "@/components/dataset/headwords";
 import { MatrixPages } from "@/components/matrix/MatrixPages";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
 import { gj2ir } from "@/ir/gj2ir";
-import { layout3 } from "@/ir/layout3";
+import { layout3, PAGE_ROW_CAP } from "@/ir/layout3";
 import { bandCursorTarget, buildCharIndex, charHighlightAt, highlightAt } from "@/ir/linkage";
 
 interface PageEntry {
@@ -289,7 +289,9 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
     : 0;
   const unit = cols > 0 ? (frameWidth - 2) / cols : 25;
   const matrixRows = laidPages.length > 0 ? laidPages[0].rows : 0;
-  const unitV = matrixRows > 0 ? frameContentH / matrixRows : unit;
+  // 行高分母封顶（超 PAGE_ROW_CAP 的行渲染层裁剪、不占轨道）：单列超长
+  // 不再压扁全页行高，版框纵向比例恒定；封顶列挂 m-band-over 红条警示
+  const unitV = matrixRows > 0 ? frameContentH / Math.min(matrixRows, PAGE_ROW_CAP) : unit;
 
   const onChange = useCallback(
     (value: string) => {

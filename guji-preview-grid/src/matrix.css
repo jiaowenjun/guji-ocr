@@ -68,6 +68,27 @@
 /* 最左 band 的左缘与版框重合，不画界栏（避免相邻双线）。m-band-last 由
    渲染层挂——books 渲染在 bands 之后且同为 div，:last-child 永不匹配 */
 
+/* 超 PAGE_ROW_CAP（24 格）的 band：内容底部被版面封顶裁剪——裁剪边缘
+   （版框下线内侧）染红条，暴露转写与物理版面不符（列超长）。
+   条在 band 层叠上下文（z:0）内：书名框（z:1）跨过处盖住红条，可接受 */
+.m-band-over {
+  position: relative;
+}
+.m-band-over::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: #dc2626;
+}
+
+/* 行轨封顶被压短跨度的条目：裁掉溢出内容（run 内多余 .m-cell / 半截大字字形） */
+.m-clipped {
+  overflow: hidden;
+}
+
 /* 大字：单个 2×2 格（行向用纵向字格高 --guji-unit-v，字号/圆环等按列宽基准不变形） */
 .m-large {
   font-family: "GujiLarge", "康熙傳承版 KangXiZiDian.com", "HanaMinA", serif;
