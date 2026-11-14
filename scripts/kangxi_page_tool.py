@@ -100,13 +100,33 @@ def continuation_from_prev(
         return [], info
 
     def host_in(raw_text: str):
-        """在单页文本中找最后一个有库内详情的字头；返回 (head, entry, tail_raw)"""
+        """在单页文本中找最后一个有库内详情的主字头；返回 (head, entry, tail_raw)。
+
+        字头行的两种实存格式都要认（@313–336 实测混用）：
+          行内式 #(注)#頭古文#變1#變2（如 @331「#(三)#中古文#𠁧#𠁩」）
+          独占式 #頭古文 一行、变体各自成 #行（如 @313 丁/𠆤）
+        古文变体不是宿主候选（@331 #𠁩 自带详情曾被误选为宿主致锚定失败）：
+        上一标记到本标记之间只有「古文」或空白（变体链）即判变体；紧贴本
+        字头的 #(注) 前缀（(增)/(二)/(三)…）先剥掉再判。
+        """
         marks = list(re.finditer(r"#([^#(\s【□])", raw_text))
-        for m in reversed(marks):
-            cand = m.group(1)
+        heads: list[tuple[str, int]] = []  # (主字头, 尾部起点)
+        guwen_open = False  # 上一主字头带「古文」，紧随的 # 段是变体链
+        for i, m in enumerate(marks):
+            seg = raw_text[marks[i - 1].end() if i else 0: m.start()]
+            seg = re.sub(r"\s*#\([^)]*\)\s*$", "", seg)  # 剥紧贴的 #(注)
+            seg_cmp = re.sub(r"\s+", "", seg)  # 竖排会把「古文」拆成两行（@320 不）
+            if guwen_open and re.fullmatch(r"[、，,]*", seg_cmp):
+                continue  # 变体链上的 #段（#𠁧#𠁩 / #𠀚、#𠙐 / 独占式 #𠆤 行）
+            if re.fullmatch(r"古文[：:]?", seg_cmp):
+                guwen_open = True
+                continue  # 「#頭古文(：)」后的首个变体
+            guwen_open = raw_text[m.end():].startswith("古文")
+            heads.append((m.group(1), m.end()))
+        for cand, end in reversed(heads):
             e = store.get_entry(ord(cand)) if len(cand) == 1 else None
             if e is not None:
-                return cand, e, raw_text[m.end():]
+                return cand, e, raw_text[end:]
         return None, None, ""
 
     raw = prev_gj.read_text(encoding="utf-8")
@@ -137,8 +157,13 @@ def continuation_from_prev(
         info["skipped"] = "前页字头在库中均无详情"
         return [], info
     info["head"] = head
-    # 剥离尾部的「古文#变体…」前缀：变体字头是词条页元数据，不在释义段文本内
-    tail_raw = re.sub(r"^\s*古文(?:#[^#\s【(]){1,4}", "", tail_raw)
+    # 剥离尾部的「古文#变体…」前缀：变体字头是词条页元数据，不在释义段文本内。
+    # 兼容实存格式全家（@312–336 实测）：行内 顿号分隔（古文#丄、#𠄞）、
+    # 冒号（古文：#𠀇、#𠀃）、变体独占成行（古文\n#𠆤）、竖排把「古文」
+    # 拆成两行（古\n文\n#𠀚、#𠙐）——旧正则逐一失配致锚定失败
+    tail_raw = re.sub(
+        r"^\s*古\s*文[\s：:、，,]*(?:#[^#\s【(][\s：:、，,]*){1,6}", "", tail_raw
+    )
     # 剥离注释行（伴随字形/归并来源等工具注释不是页面文本，混进尾部会让
     # 锚点在库内段落中找不到起点——@340 读 @339 丹条尾巴实测踩坑）
     tail_raw = "\n".join(
