@@ -74,7 +74,7 @@ export function nextGujiToken(
   }
 
   // 标点（渲染时会被剔除，按注释弱化显示）
-  const punct = rest.match(/^[，。·：:、《》]+/);
+  const punct = rest.match(/^[，。·•：:、《》]+/);
   if (punct) return { next: pos + punct[0].length, tok: "comment" };
 
   // 行内书名 【…】，或跨行书名的前半段（至行尾无 】）

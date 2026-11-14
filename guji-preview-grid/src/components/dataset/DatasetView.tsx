@@ -404,7 +404,7 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
    *  保存失败时缓冲保持未保存态，可 ⌘S 重试 */
   const formatText = () => {
     if (page === undefined || text === undefined) return;
-    const { text: formatted, spaces, circles } = formatDocument(text);
+    const { text: formatted, spaces, circles, dots } = formatDocument(text);
     if (formatted === text) {
       setStatus({ ok: true, msg: `@${page} 已是标准写法，无需格式化` });
       return;
@@ -413,6 +413,7 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
     const detail = [
       spaces > 0 ? `行内空格→* ${spaces} 处` : "",
       circles > 0 ? `◎→〇 ${circles} 处` : "",
+      dots > 0 ? `•→· ${dots} 处` : "",
       "括号归一/补全、字头独占一行",
     ]
       .filter(Boolean)

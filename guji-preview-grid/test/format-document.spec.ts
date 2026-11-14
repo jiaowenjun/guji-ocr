@@ -38,16 +38,23 @@ describe("formatDocument 规则（空格→◎→排版 串联）", () => {
     expect(fmt("@1\n\n#(增#𠁦 音義。\n")).toBe("@1\n\n#(增)𠁦\n*音義。\n");
   });
 
-  it("counts 汇报：空格/圈各自计数", () => {
-    const r = formatDocument("@2\n\n甲　乙◎丙　丁\n");
-    expect(r.text).toBe("@2\n\n甲*乙〇丙*丁\n");
+  it("counts 汇报：空格/圈/圆点各自计数", () => {
+    const r = formatDocument("@2\n\n甲　乙◎丙　丁•戊\n");
+    expect(r.text).toBe("@2\n\n甲*乙〇丙*丁·戊\n");
     expect(r.spaces).toBe(2);
     expect(r.circles).toBe(1);
+    expect(r.dots).toBe(1);
+  });
+
+  it("书名间隔号 • → ·（站点文本写法归一）；已是 · 的不动", () => {
+    expect(fmt("@1\n\n也。【易•乾卦】時乘六龍。*又【周禮•夏官•槀人】乘其事。\n"))
+      .toBe("@1\n\n也。【易·乾卦】時乘六龍。*又【周禮·夏官·槀人】乘其事。\n");
+    expect(formatDocument("@1\n\n【易·繫辭】天一地二。\n").dots).toBe(0);
   });
 
   it("已是标准写法时逐字节不变；幂等", () => {
     const once = fmt("@3\n\n#丅、𠆟\n【廣韻】胡雅切。*又居虯切。\n");
-    expect(formatDocument(once)).toEqual({ text: once, spaces: 0, circles: 0 });
+    expect(formatDocument(once)).toEqual({ text: once, spaces: 0, circles: 0, dots: 0 });
     expect(fmt(once)).toBe(once);
   });
 
@@ -66,7 +73,7 @@ describe("formatDocument 全语料不变量：字符流/大字/overlay/带数不
   ];
 
   // 字符流按 profile 清洗口径比对：格式化会补全「，古文：」标点（2026-11-14
-  // 标准形），标点在渲染/评测口径下本就剔除——语义字符流不变；◎〇同归○
+  // 标准形）并归一 •→·，两者在渲染/评测口径下本就剔除——语义字符流不变；◎〇同归○
   const charStream = (doc: IRDocument) =>
     doc.pages
       .flatMap((p) => p.bands.flatMap((b) => b.lines.flatMap((l) => l.elements.map((e) => e.text))))
@@ -74,7 +81,7 @@ describe("formatDocument 全语料不变量：字符流/大字/overlay/带数不
       .replace(/\s/g, "")
       .split("")
       .map((ch) => (ch === "◎" || ch === "〇" ? "○" : ch))
-      .filter((ch) => !"。，·\":：、《》".includes(ch))
+      .filter((ch) => !"。，·•\":：、《》".includes(ch))
       .join("");
   const largeSeq = (doc: IRDocument) =>
     JSON.stringify(
