@@ -396,8 +396,15 @@ def ocr_fold_page_lines(page: int, bands: list[list[str]], store: kangxi_store.K
     if not ocr_n:
         return bands, "OCR 无文本，未折行"
 
-    # 全页草稿文本（按 band 拼接）与 OCR 对齐；fold 边界 = OCR 组界映射到草稿
-    full = "\u0001".join("\n".join(b) for b in bands)
+    # 全页草稿文本（按 band 拼接）与 OCR 对齐；fold 边界 = OCR 组界映射到草稿。
+    # 输入大行先压平：旧折行换行不再泄漏进新片段（重折幂等；含 // 注释行的
+    # 大行保持原样——行内注释截断语义不能被并入单行）
+    def _flatten(band: list[str]) -> str:
+        if any("//" in l for l in band):
+            return "\n".join(band)
+        return "".join(l.strip() for l in band)
+
+    full = "\u0001".join(_flatten(b) for b in bands)
     full_n = _norm(full)
     sm = difflib.SequenceMatcher(None, full_n, ocr_n, autojunk=False)
     blocks = [b for b in sm.get_matching_blocks() if b.size > 0]
@@ -443,14 +450,21 @@ def ocr_fold_page_lines(page: int, bands: list[list[str]], store: kangxi_store.K
         if ch in PUNCT_STRIP:
             continue
         if ci < len(cut_norm) and norm_idx == cut_norm[ci]:
-            # 括号贴字：归一化剥掉【】，切点可能落在【|廣 或 …|】之间——
-            # 开书名号孤悬行尾则随下文（cut 左移），闭书名号起行则随上文（cut 右移）。
-            # 循环条件按字符匹配推进，不会越过 \u0001 带界或已有换行。
+            # 括号贴字：归一化剥掉【】，切点可能落在书名号内侧。判定须越过剥离带
+            # （句读/空格/旧折行换行）扫描：带内含【则 cut 移到最左【之前（开书名
+            # 号随下文起行），带内含】则 cut 移到最右】之后（闭书名号随上文收尾）；
+            # 只有书名号触发移动，普通句读仍留行尾。j 走剥离字符，不越 \u0001 带界。
             cut = i
-            while cut > last and full[cut - 1] == "【":
-                cut -= 1
-            while cut < len(full) and full[cut] == "】":
-                cut += 1
+            j = cut
+            while j < len(full) and full[j] in PUNCT_STRIP and full[j] != "【":
+                if full[j] == "】":
+                    cut = j + 1
+                j += 1
+            j = cut
+            while j > last and full[j - 1] in PUNCT_STRIP:
+                if full[j - 1] == "【":
+                    cut = j - 1
+                j -= 1
             pieces.append(full[last:cut])
             last = cut
             ci += 1
