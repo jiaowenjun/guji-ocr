@@ -14,7 +14,7 @@
                         时自动续入）→ 回补本页未编码字形 svg 缓存 →
                         manifest.json 追加该页（status=draft）→ 重写
                         guji-preview-grid/public/dataset/index.json
-                        → 后台预取 N+1（_prefetch_pipeline）
+                        → 后台预取 N+1（独立进程 prefetch-run，不阻塞 add 退出）
   status --page N --to draft|first|final
                         改页标签（草稿/初校/精校）并同步 manifest 与 index.json
   ocr-pages             各页 OCR/预取浅状态清单（预取调试视图数据源）：
@@ -61,7 +61,24 @@ ANNOTATIONS = REPO / "kangxi-gold" / "annotations"
 INDEX_JSON = REPO / "guji-preview-grid" / "public" / "dataset" / "index.json"
 
 STATUS_LABELS = {"draft": "草稿", "first": "初校", "final": "精校"}
-_PREFETCH_THREADS: list = []
+
+# —— add 计时打点（[timing] 前缀，stderr + prefetch.log 双写；仅 add 链路调用）——
+_ADD_T0 = time.monotonic()
+
+
+def _log_ts(marker: str) -> None:
+    msg = f"[timing] {marker} (+{time.monotonic() - _ADD_T0:.1f}s since add-start)"
+    print(f"{time.strftime('%H:%M:%S')} {msg}", file=sys.stderr, flush=True)
+    try:
+        import logging
+
+        logging.basicConfig(
+            filename=paths.OCR_CACHE_DIR / "prefetch.log", filemode="a",
+            level=logging.INFO, format="%(asctime)s %(message)s",
+        )
+        logging.info(msg)
+    except Exception:  # noqa: BLE001 —— 日志失败不影响主流程
+        pass
 
 
 def run_fetch(script: str, page: int, label: str) -> str:
@@ -1186,10 +1203,17 @@ def _prefetch_pipeline(nxt: int) -> list[dict]:
         level=logging.INFO, format="%(asctime)s %(message)s",
     )
     steps: list[dict] = []
+    step_marks = [time.monotonic()]
 
     def done(step: str, ok: bool, detail: str) -> None:
-        steps.append({"step": step, "ok": ok, "detail": detail})
-        if not ok:
+        now = time.monotonic()
+        steps.append({"step": step, "ok": ok, "detail": detail,
+                      "secs": round(now - step_marks[-1], 1)})
+        step_marks.append(now)
+        # 成功也写一行带耗时（原版只写失败）——prefetch-log 时间线数据源
+        if ok:
+            logging.info(f"@{nxt} {step} 完成 ({now - step_marks[-2]:.1f}s): {detail}")
+        else:
             logging.info(f"@{nxt} {step} 失败: {detail}")
 
     try:
@@ -1246,19 +1270,28 @@ def _prefetch_pipeline(nxt: int) -> list[dict]:
 
 
 def prefetch_next_page(page: int) -> None:
-    """后台预取 page+1：爬取（阅读页+图）→ OCR → 持久缓存。
+    """后台预取 page+1：以独立进程运行 prefetch-run（爬取→字头→OCR→svg）。
 
     添加第 n 页后自动调用，用户校对完第 n 页再添加 n+1 时 OCR 已就绪。
-    全部静默：失败只写日志文件不影响 add 结果；进程退出前等待完成（最长
-    ~10 分钟），add 本身的返回不被拖延。
+    独立进程（start_new_session 脱离进程组）：add 子进程 print 结果后立即
+    退出，HTTP 响应不被 N+1 预取拖延（曾实测被 OCR 现算拖 16s+）；预取
+    链路自身失败只写 prefetch.log，不影响 add 结果。
     """
     nxt = page + 1
     if not 1 <= nxt <= 7738:
         return
-    _prefetch_pipeline(nxt)
+    subprocess.Popen(
+        [sys.executable, str(Path(__file__).resolve()), "prefetch-run", "--page", str(nxt)],
+        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+        start_new_session=True, cwd=str(REPO),
+    )
+    _log_ts(f"预取 @{nxt} 已移交独立进程（prefetch-run）")
 
 
 def cmd_add(page: int) -> dict:
+    global _ADD_T0
+    _ADD_T0 = time.monotonic()
+    _log_ts(f"add @{page} 开始")
     manifest = load_manifest()
     existing = {p["page"] for p in manifest.get("pages", [])}
     if page in existing:
@@ -1297,6 +1330,7 @@ def cmd_add(page: int) -> dict:
             )
     except Exception as e:  # noqa: BLE001
         summaries.append(f"字头 svg 缓存异常已跳过（{type(e).__name__}）")
+    _log_ts("页数据/字头详情/svg 补齐完成")
 
     row = store.get_page(page)
     if not row or not row.get("scan_sha256") or not row.get("scan_file"):
@@ -1357,13 +1391,10 @@ def cmd_add(page: int) -> dict:
     )
     MANIFEST.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     write_index(manifest)
+    _log_ts(f"草稿+manifest+index 写盘完成（{gj_path.name}）")
 
-    # 后台预取 n+1（爬取+OCR+缓存）；不阻塞返回，进程退出前自然等待完成
-    import threading
-
-    t = threading.Thread(target=prefetch_next_page, args=(page,), daemon=True)
-    t.start()
-    _PREFETCH_THREADS.append(t)
+    # 后台预取 n+1：独立进程，不阻塞本进程退出（HTTP 响应 ~1s 内返回）
+    prefetch_next_page(page)
 
     return {
         "ok": True,
@@ -1429,10 +1460,10 @@ def main() -> int:
             result = cmd_prefetch_log(args.tail)
         else:
             result = cmd_status(args.page, args.to)
-        print(json.dumps(result, ensure_ascii=False))
-        # add 触发的后台预取（爬取+OCR）在此等待完成（不拖慢上面的结果输出）
-        for t in _PREFETCH_THREADS:
-            t.join()
+        print(json.dumps(result, ensure_ascii=False), flush=True)
+        if args.cmd == "add":
+            # 计时打点仅 add 链路输出，避免轮询类子命令（ocr-pages 等）刷日志
+            _log_ts("结果 JSON 已 print——add 进程即将退出（预取已在独立进程）")
         return 0
     except Exception as e:  # noqa: BLE001 —— 桥接给 HTTP 层
         print(json.dumps({"ok": False, "error": str(e)}, ensure_ascii=False))
