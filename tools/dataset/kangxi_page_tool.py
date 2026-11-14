@@ -959,7 +959,9 @@ def build_draft_gj(
 
 
 def cmd_ocr_fold(page: int, fold: bool = True) -> dict:
-    """对已入库页的 .gj 执行 OCR 折行（用户在编辑器工具栏手动触发）。
+    """对已入库页的 .gj 执行 OCR 折行（CLI 兜底：添加时 OCR 服务不可用、
+    草稿未折行，服务恢复后补折；前端工具栏按钮已删，添加流程在
+    build_draft_gj 内自动折行）。
 
     读取该页 .gj 的现有大行结构，按 OCR 行组插入换行——只插入换行、不改字符；
     页面已有折行会被先去掉再按 OCR 重折（幂等）。写回 .gj 并刷新 json/txt。

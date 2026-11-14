@@ -11,7 +11,7 @@ import {
   type CSSProperties,
   type ReactNode,
 } from "react";
-import { ChevronLeft, ChevronRight, Database, Download, Minus, Plus, RotateCcw, Save, ScanText, Scissors, Wand2, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, Database, Download, Minus, Plus, RotateCcw, Save, ScanText, Wand2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -167,7 +167,6 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState<{ ok: boolean; msg: string } | null>(null);
   const [ocrView, setOcrView] = useState<string | null>(null); // OCR 结果弹窗内容
-  const [folding, setFolding] = useState(false); // OCR 自动断行进行中
   const [adding, setAdding] = useState(false); // 添加新页表单开合
   const [pageInput, setPageInput] = useState("");
   const [addBusy, setAddBusy] = useState(false); // 添加新页进行中
@@ -417,37 +416,6 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
     setStatus({ ok: true, msg: `@${page} 已格式化（${detail}）——检查后保存` });
   };
 
-  /** OCR 自动断行：对已保存的当前页 .gj 重折行（先保存修改再触发） */
-  const ocrFold = async () => {
-    if (page === undefined) return;
-    if (dirty) {
-      setStatus({ ok: false, msg: "有未保存修改——先保存再自动断行（断行直接写回 .gj）" });
-      return;
-    }
-    setFolding(true);
-    setStatus(null);
-    try {
-      const res = await fetch("/dataset/page-tool", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ action: "ocr-fold", page }),
-      });
-      const data = (await res.json().catch(() => ({}))) as {
-        ok?: boolean;
-        error?: string;
-        note?: string;
-        changed?: boolean;
-      };
-      if (!res.ok || !data.ok) throw new Error(data.error ?? `HTTP ${res.status}`);
-      reload();
-      setStatus({ ok: true, msg: `@${page} ${data.note}${data.changed ? "（.gj 已更新，json/txt 已同步）" : ""}` });
-    } catch (e) {
-      setStatus({ ok: false, msg: e instanceof Error ? e.message : String(e) });
-    } finally {
-      setFolding(false);
-    }
-  };
-
   /** 显示 OCR 结果：弹窗展示该页 OCR markdown */
   const ocrShow = async () => {
     if (page === undefined) return;
@@ -656,11 +624,6 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
           <Button size="sm" variant="outline" disabled={text === undefined} onClick={download}>
             <Download data-icon="inline-start" />
             下载 .gj
-          </Button>
-          <Button size="sm" variant="outline" disabled={page === undefined || folding || dirty} onClick={ocrFold}
-            title="按 OCR 行组在当前页 .gj 内插入折行换行（只插入换行不改字符；需先保存修改）">
-            <Scissors data-icon="inline-start" />
-            {folding ? "断行中…" : "OCR自动断行"}
           </Button>
           <Button size="sm" variant="outline" disabled={page === undefined} onClick={ocrShow}
             title="弹窗显示该页的 PaddleOCR 识别文本">
