@@ -642,6 +642,45 @@ def ocr_fold_page_lines(page: int, bands: list[list[str]], store: kangxi_store.K
     return result, f"OCR 折行：插入 {inserted} 处换行"
 
 
+def ocr_regroup_bands(page: int, bands: list[list[str]]) -> tuple[list[list[str]], str]:
+    """按大列重排已折行的带：.gj 空行 = 大列界（空行分隔的带 = 大列）。
+
+    依据 evidence/2026-11-14-colseg-regroup-feasibility.json：初校带法是
+    机械的大列物理分组（23 页带数=覆盖大列数、金标带界 ⊆ 大列界、
+    141/142 带界无字头标记），oracle F1 0.913 / 端到端 0.797、11/23 页
+    零修正。实现：折叠行按归一字数 DP 单调分配到 16 小列槽
+    （kangxi_column_seg.assign_lines），槽 2k/2k+1 并为大列 k——
+    只重新划分行→带归属，字符流逐字不变；分割失败/退化时原样返回。
+    已知限制：regroup 自身幂等，但改变带界后再「OCR自动断行」重折时，
+    个别折点可能偏移 1 行（fold 切点映射对带界位置非完全不变，
+    @338 实测二遍 13→12 行、字符流不变）——校对者点一次即可。
+    """
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "eval"))
+    import kangxi_column_seg  # noqa: E402
+
+    lines = [l for b in bands for l in b if l.strip() and not l.strip().startswith("//")]
+    if len(lines) < 2:
+        return bands, "行数不足，未按大列重组"
+    res = kangxi_column_seg.segment(page)
+    if "error" in res:
+        return bands, f"大列分割不可用（{res['error']}），未重组"
+    ests = [m["chars_est"] for maj in res["majors"] for m in maj["minors"]]
+    lens = [len("".join(ch for ch in l if ch not in PUNCT_STRIP)) for l in lines]
+    ranges = kangxi_column_seg.assign_lines(lens, ests)
+    groups: list[list[str]] = []
+    for j in range(len(res["majors"])):
+        members: list[str] = []
+        for rng in (ranges[2 * j], ranges[2 * j + 1]):
+            if rng and rng[1] > rng[0]:
+                members.extend(lines[rng[0]:rng[1]])
+        if members:
+            groups.append(members)
+    if len(groups) < 2 or sum(len(g) for g in groups) != len(lines):
+        return bands, "大列分配退化，未重组"
+    sizes = ",".join(str(len(g)) for g in groups)
+    return groups, f"大列重组：{len(groups)} 带（各行数 {sizes}）"
+
+
 def _guwen_list(entry) -> list[str]:
     """词条的站点古文变体列表（guwen 字段按「、」分隔）。"""
     if not entry:
@@ -814,6 +853,8 @@ def build_draft_gj(
     if fold:
         bands, note = ocr_fold_page_lines(page, bands, store)
         notes.append(note)
+        bands, note = ocr_regroup_bands(page, bands)
+        notes.append(note)
 
     parts = [
         f"// 草稿：kangxizidian.com 爬取生成 {date.today()}，未经人工校对（状态：草稿）",
@@ -860,6 +901,9 @@ def cmd_ocr_fold(page: int, fold: bool = True) -> dict:
         bands.append(cur)
 
     folded, note = ocr_fold_page_lines(page, bands, store)
+    if folded is not bands and fold:
+        folded, rnote = ocr_regroup_bands(page, folded)
+        note = f"{note}；{rnote}"
     if fold and folded is bands:
         return {"ok": True, "page": page, "note": note, "changed": False}
 

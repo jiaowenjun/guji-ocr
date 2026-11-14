@@ -351,6 +351,55 @@ def segment(page: int, img_path=None, dark_thr=DARK_THR, pitch_range=PITCH_RANGE
                 majors=majors)
 
 
+def assign_lines(lens, ests):
+    """文本行（阅读序）→ 16 小列槽的单调分配：min Σ|ests[j] − 段字数|。
+
+    允许前导/尾随空列（未转写区/空槽）。返回每槽的行区间 (i,k)；空列=(0,0)
+    或 None（未到达）。生产用途：大列 regroup（kangxi_page_tool.
+    ocr_regroup_bands）；评估（eval_column_seg）同款逻辑。"""
+    m, n = len(lens), len(ests)
+    if not (0 < n and 0 < m):
+        return [None] * n
+    INF = float("inf")
+    pre = [0]
+    for l in lens:
+        pre.append(pre[-1] + l)
+
+    def seg(i, j):
+        return pre[j] - pre[i]
+
+    dp = [[INF] * (m + 1) for _ in range(n + 1)]
+    back = [[None] * (m + 1) for _ in range(n + 1)]
+    dp[0][0] = 0.0
+    for j in range(1, n + 1):
+        dp[j][0] = dp[j - 1][0] + ests[j - 1]  # 前导空列
+        back[j][0] = 0
+        for k in range(1, m + 1):
+            best, arg = INF, None
+            for i in range(k - 1, -1, -1):
+                if dp[j - 1][i] == INF:
+                    continue
+                c = dp[j - 1][i] + abs(ests[j - 1] - seg(i, k))
+                if c < best:
+                    best, arg = c, i
+            dp[j][k] = best
+            back[j][k] = arg
+    best, bj = INF, None
+    for j in range(1, n + 1):  # 尾随空列
+        tail = sum(ests[x] for x in range(j, n))
+        if dp[j][m] + tail < best:
+            best, bj = dp[j][m] + tail, j
+    if bj is None:
+        return [None] * n
+    ranges = [None] * n
+    k, j = m, bj
+    while j >= 1:
+        i = back[j][k]
+        ranges[j - 1] = (i, k)
+        k, j = i, j - 1
+    return ranges
+
+
 def draw(page: int, result: dict, img_path=None, out_path=None):
     img_path = img_path or IMGDIR / f"{page:04d}.jpg"
     out_path = out_path or f"/tmp/colseg_{page:04d}.png"
