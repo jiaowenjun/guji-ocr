@@ -346,7 +346,7 @@
           "ord": 7,
           "src": [
             460,
-            530
+            531
           ],
           "lines": [
             {
@@ -354,14 +354,24 @@
               "ord": 0,
               "src": [
                 460,
-                499
+                463
               ],
               "elements": [
                 {
                   "id": "p0313-b7-e0",
                   "class": "large",
                   "text": "𠆤"
-                },
+                }
+              ]
+            },
+            {
+              "id": "p0313-b7-l1",
+              "ord": 1,
+              "src": [
+                464,
+                500
+              ],
+              "elements": [
                 {
                   "id": "p0313-b7-e1",
                   "class": "small",
@@ -370,11 +380,11 @@
               ]
             },
             {
-              "id": "p0313-b7-l1",
-              "ord": 1,
+              "id": "p0313-b7-l2",
+              "ord": 2,
               "src": [
-                500,
-                530
+                501,
+                531
               ],
               "elements": [
                 {
@@ -713,18 +723,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0313-b7-l0",
+          "line": "p0313-b7-l1",
           "range": [
-            1,
-            3
+            0,
+            2
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        463,
-        467
+        464,
+        468
       ]
     },
     {
@@ -732,18 +742,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0313-b7-l0",
+          "line": "p0313-b7-l1",
           "range": [
-            3,
-            5
+            2,
+            4
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        467,
-        471
+        468,
+        472
       ]
     },
     {
@@ -751,18 +761,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0313-b7-l0",
+          "line": "p0313-b7-l1",
           "range": [
-            5,
-            7
+            4,
+            6
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        471,
-        475
+        472,
+        476
       ]
     },
     {
@@ -770,18 +780,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0313-b7-l0",
+          "line": "p0313-b7-l1",
           "range": [
-            7,
-            9
+            6,
+            8
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        475,
-        479
+        476,
+        480
       ]
     },
     {
@@ -789,18 +799,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0313-b7-l0",
+          "line": "p0313-b7-l1",
           "range": [
-            21,
-            23
+            20,
+            22
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        492,
-        496
+        493,
+        497
       ]
     },
     {
@@ -808,7 +818,7 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0313-b7-l1",
+          "line": "p0313-b7-l2",
           "range": [
             13,
             17
@@ -818,8 +828,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        513,
-        519
+        514,
+        520
       ]
     }
   ]

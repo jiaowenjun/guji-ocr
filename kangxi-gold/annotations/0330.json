@@ -77,7 +77,7 @@
           "ord": 1,
           "src": [
             14,
-            73
+            76
           ],
           "lines": [
             {
@@ -85,14 +85,24 @@
               "ord": 0,
               "src": [
                 14,
-                40
+                16
               ],
               "elements": [
                 {
                   "id": "p0330-b1-e0",
                   "class": "large",
                   "text": "丨"
-                },
+                }
+              ]
+            },
+            {
+              "id": "p0330-b1-l1",
+              "ord": 1,
+              "src": [
+                17,
+                41
+              ],
+              "elements": [
                 {
                   "id": "p0330-b1-e1",
                   "class": "small",
@@ -101,23 +111,43 @@
               ]
             },
             {
-              "id": "p0330-b1-l1",
-              "ord": 1,
+              "id": "p0330-b1-l2",
+              "ord": 2,
               "src": [
-                41,
-                68
+                42,
+                62
               ],
               "elements": [
                 {
                   "id": "p0330-b1-e2",
                   "class": "small",
                   "text": "通也。引而上行讀若囟，引而下行讀若𨓆。"
-                },
+                }
+              ]
+            },
+            {
+              "id": "p0330-b1-l3",
+              "ord": 3,
+              "src": [
+                63,
+                65
+              ],
+              "elements": [
                 {
                   "id": "p0330-b1-e3",
                   "class": "large",
                   "text": "丩"
-                },
+                }
+              ]
+            },
+            {
+              "id": "p0330-b1-l4",
+              "ord": 4,
+              "src": [
+                66,
+                71
+              ],
+              "elements": [
                 {
                   "id": "p0330-b1-e4",
                   "class": "small",
@@ -126,11 +156,11 @@
               ]
             },
             {
-              "id": "p0330-b1-l2",
-              "ord": 2,
+              "id": "p0330-b1-l5",
+              "ord": 5,
               "src": [
-                69,
-                73
+                72,
+                76
               ],
               "elements": [
                 {
@@ -146,16 +176,16 @@
           "id": "p0330-b2",
           "ord": 2,
           "src": [
-            75,
-            136
+            78,
+            139
           ],
           "lines": [
             {
               "id": "p0330-b2-l0",
               "ord": 0,
               "src": [
-                75,
-                105
+                78,
+                108
               ],
               "elements": [
                 {
@@ -169,8 +199,8 @@
               "id": "p0330-b2-l1",
               "ord": 1,
               "src": [
-                106,
-                136
+                109,
+                139
               ],
               "elements": [
                 {
@@ -186,16 +216,16 @@
           "id": "p0330-b3",
           "ord": 3,
           "src": [
-            138,
-            198
+            141,
+            207
           ],
           "lines": [
             {
               "id": "p0330-b3-l0",
               "ord": 0,
               "src": [
-                138,
-                143
+                141,
+                146
               ],
               "elements": [
                 {
@@ -209,15 +239,25 @@
               "id": "p0330-b3-l1",
               "ord": 1,
               "src": [
-                144,
-                162
+                147,
+                152
               ],
               "elements": [
                 {
                   "id": "p0330-b3-e1",
                   "class": "small",
                   "text": "或作𢒥。"
-                },
+                }
+              ]
+            },
+            {
+              "id": "p0330-b3-l2",
+              "ord": 2,
+              "src": [
+                153,
+                160
+              ],
+              "elements": [
                 {
                   "id": "p0330-b3-e2",
                   "class": "large",
@@ -227,7 +267,17 @@
                   "id": "p0330-b3-e3",
                   "class": "large",
                   "text": "𠁡"
-                },
+                }
+              ]
+            },
+            {
+              "id": "p0330-b3-l3",
+              "ord": 3,
+              "src": [
+                161,
+                168
+              ],
+              "elements": [
                 {
                   "id": "p0330-b3-e4",
                   "class": "small",
@@ -236,18 +286,28 @@
               ]
             },
             {
-              "id": "p0330-b3-l2",
-              "ord": 2,
+              "id": "p0330-b3-l4",
+              "ord": 4,
               "src": [
-                163,
-                186
+                169,
+                176
               ],
               "elements": [
                 {
                   "id": "p0330-b3-e5",
                   "class": "small",
                   "text": "字。註詳部首。"
-                },
+                }
+              ]
+            },
+            {
+              "id": "p0330-b3-l5",
+              "ord": 5,
+              "src": [
+                177,
+                183
+              ],
+              "elements": [
                 {
                   "id": "p0330-b3-e6",
                   "class": "large",
@@ -257,7 +317,17 @@
                   "id": "p0330-b3-e7",
                   "class": "large",
                   "text": "个"
-                },
+                }
+              ]
+            },
+            {
+              "id": "p0330-b3-l6",
+              "ord": 6,
+              "src": [
+                184,
+                195
+              ],
+              "elements": [
                 {
                   "id": "p0330-b3-e8",
                   "class": "small",
@@ -266,11 +336,11 @@
               ]
             },
             {
-              "id": "p0330-b3-l3",
-              "ord": 3,
+              "id": "p0330-b3-l7",
+              "ord": 7,
               "src": [
-                187,
-                198
+                196,
+                207
               ],
               "elements": [
                 {
@@ -286,16 +356,16 @@
           "id": "p0330-b4",
           "ord": 4,
           "src": [
-            200,
-            262
+            209,
+            271
           ],
           "lines": [
             {
               "id": "p0330-b4-l0",
               "ord": 0,
               "src": [
-                200,
-                230
+                209,
+                239
               ],
               "elements": [
                 {
@@ -309,8 +379,8 @@
               "id": "p0330-b4-l1",
               "ord": 1,
               "src": [
-                231,
-                262
+                240,
+                271
               ],
               "elements": [
                 {
@@ -326,16 +396,16 @@
           "id": "p0330-b5",
           "ord": 5,
           "src": [
-            264,
-            331
+            273,
+            340
           ],
           "lines": [
             {
               "id": "p0330-b5-l0",
               "ord": 0,
               "src": [
-                264,
-                297
+                273,
+                306
               ],
               "elements": [
                 {
@@ -349,8 +419,8 @@
               "id": "p0330-b5-l1",
               "ord": 1,
               "src": [
-                298,
-                331
+                307,
+                340
               ],
               "elements": [
                 {
@@ -366,16 +436,16 @@
           "id": "p0330-b6",
           "ord": 6,
           "src": [
-            333,
-            395
+            342,
+            404
           ],
           "lines": [
             {
               "id": "p0330-b6-l0",
               "ord": 0,
               "src": [
-                333,
-                365
+                342,
+                374
               ],
               "elements": [
                 {
@@ -389,8 +459,8 @@
               "id": "p0330-b6-l1",
               "ord": 1,
               "src": [
-                366,
-                395
+                375,
+                404
               ],
               "elements": [
                 {
@@ -406,16 +476,16 @@
           "id": "p0330-b7",
           "ord": 7,
           "src": [
-            397,
-            461
+            406,
+            470
           ],
           "lines": [
             {
               "id": "p0330-b7-l0",
               "ord": 0,
               "src": [
-                397,
-                428
+                406,
+                437
               ],
               "elements": [
                 {
@@ -429,8 +499,8 @@
               "id": "p0330-b7-l1",
               "ord": 1,
               "src": [
-                429,
-                461
+                438,
+                470
               ],
               "elements": [
                 {
@@ -451,18 +521,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0330-b1-l0",
+          "line": "p0330-b1-l1",
           "range": [
-            1,
-            3
+            0,
+            2
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        16,
-        20
+        17,
+        21
       ]
     },
     {
@@ -470,18 +540,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0330-b1-l0",
+          "line": "p0330-b1-l1",
           "range": [
-            17,
-            19
+            16,
+            18
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        34,
-        38
+        35,
+        39
       ]
     },
     {
@@ -489,18 +559,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0330-b1-l1",
+          "line": "p0330-b1-l4",
           "range": [
-            20,
-            22
+            0,
+            2
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        63,
-        67
+        66,
+        70
       ]
     },
     {
@@ -518,63 +588,6 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0330-b3-l1",
-          "range": [
-            6,
-            8
-          ]
-        }
-      ],
-      "openedHere": true,
-      "closed": true,
-      "src": [
-        155,
-        159
-      ]
-    },
-    {
-      "id": "o6",
-      "kind": "book-title",
-      "spans": [
-        {
-          "line": "p0330-b3-l2",
-          "range": [
-            9,
-            11
-          ]
-        }
-      ],
-      "openedHere": true,
-      "closed": true,
-      "src": [
-        175,
-        179
-      ]
-    },
-    {
-      "id": "o7",
-      "kind": "book-title",
-      "spans": [
-        {
-          "line": "p0330-b3-l2",
-          "range": [
-            11,
-            13
-          ]
-        }
-      ],
-      "openedHere": true,
-      "closed": true,
-      "src": [
-        179,
-        183
-      ]
-    },
-    {
-      "id": "o8",
-      "kind": "book-title",
-      "spans": [
-        {
           "line": "p0330-b3-l3",
           "range": [
             0,
@@ -585,8 +598,65 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        187,
-        191
+        161,
+        165
+      ]
+    },
+    {
+      "id": "o6",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0330-b3-l6",
+          "range": [
+            0,
+            2
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        184,
+        188
+      ]
+    },
+    {
+      "id": "o7",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0330-b3-l6",
+          "range": [
+            2,
+            4
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        188,
+        192
+      ]
+    },
+    {
+      "id": "o8",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0330-b3-l7",
+          "range": [
+            0,
+            2
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        196,
+        200
       ]
     },
     {
@@ -604,8 +674,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        206,
-        214
+        215,
+        223
       ]
     },
     {
@@ -623,8 +693,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        235,
-        243
+        244,
+        252
       ]
     },
     {
@@ -642,8 +712,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        266,
-        279
+        275,
+        288
       ]
     },
     {
@@ -661,8 +731,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        287,
-        290
+        296,
+        299
       ]
     },
     {
@@ -680,8 +750,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        304,
-        310
+        313,
+        319
       ]
     },
     {
@@ -699,8 +769,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        327,
-        330
+        336,
+        339
       ]
     },
     {
@@ -718,8 +788,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        340,
-        346
+        349,
+        355
       ]
     },
     {
@@ -737,8 +807,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        371,
-        374
+        380,
+        383
       ]
     },
     {
@@ -756,8 +826,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        417,
-        425
+        426,
+        434
       ]
     },
     {
@@ -775,8 +845,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        442,
-        445
+        451,
+        454
       ]
     },
     {
@@ -794,8 +864,8 @@
       "openedHere": true,
       "closed": false,
       "src": [
-        452,
-        461
+        461,
+        471
       ]
     }
   ]

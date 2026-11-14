@@ -286,7 +286,7 @@
           "ord": 6,
           "src": [
             387,
-            458
+            460
           ],
           "lines": [
             {
@@ -324,7 +324,7 @@
               "ord": 2,
               "src": [
                 397,
-                426
+                400
               ],
               "elements": [
                 {
@@ -335,7 +335,7 @@
                 {
                   "id": "p0321-b6-e3",
                   "class": "small",
-                  "text": ":廣韻集韻正韻𠀤同與。說文賜予也。一"
+                  "text": ":"
                 }
               ]
             },
@@ -343,14 +343,14 @@
               "id": "p0321-b6-l3",
               "ord": 3,
               "src": [
-                427,
-                445
+                401,
+                427
               ],
               "elements": [
                 {
                   "id": "p0321-b6-e4",
                   "class": "small",
-                  "text": "勺爲与。六書正譌寡則均，故从一勺"
+                  "text": "廣韻集韻正韻𠀤同與。說文賜予也。一"
                 }
               ]
             },
@@ -358,19 +358,14 @@
               "id": "p0321-b6-l4",
               "ord": 4,
               "src": [
-                446,
-                453
+                428,
+                446
               ],
               "elements": [
                 {
                   "id": "p0321-b6-e5",
-                  "class": "large",
-                  "text": "丏"
-                },
-                {
-                  "id": "p0321-b6-e6",
                   "class": "small",
-                  "text": ":廣韻"
+                  "text": "勺爲与。六書正譌寡則均，故从一勺"
                 }
               ]
             },
@@ -378,12 +373,47 @@
               "id": "p0321-b6-l5",
               "ord": 5,
               "src": [
-                454,
-                458
+                447,
+                450
               ],
               "elements": [
                 {
+                  "id": "p0321-b6-e6",
+                  "class": "large",
+                  "text": "丏"
+                },
+                {
                   "id": "p0321-b6-e7",
+                  "class": "small",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "id": "p0321-b6-l6",
+              "ord": 6,
+              "src": [
+                451,
+                455
+              ],
+              "elements": [
+                {
+                  "id": "p0321-b6-e8",
+                  "class": "small",
+                  "text": "廣韻"
+                }
+              ]
+            },
+            {
+              "id": "p0321-b6-l7",
+              "ord": 7,
+              "src": [
+                456,
+                460
+              ],
+              "elements": [
+                {
+                  "id": "p0321-b6-e9",
                   "class": "small",
                   "text": "集韻"
                 }
@@ -395,16 +425,16 @@
           "id": "p0321-b7",
           "ord": 7,
           "src": [
-            460,
-            529
+            462,
+            531
           ],
           "lines": [
             {
               "id": "p0321-b7-l0",
               "ord": 0,
               "src": [
-                460,
-                496
+                462,
+                498
               ],
               "elements": [
                 {
@@ -418,8 +448,8 @@
               "id": "p0321-b7-l1",
               "ord": 1,
               "src": [
-                497,
-                529
+                499,
+                531
               ],
               "elements": [
                 {
@@ -644,121 +674,7 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0321-b6-l2",
-          "range": [
-            2,
-            4
-          ]
-        }
-      ],
-      "openedHere": true,
-      "closed": true,
-      "src": [
-        400,
-        404
-      ]
-    },
-    {
-      "id": "o11",
-      "kind": "book-title",
-      "spans": [
-        {
-          "line": "p0321-b6-l2",
-          "range": [
-            4,
-            6
-          ]
-        }
-      ],
-      "openedHere": true,
-      "closed": true,
-      "src": [
-        404,
-        408
-      ]
-    },
-    {
-      "id": "o12",
-      "kind": "book-title",
-      "spans": [
-        {
-          "line": "p0321-b6-l2",
-          "range": [
-            6,
-            8
-          ]
-        }
-      ],
-      "openedHere": true,
-      "closed": true,
-      "src": [
-        408,
-        412
-      ]
-    },
-    {
-      "id": "o13",
-      "kind": "book-title",
-      "spans": [
-        {
-          "line": "p0321-b6-l2",
-          "range": [
-            12,
-            14
-          ]
-        }
-      ],
-      "openedHere": true,
-      "closed": true,
-      "src": [
-        417,
-        421
-      ]
-    },
-    {
-      "id": "o14",
-      "kind": "book-title",
-      "spans": [
-        {
           "line": "p0321-b6-l3",
-          "range": [
-            4,
-            8
-          ]
-        }
-      ],
-      "openedHere": true,
-      "closed": true,
-      "src": [
-        431,
-        437
-      ]
-    },
-    {
-      "id": "o15",
-      "kind": "book-title",
-      "spans": [
-        {
-          "line": "p0321-b6-l4",
-          "range": [
-            2,
-            4
-          ]
-        }
-      ],
-      "openedHere": true,
-      "closed": true,
-      "src": [
-        449,
-        453
-      ]
-    },
-    {
-      "id": "o16",
-      "kind": "book-title",
-      "spans": [
-        {
-          "line": "p0321-b6-l5",
           "range": [
             0,
             2
@@ -768,8 +684,122 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        454,
-        458
+        401,
+        405
+      ]
+    },
+    {
+      "id": "o11",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0321-b6-l3",
+          "range": [
+            2,
+            4
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        405,
+        409
+      ]
+    },
+    {
+      "id": "o12",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0321-b6-l3",
+          "range": [
+            4,
+            6
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        409,
+        413
+      ]
+    },
+    {
+      "id": "o13",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0321-b6-l3",
+          "range": [
+            10,
+            12
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        418,
+        422
+      ]
+    },
+    {
+      "id": "o14",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0321-b6-l4",
+          "range": [
+            4,
+            8
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        432,
+        438
+      ]
+    },
+    {
+      "id": "o15",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0321-b6-l6",
+          "range": [
+            0,
+            2
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        451,
+        455
+      ]
+    },
+    {
+      "id": "o16",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0321-b6-l7",
+          "range": [
+            0,
+            2
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        456,
+        460
       ]
     },
     {
@@ -787,8 +817,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        460,
-        464
+        462,
+        466
       ]
     },
     {
@@ -806,8 +836,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        467,
-        471
+        469,
+        473
       ]
     },
     {
@@ -825,8 +855,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        480,
-        484
+        482,
+        486
       ]
     },
     {
@@ -844,8 +874,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        488,
-        492
+        490,
+        494
       ]
     },
     {
@@ -863,8 +893,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        502,
-        506
+        504,
+        508
       ]
     },
     {
@@ -882,8 +912,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        520,
-        524
+        522,
+        526
       ]
     }
   ]

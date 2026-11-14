@@ -46,7 +46,7 @@
           "ord": 0,
           "src": [
             6,
-            75
+            76
           ],
           "lines": [
             {
@@ -84,7 +84,7 @@
               "ord": 2,
               "src": [
                 27,
-                53
+                30
               ],
               "elements": [
                 {
@@ -95,7 +95,7 @@
                 {
                   "id": "p0322-b0-e3",
                   "class": "small",
-                  "text": ":廣韻古太切集韻韻會正韻居太切，"
+                  "text": ":"
                 }
               ]
             },
@@ -103,12 +103,27 @@
               "id": "p0322-b0-l3",
               "ord": 3,
               "src": [
-                54,
-                75
+                31,
+                54
               ],
               "elements": [
                 {
                   "id": "p0322-b0-e4",
+                  "class": "small",
+                  "text": "廣韻古太切集韻韻會正韻居太切，"
+                }
+              ]
+            },
+            {
+              "id": "p0322-b0-l4",
+              "ord": 4,
+              "src": [
+                55,
+                76
+              ],
+              "elements": [
+                {
+                  "id": "p0322-b0-e5",
                   "class": "small",
                   "text": "𠀤音蓋。乞也，取也。又與也。 又集韻"
                 }
@@ -120,16 +135,16 @@
           "id": "p0322-b1",
           "ord": 1,
           "src": [
-            77,
-            146
+            78,
+            148
           ],
           "lines": [
             {
               "id": "p0322-b1-l0",
               "ord": 0,
               "src": [
-                77,
-                82
+                78,
+                83
               ],
               "elements": [
                 {
@@ -143,8 +158,8 @@
               "id": "p0322-b1-l1",
               "ord": 1,
               "src": [
-                83,
-                88
+                84,
+                89
               ],
               "elements": [
                 {
@@ -158,8 +173,8 @@
               "id": "p0322-b1-l2",
               "ord": 2,
               "src": [
-                89,
-                121
+                90,
+                93
               ],
               "elements": [
                 {
@@ -170,7 +185,7 @@
                 {
                   "id": "p0322-b1-e3",
                   "class": "small",
-                  "text": ":廣韻集韻韻會敕久切正韻齒九切，𠀤音醜。十"
+                  "text": ":"
                 }
               ]
             },
@@ -178,12 +193,27 @@
               "id": "p0322-b1-l3",
               "ord": 3,
               "src": [
-                122,
-                146
+                94,
+                123
               ],
               "elements": [
                 {
                   "id": "p0322-b1-e4",
+                  "class": "small",
+                  "text": "廣韻集韻韻會敕久切正韻齒九切，𠀤音醜。十"
+                }
+              ]
+            },
+            {
+              "id": "p0322-b1-l4",
+              "ord": 4,
+              "src": [
+                124,
+                148
+              ],
+              "elements": [
+                {
+                  "id": "p0322-b1-e5",
                   "class": "small",
                   "text": "二月辰名。爾雅·釋天太歲在丑曰赤奮若。淮南"
                 }
@@ -195,16 +225,16 @@
           "id": "p0322-b2",
           "ord": 2,
           "src": [
-            148,
-            214
+            150,
+            216
           ],
           "lines": [
             {
               "id": "p0322-b2-l0",
               "ord": 0,
               "src": [
-                148,
-                180
+                150,
+                182
               ],
               "elements": [
                 {
@@ -218,8 +248,8 @@
               "id": "p0322-b2-l1",
               "ord": 1,
               "src": [
-                181,
-                214
+                183,
+                216
               ],
               "elements": [
                 {
@@ -235,16 +265,16 @@
           "id": "p0322-b3",
           "ord": 3,
           "src": [
-            216,
-            279
+            218,
+            283
           ],
           "lines": [
             {
               "id": "p0322-b3-l0",
               "ord": 0,
               "src": [
-                216,
-                231
+                218,
+                233
               ],
               "elements": [
                 {
@@ -258,8 +288,8 @@
               "id": "p0322-b3-l1",
               "ord": 1,
               "src": [
-                232,
-                246
+                234,
+                248
               ],
               "elements": [
                 {
@@ -273,8 +303,8 @@
               "id": "p0322-b3-l2",
               "ord": 2,
               "src": [
-                247,
-                261
+                249,
+                257
               ],
               "elements": [
                 {
@@ -290,7 +320,7 @@
                 {
                   "id": "p0322-b3-e4",
                   "class": "small",
-                  "text": ":玉篇古文且"
+                  "text": ":"
                 }
               ]
             },
@@ -298,14 +328,14 @@
               "id": "p0322-b3-l3",
               "ord": 3,
               "src": [
-                262,
-                269
+                258,
+                265
               ],
               "elements": [
                 {
                   "id": "p0322-b3-e5",
                   "class": "small",
-                  "text": "字。註詳四畫。"
+                  "text": "玉篇古文且"
                 }
               ]
             },
@@ -313,19 +343,14 @@
               "id": "p0322-b3-l4",
               "ord": 4,
               "src": [
-                270,
-                274
+                266,
+                273
               ],
               "elements": [
                 {
                   "id": "p0322-b3-e6",
-                  "class": "large",
-                  "text": "𠀈"
-                },
-                {
-                  "id": "p0322-b3-e7",
                   "class": "small",
-                  "text": ":"
+                  "text": "字。註詳四畫。"
                 }
               ]
             },
@@ -333,14 +358,19 @@
               "id": "p0322-b3-l5",
               "ord": 5,
               "src": [
-                275,
-                277
+                274,
+                278
               ],
               "elements": [
                 {
+                  "id": "p0322-b3-e7",
+                  "class": "large",
+                  "text": "𠀈"
+                },
+                {
                   "id": "p0322-b3-e8",
                   "class": "small",
-                  "text": "字"
+                  "text": ":"
                 }
               ]
             },
@@ -348,12 +378,27 @@
               "id": "p0322-b3-l6",
               "ord": 6,
               "src": [
-                278,
-                279
+                279,
+                281
               ],
               "elements": [
                 {
                   "id": "p0322-b3-e9",
+                  "class": "small",
+                  "text": "字"
+                }
+              ]
+            },
+            {
+              "id": "p0322-b3-l7",
+              "ord": 7,
+              "src": [
+                282,
+                283
+              ],
+              "elements": [
+                {
+                  "id": "p0322-b3-e10",
                   "class": "small",
                   "text": "彙"
                 }
@@ -365,16 +410,16 @@
           "id": "p0322-b4",
           "ord": 4,
           "src": [
-            281,
-            343
+            285,
+            348
           ],
           "lines": [
             {
               "id": "p0322-b4-l0",
               "ord": 0,
               "src": [
-                281,
-                295
+                285,
+                299
               ],
               "elements": [
                 {
@@ -388,8 +433,8 @@
               "id": "p0322-b4-l1",
               "ord": 1,
               "src": [
-                296,
-                308
+                300,
+                312
               ],
               "elements": [
                 {
@@ -403,8 +448,8 @@
               "id": "p0322-b4-l2",
               "ord": 2,
               "src": [
-                309,
-                324
+                313,
+                329
               ],
               "elements": [
                 {
@@ -443,8 +488,8 @@
               "id": "p0322-b4-l3",
               "ord": 3,
               "src": [
-                325,
-                335
+                330,
+                340
               ],
               "elements": [
                 {
@@ -458,8 +503,8 @@
               "id": "p0322-b4-l4",
               "ord": 4,
               "src": [
-                336,
-                343
+                341,
+                348
               ],
               "elements": [
                 {
@@ -475,16 +520,16 @@
           "id": "p0322-b5",
           "ord": 5,
           "src": [
-            345,
-            411
+            350,
+            416
           ],
           "lines": [
             {
               "id": "p0322-b5-l0",
               "ord": 0,
               "src": [
-                345,
-                377
+                350,
+                382
               ],
               "elements": [
                 {
@@ -498,8 +543,8 @@
               "id": "p0322-b5-l1",
               "ord": 1,
               "src": [
-                378,
-                411
+                383,
+                416
               ],
               "elements": [
                 {
@@ -515,16 +560,16 @@
           "id": "p0322-b6",
           "ord": 6,
           "src": [
-            413,
-            480
+            418,
+            485
           ],
           "lines": [
             {
               "id": "p0322-b6-l0",
               "ord": 0,
               "src": [
-                413,
-                449
+                418,
+                454
               ],
               "elements": [
                 {
@@ -538,8 +583,8 @@
               "id": "p0322-b6-l1",
               "ord": 1,
               "src": [
-                450,
-                480
+                455,
+                485
               ],
               "elements": [
                 {
@@ -555,16 +600,16 @@
           "id": "p0322-b7",
           "ord": 7,
           "src": [
-            482,
-            547
+            487,
+            552
           ],
           "lines": [
             {
               "id": "p0322-b7-l0",
               "ord": 0,
               "src": [
-                482,
-                514
+                487,
+                519
               ],
               "elements": [
                 {
@@ -578,8 +623,8 @@
               "id": "p0322-b7-l1",
               "ord": 1,
               "src": [
-                515,
-                547
+                520,
+                552
               ],
               "elements": [
                 {
@@ -600,18 +645,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0322-b0-l2",
+          "line": "p0322-b0-l3",
           "range": [
-            2,
-            4
+            0,
+            2
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        30,
-        34
+        31,
+        35
       ]
     },
     {
@@ -619,7 +664,26 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0322-b0-l2",
+          "line": "p0322-b0-l3",
+          "range": [
+            5,
+            7
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        38,
+        42
+      ]
+    },
+    {
+      "id": "o2",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0322-b0-l3",
           "range": [
             7,
             9
@@ -629,16 +693,16 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        37,
-        41
+        42,
+        46
       ]
     },
     {
-      "id": "o2",
+      "id": "o3",
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0322-b0-l2",
+          "line": "p0322-b0-l3",
           "range": [
             9,
             11
@@ -648,27 +712,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        41,
-        45
-      ]
-    },
-    {
-      "id": "o3",
-      "kind": "book-title",
-      "spans": [
-        {
-          "line": "p0322-b0-l2",
-          "range": [
-            11,
-            13
-          ]
-        }
-      ],
-      "openedHere": true,
-      "closed": true,
-      "src": [
-        45,
-        49
+        46,
+        50
       ]
     },
     {
@@ -676,7 +721,7 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0322-b0-l3",
+          "line": "p0322-b0-l4",
           "range": [
             16,
             18
@@ -686,8 +731,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        71,
-        75
+        72,
+        76
       ]
     },
     {
@@ -695,7 +740,26 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0322-b1-l2",
+          "line": "p0322-b1-l3",
+          "range": [
+            0,
+            2
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        94,
+        98
+      ]
+    },
+    {
+      "id": "o6",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0322-b1-l3",
           "range": [
             2,
             4
@@ -705,16 +769,16 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        92,
-        96
+        98,
+        102
       ]
     },
     {
-      "id": "o6",
+      "id": "o7",
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0322-b1-l2",
+          "line": "p0322-b1-l3",
           "range": [
             4,
             6
@@ -724,27 +788,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        96,
-        100
-      ]
-    },
-    {
-      "id": "o7",
-      "kind": "book-title",
-      "spans": [
-        {
-          "line": "p0322-b1-l2",
-          "range": [
-            6,
-            8
-          ]
-        }
-      ],
-      "openedHere": true,
-      "closed": true,
-      "src": [
-        100,
-        104
+        102,
+        106
       ]
     },
     {
@@ -752,18 +797,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0322-b1-l2",
+          "line": "p0322-b1-l3",
           "range": [
-            11,
-            13
+            9,
+            11
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        107,
-        111
+        109,
+        113
       ]
     },
     {
@@ -771,7 +816,7 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0322-b1-l3",
+          "line": "p0322-b1-l4",
           "range": [
             5,
             10
@@ -781,8 +826,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        127,
-        134
+        129,
+        136
       ]
     },
     {
@@ -790,7 +835,7 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0322-b1-l3",
+          "line": "p0322-b1-l4",
           "range": [
             19,
             21
@@ -807,8 +852,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        143,
-        154
+        145,
+        156
       ]
     },
     {
@@ -826,8 +871,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        159,
-        167
+        161,
+        169
       ]
     },
     {
@@ -845,8 +890,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        183,
-        188
+        185,
+        190
       ]
     },
     {
@@ -864,8 +909,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        194,
-        200
+        196,
+        202
       ]
     },
     {
@@ -878,18 +923,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0322-b3-l2",
+          "line": "p0322-b3-l3",
           "range": [
-            3,
-            5
+            0,
+            2
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        254,
-        258
+        258,
+        262
       ]
     },
     {
@@ -897,14 +942,14 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0322-b3-l5",
+          "line": "p0322-b3-l6",
           "range": [
             0,
             1
           ]
         },
         {
-          "line": "p0322-b3-l6",
+          "line": "p0322-b3-l7",
           "range": [
             0,
             1
@@ -921,8 +966,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        275,
-        283
+        279,
+        287
       ]
     },
     {
@@ -945,8 +990,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        286,
-        294
+        290,
+        298
       ]
     },
     {
@@ -964,8 +1009,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        325,
-        329
+        330,
+        334
       ]
     },
     {
@@ -983,8 +1028,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        329,
-        333
+        334,
+        338
       ]
     },
     {
@@ -1009,8 +1054,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        333,
-        338
+        338,
+        343
       ]
     },
     {
@@ -1035,8 +1080,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        341,
-        347
+        346,
+        352
       ]
     },
     {
@@ -1054,8 +1099,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        361,
-        365
+        366,
+        370
       ]
     },
     {
@@ -1073,8 +1118,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        380,
-        386
+        385,
+        391
       ]
     },
     {
@@ -1092,8 +1137,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        413,
-        419
+        418,
+        424
       ]
     },
     {
@@ -1111,8 +1156,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        433,
-        439
+        438,
+        444
       ]
     },
     {
@@ -1130,8 +1175,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        444,
-        447
+        449,
+        452
       ]
     },
     {
@@ -1149,8 +1194,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        466,
-        472
+        471,
+        477
       ]
     },
     {
@@ -1168,8 +1213,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        484,
-        492
+        489,
+        497
       ]
     },
     {
@@ -1194,8 +1239,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        512,
-        521
+        517,
+        526
       ]
     },
     {
@@ -1213,8 +1258,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        544,
-        547
+        549,
+        552
       ]
     }
   ]

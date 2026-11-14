@@ -46,7 +46,7 @@
           "ord": 0,
           "src": [
             6,
-            82
+            83
           ],
           "lines": [
             {
@@ -84,7 +84,7 @@
               "ord": 2,
               "src": [
                 13,
-                47
+                16
               ],
               "elements": [
                 {
@@ -95,7 +95,7 @@
                 {
                   "id": "p0327-b0-e3",
                   "class": "small",
-                  "text": ":廣韻署陵切集韻韻會辰陵切正韻時征切，𠀤音承。"
+                  "text": ":"
                 }
               ]
             },
@@ -103,12 +103,27 @@
               "id": "p0327-b0-l3",
               "ord": 3,
               "src": [
-                48,
-                82
+                17,
+                48
               ],
               "elements": [
                 {
                   "id": "p0327-b0-e4",
+                  "class": "small",
+                  "text": "廣韻署陵切集韻韻會辰陵切正韻時征切，𠀤音承。"
+                }
+              ]
+            },
+            {
+              "id": "p0327-b0-l4",
+              "ord": 4,
+              "src": [
+                49,
+                83
+              ],
+              "elements": [
+                {
+                  "id": "p0327-b0-e5",
                   "class": "small",
                   "text": "玉篇繼也。廣韻佐也。正韻副貳也。禮·文王世子虞、夏、"
                 }
@@ -120,16 +135,16 @@
           "id": "p0327-b1",
           "ord": 1,
           "src": [
-            84,
-            146
+            85,
+            147
           ],
           "lines": [
             {
               "id": "p0327-b1-l0",
               "ord": 0,
               "src": [
-                84,
-                116
+                85,
+                117
               ],
               "elements": [
                 {
@@ -143,8 +158,8 @@
               "id": "p0327-b1-l1",
               "ord": 1,
               "src": [
-                117,
-                146
+                118,
+                147
               ],
               "elements": [
                 {
@@ -160,16 +175,16 @@
           "id": "p0327-b2",
           "ord": 2,
           "src": [
-            148,
-            214
+            149,
+            215
           ],
           "lines": [
             {
               "id": "p0327-b2-l0",
               "ord": 0,
               "src": [
-                148,
-                183
+                149,
+                184
               ],
               "elements": [
                 {
@@ -183,8 +198,8 @@
               "id": "p0327-b2-l1",
               "ord": 1,
               "src": [
-                184,
-                214
+                185,
+                215
               ],
               "elements": [
                 {
@@ -200,16 +215,16 @@
           "id": "p0327-b3",
           "ord": 3,
           "src": [
-            216,
-            279
+            217,
+            280
           ],
           "lines": [
             {
               "id": "p0327-b3-l0",
               "ord": 0,
               "src": [
-                216,
-                247
+                217,
+                248
               ],
               "elements": [
                 {
@@ -223,8 +238,8 @@
               "id": "p0327-b3-l1",
               "ord": 1,
               "src": [
-                248,
-                279
+                249,
+                280
               ],
               "elements": [
                 {
@@ -240,16 +255,16 @@
           "id": "p0327-b4",
           "ord": 4,
           "src": [
-            281,
-            350
+            282,
+            352
           ],
           "lines": [
             {
               "id": "p0327-b4-l0",
               "ord": 0,
               "src": [
-                281,
-                299
+                282,
+                300
               ],
               "elements": [
                 {
@@ -263,8 +278,8 @@
               "id": "p0327-b4-l1",
               "ord": 1,
               "src": [
-                300,
-                318
+                301,
+                319
               ],
               "elements": [
                 {
@@ -278,8 +293,8 @@
               "id": "p0327-b4-l2",
               "ord": 2,
               "src": [
-                319,
-                337
+                320,
+                323
               ],
               "elements": [
                 {
@@ -290,7 +305,7 @@
                 {
                   "id": "p0327-b4-e3",
                   "class": "small",
-                  "text": ":篇海丁羞切。揚子·方言"
+                  "text": ":"
                 }
               ]
             },
@@ -298,12 +313,27 @@
               "id": "p0327-b4-l3",
               "ord": 3,
               "src": [
-                338,
-                350
+                324,
+                339
               ],
               "elements": [
                 {
                   "id": "p0327-b4-e4",
+                  "class": "small",
+                  "text": "篇海丁羞切。揚子·方言"
+                }
+              ]
+            },
+            {
+              "id": "p0327-b4-l4",
+              "ord": 4,
+              "src": [
+                340,
+                352
+              ],
+              "elements": [
+                {
+                  "id": "p0327-b4-e5",
                   "class": "small",
                   "text": "一去不還也。俗作丟，非。"
                 }
@@ -315,23 +345,33 @@
           "id": "p0327-b5",
           "ord": 5,
           "src": [
-            352,
-            412
+            354,
+            418
           ],
           "lines": [
             {
               "id": "p0327-b5-l0",
               "ord": 0,
               "src": [
-                352,
-                364
+                354,
+                357
               ],
               "elements": [
                 {
                   "id": "p0327-b5-e0",
                   "class": "large",
                   "text": "𠀘"
-                },
+                }
+              ]
+            },
+            {
+              "id": "p0327-b5-l1",
+              "ord": 1,
+              "src": [
+                358,
+                367
+              ],
+              "elements": [
                 {
                   "id": "p0327-b5-e1",
                   "class": "small",
@@ -340,11 +380,11 @@
               ]
             },
             {
-              "id": "p0327-b5-l1",
-              "ord": 1,
+              "id": "p0327-b5-l2",
+              "ord": 2,
               "src": [
-                365,
-                372
+                368,
+                375
               ],
               "elements": [
                 {
@@ -355,11 +395,11 @@
               ]
             },
             {
-              "id": "p0327-b5-l2",
-              "ord": 2,
+              "id": "p0327-b5-l3",
+              "ord": 3,
               "src": [
-                373,
-                388
+                376,
+                383
               ],
               "elements": [
                 {
@@ -371,7 +411,17 @@
                   "id": "p0327-b5-e4",
                   "class": "large",
                   "text": "𠀙"
-                },
+                }
+              ]
+            },
+            {
+              "id": "p0327-b5-l4",
+              "ord": 4,
+              "src": [
+                384,
+                393
+              ],
+              "elements": [
                 {
                   "id": "p0327-b5-e5",
                   "class": "small",
@@ -380,11 +430,11 @@
               ]
             },
             {
-              "id": "p0327-b5-l3",
-              "ord": 3,
+              "id": "p0327-b5-l5",
+              "ord": 5,
               "src": [
-                389,
-                396
+                394,
+                401
               ],
               "elements": [
                 {
@@ -395,18 +445,28 @@
               ]
             },
             {
-              "id": "p0327-b5-l4",
-              "ord": 4,
+              "id": "p0327-b5-l6",
+              "ord": 6,
               "src": [
-                397,
-                406
+                402,
+                405
               ],
               "elements": [
                 {
                   "id": "p0327-b5-e7",
                   "class": "large",
                   "text": "𠀚"
-                },
+                }
+              ]
+            },
+            {
+              "id": "p0327-b5-l7",
+              "ord": 7,
+              "src": [
+                406,
+                412
+              ],
+              "elements": [
                 {
                   "id": "p0327-b5-e8",
                   "class": "small",
@@ -415,11 +475,11 @@
               ]
             },
             {
-              "id": "p0327-b5-l5",
-              "ord": 5,
+              "id": "p0327-b5-l8",
+              "ord": 8,
               "src": [
-                407,
-                412
+                413,
+                418
               ],
               "elements": [
                 {
@@ -435,16 +495,16 @@
           "id": "p0327-b6",
           "ord": 6,
           "src": [
-            414,
-            481
+            420,
+            488
           ],
           "lines": [
             {
               "id": "p0327-b6-l0",
               "ord": 0,
               "src": [
-                414,
-                415
+                420,
+                421
               ],
               "elements": [
                 {
@@ -458,8 +518,8 @@
               "id": "p0327-b6-l1",
               "ord": 1,
               "src": [
-                416,
-                418
+                422,
+                424
               ],
               "elements": [
                 {
@@ -473,15 +533,25 @@
               "id": "p0327-b6-l2",
               "ord": 2,
               "src": [
-                419,
-                452
+                425,
+                427
               ],
               "elements": [
                 {
                   "id": "p0327-b6-e2",
                   "class": "large",
                   "text": "丠"
-                },
+                }
+              ]
+            },
+            {
+              "id": "p0327-b6-l3",
+              "ord": 3,
+              "src": [
+                428,
+                459
+              ],
+              "elements": [
                 {
                   "id": "p0327-b6-e3",
                   "class": "small",
@@ -490,11 +560,11 @@
               ]
             },
             {
-              "id": "p0327-b6-l3",
-              "ord": 3,
+              "id": "p0327-b6-l4",
+              "ord": 4,
               "src": [
-                453,
-                481
+                460,
+                488
               ],
               "elements": [
                 {
@@ -510,16 +580,16 @@
           "id": "p0327-b7",
           "ord": 7,
           "src": [
-            483,
-            547
+            490,
+            556
           ],
           "lines": [
             {
               "id": "p0327-b7-l0",
               "ord": 0,
               "src": [
-                483,
-                486
+                490,
+                493
               ],
               "elements": [
                 {
@@ -533,8 +603,8 @@
               "id": "p0327-b7-l1",
               "ord": 1,
               "src": [
-                487,
-                490
+                494,
+                497
               ],
               "elements": [
                 {
@@ -548,8 +618,8 @@
               "id": "p0327-b7-l2",
               "ord": 2,
               "src": [
-                491,
-                522
+                498,
+                505
               ],
               "elements": [
                 {
@@ -565,7 +635,7 @@
                 {
                   "id": "p0327-b7-e4",
                   "class": "small",
-                  "text": ":廣韻與久切集韻以九切正韻云九切，𠀤音"
+                  "text": ":"
                 }
               ]
             },
@@ -573,12 +643,27 @@
               "id": "p0327-b7-l3",
               "ord": 3,
               "src": [
-                523,
-                547
+                506,
+                531
               ],
               "elements": [
                 {
                   "id": "p0327-b7-e5",
+                  "class": "small",
+                  "text": "廣韻與久切集韻以九切正韻云九切，𠀤音"
+                }
+              ]
+            },
+            {
+              "id": "p0327-b7-l4",
+              "ord": 4,
+              "src": [
+                532,
+                556
+              ],
+              "elements": [
+                {
+                  "id": "p0327-b7-e6",
                   "class": "small",
                   "text": "有。闔戸爲丣，日入時也。說文就也。八月黍成，"
                 }
@@ -595,82 +680,6 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0327-b0-l2",
-          "range": [
-            2,
-            4
-          ]
-        }
-      ],
-      "openedHere": true,
-      "closed": true,
-      "src": [
-        16,
-        20
-      ]
-    },
-    {
-      "id": "o1",
-      "kind": "book-title",
-      "spans": [
-        {
-          "line": "p0327-b0-l2",
-          "range": [
-            7,
-            9
-          ]
-        }
-      ],
-      "openedHere": true,
-      "closed": true,
-      "src": [
-        23,
-        27
-      ]
-    },
-    {
-      "id": "o2",
-      "kind": "book-title",
-      "spans": [
-        {
-          "line": "p0327-b0-l2",
-          "range": [
-            9,
-            11
-          ]
-        }
-      ],
-      "openedHere": true,
-      "closed": true,
-      "src": [
-        27,
-        31
-      ]
-    },
-    {
-      "id": "o3",
-      "kind": "book-title",
-      "spans": [
-        {
-          "line": "p0327-b0-l2",
-          "range": [
-            14,
-            16
-          ]
-        }
-      ],
-      "openedHere": true,
-      "closed": true,
-      "src": [
-        34,
-        38
-      ]
-    },
-    {
-      "id": "o4",
-      "kind": "book-title",
-      "spans": [
-        {
           "line": "p0327-b0-l3",
           "range": [
             0,
@@ -681,12 +690,12 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        48,
-        52
+        17,
+        21
       ]
     },
     {
-      "id": "o5",
+      "id": "o1",
       "kind": "book-title",
       "spans": [
         {
@@ -700,8 +709,84 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        55,
-        59
+        24,
+        28
+      ]
+    },
+    {
+      "id": "o2",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0327-b0-l3",
+          "range": [
+            7,
+            9
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        28,
+        32
+      ]
+    },
+    {
+      "id": "o3",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0327-b0-l3",
+          "range": [
+            12,
+            14
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        35,
+        39
+      ]
+    },
+    {
+      "id": "o4",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0327-b0-l4",
+          "range": [
+            0,
+            2
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        49,
+        53
+      ]
+    },
+    {
+      "id": "o5",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0327-b0-l4",
+          "range": [
+            5,
+            7
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        56,
+        60
       ]
     },
     {
@@ -709,7 +794,7 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0327-b0-l3",
+          "line": "p0327-b0-l4",
           "range": [
             10,
             12
@@ -719,8 +804,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        62,
-        66
+        63,
+        67
       ]
     },
     {
@@ -728,7 +813,7 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0327-b0-l3",
+          "line": "p0327-b0-l4",
           "range": [
             16,
             22
@@ -738,8 +823,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        70,
-        78
+        71,
+        79
       ]
     },
     {
@@ -757,8 +842,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        96,
-        101
+        97,
+        102
       ]
     },
     {
@@ -776,8 +861,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        123,
-        131
+        124,
+        132
       ]
     },
     {
@@ -795,8 +880,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        151,
-        154
+        152,
+        155
       ]
     },
     {
@@ -814,8 +899,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        172,
-        181
+        173,
+        182
       ]
     },
     {
@@ -833,8 +918,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        196,
-        204
+        197,
+        205
       ]
     },
     {
@@ -852,8 +937,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        239,
-        247
+        240,
+        248
       ]
     },
     {
@@ -871,8 +956,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        262,
-        266
+        263,
+        267
       ]
     },
     {
@@ -890,8 +975,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        290,
-        294
+        291,
+        295
       ]
     },
     {
@@ -909,8 +994,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        304,
-        312
+        305,
+        313
       ]
     },
     {
@@ -918,18 +1003,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0327-b4-l2",
+          "line": "p0327-b4-l3",
           "range": [
-            2,
-            4
+            0,
+            2
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        322,
-        326
+        324,
+        328
       ]
     },
     {
@@ -937,18 +1022,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0327-b4-l2",
+          "line": "p0327-b4-l3",
           "range": [
-            8,
-            13
+            6,
+            11
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        330,
-        337
+        332,
+        339
       ]
     },
     {
@@ -961,18 +1046,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0327-b5-l0",
+          "line": "p0327-b5-l1",
           "range": [
-            1,
-            3
+            0,
+            2
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        355,
-        359
+        358,
+        362
       ]
     },
     {
@@ -980,18 +1065,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0327-b5-l2",
+          "line": "p0327-b5-l4",
           "range": [
-            2,
-            4
+            0,
+            2
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        379,
-        383
+        384,
+        388
       ]
     },
     {
@@ -999,18 +1084,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0327-b5-l4",
+          "line": "p0327-b5-l7",
           "range": [
-            1,
-            3
+            0,
+            2
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        400,
-        404
+        406,
+        410
       ]
     },
     {
@@ -1018,18 +1103,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0327-b6-l2",
+          "line": "p0327-b6-l3",
           "range": [
-            1,
-            3
+            0,
+            2
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        421,
-        425
+        428,
+        432
       ]
     },
     {
@@ -1037,18 +1122,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0327-b6-l2",
+          "line": "p0327-b6-l3",
           "range": [
-            7,
-            9
+            6,
+            8
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        429,
-        433
+        436,
+        440
       ]
     },
     {
@@ -1056,7 +1141,7 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0327-b6-l3",
+          "line": "p0327-b6-l4",
           "range": [
             15,
             17
@@ -1066,8 +1151,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        468,
-        472
+        475,
+        479
       ]
     },
     {
@@ -1080,18 +1165,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0327-b7-l2",
+          "line": "p0327-b7-l3",
           "range": [
-            3,
-            5
+            0,
+            2
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        497,
-        501
+        506,
+        510
       ]
     },
     {
@@ -1099,18 +1184,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0327-b7-l2",
+          "line": "p0327-b7-l3",
           "range": [
-            8,
-            10
+            5,
+            7
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        504,
-        508
+        513,
+        517
       ]
     },
     {
@@ -1118,18 +1203,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0327-b7-l2",
+          "line": "p0327-b7-l3",
           "range": [
-            13,
-            15
+            10,
+            12
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        511,
-        515
+        520,
+        524
       ]
     },
     {
@@ -1137,7 +1222,7 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0327-b7-l3",
+          "line": "p0327-b7-l4",
           "range": [
             12,
             14
@@ -1147,8 +1232,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        535,
-        539
+        544,
+        548
       ]
     }
   ]

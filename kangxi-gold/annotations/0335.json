@@ -46,7 +46,7 @@
           "ord": 0,
           "src": [
             6,
-            70
+            71
           ],
           "lines": [
             {
@@ -69,14 +69,24 @@
               "ord": 1,
               "src": [
                 38,
-                70
+                66
               ],
               "elements": [
                 {
                   "id": "p0335-b0-e1",
                   "class": "small",
                   "text": "《字彙》丱爲總角之丱，卝爲銅錫礦之卝。丱卝分而爲二，非。"
-                },
+                }
+              ]
+            },
+            {
+              "id": "p0335-b0-l2",
+              "ord": 2,
+              "src": [
+                67,
+                71
+              ],
+              "elements": [
                 {
                   "id": "p0335-b0-e2",
                   "class": "large",
@@ -90,16 +100,16 @@
           "id": "p0335-b1",
           "ord": 1,
           "src": [
-            72,
-            137
+            73,
+            140
           ],
           "lines": [
             {
               "id": "p0335-b1-l0",
               "ord": 0,
               "src": [
-                72,
-                85
+                73,
+                80
               ],
               "elements": [
                 {
@@ -111,7 +121,17 @@
                   "id": "p0335-b1-e1",
                   "class": "large",
                   "text": "𠁦"
-                },
+                }
+              ]
+            },
+            {
+              "id": "p0335-b1-l1",
+              "ord": 1,
+              "src": [
+                81,
+                87
+              ],
+              "elements": [
                 {
                   "id": "p0335-b1-e2",
                   "class": "small",
@@ -120,11 +140,11 @@
               ]
             },
             {
-              "id": "p0335-b1-l1",
-              "ord": 1,
+              "id": "p0335-b1-l2",
+              "ord": 2,
               "src": [
-                86,
-                90
+                88,
+                92
               ],
               "elements": [
                 {
@@ -135,11 +155,11 @@
               ]
             },
             {
-              "id": "p0335-b1-l2",
-              "ord": 2,
+              "id": "p0335-b1-l3",
+              "ord": 3,
               "src": [
-                91,
-                117
+                93,
+                99
               ],
               "elements": [
                 {
@@ -151,7 +171,17 @@
                   "id": "p0335-b1-e5",
                   "class": "large",
                   "text": "串"
-                },
+                }
+              ]
+            },
+            {
+              "id": "p0335-b1-l4",
+              "ord": 4,
+              "src": [
+                100,
+                120
+              ],
+              "elements": [
                 {
                   "id": "p0335-b1-e6",
                   "class": "small",
@@ -160,11 +190,11 @@
               ]
             },
             {
-              "id": "p0335-b1-l3",
-              "ord": 3,
+              "id": "p0335-b1-l5",
+              "ord": 5,
               "src": [
-                118,
-                137
+                121,
+                140
               ],
               "elements": [
                 {
@@ -180,16 +210,16 @@
           "id": "p0335-b2",
           "ord": 2,
           "src": [
-            139,
-            208
+            142,
+            211
           ],
           "lines": [
             {
               "id": "p0335-b2-l0",
               "ord": 0,
               "src": [
-                139,
-                174
+                142,
+                177
               ],
               "elements": [
                 {
@@ -203,8 +233,8 @@
               "id": "p0335-b2-l1",
               "ord": 1,
               "src": [
-                175,
-                208
+                178,
+                211
               ],
               "elements": [
                 {
@@ -220,16 +250,16 @@
           "id": "p0335-b3",
           "ord": 3,
           "src": [
-            210,
-            274
+            213,
+            277
           ],
           "lines": [
             {
               "id": "p0335-b3-l0",
               "ord": 0,
               "src": [
-                210,
-                241
+                213,
+                244
               ],
               "elements": [
                 {
@@ -243,8 +273,8 @@
               "id": "p0335-b3-l1",
               "ord": 1,
               "src": [
-                242,
-                274
+                245,
+                277
               ],
               "elements": [
                 {
@@ -260,16 +290,16 @@
           "id": "p0335-b4",
           "ord": 4,
           "src": [
-            276,
-            336
+            279,
+            339
           ],
           "lines": [
             {
               "id": "p0335-b4-l0",
               "ord": 0,
               "src": [
-                276,
-                307
+                279,
+                310
               ],
               "elements": [
                 {
@@ -283,8 +313,8 @@
               "id": "p0335-b4-l1",
               "ord": 1,
               "src": [
-                308,
-                336
+                311,
+                339
               ],
               "elements": [
                 {
@@ -300,16 +330,16 @@
           "id": "p0335-b5",
           "ord": 5,
           "src": [
-            338,
-            404
+            341,
+            409
           ],
           "lines": [
             {
               "id": "p0335-b5-l0",
               "ord": 0,
               "src": [
-                338,
-                346
+                341,
+                349
               ],
               "elements": [
                 {
@@ -323,8 +353,8 @@
               "id": "p0335-b5-l1",
               "ord": 1,
               "src": [
-                347,
-                353
+                350,
+                356
               ],
               "elements": [
                 {
@@ -338,8 +368,8 @@
               "id": "p0335-b5-l2",
               "ord": 2,
               "src": [
-                354,
-                368
+                357,
+                364
               ],
               "elements": [
                 {
@@ -351,7 +381,17 @@
                   "id": "p0335-b5-e3",
                   "class": "large",
                   "text": "𠁧"
-                },
+                }
+              ]
+            },
+            {
+              "id": "p0335-b5-l3",
+              "ord": 3,
+              "src": [
+                365,
+                372
+              ],
+              "elements": [
                 {
                   "id": "p0335-b5-e4",
                   "class": "small",
@@ -360,11 +400,11 @@
               ]
             },
             {
-              "id": "p0335-b5-l3",
-              "ord": 3,
+              "id": "p0335-b5-l4",
+              "ord": 4,
               "src": [
-                369,
-                376
+                373,
+                380
               ],
               "elements": [
                 {
@@ -375,11 +415,11 @@
               ]
             },
             {
-              "id": "p0335-b5-l4",
-              "ord": 4,
+              "id": "p0335-b5-l5",
+              "ord": 5,
               "src": [
-                377,
-                395
+                381,
+                387
               ],
               "elements": [
                 {
@@ -391,7 +431,17 @@
                   "id": "p0335-b5-e7",
                   "class": "large",
                   "text": "丳"
-                },
+                }
+              ]
+            },
+            {
+              "id": "p0335-b5-l6",
+              "ord": 6,
+              "src": [
+                388,
+                400
+              ],
+              "elements": [
                 {
                   "id": "p0335-b5-e8",
                   "class": "small",
@@ -400,11 +450,11 @@
               ]
             },
             {
-              "id": "p0335-b5-l5",
-              "ord": 5,
+              "id": "p0335-b5-l7",
+              "ord": 7,
               "src": [
-                396,
-                404
+                401,
+                409
               ],
               "elements": [
                 {
@@ -420,16 +470,16 @@
           "id": "p0335-b6",
           "ord": 6,
           "src": [
-            406,
-            470
+            411,
+            475
           ],
           "lines": [
             {
               "id": "p0335-b6-l0",
               "ord": 0,
               "src": [
-                406,
-                435
+                411,
+                440
               ],
               "elements": [
                 {
@@ -443,8 +493,8 @@
               "id": "p0335-b6-l1",
               "ord": 1,
               "src": [
-                436,
-                462
+                441,
+                467
               ],
               "elements": [
                 {
@@ -458,8 +508,8 @@
               "id": "p0335-b6-l2",
               "ord": 2,
               "src": [
-                463,
-                470
+                468,
+                475
               ],
               "elements": [
                 {
@@ -480,16 +530,16 @@
           "id": "p0335-b7",
           "ord": 7,
           "src": [
-            472,
-            535
+            477,
+            544
           ],
           "lines": [
             {
               "id": "p0335-b7-l0",
               "ord": 0,
               "src": [
-                472,
-                479
+                477,
+                484
               ],
               "elements": [
                 {
@@ -503,15 +553,25 @@
               "id": "p0335-b7-l1",
               "ord": 1,
               "src": [
-                480,
-                502
+                485,
+                492
               ],
               "elements": [
                 {
                   "id": "p0335-b7-e1",
                   "class": "small",
                   "text": "字。註詳三畫。"
-                },
+                }
+              ]
+            },
+            {
+              "id": "p0335-b7-l2",
+              "ord": 2,
+              "src": [
+                493,
+                500
+              ],
+              "elements": [
                 {
                   "id": "p0335-b7-e2",
                   "class": "large",
@@ -521,7 +581,17 @@
                   "id": "p0335-b7-e3",
                   "class": "large",
                   "text": "𠁭"
-                },
+                }
+              ]
+            },
+            {
+              "id": "p0335-b7-l3",
+              "ord": 3,
+              "src": [
+                501,
+                509
+              ],
+              "elements": [
                 {
                   "id": "p0335-b7-e4",
                   "class": "small",
@@ -530,18 +600,28 @@
               ]
             },
             {
-              "id": "p0335-b7-l2",
-              "ord": 2,
+              "id": "p0335-b7-l4",
+              "ord": 4,
               "src": [
-                503,
-                527
+                510,
+                517
               ],
               "elements": [
                 {
                   "id": "p0335-b7-e5",
                   "class": "small",
                   "text": "音岐。參差也。"
-                },
+                }
+              ]
+            },
+            {
+              "id": "p0335-b7-l5",
+              "ord": 5,
+              "src": [
+                518,
+                525
+              ],
+              "elements": [
                 {
                   "id": "p0335-b7-e6",
                   "class": "large",
@@ -551,7 +631,17 @@
                   "id": "p0335-b7-e7",
                   "class": "large",
                   "text": "𠁮"
-                },
+                }
+              ]
+            },
+            {
+              "id": "p0335-b7-l6",
+              "ord": 6,
+              "src": [
+                526,
+                536
+              ],
+              "elements": [
                 {
                   "id": "p0335-b7-e8",
                   "class": "small",
@@ -560,11 +650,11 @@
               ]
             },
             {
-              "id": "p0335-b7-l3",
-              "ord": 3,
+              "id": "p0335-b7-l7",
+              "ord": 7,
               "src": [
-                528,
-                535
+                537,
+                544
               ],
               "elements": [
                 {
@@ -600,18 +690,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0335-b1-l0",
+          "line": "p0335-b1-l1",
           "range": [
-            2,
-            5
+            0,
+            3
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        79,
-        84
+        81,
+        86
       ]
     },
     {
@@ -619,7 +709,26 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0335-b1-l2",
+          "line": "p0335-b1-l4",
+          "range": [
+            0,
+            2
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        100,
+        104
+      ]
+    },
+    {
+      "id": "o5",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0335-b1-l4",
           "range": [
             2,
             4
@@ -629,16 +738,16 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        97,
-        101
+        104,
+        108
       ]
     },
     {
-      "id": "o5",
+      "id": "o6",
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0335-b1-l2",
+          "line": "p0335-b1-l4",
           "range": [
             4,
             6
@@ -648,27 +757,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        101,
-        105
-      ]
-    },
-    {
-      "id": "o6",
-      "kind": "book-title",
-      "spans": [
-        {
-          "line": "p0335-b1-l2",
-          "range": [
-            6,
-            8
-          ]
-        }
-      ],
-      "openedHere": true,
-      "closed": true,
-      "src": [
-        105,
-        109
+        108,
+        112
       ]
     },
     {
@@ -676,7 +766,7 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0335-b1-l3",
+          "line": "p0335-b1-l5",
           "range": [
             6,
             10
@@ -686,8 +776,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        124,
-        130
+        127,
+        133
       ]
     },
     {
@@ -695,7 +785,7 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0335-b1-l3",
+          "line": "p0335-b1-l5",
           "range": [
             15,
             16
@@ -712,8 +802,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        135,
-        141
+        138,
+        144
       ]
     },
     {
@@ -731,8 +821,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        149,
-        152
+        152,
+        155
       ]
     },
     {
@@ -750,8 +840,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        163,
-        171
+        166,
+        174
       ]
     },
     {
@@ -769,8 +859,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        189,
-        197
+        192,
+        200
       ]
     },
     {
@@ -795,8 +885,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        203,
-        214
+        206,
+        217
       ]
     },
     {
@@ -814,8 +904,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        220,
-        223
+        223,
+        226
       ]
     },
     {
@@ -833,8 +923,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        236,
-        240
+        239,
+        243
       ]
     },
     {
@@ -859,8 +949,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        267,
-        278
+        270,
+        281
       ]
     },
     {
@@ -878,8 +968,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        308,
-        314
+        311,
+        317
       ]
     },
     {
@@ -907,8 +997,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        338,
-        342
+        341,
+        345
       ]
     },
     {
@@ -916,18 +1006,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0335-b5-l2",
+          "line": "p0335-b5-l3",
           "range": [
-            2,
-            4
+            0,
+            2
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        361,
-        365
+        365,
+        369
       ]
     },
     {
@@ -935,7 +1025,26 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0335-b5-l4",
+          "line": "p0335-b5-l6",
+          "range": [
+            0,
+            2
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        388,
+        392
+      ]
+    },
+    {
+      "id": "o22",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0335-b5-l6",
           "range": [
             2,
             4
@@ -945,16 +1054,16 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        383,
-        387
+        392,
+        396
       ]
     },
     {
-      "id": "o22",
+      "id": "o23",
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0335-b5-l4",
+          "line": "p0335-b5-l6",
           "range": [
             4,
             6
@@ -964,27 +1073,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        387,
-        391
-      ]
-    },
-    {
-      "id": "o23",
-      "kind": "book-title",
-      "spans": [
-        {
-          "line": "p0335-b5-l4",
-          "range": [
-            6,
-            8
-          ]
-        }
-      ],
-      "openedHere": true,
-      "closed": true,
-      "src": [
-        391,
-        395
+        396,
+        400
       ]
     },
     {
@@ -992,7 +1082,7 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0335-b5-l5",
+          "line": "p0335-b5-l7",
           "range": [
             3,
             5
@@ -1002,8 +1092,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        399,
-        403
+        404,
+        408
       ]
     },
     {
@@ -1026,8 +1116,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        419,
-        428
+        424,
+        433
       ]
     },
     {
@@ -1045,8 +1135,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        441,
-        444
+        446,
+        449
       ]
     },
     {
@@ -1074,8 +1164,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        472,
-        476
+        477,
+        481
       ]
     },
     {
@@ -1083,18 +1173,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0335-b7-l1",
+          "line": "p0335-b7-l3",
           "range": [
-            9,
-            11
+            0,
+            2
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        494,
-        498
+        501,
+        505
       ]
     },
     {
@@ -1102,18 +1192,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0335-b7-l2",
+          "line": "p0335-b7-l6",
           "range": [
-            9,
-            11
+            0,
+            2
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        517,
-        521
+        526,
+        530
       ]
     }
   ]

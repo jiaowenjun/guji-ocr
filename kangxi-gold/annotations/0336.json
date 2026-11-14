@@ -37,30 +37,65 @@
       "id": "p0336",
       "no": 336,
       "src": [
-        54,
-        58
+        0,
+        4
       ],
       "bands": [
         {
           "id": "p0336-b0",
           "ord": 0,
           "src": [
-            60,
-            62
+            6,
+            67
           ],
           "lines": [
             {
               "id": "p0336-b0-l0",
               "ord": 0,
               "src": [
-                60,
-                62
+                6,
+                12
               ],
               "elements": [
                 {
                   "id": "p0336-b0-e0",
                   "class": "large",
+                  "text": "九"
+                },
+                {
+                  "id": "p0336-b0-e1",
+                  "class": "large",
                   "text": "丵"
+                }
+              ]
+            },
+            {
+              "id": "p0336-b0-l1",
+              "ord": 1,
+              "src": [
+                13,
+                40
+              ],
+              "elements": [
+                {
+                  "id": "p0336-b0-e2",
+                  "class": "small",
+                  "text": "集韻仕角切，音浞。艸木叢生。象根株附麗𠀤出形。樸"
+                }
+              ]
+            },
+            {
+              "id": "p0336-b0-l2",
+              "ord": 2,
+              "src": [
+                41,
+                67
+              ],
+              "elements": [
+                {
+                  "id": "p0336-b0-e3",
+                  "class": "small",
+                  "text": "業僕叢字从此，借爲叢雜煩凟。或作𢄁。 又廣韻蒲"
                 }
               ]
             }
@@ -70,18 +105,89 @@
           "id": "p0336-b1",
           "ord": 1,
           "src": [
-            64,
-            65
+            69,
+            137
           ],
           "lines": [
             {
               "id": "p0336-b1-l0",
               "ord": 0,
               "src": [
-                64,
-                65
+                69,
+                93
               ],
-              "elements": []
+              "elements": [
+                {
+                  "id": "p0336-b1-e0",
+                  "class": "small",
+                  "text": "木切集韻步木切，𠀤音僕。又集韻方六切，"
+                }
+              ]
+            },
+            {
+              "id": "p0336-b1-l1",
+              "ord": 1,
+              "src": [
+                94,
+                116
+              ],
+              "elements": [
+                {
+                  "id": "p0336-b1-e1",
+                  "class": "small",
+                  "text": "音福。義𠀤同。 上从四直，俗作业、㐀，非。"
+                }
+              ]
+            },
+            {
+              "id": "p0336-b1-l2",
+              "ord": 2,
+              "src": [
+                117,
+                124
+              ],
+              "elements": [
+                {
+                  "id": "p0336-b1-e2",
+                  "class": "large",
+                  "text": "增"
+                },
+                {
+                  "id": "p0336-b1-e3",
+                  "class": "large",
+                  "text": "𠁰"
+                }
+              ]
+            },
+            {
+              "id": "p0336-b1-l3",
+              "ord": 3,
+              "src": [
+                125,
+                131
+              ],
+              "elements": [
+                {
+                  "id": "p0336-b1-e4",
+                  "class": "small",
+                  "text": "字彙補古"
+                }
+              ]
+            },
+            {
+              "id": "p0336-b1-l4",
+              "ord": 4,
+              "src": [
+                132,
+                137
+              ],
+              "elements": [
+                {
+                  "id": "p0336-b1-e5",
+                  "class": "small",
+                  "text": "文乖字。見"
+                }
+              ]
             }
           ]
         },
@@ -89,22 +195,138 @@
           "id": "p0336-b2",
           "ord": 2,
           "src": [
-            67,
-            93
+            139,
+            204
           ],
           "lines": [
             {
               "id": "p0336-b2-l0",
               "ord": 0,
               "src": [
-                67,
-                93
+                139,
+                141
               ],
               "elements": [
                 {
                   "id": "p0336-b2-e0",
                   "class": "small",
-                  "text": "集韻仕角切，音浞。艸木叢生。象根株附麗𠀤出形。樸"
+                  "text": "急就"
+                }
+              ]
+            },
+            {
+              "id": "p0336-b2-l1",
+              "ord": 1,
+              "src": [
+                142,
+                144
+              ],
+              "elements": [
+                {
+                  "id": "p0336-b2-e1",
+                  "class": "small",
+                  "text": "章。"
+                }
+              ]
+            },
+            {
+              "id": "p0336-b2-l2",
+              "ord": 2,
+              "src": [
+                145,
+                148
+              ],
+              "elements": [
+                {
+                  "id": "p0336-b2-e2",
+                  "class": "large",
+                  "text": "𠁱"
+                }
+              ]
+            },
+            {
+              "id": "p0336-b2-l3",
+              "ord": 3,
+              "src": [
+                149,
+                163
+              ],
+              "elements": [
+                {
+                  "id": "p0336-b2-e3",
+                  "class": "small",
+                  "text": "字彙補與事同。道藏·洞"
+                }
+              ]
+            },
+            {
+              "id": "p0336-b2-l4",
+              "ord": 4,
+              "src": [
+                164,
+                175
+              ],
+              "elements": [
+                {
+                  "id": "p0336-b2-e4",
+                  "class": "small",
+                  "text": "靈經人舍本而𠁱末。"
+                }
+              ]
+            },
+            {
+              "id": "p0336-b2-l5",
+              "ord": 5,
+              "src": [
+                176,
+                188
+              ],
+              "elements": [
+                {
+                  "id": "p0336-b2-e5",
+                  "class": "large",
+                  "text": "十一",
+                  "ligature": true
+                },
+                {
+                  "id": "p0336-b2-e6",
+                  "class": "large",
+                  "text": "增"
+                },
+                {
+                  "id": "p0336-b2-e7",
+                  "class": "large",
+                  "text": "𠁴"
+                }
+              ]
+            },
+            {
+              "id": "p0336-b2-l6",
+              "ord": 6,
+              "src": [
+                189,
+                196
+              ],
+              "elements": [
+                {
+                  "id": "p0336-b2-e8",
+                  "class": "small",
+                  "text": "說文古文龜"
+                }
+              ]
+            },
+            {
+              "id": "p0336-b2-l7",
+              "ord": 7,
+              "src": [
+                197,
+                204
+              ],
+              "elements": [
+                {
+                  "id": "p0336-b2-e9",
+                  "class": "small",
+                  "text": "字。註詳部首。"
                 }
               ]
             }
@@ -114,22 +336,37 @@
           "id": "p0336-b3",
           "ord": 3,
           "src": [
-            95,
-            121
+            206,
+            231
           ],
           "lines": [
             {
               "id": "p0336-b3-l0",
               "ord": 0,
               "src": [
-                95,
-                121
+                206,
+                219
               ],
               "elements": [
                 {
                   "id": "p0336-b3-e0",
                   "class": "small",
-                  "text": "業僕叢字从此，借爲叢雜煩凟。或作𢄁。 又廣韻蒲"
+                  "text": "〇按《玉篇》書作𠃾，《集"
+                }
+              ]
+            },
+            {
+              "id": "p0336-b3-l1",
+              "ord": 1,
+              "src": [
+                220,
+                231
+              ],
+              "elements": [
+                {
+                  "id": "p0336-b3-e1",
+                  "class": "small",
+                  "text": "韻》書作𤕣，今分見。"
                 }
               ]
             }
@@ -139,24 +376,18 @@
           "id": "p0336-b4",
           "ord": 4,
           "src": [
-            123,
-            147
+            233,
+            234
           ],
           "lines": [
             {
               "id": "p0336-b4-l0",
               "ord": 0,
               "src": [
-                123,
-                147
+                233,
+                234
               ],
-              "elements": [
-                {
-                  "id": "p0336-b4-e0",
-                  "class": "small",
-                  "text": "木切集韻步木切，𠀤音僕。又集韻方六切，"
-                }
-              ]
+              "elements": []
             }
           ]
         },
@@ -164,24 +395,18 @@
           "id": "p0336-b5",
           "ord": 5,
           "src": [
-            149,
-            157
+            236,
+            237
           ],
           "lines": [
             {
               "id": "p0336-b5-l0",
               "ord": 0,
               "src": [
-                149,
-                157
+                236,
+                237
               ],
-              "elements": [
-                {
-                  "id": "p0336-b5-e0",
-                  "class": "small",
-                  "text": "音福。義𠀤同。"
-                }
-              ]
+              "elements": []
             }
           ]
         },
@@ -189,24 +414,18 @@
           "id": "p0336-b6",
           "ord": 6,
           "src": [
-            159,
-            172
+            239,
+            240
           ],
           "lines": [
             {
               "id": "p0336-b6-l0",
               "ord": 0,
               "src": [
-                159,
-                172
+                239,
+                240
               ],
-              "elements": [
-                {
-                  "id": "p0336-b6-e0",
-                  "class": "small",
-                  "text": "上从四直，俗作业、㐀，非。"
-                }
-              ]
+              "elements": []
             }
           ]
         },
@@ -214,318 +433,18 @@
           "id": "p0336-b7",
           "ord": 7,
           "src": [
-            174,
-            182
+            242,
+            243
           ],
           "lines": [
             {
               "id": "p0336-b7-l0",
               "ord": 0,
               "src": [
-                174,
-                182
-              ],
-              "elements": [
-                {
-                  "id": "p0336-b7-e0",
-                  "class": "small",
-                  "text": "㐀字原作丱下一。"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "p0336-b8",
-          "ord": 8,
-          "src": [
-            184,
-            187
-          ],
-          "lines": [
-            {
-              "id": "p0336-b8-l0",
-              "ord": 0,
-              "src": [
-                184,
-                187
-              ],
-              "elements": [
-                {
-                  "id": "p0336-b8-e0",
-                  "class": "large",
-                  "text": "𠁰"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "p0336-b9",
-          "ord": 9,
-          "src": [
-            189,
-            190
-          ],
-          "lines": [
-            {
-              "id": "p0336-b9-l0",
-              "ord": 0,
-              "src": [
-                189,
-                190
+                242,
+                243
               ],
               "elements": []
-            }
-          ]
-        },
-        {
-          "id": "p0336-b10",
-          "ord": 10,
-          "src": [
-            192,
-            202
-          ],
-          "lines": [
-            {
-              "id": "p0336-b10-l0",
-              "ord": 0,
-              "src": [
-                192,
-                202
-              ],
-              "elements": [
-                {
-                  "id": "p0336-b10-e0",
-                  "class": "small",
-                  "text": "字彙補古文乖字。見"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "p0336-b11",
-          "ord": 11,
-          "src": [
-            204,
-            208
-          ],
-          "lines": [
-            {
-              "id": "p0336-b11-l0",
-              "ord": 0,
-              "src": [
-                204,
-                208
-              ],
-              "elements": [
-                {
-                  "id": "p0336-b11-e0",
-                  "class": "small",
-                  "text": "急就章。"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "p0336-b12",
-          "ord": 12,
-          "src": [
-            210,
-            213
-          ],
-          "lines": [
-            {
-              "id": "p0336-b12-l0",
-              "ord": 0,
-              "src": [
-                210,
-                213
-              ],
-              "elements": [
-                {
-                  "id": "p0336-b12-e0",
-                  "class": "large",
-                  "text": "𠁱"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "p0336-b13",
-          "ord": 13,
-          "src": [
-            215,
-            224
-          ],
-          "lines": [
-            {
-              "id": "p0336-b13-l0",
-              "ord": 0,
-              "src": [
-                215,
-                224
-              ],
-              "elements": [
-                {
-                  "id": "p0336-b13-e0",
-                  "class": "small",
-                  "text": "字彙補與事同。"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "p0336-b14",
-          "ord": 14,
-          "src": [
-            226,
-            231
-          ],
-          "lines": [
-            {
-              "id": "p0336-b14-l0",
-              "ord": 0,
-              "src": [
-                226,
-                231
-              ],
-              "elements": [
-                {
-                  "id": "p0336-b14-e0",
-                  "class": "small",
-                  "text": "道藏·洞"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "p0336-b15",
-          "ord": 15,
-          "src": [
-            233,
-            244
-          ],
-          "lines": [
-            {
-              "id": "p0336-b15-l0",
-              "ord": 0,
-              "src": [
-                233,
-                244
-              ],
-              "elements": [
-                {
-                  "id": "p0336-b15-e0",
-                  "class": "small",
-                  "text": "靈經人舍本而𠁱末。"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "p0336-b16",
-          "ord": 16,
-          "src": [
-            247,
-            250
-          ],
-          "lines": [
-            {
-              "id": "p0336-b16-l0",
-              "ord": 0,
-              "src": [
-                247,
-                250
-              ],
-              "elements": [
-                {
-                  "id": "p0336-b16-e0",
-                  "class": "large",
-                  "text": "𠁴"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "p0336-b17",
-          "ord": 17,
-          "src": [
-            252,
-            259
-          ],
-          "lines": [
-            {
-              "id": "p0336-b17-l0",
-              "ord": 0,
-              "src": [
-                252,
-                259
-              ],
-              "elements": [
-                {
-                  "id": "p0336-b17-e0",
-                  "class": "small",
-                  "text": "說文古文龜"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "p0336-b18",
-          "ord": 18,
-          "src": [
-            261,
-            281
-          ],
-          "lines": [
-            {
-              "id": "p0336-b18-l0",
-              "ord": 0,
-              "src": [
-                261,
-                281
-              ],
-              "elements": [
-                {
-                  "id": "p0336-b18-e0",
-                  "class": "small",
-                  "text": "字。註詳部首。◎按《玉篇》書作𠃾，《集"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "p0336-b19",
-          "ord": 19,
-          "src": [
-            283,
-            294
-          ],
-          "lines": [
-            {
-              "id": "p0336-b19-l0",
-              "ord": 0,
-              "src": [
-                283,
-                294
-              ],
-              "elements": [
-                {
-                  "id": "p0336-b19-e0",
-                  "class": "small",
-                  "text": "韻》書作𤕣，今分見。"
-                }
-              ]
             }
           ]
         }
@@ -535,10 +454,15 @@
   "overlays": [
     {
       "id": "o0",
+      "kind": "circle",
+      "target": "p0336-b0-e0"
+    },
+    {
+      "id": "o1",
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0336-b2-l0",
+          "line": "p0336-b0-l1",
           "range": [
             0,
             2
@@ -548,16 +472,16 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        64,
-        70
+        13,
+        17
       ]
     },
     {
-      "id": "o1",
+      "id": "o2",
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0336-b3-l0",
+          "line": "p0336-b0-l2",
           "range": [
             20,
             22
@@ -567,16 +491,21 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        116,
-        120
+        62,
+        66
       ]
     },
     {
-      "id": "o2",
+      "id": "o3",
+      "kind": "circle",
+      "target": "p0336-b1-e2"
+    },
+    {
+      "id": "o4",
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0336-b4-l0",
+          "line": "p0336-b1-l0",
           "range": [
             2,
             4
@@ -586,16 +515,16 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        125,
-        129
+        71,
+        75
       ]
     },
     {
-      "id": "o3",
+      "id": "o5",
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0336-b4-l0",
+          "line": "p0336-b1-l0",
           "range": [
             13,
             15
@@ -605,46 +534,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        139,
-        143
-      ]
-    },
-    {
-      "id": "o4",
-      "kind": "book-title",
-      "spans": [
-        {
-          "line": "p0336-b10-l0",
-          "range": [
-            0,
-            3
-          ]
-        }
-      ],
-      "openedHere": true,
-      "closed": true,
-      "src": [
-        189,
-        196
-      ]
-    },
-    {
-      "id": "o5",
-      "kind": "book-title",
-      "spans": [
-        {
-          "line": "p0336-b13-l0",
-          "range": [
-            0,
-            3
-          ]
-        }
-      ],
-      "openedHere": true,
-      "closed": true,
-      "src": [
-        215,
-        220
+        85,
+        89
       ]
     },
     {
@@ -652,33 +543,62 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0336-b14-l0",
+          "line": "p0336-b1-l3",
           "range": [
             0,
-            4
-          ]
-        },
-        {
-          "line": "p0336-b15-l0",
-          "range": [
-            0,
-            2
+            3
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        226,
-        236
+        125,
+        130
       ]
     },
     {
       "id": "o7",
+      "kind": "circle",
+      "target": "p0336-b2-e5"
+    },
+    {
+      "id": "o8",
+      "kind": "circle",
+      "target": "p0336-b2-e6"
+    },
+    {
+      "id": "o9",
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0336-b17-l0",
+          "line": "p0336-b2-l3",
+          "range": [
+            0,
+            3
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        149,
+        154
+      ]
+    },
+    {
+      "id": "o10",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0336-b2-l3",
+          "range": [
+            7,
+            11
+          ]
+        },
+        {
+          "line": "p0336-b2-l4",
           "range": [
             0,
             2
@@ -688,8 +608,27 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        252,
-        256
+        158,
+        167
+      ]
+    },
+    {
+      "id": "o11",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0336-b2-l6",
+          "range": [
+            0,
+            2
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        189,
+        193
       ]
     }
   ]

@@ -206,7 +206,7 @@
           "ord": 4,
           "src": [
             274,
-            341
+            343
           ],
           "lines": [
             {
@@ -229,19 +229,39 @@
               "ord": 1,
               "src": [
                 281,
-                316
+                285
               ],
               "elements": [
                 {
                   "id": "p0331-b4-e1",
                   "class": "small",
                   "text": "與箇同。"
-                },
+                }
+              ]
+            },
+            {
+              "id": "p0331-b4-l2",
+              "ord": 2,
+              "src": [
+                286,
+                288
+              ],
+              "elements": [
                 {
                   "id": "p0331-b4-e2",
                   "class": "large",
                   "text": "丫"
-                },
+                }
+              ]
+            },
+            {
+              "id": "p0331-b4-l3",
+              "ord": 3,
+              "src": [
+                289,
+                318
+              ],
+              "elements": [
                 {
                   "id": "p0331-b4-e3",
                   "class": "small",
@@ -250,11 +270,11 @@
               ]
             },
             {
-              "id": "p0331-b4-l2",
-              "ord": 2,
+              "id": "p0331-b4-l4",
+              "ord": 4,
               "src": [
-                317,
-                341
+                319,
+                343
               ],
               "elements": [
                 {
@@ -270,16 +290,16 @@
           "id": "p0331-b5",
           "ord": 5,
           "src": [
-            343,
-            412
+            345,
+            416
           ],
           "lines": [
             {
               "id": "p0331-b5-l0",
               "ord": 0,
               "src": [
-                343,
-                347
+                345,
+                349
               ],
               "elements": [
                 {
@@ -293,20 +313,40 @@
               "id": "p0331-b5-l1",
               "ord": 1,
               "src": [
-                348,
-                384
+                350,
+                354
               ],
               "elements": [
                 {
                   "id": "p0331-b5-e1",
                   "class": "small",
                   "text": "而上徹。"
-                },
+                }
+              ]
+            },
+            {
+              "id": "p0331-b5-l2",
+              "ord": 2,
+              "src": [
+                355,
+                357
+              ],
+              "elements": [
                 {
                   "id": "p0331-b5-e2",
                   "class": "large",
                   "text": "㐄"
-                },
+                }
+              ]
+            },
+            {
+              "id": "p0331-b5-l3",
+              "ord": 3,
+              "src": [
+                358,
+                388
+              ],
+              "elements": [
                 {
                   "id": "p0331-b5-e3",
                   "class": "small",
@@ -315,11 +355,11 @@
               ]
             },
             {
-              "id": "p0331-b5-l2",
-              "ord": 2,
+              "id": "p0331-b5-l4",
+              "ord": 4,
               "src": [
-                385,
-                412
+                389,
+                416
               ],
               "elements": [
                 {
@@ -335,16 +375,16 @@
           "id": "p0331-b6",
           "ord": 6,
           "src": [
-            414,
-            475
+            418,
+            481
           ],
           "lines": [
             {
               "id": "p0331-b6-l0",
               "ord": 0,
               "src": [
-                414,
-                418
+                418,
+                422
               ],
               "elements": [
                 {
@@ -358,15 +398,25 @@
               "id": "p0331-b6-l1",
               "ord": 1,
               "src": [
-                419,
-                457
+                423,
+                428
               ],
               "elements": [
                 {
                   "id": "p0331-b6-e1",
                   "class": "small",
                   "text": "丨部，非。"
-                },
+                }
+              ]
+            },
+            {
+              "id": "p0331-b6-l2",
+              "ord": 2,
+              "src": [
+                429,
+                443
+              ],
+              "elements": [
                 {
                   "id": "p0331-b6-e2",
                   "class": "large",
@@ -391,7 +441,17 @@
                   "id": "p0331-b6-e6",
                   "class": "large",
                   "text": "𠁩"
-                },
+                }
+              ]
+            },
+            {
+              "id": "p0331-b6-l3",
+              "ord": 3,
+              "src": [
+                444,
+                463
+              ],
+              "elements": [
                 {
                   "id": "p0331-b6-e7",
                   "class": "small",
@@ -400,11 +460,11 @@
               ]
             },
             {
-              "id": "p0331-b6-l2",
-              "ord": 2,
+              "id": "p0331-b6-l4",
+              "ord": 4,
               "src": [
-                458,
-                475
+                464,
+                481
               ],
               "elements": [
                 {
@@ -420,16 +480,16 @@
           "id": "p0331-b7",
           "ord": 7,
           "src": [
-            477,
-            542
+            483,
+            548
           ],
           "lines": [
             {
               "id": "p0331-b7-l0",
               "ord": 0,
               "src": [
-                477,
-                510
+                483,
+                516
               ],
               "elements": [
                 {
@@ -443,8 +503,8 @@
               "id": "p0331-b7-l1",
               "ord": 1,
               "src": [
-                511,
-                542
+                517,
+                548
               ],
               "elements": [
                 {
@@ -689,18 +749,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0331-b4-l1",
+          "line": "p0331-b4-l3",
           "range": [
-            5,
-            7
+            0,
+            2
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        287,
-        291
+        289,
+        293
       ]
     },
     {
@@ -708,18 +768,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0331-b4-l1",
+          "line": "p0331-b4-l3",
           "range": [
-            7,
-            9
+            2,
+            4
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        291,
-        295
+        293,
+        297
       ]
     },
     {
@@ -727,18 +787,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0331-b4-l1",
+          "line": "p0331-b4-l3",
           "range": [
-            9,
-            11
+            4,
+            6
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        295,
-        299
+        297,
+        301
       ]
     },
     {
@@ -746,14 +806,14 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0331-b4-l1",
+          "line": "p0331-b4-l3",
           "range": [
-            24,
-            26
+            19,
+            21
           ]
         },
         {
-          "line": "p0331-b4-l2",
+          "line": "p0331-b4-l4",
           "range": [
             0,
             1
@@ -763,8 +823,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        313,
-        319
+        315,
+        321
       ]
     },
     {
@@ -772,7 +832,7 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0331-b4-l2",
+          "line": "p0331-b4-l4",
           "range": [
             15,
             19
@@ -782,8 +842,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        333,
-        339
+        335,
+        341
       ]
     },
     {
@@ -791,29 +851,10 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0331-b5-l1",
+          "line": "p0331-b5-l3",
           "range": [
-            5,
-            7
-          ]
-        }
-      ],
-      "openedHere": true,
-      "closed": true,
-      "src": [
-        354,
-        358
-      ]
-    },
-    {
-      "id": "o18",
-      "kind": "book-title",
-      "spans": [
-        {
-          "line": "p0331-b5-l1",
-          "range": [
-            7,
-            9
+            0,
+            2
           ]
         }
       ],
@@ -825,22 +866,41 @@
       ]
     },
     {
-      "id": "o19",
+      "id": "o18",
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0331-b5-l1",
+          "line": "p0331-b5-l3",
           "range": [
-            19,
-            21
+            2,
+            4
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        374,
-        378
+        362,
+        366
+      ]
+    },
+    {
+      "id": "o19",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0331-b5-l3",
+          "range": [
+            14,
+            16
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        378,
+        382
       ]
     },
     {
@@ -848,7 +908,7 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0331-b5-l2",
+          "line": "p0331-b5-l4",
           "range": [
             21,
             23
@@ -858,8 +918,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        407,
-        411
+        411,
+        415
       ]
     },
     {
@@ -872,18 +932,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0331-b6-l1",
+          "line": "p0331-b6-l3",
           "range": [
-            11,
-            13
+            0,
+            2
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        438,
-        442
+        444,
+        448
       ]
     },
     {
@@ -891,18 +951,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0331-b6-l1",
+          "line": "p0331-b6-l3",
           "range": [
-            16,
-            18
+            5,
+            7
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        445,
-        449
+        451,
+        455
       ]
     },
     {
@@ -910,18 +970,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0331-b6-l1",
+          "line": "p0331-b6-l3",
           "range": [
-            18,
-            20
+            7,
+            9
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        449,
-        453
+        455,
+        459
       ]
     },
     {
@@ -929,18 +989,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0331-b6-l1",
+          "line": "p0331-b6-l3",
           "range": [
-            20,
-            22
+            9,
+            11
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        453,
-        457
+        459,
+        463
       ]
     },
     {
@@ -948,7 +1008,7 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0331-b6-l2",
+          "line": "p0331-b6-l4",
           "range": [
             8,
             13
@@ -958,8 +1018,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        467,
-        474
+        473,
+        480
       ]
     },
     {
@@ -977,8 +1037,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        481,
-        492
+        487,
+        498
       ]
     },
     {
@@ -1003,8 +1063,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        504,
-        514
+        510,
+        520
       ]
     },
     {
@@ -1022,8 +1082,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        529,
-        537
+        535,
+        543
       ]
     }
   ]

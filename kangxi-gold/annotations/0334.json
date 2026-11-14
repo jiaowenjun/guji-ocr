@@ -86,7 +86,7 @@
           "ord": 1,
           "src": [
             66,
-            127
+            129
           ],
           "lines": [
             {
@@ -109,19 +109,39 @@
               "ord": 1,
               "src": [
                 92,
-                120
+                112
               ],
               "elements": [
                 {
                   "id": "p0334-b1-e1",
                   "class": "small",
                   "text": "社稷，新數中與年。則中與之中亦可讀去聲。"
-                },
+                }
+              ]
+            },
+            {
+              "id": "p0334-b1-l2",
+              "ord": 2,
+              "src": [
+                113,
+                115
+              ],
+              "elements": [
                 {
                   "id": "p0334-b1-e2",
                   "class": "large",
                   "text": "丮"
-                },
+                }
+              ]
+            },
+            {
+              "id": "p0334-b1-l3",
+              "ord": 3,
+              "src": [
+                116,
+                122
+              ],
+              "elements": [
                 {
                   "id": "p0334-b1-e3",
                   "class": "small",
@@ -130,11 +150,11 @@
               ]
             },
             {
-              "id": "p0334-b1-l2",
-              "ord": 2,
+              "id": "p0334-b1-l4",
+              "ord": 4,
               "src": [
-                121,
-                127
+                123,
+                129
               ],
               "elements": [
                 {
@@ -150,16 +170,16 @@
           "id": "p0334-b2",
           "ord": 2,
           "src": [
-            129,
-            202
+            131,
+            204
           ],
           "lines": [
             {
               "id": "p0334-b2-l0",
               "ord": 0,
               "src": [
-                129,
-                164
+                131,
+                166
               ],
               "elements": [
                 {
@@ -173,8 +193,8 @@
               "id": "p0334-b2-l1",
               "ord": 1,
               "src": [
-                165,
-                202
+                167,
+                204
               ],
               "elements": [
                 {
@@ -190,16 +210,16 @@
           "id": "p0334-b3",
           "ord": 3,
           "src": [
-            204,
-            267
+            206,
+            271
           ],
           "lines": [
             {
               "id": "p0334-b3-l0",
               "ord": 0,
               "src": [
-                204,
-                209
+                206,
+                211
               ],
               "elements": [
                 {
@@ -213,20 +233,40 @@
               "id": "p0334-b3-l1",
               "ord": 1,
               "src": [
-                210,
-                244
+                212,
+                216
               ],
               "elements": [
                 {
                   "id": "p0334-b3-e1",
                   "class": "small",
                   "text": "之入切。"
-                },
+                }
+              ]
+            },
+            {
+              "id": "p0334-b3-l2",
+              "ord": 2,
+              "src": [
+                217,
+                219
+              ],
+              "elements": [
                 {
                   "id": "p0334-b3-e2",
                   "class": "large",
                   "text": "丯"
-                },
+                }
+              ]
+            },
+            {
+              "id": "p0334-b3-l3",
+              "ord": 3,
+              "src": [
+                220,
+                248
+              ],
+              "elements": [
                 {
                   "id": "p0334-b3-e3",
                   "class": "small",
@@ -235,11 +275,11 @@
               ]
             },
             {
-              "id": "p0334-b3-l2",
-              "ord": 2,
+              "id": "p0334-b3-l4",
+              "ord": 4,
               "src": [
-                245,
-                267
+                249,
+                271
               ],
               "elements": [
                 {
@@ -255,16 +295,16 @@
           "id": "p0334-b4",
           "ord": 4,
           "src": [
-            269,
-            328
+            273,
+            334
           ],
           "lines": [
             {
               "id": "p0334-b4-l0",
               "ord": 0,
               "src": [
-                269,
-                289
+                273,
+                293
               ],
               "elements": [
                 {
@@ -278,15 +318,25 @@
               "id": "p0334-b4-l1",
               "ord": 1,
               "src": [
-                290,
-                321
+                294,
+                312
               ],
               "elements": [
                 {
                   "id": "p0334-b4-e1",
                   "class": "small",
                   "text": "以丯爲夆，移《說文》夆訓入丯註，非。"
-                },
+                }
+              ]
+            },
+            {
+              "id": "p0334-b4-l2",
+              "ord": 2,
+              "src": [
+                313,
+                320
+              ],
+              "elements": [
                 {
                   "id": "p0334-b4-e2",
                   "class": "large",
@@ -301,7 +351,17 @@
                   "id": "p0334-b4-e4",
                   "class": "large",
                   "text": "𫵮"
-                },
+                }
+              ]
+            },
+            {
+              "id": "p0334-b4-l3",
+              "ord": 3,
+              "src": [
+                321,
+                327
+              ],
+              "elements": [
                 {
                   "id": "p0334-b4-e5",
                   "class": "small",
@@ -310,11 +370,11 @@
               ]
             },
             {
-              "id": "p0334-b4-l2",
-              "ord": 2,
+              "id": "p0334-b4-l4",
+              "ord": 4,
               "src": [
-                322,
-                328
+                328,
+                334
               ],
               "elements": [
                 {
@@ -330,16 +390,16 @@
           "id": "p0334-b5",
           "ord": 5,
           "src": [
-            330,
-            396
+            336,
+            402
           ],
           "lines": [
             {
               "id": "p0334-b5-l0",
               "ord": 0,
               "src": [
-                330,
-                364
+                336,
+                370
               ],
               "elements": [
                 {
@@ -353,8 +413,8 @@
               "id": "p0334-b5-l1",
               "ord": 1,
               "src": [
-                365,
-                396
+                371,
+                402
               ],
               "elements": [
                 {
@@ -370,16 +430,16 @@
           "id": "p0334-b6",
           "ord": 6,
           "src": [
-            398,
-            467
+            404,
+            475
           ],
           "lines": [
             {
               "id": "p0334-b6-l0",
               "ord": 0,
               "src": [
-                398,
-                410
+                404,
+                416
               ],
               "elements": [
                 {
@@ -393,15 +453,25 @@
               "id": "p0334-b6-l1",
               "ord": 1,
               "src": [
-                411,
-                449
+                417,
+                429
               ],
               "elements": [
                 {
                   "id": "p0334-b6-e1",
                   "class": "small",
                   "text": "俗作丰，上畫从丿者，非。"
-                },
+                }
+              ]
+            },
+            {
+              "id": "p0334-b6-l2",
+              "ord": 2,
+              "src": [
+                430,
+                436
+              ],
+              "elements": [
                 {
                   "id": "p0334-b6-e2",
                   "class": "large",
@@ -411,7 +481,17 @@
                   "id": "p0334-b6-e3",
                   "class": "large",
                   "text": "丱"
-                },
+                }
+              ]
+            },
+            {
+              "id": "p0334-b6-l3",
+              "ord": 3,
+              "src": [
+                437,
+                457
+              ],
+              "elements": [
                 {
                   "id": "p0334-b6-e4",
                   "class": "small",
@@ -420,11 +500,11 @@
               ]
             },
             {
-              "id": "p0334-b6-l2",
-              "ord": 2,
+              "id": "p0334-b6-l4",
+              "ord": 4,
               "src": [
-                450,
-                467
+                458,
+                475
               ],
               "elements": [
                 {
@@ -440,16 +520,16 @@
           "id": "p0334-b7",
           "ord": 7,
           "src": [
-            469,
-            539
+            477,
+            547
           ],
           "lines": [
             {
               "id": "p0334-b7-l0",
               "ord": 0,
               "src": [
-                469,
-                506
+                477,
+                514
               ],
               "elements": [
                 {
@@ -463,8 +543,8 @@
               "id": "p0334-b7-l1",
               "ord": 1,
               "src": [
-                507,
-                539
+                515,
+                547
               ],
               "elements": [
                 {
@@ -485,18 +565,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0334-b1-l1",
+          "line": "p0334-b1-l3",
           "range": [
-            21,
-            23
+            0,
+            2
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        114,
-        118
+        116,
+        120
       ]
     },
     {
@@ -504,7 +584,7 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0334-b1-l2",
+          "line": "p0334-b1-l4",
           "range": [
             1,
             3
@@ -514,8 +594,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        122,
-        126
+        124,
+        128
       ]
     },
     {
@@ -533,8 +613,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        137,
-        141
+        139,
+        143
       ]
     },
     {
@@ -552,8 +632,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        158,
-        163
+        160,
+        165
       ]
     },
     {
@@ -571,8 +651,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        168,
-        171
+        170,
+        173
       ]
     },
     {
@@ -580,7 +660,26 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0334-b3-l1",
+          "line": "p0334-b3-l3",
+          "range": [
+            0,
+            2
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        220,
+        224
+      ]
+    },
+    {
+      "id": "o6",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0334-b3-l3",
           "range": [
             5,
             7
@@ -590,27 +689,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        216,
-        220
-      ]
-    },
-    {
-      "id": "o6",
-      "kind": "book-title",
-      "spans": [
-        {
-          "line": "p0334-b3-l1",
-          "range": [
-            10,
-            12
-          ]
-        }
-      ],
-      "openedHere": true,
-      "closed": true,
-      "src": [
-        223,
-        227
+        227,
+        231
       ]
     },
     {
@@ -618,18 +698,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0334-b3-l1",
+          "line": "p0334-b3-l3",
           "range": [
-            20,
-            22
+            15,
+            17
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        236,
-        240
+        240,
+        244
       ]
     },
     {
@@ -637,18 +717,18 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0334-b4-l1",
+          "line": "p0334-b4-l3",
           "range": [
-            22,
-            24
+            0,
+            2
           ]
         }
       ],
       "openedHere": true,
       "closed": true,
       "src": [
-        315,
-        319
+        321,
+        325
       ]
     },
     {
@@ -666,8 +746,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        336,
-        340
+        342,
+        346
       ]
     },
     {
@@ -685,8 +765,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        348,
-        352
+        354,
+        358
       ]
     },
     {
@@ -704,8 +784,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        390,
-        396
+        396,
+        402
       ]
     },
     {
@@ -728,8 +808,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        404,
-        410
+        410,
+        416
       ]
     },
     {
@@ -737,48 +817,10 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0334-b6-l1",
+          "line": "p0334-b6-l3",
           "range": [
-            14,
-            16
-          ]
-        }
-      ],
-      "openedHere": true,
-      "closed": true,
-      "src": [
-        429,
-        433
-      ]
-    },
-    {
-      "id": "o15",
-      "kind": "book-title",
-      "spans": [
-        {
-          "line": "p0334-b6-l1",
-          "range": [
-            16,
-            18
-          ]
-        }
-      ],
-      "openedHere": true,
-      "closed": true,
-      "src": [
-        433,
-        437
-      ]
-    },
-    {
-      "id": "o16",
-      "kind": "book-title",
-      "spans": [
-        {
-          "line": "p0334-b6-l1",
-          "range": [
-            18,
-            20
+            0,
+            2
           ]
         }
       ],
@@ -790,14 +832,14 @@
       ]
     },
     {
-      "id": "o17",
+      "id": "o15",
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0334-b6-l1",
+          "line": "p0334-b6-l3",
           "range": [
-            20,
-            22
+            2,
+            4
           ]
         }
       ],
@@ -809,11 +851,49 @@
       ]
     },
     {
+      "id": "o16",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0334-b6-l3",
+          "range": [
+            4,
+            6
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        445,
+        449
+      ]
+    },
+    {
+      "id": "o17",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0334-b6-l3",
+          "range": [
+            6,
+            8
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        449,
+        453
+      ]
+    },
+    {
       "id": "o18",
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0334-b6-l2",
+          "line": "p0334-b6-l4",
           "range": [
             8,
             12
@@ -823,8 +903,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        458,
-        464
+        466,
+        472
       ]
     },
     {
@@ -842,8 +922,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        471,
-        475
+        479,
+        483
       ]
     },
     {
@@ -861,8 +941,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        489,
-        493
+        497,
+        501
       ]
     },
     {
@@ -880,8 +960,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        501,
-        505
+        509,
+        513
       ]
     },
     {
@@ -899,8 +979,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        509,
-        513
+        517,
+        521
       ]
     },
     {
@@ -918,8 +998,8 @@
       "openedHere": true,
       "closed": true,
       "src": [
-        516,
-        520
+        524,
+        528
       ]
     }
   ]
