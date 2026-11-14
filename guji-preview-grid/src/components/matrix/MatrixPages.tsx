@@ -179,6 +179,12 @@ function MatrixPageView({
               "m-book",
               box.openTop && "open-top",
               box.openBottom && "open-bottom",
+              // 最右列（读序第一列）：右边线叠上版框（matrix.css 共线避让）
+              box.col === page.totalCols - 1 && "m-flush-r",
+              // band 左缘列（最右 band 除外——其左缘是版框）：界栏开时与界栏共线
+              box.col === page.colStarts[box.bandIdx] &&
+                box.bandIdx < page.bands.length - 1 &&
+                "at-band-left",
               highlight?.book === box.overlayId && "m-book-active",
             ]
               .filter(Boolean)

@@ -69,7 +69,7 @@
 }
 
 /*
- * 书名框：跨行矩形项，单一边框（无 flex 版的负边距拼接）。
+ * 书名框：跨行矩形项，单一边框 + 定向负边距共线（见下）。
  * 边框占位 2px，用 flex 均分字格高度消化（亚像素级压缩，视觉无差）。
  * open-* 只出现在跨小行 wrap 的连接边。
  */
@@ -96,6 +96,27 @@
 }
 .m-book.m-flush-r {
   margin-right: -1px;
+}
+
+/*
+ * 相邻书名框共线避让（与 flex.css 同款几何）：轨道尺寸固定（显式
+ * repeat(calc(unit))），负边距是纯视觉位移，不影响轨道与邻居占位。
+ * 只向阅读序后方（下、左）让 1px——相邻框的对面边线因此落在同一像素条：
+ * 上框底边 [B,B+1] ≡ 下框顶边 [B,B+1]，右列左边线 ≡ 左列右边线。
+ * 方向必须单一：若两边都让，两条线错开成相邻双线（与 flex 三边 -1px 的差异）。
+ * - open-bottom 无边可吸，下缘不让（防高亮底色溢出 1px）；
+ * - 界栏开时 band 左缘列的框改与界栏共线（margin-left 归 0，at-band-left
+ *   由渲染层挂）——最右 band 不含界栏（其左缘是版框，仍走 -1px 合并）；
+ * - 最右列（读序第一列）由渲染层挂 m-flush-r，右边线叠上版框。
+ */
+.m-lines > .m-book {
+  margin-left: -1px;
+}
+.m-lines > .m-book:not(.open-bottom) {
+  margin-bottom: -1px;
+}
+.m-lines[data-rules="on"] .m-book.at-band-left {
+  margin-left: 0;
 }
 
 /* 编辑器光标联动高亮（.m-band = 大行；.m-book-active = 光标所在书名区间） */
