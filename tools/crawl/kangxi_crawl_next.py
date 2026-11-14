@@ -17,35 +17,31 @@ import json
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+import paths  # noqa: E402
+
 import fetch_kangxi_entry as fe
 import fetch_kangxi_page as fp
 import kangxi_log
 import kangxi_store
 import kangxi_svg_cache
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
-FALLBACK_IMAGES_DIR = REPO_ROOT / "datasets" / "kangxi-crawl" / "pages"
-FALLBACK_ENTRIES_DIR = REPO_ROOT / "datasets" / "kangxi-crawl" / "entries"
-FALLBACK_SVG_DIR = kangxi_svg_cache.FALLBACK_SVG_DIR
-WD_DIRS = {  # WD-2T 上各类落盘目录（外置盘未挂载时回退仓库内 FALLBACK_*）
-    "images": fp.DEFAULT_OUT_DIR,
-    "entries": Path("/Volumes/WD-2T/guji-ocr/datasets/kangxizidian-entries"),
-    "svg": kangxi_svg_cache.WD_SVG_DIR,
+WD_DIRS = {  # WD-2T 上各类落盘目录（统一见 tools/paths.py；未挂载即退出，不回退）
+    "images": paths.RAW_KANGXI_PAGES,
+    "entries": paths.RAW_KANGXI_ENTRIES,
+    "svg": paths.RAW_KANGXI_SVG,
 }
 
 
-def pick_dir(preferred: Path | None, fallback: Path, label: str) -> Path:
-    """优先用外置盘目录，未挂载则回退仓库内目录；返回前确保目录存在。"""
+def pick_dir(preferred: Path | None, label: str) -> Path:
+    """采集落盘目录：CLI 覆盖优先，否则用外置盘目录；外置盘未挂载直接退出。"""
     if preferred is not None:
         preferred.mkdir(parents=True, exist_ok=True)
         return preferred
-    if fp.DEFAULT_OUT_DIR.parent.is_dir():  # WD-2T 已挂载
-        wd = WD_DIRS[label]
-        wd.mkdir(parents=True, exist_ok=True)
-        return wd
-    print(f"⚠ WD-2T 未挂载，{label} 回退到 {fallback}")
-    fallback.mkdir(parents=True, exist_ok=True)
-    return fallback
+    paths.require_wd(label)
+    wd = WD_DIRS[label]
+    wd.mkdir(parents=True, exist_ok=True)
+    return wd
 
 
 def crawl_next_page(store: kangxi_store.KangxiStore, images_dir: Path, entries_dir: Path,
@@ -95,11 +91,11 @@ def main() -> int:
     ap.add_argument("--db", type=Path, default=kangxi_store.DEFAULT_DB,
                     help=f"SQLite 库路径（默认 {kangxi_store.DEFAULT_DB}）")
     ap.add_argument("--images-dir", type=Path, default=None,
-                    help="原图目录（默认 WD-2T，未挂载时回退 datasets/kangxi-crawl/pages）")
+                    help=f"原图目录（默认 {WD_DIRS['images']}）")
     ap.add_argument("--entries-dir", type=Path, default=None,
-                    help="详情 JSON 副本目录（默认 WD-2T，未挂载时回退 datasets/kangxi-crawl/entries）")
+                    help=f"详情 JSON 副本目录（默认 {WD_DIRS['entries']}）")
     ap.add_argument("--svg-dir", type=Path, default=None,
-                    help="字头 svg 缓存目录（默认 WD-2T kangxizidian-heads-svg，未挂载时回退仓库内）")
+                    help=f"字头 svg 缓存目录（默认 {WD_DIRS['svg']}；外置盘未挂载则退出）")
     ap.add_argument("--from-page", type=int, default=1, help="起始页码（默认 1）")
     ap.add_argument("--order", choices=["random", "sequential"], default="random",
                     help="选页策略：random 未完成页中均匀随机（默认）；sequential 最小未完成页")
@@ -107,9 +103,9 @@ def main() -> int:
 
     store = kangxi_store.KangxiStore(args.db)
     fp.check_robots()  # 禁止即 sys.exit(2)
-    images_dir = pick_dir(args.images_dir, FALLBACK_IMAGES_DIR, "images")
-    entries_dir = pick_dir(args.entries_dir, FALLBACK_ENTRIES_DIR, "entries")
-    svg_dir = pick_dir(args.svg_dir, FALLBACK_SVG_DIR, "svg")
+    images_dir = pick_dir(args.images_dir, "images")
+    entries_dir = pick_dir(args.entries_dir, "entries")
+    svg_dir = pick_dir(args.svg_dir, "svg")
 
     rc = crawl_next_page(store, images_dir, entries_dir, args.from_page, args.order, svg_dir)
     if rc == 0:

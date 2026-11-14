@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """初校真值 × OCR 行组 对照评估：折行组界质量（真行界率/过分裂/漏折）。
 
-用法：python3 scripts/eval_ocr_fold.py [-v]
+用法：python3 tools/eval/eval_ocr_fold.py [-v]
   -v 打印每个过分裂数的上下文（组文本、金标对齐位置）。
-数据源：kangxi-gold/annotations/*.gj（初校真值）+ paddleocr-baseline/data/ocr-markdown/*.json。
-口径与 scripts/kangxi_page_tool.py 的 _norm/PUNCT_STRIP 一致。
+数据源：kangxi-gold/annotations/*.gj（初校真值）+ var/ocr-cache/*.json。
+口径与 tools/dataset/kangxi_page_tool.py 的 _norm/PUNCT_STRIP 一致。
 2026-11-14 全量基线见 docs/research/evidence/2026-11-14-ocr-bbox-fold-feasibility.json。
 """
 import difflib
@@ -12,9 +12,12 @@ import json
 import sys
 from pathlib import Path
 
-REPO = Path(__file__).resolve().parent.parent
+REPO = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+import paths  # noqa: E402
+
 GJ = REPO / "kangxi-gold/annotations"
-OCR_CACHE = REPO / "paddleocr-baseline/data/ocr-markdown"
+OCR_CACHE = paths.OCR_CACHE_DIR
 PUNCT_STRIP = "。，·\"：:、；《》【】*　 \t\n\r"
 
 

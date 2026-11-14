@@ -22,7 +22,7 @@ from kangxi_column_seg import segment, IMGDIR          # noqa: E402
 from eval_column_seg import assign_lines               # noqa: E402
 from eval_ocr_fold import gj_bands, norm               # noqa: E402
 
-GJ_DIR = HERE.parent / "kangxi-gold/annotations"
+GJ_DIR = HERE.parents[1] / "kangxi-gold/annotations"
 _CACHE: dict[int, dict] = {}
 
 

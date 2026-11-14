@@ -17,7 +17,7 @@
       "note": "www 站为 User-agent: * / Allow: /；img CDN 无 robots.txt（默认允许）"
     }
   },
-  "images_dir": "/Volumes/WD-2T/guji-ocr/datasets/kangxizidian-wuyingdian",
+  "images_dir": "/Volumes/WD-2T/guji-ocr/raw/kangxizidian/pages",
   "pages": [
     {
       "page": 312,

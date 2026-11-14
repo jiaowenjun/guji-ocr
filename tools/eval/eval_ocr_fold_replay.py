@@ -31,7 +31,8 @@ import json
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "dataset"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "crawl"))
 import kangxi_page_tool as kpt  # noqa: E402
 import kangxi_store  # noqa: E402
 

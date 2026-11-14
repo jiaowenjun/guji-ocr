@@ -9,11 +9,14 @@ node_modules/
 dist/
 *.log
 
+# Python
+__pycache__/
+*.pyc
+.venv*/
+.pytest_cache/
+
 # 编辑器
 .idea/
 
-# 数据集大文件（清单见 docs/research/evidence/）
-datasets/
-
-# 下载用临时虚拟环境
-scripts/.venv-dl/
+# 本地数据（可再生缓存/工作状态，分层规范见 docs/data-storage.md）
+var/

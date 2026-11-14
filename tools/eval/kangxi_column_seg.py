@@ -22,9 +22,9 @@
 
 用法：
   python3 scripts/kangxi_column_seg.py 333            # JSON
-  python3 scripts/kangxi_column_seg.py 316 --draw     # 标注图（红=大列界，蓝实=列内小列界·有谷值证据，
+  python3 tools/eval/kangxi_column_seg.py 316 --draw     # 标注图（红=大列界，蓝实=列内小列界·有谷值证据，
                                                       #   蓝虚=网格补位；紫标 chars/cap）
-  python3 scripts/kangxi_column_seg.py 312-335 --count # 列数/pitch/证据率 vs 金标行数
+  python3 tools/eval/kangxi_column_seg.py 312-335 --count # 列数/pitch/证据率 vs 金标行数
 """
 import argparse
 import json
@@ -35,10 +35,13 @@ from pathlib import Path
 import numpy as np
 from PIL import Image, ImageDraw
 
-REPO = Path(__file__).resolve().parent.parent
-MD = REPO / "paddleocr-baseline/data/ocr-markdown"
+REPO = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+import paths  # noqa: E402
+
+MD = paths.OCR_CACHE_DIR
 DB = REPO / "paddleocr-baseline/data/ocr/ocr.sqlite3"
-IMGDIR = Path("/Volumes/WD-2T/guji-ocr/datasets/kangxizidian-wuyingdian")
+IMGDIR = paths.RAW_KANGXI_PAGES
 
 DARK_THR = 140          # 二值化阈值（刻本墨色 < 140）
 SMOOTH_K = 11           # x 剖面平滑窗
@@ -299,7 +302,7 @@ def draw(page: int, result: dict, img_path=None, out_path=None):
 
 
 def gold_line_count(page: int):
-    sys.path.insert(0, str(REPO / "scripts"))
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
     from eval_ocr_fold import gj_bands
     f = REPO / "kangxi-gold/annotations" / f"{page:04d}.gj"
     if not f.exists():
@@ -322,12 +325,17 @@ def detect_page_pitch(page: int, img_path=None):
 
 
 def main():
+    global IMGDIR
     ap = argparse.ArgumentParser()
     ap.add_argument("pages", help="页码：333 或 312-335")
     ap.add_argument("--draw", action="store_true")
     ap.add_argument("--count", action="store_true")
     ap.add_argument("--img", help="覆盖扫描图路径")
+    ap.add_argument("--imgdir", type=Path, default=None,
+                    help=f"扫描图目录（默认 {IMGDIR}；外置盘未挂载时必传或 --img）")
     args = ap.parse_args()
+    if args.imgdir is not None:
+        IMGDIR = args.imgdir
     if "-" in args.pages:
         lo, hi = (int(x) for x in args.pages.split("-"))
         pages = list(range(lo, hi + 1))

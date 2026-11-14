@@ -4,12 +4,12 @@
 添加新页时 kangxi_page_tool 的 OCR 裁剪/折行优先读本缓存，未命中才提交
 新 job——新页 OCR 等待从 ~40s+（冷启动/排队）降为 0（命中时零联网）。
 
-缓存位置：paddleocr-baseline/data/ocr-markdown/<page:04d>.json
+缓存位置：var/ocr-cache/<page:04d>.json
   {page, sha256, fetched_at, markdown}（sha256 与扫描图绑定，图变则失效重跑）
   以及零文本哨兵 {"markdown": ""}（避免无文本页反复提交）。
 
 用法：
-  python3 scripts/prefetch_ocr.py [--pages 335-360] [--limit N] [--force]
+  python3 tools/eval/prefetch_ocr.py [--pages 335-360] [--limit N] [--force]
   python3 scripts/prefetch_ocr.py --all          # 全部已爬页（581 页，量大慎用）
 默认：数据集中已有页的「下一页起」未缓存页（即近期将要添加的页）。
 仅依赖标准库；OCR 经本地 paddleocr-baseline 服务（127.0.0.1:8010）。
@@ -27,11 +27,13 @@ import uuid
 from datetime import datetime
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "crawl"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+import paths  # noqa: E402
 import kangxi_store  # noqa: E402
 
-REPO = Path(__file__).resolve().parents[1]
-CACHE_DIR = REPO / "paddleocr-baseline" / "data" / "ocr-markdown"
+REPO = paths.REPO_ROOT
+CACHE_DIR = paths.OCR_CACHE_DIR
 MANIFEST = REPO / "kangxi-gold" / "manifest.json"
 BASE = "http://127.0.0.1:8010"
 

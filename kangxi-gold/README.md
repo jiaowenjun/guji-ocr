@@ -23,7 +23,7 @@ kangxi-gold/
   scripts/build_annotations.ts 拆页 + 解析 + 零漂移校验 + 产出三件套
   scripts/verify_dataset.py    数据集一致性校验
   scripts/eval_cer.py          严格 CER 评测（对接 paddleocr-baseline 输出）
-图片不在 git 内：/Volumes/WD-2T/guji-ocr/datasets/kangxizidian-wuyingdian/NNNN.jpg
+图片不在 git 内：/Volumes/WD-2T/guji-ocr/raw/kangxizidian/pages/NNNN.jpg
 ```
 
 ## 来源与页码对齐验证
@@ -41,8 +41,8 @@ kangxi-gold/
 
 ## 扩页与页标签
 
-- 经 guji-preview-grid「添加新页」录入：`scripts/kangxi_page_tool.py` 以 sqlite
-  （`datasets/kangxi-crawl.sqlite3`，已有数据零联网）+ 站点增量爬取生成 .gj 草稿，
+- 经 guji-preview-grid「添加新页」录入：`tools/dataset/kangxi_page_tool.py` 以 sqlite
+  （`var/crawl/kangxi-crawl.sqlite3`，已有数据零联网）+ 站点增量爬取生成 .gj 草稿，
   manifest 记 `status`；草稿页校对完成后跑 `build_annotations.ts --allow-drift`
   同步 json/txt（样例外附加页自动处理），`verify_dataset.py` 默认按 manifest 页清单校验
 - 页标签：`draft` 草稿（爬取生成）→ `first` 初校（人工校对过）→ `final` 精校

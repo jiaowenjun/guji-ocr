@@ -12,8 +12,8 @@
 import sys
 from pathlib import Path
 
-REPO = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(REPO / "scripts"))
+REPO = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 from kangxi_column_seg import segment  # noqa: E402
 from eval_ocr_fold import gj_bands, norm  # noqa: E402
 

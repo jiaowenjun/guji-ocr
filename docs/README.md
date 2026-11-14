@@ -10,6 +10,7 @@
 | 查论文题名、原始链接、阅读深度或用户提供的文章 | [参考文献与来源](research/references.md) |
 | 按任务、许可、资源 ID 继续筛选或编写脚本 | [机器可读资源索引](research/resources.json) |
 | 检查 AncientDoc、Chronicles 和 11 页样本的具体核查依据 | [证据目录说明](research/evidence/README.md) |
+| 决定某类文件放 git / 本地 var/ / 外置盘 | [数据文件存放规范](data-storage.md) |
 | 使用字格矩阵预览与数据集对照校对 | [guji-preview-grid 使用与开发说明](../guji-preview-grid/README.md) |
 | 核验康熙字典未编码字头（K0000）与字体缺字判定 | [未编码字头字体核验流程](research/2026-11-13-kangxi-未编码字头字体核验流程.md) |
 | 向康熙字典體补录缺字字形（K0000 字形入库） | [字体补录流程](research/2026-11-13-kangxi-字体补录流程.md) |
@@ -20,6 +21,7 @@
 README.md                              仓库入口
 docs/
 ├── README.md                          本导航
+├── data-storage.md                    数据文件存放规范（git/var/外置盘分层）
 └── research/
     ├── README.md                      新综合报告，主要阅读入口
     ├── references.md                  论文与文章来源索引

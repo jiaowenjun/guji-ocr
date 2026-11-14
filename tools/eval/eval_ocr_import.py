@@ -15,8 +15,7 @@ from __future__ import annotations
 import difflib, json, sys
 from pathlib import Path
 
-SCRIPTS = Path(__file__).resolve().parent
-REPO = SCRIPTS.parent
+REPO = Path(__file__).resolve().parents[2]
 ANN = REPO / "kangxi-gold" / "annotations"
 OCR_DIR = Path("/tmp/kx-fulltest/out")
 PUNCT = "。，·\"::、；《》【】*　 \t\n\r◎〇"

@@ -38,10 +38,13 @@ from urllib.parse import urljoin
 import kangxi_log
 import kangxi_store
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+import paths  # noqa: E402
+
 READING_PAGE_TEMPLATE = "https://www.kangxizidian.com/v2/index2.php?page={page}"
 KNOWN_URL_TEMPLATE = "https://p.kangxizidian.com/kangxi2/{page:04d}.jpg"  # 仅漂移提示用
 TOTAL_PAGES = 7738
-DEFAULT_OUT_DIR = Path("/Volumes/WD-2T/guji-ocr/datasets/kangxizidian-wuyingdian")
+DEFAULT_OUT_DIR = paths.RAW_KANGXI_PAGES
 ROBOTS_URLS = [
     "https://www.kangxizidian.com/robots.txt",
     "https://p.kangxizidian.com/robots.txt",

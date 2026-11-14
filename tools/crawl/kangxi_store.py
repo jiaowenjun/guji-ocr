@@ -23,11 +23,15 @@ import json
 import random
 import re
 import sqlite3
+import sys
 from contextlib import contextmanager
 from datetime import datetime
 from pathlib import Path
 
-DEFAULT_DB = Path(__file__).resolve().parents[1] / "datasets" / "kangxi-crawl.sqlite3"
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+import paths  # noqa: E402
+
+DEFAULT_DB = paths.CRAWL_DB
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS pages (

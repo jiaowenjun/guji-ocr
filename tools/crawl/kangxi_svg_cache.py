@@ -33,15 +33,17 @@ import shutil
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+import paths  # noqa: E402
+
 import fetch_kangxi_page as fp
 import kangxi_log
 import kangxi_store
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
+REPO_ROOT = paths.REPO_ROOT
 SVG_URL_PREFIX = "https://www.kangxizidian.com/kxzt/"
-WD_SVG_DIR = Path("/Volumes/WD-2T/guji-ocr/datasets/kangxizidian-heads-svg")
-FALLBACK_SVG_DIR = REPO_ROOT / "datasets" / "kangxi-crawl" / "heads-svg"
-DEFAULT_ADOPT_DIR = REPO_ROOT / "datasets" / "kangxi-unencoded" / "svg"
+WD_SVG_DIR = paths.RAW_KANGXI_SVG
+DEFAULT_ADOPT_DIR = paths.UNENCODED_DIR / "svg"
 
 
 def looks_like_svg(data: bytes) -> bool:
@@ -116,12 +118,9 @@ def pick_svg_dir(preferred: Path | None) -> Path:
     if preferred is not None:
         preferred.mkdir(parents=True, exist_ok=True)
         return preferred
-    if WD_SVG_DIR.parent.is_dir():  # WD-2T 已挂载
-        WD_SVG_DIR.mkdir(parents=True, exist_ok=True)
-        return WD_SVG_DIR
-    print(f"⚠ WD-2T 未挂载，svg 缓存回退到 {FALLBACK_SVG_DIR}")
-    FALLBACK_SVG_DIR.mkdir(parents=True, exist_ok=True)
-    return FALLBACK_SVG_DIR
+    paths.require_wd("svg 缓存")
+    WD_SVG_DIR.mkdir(parents=True, exist_ok=True)
+    return WD_SVG_DIR
 
 
 def main() -> int:
@@ -129,7 +128,7 @@ def main() -> int:
     ap.add_argument("--db", type=Path, default=kangxi_store.DEFAULT_DB,
                     help=f"SQLite 库路径（默认 {kangxi_store.DEFAULT_DB}）")
     ap.add_argument("--svg-dir", type=Path, default=None,
-                    help="缓存目录（默认 WD-2T，未挂载时回退 datasets/kangxi-crawl/heads-svg）")
+                    help=f"缓存目录（默认 {WD_SVG_DIR}；外置盘未挂载则退出）")
     ap.add_argument("--scope", choices=["unencoded", "all"], default="unencoded",
                     help="unencoded = 仅未编码字头（默认）；all = 全部字头")
     ap.add_argument("--adopt-dir", type=Path, default=DEFAULT_ADOPT_DIR,

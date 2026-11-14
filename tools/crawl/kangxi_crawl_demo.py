@@ -12,7 +12,7 @@
 （库命中或抓取详情页入库）；每次请求的轨迹（数据库命中/采纳/下载）返回前端展示。
 
 用法：
-  python3 kangxi_crawl_demo.py [--port 8318] [--cache datasets/kangxi-demo-cache] [--db PATH]
+  python3 kangxi_crawl_demo.py [--port 8318] [--cache var/crawl/kangxi-demo-cache] [--db PATH]
 然后浏览器打开 http://127.0.0.1:8318/ 。仅依赖标准库。
 """
 from __future__ import annotations
@@ -31,10 +31,13 @@ import fetch_kangxi_entry as fe  # noqa: E402
 import fetch_kangxi_page as fp  # noqa: E402
 import kangxi_store  # noqa: E402
 from kangxi_crawl_next import pick_dir  # noqa: E402
-from kangxi_svg_cache import FALLBACK_SVG_DIR, fetch_svg  # noqa: E402
+from kangxi_svg_cache import WD_SVG_DIR, fetch_svg  # noqa: E402
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_CACHE = REPO_ROOT / "datasets" / "kangxi-demo-cache"
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+import paths  # noqa: E402
+
+REPO_ROOT = paths.REPO_ROOT
+DEFAULT_CACHE = paths.DEMO_CACHE_DIR
 # 罕见字字体：由本服务直供（@font-face url），避免 Safari 等浏览器
 # 对本地已装字体族名匹配的差异；文件在用户字体目录，缺省 404 时
 # 栈内仍按族名回退本地字体
@@ -341,7 +344,7 @@ $('charBox').addEventListener('keydown', e => { if (e.key === 'Enter') $('fetchC
 class DemoHandler(BaseHTTPRequestHandler):
     store: kangxi_store.KangxiStore  # main() 注入
     img_dir: Path = DEFAULT_CACHE / "pages"  # 本演示的原图落盘目录（路径同时入库）
-    svg_dir: Path = FALLBACK_SVG_DIR  # 字头 svg 缓存目录（main() 注入，与爬取器共用）
+    svg_dir: Path = WD_SVG_DIR  # 字头 svg 缓存目录（main() 注入，与爬取器共用）
 
     def log_message(self, fmt, *args):  # 静默默认访问日志，轨迹走 /api 响应
         pass
@@ -525,7 +528,7 @@ def main() -> int:
     args = ap.parse_args()
 
     DemoHandler.img_dir = args.cache / "pages"
-    DemoHandler.svg_dir = pick_dir(None, FALLBACK_SVG_DIR, "svg")  # 与爬取器共用 WD-2T 缓存
+    DemoHandler.svg_dir = pick_dir(None, "svg")  # 与爬取器共用 WD-2T 缓存
     DemoHandler.img_dir.mkdir(parents=True, exist_ok=True)
     DemoHandler.store = kangxi_store.KangxiStore(args.db)
 

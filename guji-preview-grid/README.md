@@ -77,14 +77,14 @@ pnpm build
   `SCAN_FRAME_MARGIN`，17 页投影法实测；纸面色 #dcb68a），`unit = (版框宽−2px)/横向字格数`；
   默认 **界栏关 + 原图高度适配视口**（缩放滑杆切为宽度百分比，↺ 恢复适配）
 - ←/→ 翻页（编辑器聚焦时不劫持）；未保存修改按页保留，切页/切模式不丢
-- **「添加新页」**：输入页码（1–7738）→ `scripts/kangxi_page_tool.py` 补数据（含**前页未完字头续入**：
+- **「添加新页」**：输入页码（1–7738）→ `tools/dataset/kangxi_page_tool.py` 补数据（含**前页未完字头续入**：
   解析前页 .gj 尾部，在库内该字头全量释义中容差对齐定位断点，余段作为本页
   草稿开头——跨页书名靠 per-page 语义边界自然衔接：前页下开口、本页上开口；
   **OCR 辅助删头去尾 + 折行**：本地 paddleocr-baseline 服务运行时，续文按该页扫描图
   的 OCR 识别范围自动裁剪到页面物理末界（文本仍以库内转写为准，OCR 只作范围
   标尺），并按 OCR 行组在草稿大行内插入折行换行（只插入换行不改字符；全量测试
   21 页折行界 96.2% ±0）；服务未运行/对齐不可信时回退未裁剪未折行的平铺草稿
-  （sqlite `datasets/kangxi-crawl.sqlite3` 已有则零联网，缺则由 fetch_kangxi_page/
+  （sqlite `var/crawl/kangxi-crawl.sqlite3` 已有则零联网，缺则由 fetch_kangxi_page/
   fetch_kangxi_entry 增量爬取）→ 由 page_chars + entries 生成 .gj 草稿（字头行 +
   释义段落带，未编码字 `#□` 占位注释）入 `annotations/`、manifest 追加该页并刷新
   index.json，前端自动跳转；`POST /dataset/page-tool` 中间件仅 dev 生效
@@ -100,8 +100,8 @@ pnpm build
 已随仓库入库（`public/fonts/`，~129MB，无需额外步骤）：
 
 ```sh
-bash scripts/link-dataset.sh        # 需挂载存放扫描图的外置盘（manifest.images_dir）
-python3 scripts/prefetch_ocr.py      # 可选：预识别近期页（默认数据集末页起，限 20 页/次）
+bash scripts/link-dataset.sh             # 需挂载存放扫描图的外置盘（manifest.images_dir）
+python3 tools/eval/prefetch_ocr.py        # 可选：预识别近期页（默认数据集末页起，限 20 页/次）
 ```
 
 ## Guji 語法

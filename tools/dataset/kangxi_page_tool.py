@@ -35,11 +35,15 @@ import sys
 from datetime import date
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "crawl"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import kangxi_store  # noqa: E402
+import paths  # noqa: E402
 
-SCRIPTS = Path(__file__).resolve().parent
-REPO = SCRIPTS.parent
+HERE = Path(__file__).resolve().parent          # tools/dataset
+CRAWL = HERE.parent / "crawl"
+EVAL = HERE.parent / "eval"
+REPO = HERE.parents[1]
 MANIFEST = REPO / "kangxi-gold" / "manifest.json"
 ANNOTATIONS = REPO / "kangxi-gold" / "annotations"
 INDEX_JSON = REPO / "guji-preview-grid" / "public" / "dataset" / "index.json"
@@ -55,7 +59,7 @@ def run_fetch(script: str, page: int, label: str) -> str:
     前端状态栏出现两段重复长 JSON——转为一句带 label 的人话摘要。
     """
     r = subprocess.run(
-        [sys.executable, str(SCRIPTS / script), "--pages", str(page)],
+        [sys.executable, str(CRAWL / script), "--pages", str(page)],
         capture_output=True, text=True, timeout=600,
     )
     if r.returncode != 0:
@@ -230,7 +234,7 @@ def continuation_from_prev(
 
 
 _OCR_CACHE: dict[int, str] = {}
-_OCR_CACHE_DIR = REPO / "paddleocr-baseline" / "data" / "ocr-markdown"
+_OCR_CACHE_DIR = paths.OCR_CACHE_DIR
 
 
 def _scan_for(page: int, store: kangxi_store.KangxiStore) -> tuple[Path | None, str]:
@@ -935,7 +939,7 @@ def prefetch_next_page(page: int) -> None:
     nxt = page + 1
     if not 1 <= nxt <= 7738:
         return
-    log_path = REPO / "paddleocr-baseline" / "data" / "ocr-markdown" / "prefetch.log"
+    log_path = paths.OCR_CACHE_DIR / "prefetch.log"
     logging.basicConfig(
         filename=log_path, filemode="a", level=logging.INFO,
         format="%(asctime)s %(message)s",
@@ -943,7 +947,7 @@ def prefetch_next_page(page: int) -> None:
     try:
         # ① 爬取（库里有则零网络；fetch 脚本自带 robots/限速/重试）
         fetch = subprocess.run(
-            [sys.executable, str(SCRIPTS / "fetch_kangxi_page.py"), "--pages", str(nxt)],
+            [sys.executable, str(CRAWL / "fetch_kangxi_page.py"), "--pages", str(nxt)],
             capture_output=True, text=True, timeout=600,
         )
         if fetch.returncode != 0:
@@ -955,14 +959,14 @@ def prefetch_next_page(page: int) -> None:
         missing = [c["char"] for c in chars if c["char"] and store.get_entry(c["codepoint"]) is None]
         if missing:
             e = subprocess.run(
-                [sys.executable, str(SCRIPTS / "fetch_kangxi_entry.py"), "--pages", str(nxt)],
+                [sys.executable, str(CRAWL / "fetch_kangxi_entry.py"), "--pages", str(nxt)],
                 capture_output=True, text=True, timeout=900,
             )
             if e.returncode != 0:
                 logging.info(f"@{nxt} entry 退出码 {e.returncode}: {e.stderr[-200:]}")
         # ③ OCR 预取（服务可用才跑；缓存命中则秒过）
         pre = subprocess.run(
-            [sys.executable, str(SCRIPTS / "prefetch_ocr.py"), "--pages", str(nxt), "--limit", "1"],
+            [sys.executable, str(EVAL / "prefetch_ocr.py"), "--pages", str(nxt), "--limit", "1"],
             capture_output=True, text=True, timeout=900,
         )
         logging.info(f"@{nxt} prefetch 完成: {pre.stdout.strip().splitlines()[-1] if pre.stdout.strip() else pre.stderr[-200:]}")

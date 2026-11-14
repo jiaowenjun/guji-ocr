@@ -29,7 +29,7 @@ from datetime import date
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_IMAGES_DIR = Path("/Volumes/WD-2T/guji-ocr/datasets/kangxizidian-wuyingdian")
+DEFAULT_IMAGES_DIR = Path("/Volumes/WD-2T/guji-ocr/raw/kangxizidian/pages")
 DEFAULT_MANIFEST = REPO_ROOT / "kangxi-gold" / "manifest.json"
 IMAGE_URL_TEMPLATE = "https://p.kangxizidian.com/kangxi2/{page:04d}.jpg"
 TEXT_PAGE_TEMPLATE = "https://www.kangxizidian.com/v2/index.php?page={page}"

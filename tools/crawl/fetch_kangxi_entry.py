@@ -250,8 +250,8 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--chars", help="直接给定字头，逗号分隔，如 丁,丂,七")
     ap.add_argument("--pages", help="页码模式：抓阅读页解析字头后逐字取详情，如 313 或 312-328")
-    ap.add_argument("--out", type=Path, default=Path("/Volumes/WD-2T/guji-ocr/datasets/kangxizidian-entries"),
-                    help="输出目录（默认 WD-2T kangxizidian-entries）")
+    ap.add_argument("--out", type=Path, default=None,
+                    help="输出目录（默认 WD-2T raw/kangxizidian/entries；外置盘未挂载则退出）")
     ap.add_argument("--save-html", action="store_true", help="下载时同时保存详情页 HTML 文件副本")
     ap.add_argument("--db", type=Path, default=kangxi_store.DEFAULT_DB,
                     help=f"SQLite 库路径（默认 {kangxi_store.DEFAULT_DB}）")
@@ -259,6 +259,12 @@ def main() -> int:
     args = ap.parse_args()
     if not args.chars and not args.pages:
         ap.error("需指定 --chars 或 --pages 至少一项")
+    if args.out is None:
+        sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+        import paths
+
+        paths.require_wd("字头详情抓取")
+        args.out = paths.RAW_KANGXI_ENTRIES
 
     chars: list[str] = []
     if args.chars:

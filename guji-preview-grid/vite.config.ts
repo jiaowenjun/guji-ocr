@@ -8,7 +8,7 @@ import { defineConfig, type Plugin, type Connect, type ViteDevServer } from 'vit
 
 const ANNOTATIONS_DIR = path.resolve(__dirname, '../kangxi-gold/annotations')
 const REPO = path.resolve(__dirname, '..')
-const PAGE_TOOL = path.join(REPO, 'scripts', 'kangxi_page_tool.py')
+const PAGE_TOOL = path.join(REPO, 'tools', 'dataset', 'kangxi_page_tool.py')
 
 // 数据集对照页的保存回写：POST /dataset/save { page, content }
 // 仅 dev 生效（configureServer 只在 dev server 运行）；写回目标限定在
@@ -59,7 +59,7 @@ function datasetSave(): Plugin {
   }
 }
 
-// 「添加新页」/页标签：桥接 scripts/kangxi_page_tool.py（数据优先 sqlite，缺则由
+// 「添加新页」/页标签：桥接 tools/dataset/kangxi_page_tool.py（数据优先 sqlite，缺则由
 // 爬取脚本增量补抓）。子进程最长 10 分钟（含站点限速），stdout 末行是 JSON。
 function datasetPageTool(): Plugin {
   // 此处 connect 类型的 res 即 NextHandleFunction 的第二参（有 statusCode/setHeader/end）
@@ -133,6 +133,23 @@ function datasetPageTool(): Plugin {
   }
 }
 
+// build 产物瘦身：public/dataset 是指向外置盘扫描图与金标目录的符号链接（dev 专用），
+// vite 默认 public 拷贝会跟随符号链接实体复制（曾把 486M 扫描图拷进 dist 且随爬取增长）。
+// 故关闭整目录拷贝，仅显式复制真正的静态资源（fonts/favicon/rules-test）。
+function copyStaticAssets(): Plugin {
+  return {
+    name: 'copy-static-assets',
+    apply: 'build',
+    closeBundle() {
+      const pub = path.resolve(__dirname, 'public')
+      const out = path.resolve(__dirname, 'dist')
+      for (const name of ['fonts', 'favicon.svg', 'rules-test.html']) {
+        fs.cpSync(path.join(pub, name), path.join(out, name), { recursive: true })
+      }
+    },
+  }
+}
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
@@ -141,7 +158,11 @@ export default defineConfig({
     tailwindcss(),
     datasetSave(),
     datasetPageTool(),
+    copyStaticAssets(),
   ],
+  build: {
+    copyPublicDir: false,
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

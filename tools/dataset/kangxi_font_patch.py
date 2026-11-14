@@ -5,11 +5,11 @@
 外层 <g transform="translate(0,128) scale(0.1,-0.1)">，各字同管线）。
 流程与可行性论证见 docs/research/2026-11-13-kangxi-未编码字头字体核验流程.md。
 
-用法示例（补录 𫵮 U+2BD6E，用同页邻字 丰 校准基线）：
-  python3 kangxi_font_patch.py \
+用法示例（补录 𫵮 U+2BD6E，用同页邻字 丰 校准基线；自仓库根运行）：
+  python3 tools/dataset/kangxi_font_patch.py \
     --font guji-preview-grid/public/fonts/guji-large.ttf \
-    --svg  datasets/kangxi-unencoded/svg/0334-04-K0000.svg --cp 2BD6E \
-    --anchor-svg  datasets/kangxi-unencoded/svg/0334-03-00054-4E30.svg \
+    --svg  var/unencoded/svg/0334-04-K0000.svg --cp 2BD6E \
+    --anchor-svg  var/unencoded/svg/0334-03-00054-4E30.svg \
     --anchor-cp 4E30
 
 要点：
@@ -20,7 +20,7 @@
   - 注入：glyf / glyphOrder / maxp / hmtx（advance 取 anchor）/ cmap format-12 全部子表。
   - 验证闸：rsvg-convert 栅格化源 SVG vs PIL 渲染补录字形，对称 chamfer 须 < gate
     （实测 0.029；基线「丰 扫描 vs 原字体渲染」0.035，阈值 0.15 已留 4 倍余量）。
-  - 原子替换（tmp + os.replace）；结果追加 datasets/kangxi-unencoded/font-patches.jsonl。
+  - 原子替换（tmp + os.replace）；结果追加 var/unencoded/font-patches.jsonl。
 """
 
 import argparse
@@ -44,7 +44,7 @@ from fontTools.pens.ttGlyphPen import TTGlyphPen
 from fontTools.svgLib.path import parse_path
 from fontTools.ttLib import TTFont
 
-PATCH_LOG = "datasets/kangxi-unencoded/font-patches.jsonl"
+PATCH_LOG = "var/unencoded/font-patches.jsonl"
 
 
 def parse_cp(s: str) -> int:
