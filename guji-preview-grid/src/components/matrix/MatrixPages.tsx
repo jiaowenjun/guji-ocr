@@ -181,6 +181,17 @@ function MatrixPageView({
       >
         {page.bands.map((band, bi) => {
           const over = band.rows > PAGE_ROW_CAP;
+          // 溢出定位到小列：内容底边（r+全长）越过封顶线的列挂标记——
+          // 含整段藏在裁剪区内的项（不渲染但列确实溢出）；大字占 c..c+1 两列
+          const overCols = new Set<number>();
+          if (over) {
+            for (const it of band.items) {
+              const span = it.kind === "large" ? 2 : (it.cells?.length ?? 0);
+              if (it.r + span <= rows) continue;
+              overCols.add(it.c);
+              if (it.kind === "large") overCols.add(it.c + 1);
+            }
+          }
           return (
             <div
               key={bi}
@@ -214,6 +225,14 @@ function MatrixPageView({
                   />
                 );
               })}
+              {[...overCols].map((c) => (
+                // 溢出小列警示：占该列最后一格轨道，贴底 2px 即裁剪边
+                <div
+                  key={`ov${c}`}
+                  className="m-over-mark"
+                  style={{ gridRow: rows, gridColumn: c + 1 } as CSSProperties}
+                />
+              ))}
             </div>
           );
         })}
