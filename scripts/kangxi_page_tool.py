@@ -380,10 +380,11 @@ def ocr_trim_continuation(
 def ocr_fold_page_lines(page: int, bands: list[list[str]], store: kangxi_store.KangxiStore) -> tuple[list[list[str]], str]:
     """按 OCR 行组在草稿大行内插入折行（小行换行）。
 
-    全量测试：21 页 399 个行界 96.2% ±0 命中；OCR 空行组过分裂只增加边界
-    不移动真实边界，用「短片段合并」防护（归一化 <8 字的相邻片段并回）。
-    安全性：只插入换行、不改任何字符——最坏情况折点偏移 1-2 字，对照页中
-    即刻可见、拖动即可；库内转写文本永不因折行改动。
+    行组界即物理行界：25 页初校真值对照（2026-11-14）组界 91.5% 为真行界，
+    短行组（书名堆叠「廣韻集/韻韻會」逐行、短行接书证）同样是真实断行，
+    不做短片段合并（原 <8 合并规则误删 63% 真界，详见下方实测注释）。
+    安全性：只插入换行、不改任何字符——最坏情况折点偏移 1-2 字或过分裂
+    多折一处，对照页中即刻可见、拖动即可；库内转写文本永不因折行改动。
     """
     md_text = _ocr_markdown(page, store)
     if md_text is None:
@@ -421,12 +422,12 @@ def ocr_fold_page_lines(page: int, bands: list[list[str]], store: kangxi_store.K
     if not full_positions:
         return bands, "OCR 组界无法映射，未折行"
 
-    # 短片段合并：相邻折点距离 <8（归一化字）的边界视为过分裂，去后一个
-    merged: list[int] = []
-    for pos in full_positions:
-        if merged and pos - merged[-1] < 8:
-            continue
-        merged.append(pos)
+    # 不做短片段合并。原 <8 合并规则的实测（25 页初校真值对照，2026-11-14）：
+    # 被删组界 213 个中 135 个（63%）是真行界——书名堆叠（廣韻集/韻韻會逐行）、
+    # 短行接书证（。【說文】|）等都是真实物理短行；真正的过分裂集中在个别页
+    # （@320 样式）。OCR-VL 行组本身 91.5% 可信，过分裂折点保留在稿中可见即删
+    # （本函数只插换行、永不改字，误折删除无风险，漏折补行才是隐性成本）。
+    merged = full_positions
 
     buf_lines: list[str] = []
     kept = 0
@@ -442,8 +443,16 @@ def ocr_fold_page_lines(page: int, bands: list[list[str]], store: kangxi_store.K
         if ch in PUNCT_STRIP:
             continue
         if ci < len(cut_norm) and norm_idx == cut_norm[ci]:
-            pieces.append(full[last:i])
-            last = i
+            # 括号贴字：归一化剥掉【】，切点可能落在【|廣 或 …|】之间——
+            # 开书名号孤悬行尾则随下文（cut 左移），闭书名号起行则随上文（cut 右移）。
+            # 循环条件按字符匹配推进，不会越过 \u0001 带界或已有换行。
+            cut = i
+            while cut > last and full[cut - 1] == "【":
+                cut -= 1
+            while cut < len(full) and full[cut] == "】":
+                cut += 1
+            pieces.append(full[last:cut])
+            last = cut
             ci += 1
         norm_idx += 1
     pieces.append(full[last:])
@@ -453,7 +462,7 @@ def ocr_fold_page_lines(page: int, bands: list[list[str]], store: kangxi_store.K
     flat = "\n".join(pieces)
     result = [b.split("\n") for b in flat.split("\u0001")]
     inserted = len(pieces) - 1
-    return result, f"OCR 折行：插入 {inserted} 处换行（合并过分裂 {len(full_positions)-len(merged)}）"
+    return result, f"OCR 折行：插入 {inserted} 处换行"
 
 
 def build_draft_gj(
