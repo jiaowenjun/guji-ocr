@@ -1290,6 +1290,14 @@ def cmd_add(page: int) -> dict:
     if not row or not row.get("scan_sha256") or not row.get("scan_file"):
         raise RuntimeError(f"页 {page} 原图数据仍缺失")
     scan_file = Path(row["scan_file"])
+    if not scan_file.is_file():
+        # 库内路径失效（如外置盘目录重排后未迁移）——别让 read_bytes 抛裸 Errno
+        raise RuntimeError(
+            f"页 {page} 库内原图路径已失效：{scan_file}\n"
+            f"图片实际位置若为 {paths.RAW_KANGXI_PAGES}，迁移 crawl 库："
+            f"UPDATE pages SET scan_file = replace(scan_file, '<旧目录>/', "
+            f"'{paths.RAW_KANGXI_PAGES}/') WHERE scan_file LIKE '%<旧目录>/%'"
+        )
     images_dir = Path(manifest["images_dir"])
     if scan_file.parent != images_dir:
         # 爬取时用了别的 --out：把图复制到数据集图片目录
