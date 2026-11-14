@@ -55,6 +55,16 @@
     height: 22px;
     object-fit: contain;
 }
+/* 字头详情弹窗大样（HeadwordStrip 点击字头组） */
+.hw-char-lg {
+    width: 64px;
+    height: 64px;
+    font-size: 44px;
+}
+.hw-char-lg img {
+    width: 52px;
+    height: 52px;
+}
 .hw-char-missing {
     border: 1px dashed var(--color-destructive, oklch(0.577 0.245 27.325));
     border-radius: 4px;

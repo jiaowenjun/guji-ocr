@@ -10,6 +10,9 @@ export interface HeadwordCluster {
   raw: string;
   /** 字头字符（主字头 + 古文/异体变体，序即版面序） */
   chars: string[];
+  /** 所在行号（0 起）与行内偏移（词条区间定位用；// 前缀切片不移动偏移） */
+  line: number;
+  start: number;
 }
 
 const TOKEN_RE = new RegExp(HEAD_TOKEN, "gu");
@@ -17,7 +20,7 @@ const TOKEN_RE = new RegExp(HEAD_TOKEN, "gu");
 /** 提取一页 .gj 内全部字头组；标题行/@页码/注释不参与（口径同 formatGj） */
 export function extractHeadwordClusters(gj: string): HeadwordCluster[] {
   const out: HeadwordCluster[] = [];
-  for (const line of gj.split("\n")) {
+  for (const [li, line] of gj.split("\n").entries()) {
     if (/^\s*#+ /.test(line) || /^@\d+\s*$/.test(line)) continue;
     const cut = line.indexOf("//");
     const src = cut >= 0 ? line.slice(0, cut) : line;
@@ -26,10 +29,23 @@ export function extractHeadwordClusters(gj: string): HeadwordCluster[] {
         .map((t) => t[0])
         .filter((t) => !t.startsWith("#(")) // 圈号标记非字头字符
         .map((t) => t.slice(1)); // 去 # 前缀（u 标志下单码点，slice 兼容代理对）
-      if (chars.length > 0) out.push({ raw: m[0], chars });
+      if (chars.length > 0) out.push({ raw: m[0], chars, line: li, start: m.index ?? 0 });
     }
   }
   return out;
+}
+
+/** 字头词条文本：该组所在行行首 → 下一字头组所在行行首（无则页尾）。
+ *  页内止——词条常延续到后页，只切本页部分；同一行多个字头组（未格式化稿）
+ *  退化为该行行尾 */
+export function headwordEntry(gj: string, cluster: HeadwordCluster): string {
+  const lines = gj.split("\n");
+  const all = extractHeadwordClusters(gj);
+  const at = all.findIndex((c) => c.line === cluster.line && c.start === cluster.start);
+  const next = at >= 0 ? all[at + 1] : undefined;
+  // 末组取到页尾；同行多组（未格式化稿）退化为该行行尾
+  const endLine = !next ? lines.length : next.line > cluster.line ? next.line : cluster.line + 1;
+  return lines.slice(cluster.line, endLine).join("\n");
 }
 
 export type PageHeadwords =

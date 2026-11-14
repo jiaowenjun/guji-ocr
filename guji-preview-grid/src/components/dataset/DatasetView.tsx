@@ -668,7 +668,7 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
         </div>
       </div>
 
-      <HeadwordStrip resolved={headwords} />
+      <HeadwordStrip resolved={headwords} page={page} text={text} texts={texts} />
 
       <ResizablePanelGroup orientation="horizontal" className="min-h-0 flex-1">
         {/* 三栏默认宽度 2:2:3（原图:渲染:编辑器），可拖动调整 */}
