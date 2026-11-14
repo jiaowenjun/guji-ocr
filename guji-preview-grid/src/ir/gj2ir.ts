@@ -5,6 +5,12 @@
 // 骨架不依赖 overlay：去掉全部 overlay 后占格与换行不变（验收契约见 ir.spec）。
 // 词法镜像 parse-inline 状态机（消费 lineTransform 后文本；#( 双前瞻按 code unit；
 // 行内 // 截断）。src 为 UTF-16 仅溯源；行内 range 为码点半开区间。
+// 字头簇糖（2026-11-14，语法单一事实源在 parser/split-line.ts 扫描器）：
+//   - 带圈续写 #(五)(增)𠂂 ≡ #(五)#(增)#𠂂（( 紧随大字 token 即续写带圈）
+//   - 裸字大写：带圈 token 后一字=字头；「古文」标记或 、 后=变体（连串）
+//   - #(三)丹，古文：𠁿㣋 ≡ #(三)#丹古文#𠁿#㣋（，：两侧可省；为小字内容，
+//     TXT 经 profile 剔除与长式一致）
+//   - 普通 #X 后不裸写；状态不跨行；行首承接「古文：」须带冒号（正文不误判）
 import type {
   IRBand,
   IRBookOverlay,
@@ -15,6 +21,7 @@ import type {
   IRPage,
 } from "./types";
 import { GUJI_PROFILE } from "./types";
+import { isBareLargeChar } from "../parser/split-line";
 
 const chunkTransform = (s: string) =>
   s
@@ -244,11 +251,53 @@ export function gj2ir(text: string): IRDocument {
       const cpSrcs: number[] = [];
       const runsThisLine: Array<{ ri: number; startCp: number; text: string }> = [];
 
+      // 字头簇糖状态（行内局部，不跨行）：lastLargeKind=上一元素的大字来源；
+      // variantMode=古文标记或 、 之后（裸字=异体变体）。书名区/普通小字退出
+      let lastLargeKind: "circled" | "plain" | "bare" | null = null;
+      let variantMode = false;
+
       const flushPlain = () => {
         if (plainBuf.length > 0) {
           elements.push({ id: nextId(), class: "small", text: plainBuf });
           plainBuf = "";
         }
+      };
+
+      // 带圈 token 解析（lead=前导语法字符数：#=1、糖续写=0）。扩展输入（原文不动，
+      // src 对齐保持）：全角括号等同半角；括号内速记 z→增、数字→汉字（1→一等）
+      const parseCircled = (openAt: number, lead: number): number => {
+        const innerStart = openAt + 1 + lead;
+        let j = innerStart;
+        let inner = "";
+        const isCloser = (c: string) => c === ")" || c === "）";
+        const isInner = (c: string) => isOrdinary(c) && c !== "（" && c !== "）";
+        if (isCloser(lineSource[j + 1]) || isCloser(lineSource[j + 2])) {
+          while (j < lineSource.length && !isCloser(lineSource[j]) && isInner(lineSource[j])) {
+            inner += lineSource[j] === "*" ? " " : lineSource[j];
+            j++;
+          }
+          if (isCloser(lineSource[j])) j++;
+        } else if (j < lineSource.length && isInner(lineSource[j])) {
+          inner = lineSource[j] === "*" ? " " : lineSource[j];
+          j++;
+        } else {
+          j = innerStart;
+        }
+        inner = normalizeShorthand(inner);
+        if (inner) {
+          const el: IRElement = {
+            id: nextId(),
+            class: "large",
+            text: inner,
+            ...(cpLen(inner) > 1 ? { ligature: true } : {}),
+          };
+          elements.push(el);
+          circleTargets.push(el.id);
+          // 合字/速记（z→增 等）文本与源不 1:1，各字统一记 token 内文起点
+          for (let q = 0; q < cpLen(inner); q++) cpSrcs.push(srcAt(innerStart));
+          cp += cpLen(inner);
+        }
+        return j;
       };
 
       let i = 0;
@@ -275,6 +324,8 @@ export function gj2ir(text: string): IRDocument {
             cp += 1;
           }
           i += chu.length;
+          lastLargeKind = null;
+          variantMode = false;
           continue;
         }
 
@@ -283,39 +334,8 @@ export function gj2ir(text: string): IRDocument {
           flushPlain();
           const n1 = lineSource[i + 1];
           if (n1 === "(" || n1 === "（") {
-            // 带圈：大字/合字进骨架，圆圈进 overlay。扩展输入（原文不动，src 对齐保持）：
-            //   全角括号 #（X）/#（X 等同半角；括号内速记 z→增、数字→汉字（1→一等）
-            let j = i + 2;
-            let inner = "";
-            const isCloser = (c: string) => c === ")" || c === "）";
-            const isInner = (c: string) => isOrdinary(c) && c !== "（" && c !== "）";
-            if (isCloser(lineSource[j + 1]) || isCloser(lineSource[j + 2])) {
-              while (j < lineSource.length && !isCloser(lineSource[j]) && isInner(lineSource[j])) {
-                inner += lineSource[j] === "*" ? " " : lineSource[j];
-                j++;
-              }
-              if (isCloser(lineSource[j])) j++;
-            } else if (j < lineSource.length && isInner(lineSource[j])) {
-              inner = lineSource[j] === "*" ? " " : lineSource[j];
-              j++;
-            } else {
-              j = i + 2;
-            }
-            inner = normalizeShorthand(inner);
-            if (inner) {
-              const el: IRElement = {
-                id: nextId(),
-                class: "large",
-                text: inner,
-                ...(cpLen(inner) > 1 ? { ligature: true } : {}),
-              };
-              elements.push(el);
-              circleTargets.push(el.id);
-              // 合字/速记（z→增 等）文本与源不 1:1，各字统一记 token 内文起点
-              for (let q = 0; q < cpLen(inner); q++) cpSrcs.push(srcAt(i + 2));
-              cp += cpLen(inner);
-            }
-            i = j;
+            i = parseCircled(i, 1);
+            lastLargeKind = "circled";
             continue;
           }
           const cpRaw = lineSource.codePointAt(i + 1);
@@ -326,17 +346,62 @@ export function gj2ir(text: string): IRDocument {
             cpSrcs.push(srcAt(i + 1));
             cp += 1;
             i += 1 + hc.length;
+            lastLargeKind = "plain";
             continue;
           }
           i++;
+          lastLargeKind = null;
           continue;
+        }
+
+        // 糖：带圈续写——( 紧随大字 token 即 #( 的省 # 形
+        if ((ch === "(" || ch === "（") && lastLargeKind) {
+          flushPlain();
+          i = parseCircled(i, 0);
+          lastLargeKind = "circled";
+          continue;
+        }
+
+        // 糖：古文异体标记——大字 token 后紧邻 ，?古文：?（行首承接形须带冒号，
+        // 与正文「古文酉」区分）；标记本身为小字内容，其后裸字=变体
+        if ((lastLargeKind && (ch === "古" || ch === "，")) || (i === 0 && ch === "古")) {
+          const mm = (
+            i === 0 && !lastLargeKind ? /^古文[:：]/ : /^，?古文[:：]?/
+          ).exec(lineSource.slice(i));
+          if (mm) {
+            for (const mc of mm[0]) {
+              plainBuf += mc;
+              cpSrcs.push(srcAt(i));
+              cp += 1;
+              i += 1;
+            }
+            variantMode = true;
+            lastLargeKind = null;
+            continue;
+          }
         }
 
         const cpNow = lineSource.codePointAt(i)!;
         const chu = String.fromCodePoint(cpNow);
+
+        // 糖：裸字大写——带圈 token 后一字（字头）或标记/、 后（变体，连串）
+        if (isBareLargeChar(chu) && (lastLargeKind === "circled" || variantMode)) {
+          flushPlain();
+          elements.push({ id: nextId(), class: "large", text: chu });
+          cpSrcs.push(srcAt(i));
+          cp += 1;
+          lastLargeKind = "bare";
+          i += chu.length;
+          continue;
+        }
+
         plainBuf += chu === "*" ? " " : chu;
         cpSrcs.push(srcAt(i));
         cp += 1;
+        // 、 紧随大字/变体链 → 并列变体语境（裸字连写继续）；其余小字退出
+        if (chu === "、" && (lastLargeKind || variantMode)) variantMode = true;
+        else variantMode = false;
+        lastLargeKind = null;
         i += chu.length;
       }
       flushPlain();

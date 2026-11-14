@@ -1,9 +1,10 @@
 // 页面字头解析（字头条展示用，纯逻辑）：
-//   - 提取：逐行复用 formatGj 的 HEAD_CLUSTER（与「字头组独占一行」同一事实源），
-//     只保留字头字符——#(增)/#(三) 等圈号标记（补遗/页位次）不是字头字符，丢弃
+//   - 提取：逐行复用 formatGj 的字头簇扫描器（与「字头组独占一行」同一事实源），
+//     只保留字头字符——带圈 token（#(增)/#(三) 及糖写 (增)）是圈号标记
+//     （补遗/页位次），不是字头字符，丢弃；糖写裸字（字头/变体）照取
 //   - 归属：本页无字头 = 纯延续页，按清单序回溯最近一个有字头的页，取其最后一组
 //     为宿主（与 前页续入回放验证 的跨页回溯链语义一致，@332/@333 → @331「中」）
-import { HEAD_CLUSTER, HEAD_TOKEN } from "@/parser/split-line";
+import { scanAllClusters } from "@/parser/split-line";
 
 export interface HeadwordCluster {
   /** .gj 原文（含标记/古文/冒号，tooltip 展示用） */
@@ -15,8 +16,6 @@ export interface HeadwordCluster {
   start: number;
 }
 
-const TOKEN_RE = new RegExp(HEAD_TOKEN, "gu");
-
 /** 提取一页 .gj 内全部字头组；标题行/@页码/注释不参与（口径同 formatGj） */
 export function extractHeadwordClusters(gj: string): HeadwordCluster[] {
   const out: HeadwordCluster[] = [];
@@ -24,12 +23,11 @@ export function extractHeadwordClusters(gj: string): HeadwordCluster[] {
     if (/^\s*#+ /.test(line) || /^@\d+\s*$/.test(line)) continue;
     const cut = line.indexOf("//");
     const src = cut >= 0 ? line.slice(0, cut) : line;
-    for (const m of src.matchAll(HEAD_CLUSTER)) {
-      const chars = [...m[0].matchAll(TOKEN_RE)]
-        .map((t) => t[0])
-        .filter((t) => !t.startsWith("#(")) // 圈号标记非字头字符
-        .map((t) => t.slice(1)); // 去 # 前缀（u 标志下单码点，slice 兼容代理对）
-      if (chars.length > 0) out.push({ raw: m[0], chars, line: li, start: m.index ?? 0 });
+    for (const cl of scanAllClusters(src)) {
+      const chars = cl.tokens
+        .filter((t) => t.kind === "plain" || t.kind === "bare")
+        .map((t) => t.ch);
+      if (chars.length > 0) out.push({ raw: src.slice(cl.start, cl.end), chars, line: li, start: cl.start });
     }
   }
   return out;

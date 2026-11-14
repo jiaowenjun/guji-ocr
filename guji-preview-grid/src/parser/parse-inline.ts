@@ -1,7 +1,11 @@
 // 移植自 vscode-guji-preview/src/parser/parse-inline.ts
 // 修改点：原版 state 为模块级变量，改为 parseInline 函数局部变量，避免跨调用泄漏；
 // 并删除原版遗留的 console.log 调试语句。解析行为保持一致。
+// 【2026-11-14】镜像 gj2ir 的字头簇糖（带圈续写 (Y)、裸字大写、古文标记）——
+// build_annotations 的旧解析器 TXT 等价断言对糖文件保持绿。糖状态行内局部：
+// 输入经 split() 已剥标点，标记形退化为裸「古文」（，？古文：? 的可选标点天然失配）
 import type { BlockModel } from "../components/flex/model";
+import { isBareLargeChar } from "./split-line";
 
 type State =
   | "normal"
@@ -20,6 +24,11 @@ export function parseInline(line: string) {
   let blocks: BlockModel[] = [];
   let frag = "";
   let state: State = "normal";
+
+  // 字头簇糖状态（与 gj2ir 词法镜像）
+  let lastLarge: "circled" | "plain" | "bare" | null = null;
+  let variantMode = false;
+  let skipUntil = -1;
 
   const consumeFrag = function () {
     if (frag.length > 0) {
@@ -40,11 +49,10 @@ export function parseInline(line: string) {
     }
   };
 
-  [...line].forEach((c, i) => {
+  [...line].forEach((raw, i) => {
+    if (i < skipUntil) return;
     // * 转为空格
-    if (c === "*") {
-      c = " ";
-    }
+    const c = raw === "*" ? " " : raw;
 
     switch (state) {
       // large状态
@@ -58,6 +66,7 @@ export function parseInline(line: string) {
             t: c,
             si: "large",
           });
+          lastLarge = "plain";
         }
         // 消耗一个字符后恢复到 normal
         state = "normal";
@@ -77,6 +86,7 @@ export function parseInline(line: string) {
             si: "large",
             st: "circle",
           });
+          lastLarge = "circled";
           // 消耗一个字符后恢复到 normal
           state = "normal";
         }
@@ -89,6 +99,7 @@ export function parseInline(line: string) {
             si: "large",
             st: "circle",
           });
+          lastLarge = "circled";
           frag = "";
           state = "normal";
         } else if (isChar(c)) {
@@ -103,12 +114,15 @@ export function parseInline(line: string) {
           // 保存小字片段
           consumeFrag();
           state = "large";
+          lastLarge = null;
         }
         // 进入 book 状态
         else if (c === "【") {
           // 保存小字片段
           consumeFrag();
           state = "book";
+          lastLarge = null;
+          variantMode = false;
         }
         // 换行
         else if (c === "\n") {
@@ -116,15 +130,47 @@ export function parseInline(line: string) {
           consumeFrag();
           // 加换行标记
           blocks.push({ st: "br" });
+          lastLarge = null;
+          variantMode = false;
         }
         // book 后半部结束
         else if (c === "】") {
           // 保存小字片段
           consumeBookFrag("book-end");
+          lastLarge = null;
+          variantMode = false;
+        }
+        // 糖：带圈续写——( 紧随大字 token 即 #( 的省 # 形
+        else if ((c === "(" || c === "（") && lastLarge) {
+          consumeFrag(); // 挂起小字先入列（与 # 分支同序，保阅读序）
+          state = "large-circle";
+        }
+        // 糖：古文异体标记（大字 token 后紧邻；行首承接——此处输入已剥标点，
+        // 行首形无冒号可依，仅认大字后的裸「古文」，承接形由 # 变体显式表达）
+        else if (
+          lastLarge &&
+          c === "古" &&
+          /^，?古文[:：]?/.test(line.slice(i))
+        ) {
+          const mm = /^，?古文[:：]?/.exec(line.slice(i))!;
+          frag += mm[0];
+          variantMode = true;
+          lastLarge = null;
+          skipUntil = i + mm[0].length;
+        }
+        // 糖：裸字大写——带圈 token 后一字（字头）或标记/、 后（变体，连串）
+        else if (isBareLargeChar(c) && (lastLarge === "circled" || variantMode)) {
+          consumeFrag(); // 挂起小字先入列（保阅读序）
+          blocks.push({ t: c, si: "large" });
+          lastLarge = "bare";
         }
         // 普通字符，添加到小字片段
         else if (isChar(c)) {
           frag += c;
+          // 、 紧随大字/变体链 → 并列变体语境（裸字连写继续）；其余小字退出
+          if (c === "、" && (lastLarge || variantMode)) variantMode = true;
+          else variantMode = false;
+          lastLarge = null;
         }
         break;
 

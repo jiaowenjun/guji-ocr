@@ -29,13 +29,13 @@ describe("formatDocument 规则（空格→◎→排版 串联）", () => {
       .toBe("@1\n\n聲。〇按《魏志》\n#丮\n【唐韻】几劇。\n");
   });
 
-  it("字头组独占一行 + 括号归一/补全（原 formatGj 行为不变）", () => {
+  it("字头组独占一行 + 括号归一/补全 + 簇归一为标准糖形", () => {
     expect(fmt("@1\n\n#丶【唐韻】知庾切。\n")).toBe("@1\n\n#丶\n【唐韻】知庾切。\n");
-    expect(fmt("@1\n\n#（z）音義。\n")).toBe("@1\n\n#(增)\n音義。\n");
+    expect(fmt("@1\n\n#（z）【唐韻】音義。\n")).toBe("@1\n\n#(增)\n【唐韻】音義。\n");
   });
 
   it("字头断口处的半角空格同样保留为分隔 *（#(增#𠁦 音義 → *音義，非 trim 删除）", () => {
-    expect(fmt("@1\n\n#(增#𠁦 音義。\n")).toBe("@1\n\n#(增)#𠁦\n*音義。\n");
+    expect(fmt("@1\n\n#(增#𠁦 音義。\n")).toBe("@1\n\n#(增)𠁦\n*音義。\n");
   });
 
   it("counts 汇报：空格/圈各自计数", () => {
@@ -46,7 +46,7 @@ describe("formatDocument 规则（空格→◎→排版 串联）", () => {
   });
 
   it("已是标准写法时逐字节不变；幂等", () => {
-    const once = fmt("@3\n\n#丅、#𠄟\n【廣韻】胡雅切。*又居虯切。\n");
+    const once = fmt("@3\n\n#丅、𠆟\n【廣韻】胡雅切。*又居虯切。\n");
     expect(formatDocument(once)).toEqual({ text: once, spaces: 0, circles: 0 });
     expect(fmt(once)).toBe(once);
   });
@@ -65,11 +65,17 @@ describe("formatDocument 全语料不变量：字符流/大字/overlay/带数不
     ...files.map((f) => [f, readFileSync(`${dir}/${f}`, "utf-8")] as [string, string]),
   ];
 
+  // 字符流按 profile 清洗口径比对：格式化会补全「，古文：」标点（2026-11-14
+  // 标准形），标点在渲染/评测口径下本就剔除——语义字符流不变；◎〇同归○
   const charStream = (doc: IRDocument) =>
     doc.pages
       .flatMap((p) => p.bands.flatMap((b) => b.lines.flatMap((l) => l.elements.map((e) => e.text))))
       .join("")
-      .replace(/\s/g, "");
+      .replace(/\s/g, "")
+      .split("")
+      .map((ch) => (ch === "◎" || ch === "〇" ? "○" : ch))
+      .filter((ch) => !"。，·\":：、《》".includes(ch))
+      .join("");
   const largeSeq = (doc: IRDocument) =>
     JSON.stringify(
       doc.pages.flatMap((p) =>

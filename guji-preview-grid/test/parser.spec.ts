@@ -78,18 +78,25 @@ describe("parseInline", () => {
     ]);
   });
 
-  it("#( 后跟多字时仅取一字符入圈，其余为小字（原实现行为）", () => {
-    expect(parseInline("#(一口")).toEqual([
+  it("#( 后跟多字时仅取一字符入圈（糖：其后一字为裸写字头，再后为小字）", () => {
+    expect(parseInline("#(一口舌")).toEqual([
       { t: "一", si: "large", st: "circle" },
-      { t: "口" },
+      { t: "口", si: "large" },
+      { t: "舌" },
     ]);
   });
 
   it("单字带圈闭合 #(一) 右括号被消费，不再残留杂散小字（与 IR 词法对齐；原实现缺陷已修）", () => {
     expect(parseInline("#(一)")).toEqual([{ t: "一", si: "large", st: "circle" }]);
+    // 糖：带圈后裸字=字头（音大字）；标点隔开则全为小字
     expect(parseInline("#(一)音義")).toEqual([
       { t: "一", si: "large", st: "circle" },
-      { t: "音義" },
+      { t: "音", si: "large" },
+      { t: "義" },
+    ]);
+    expect(parseInline("#(一)：音義")).toEqual([
+      { t: "一", si: "large", st: "circle" },
+      { t: "：音義" },
     ]);
   });
 
@@ -149,7 +156,7 @@ describe("输入规范化（全角括号与速记）", () => {
   eq("#(十) 音義", "#（10） 音義"); // 10→十（长度变化的用例）
   it("#(z) 的 IR mark 文本为「增」", async () => {
     const { gj2ir } = await import("../src/ir/gj2ir");
-    const doc = gj2ir("@2\n\n#(z)#(15)音義\n");
+    const doc = gj2ir("@2\n\n#(z)#(15)：音義\n");
     const marks = doc.pages[0].bands[0].lines.flatMap((l) => l.elements).filter((e) => e.class === "large");
     expect(marks.map((m) => m.text)).toEqual(["增", "十五"]);
   });
@@ -167,36 +174,36 @@ describe("formatGj 规则", () => {
   const fmt = (s: string) => formatGj(`@1\n\n${s}\n`);
 
   it("#(X → #(X)：补右括号（1/2 字内），已闭合不重复", () => {
-    expect(fmt("#(增#𠁦 音義").split("\n")).toEqual(["@1", "", "#(增)#𠁦", "音義", ""]);
+    expect(fmt("#(增#𠁦 音義").split("\n")).toEqual(["@1", "", "#(增)𠁦", "音義", ""]);
     expect(fmt("#(十一 音義")).toContain("#(十一)");
     expect(fmt("#(十五) 音義")).not.toContain("))");
   });
 
-  it("字头组独占一行：#A / #(A) / #A古文#B / #(A)#B / 多token", () => {
+  it("字头组独占一行：#A / #(A) / #A古文#B / #(A)#B / 多token（归一为标准糖形）", () => {
     expect(fmt("去聲。#丮【唐韻】几劇").split("\n"))
       .toEqual(["@1", "", "去聲。", "#丮", "【唐韻】几劇", ""]);
     expect(fmt("#丯【廣韻】拜切").split("\n"))
       .toEqual(["@1", "", "#丯", "【廣韻】拜切", ""]);
     expect(fmt("非。#丰古文#𫵮【集韻】符風").split("\n"))
-      .toEqual(["@1", "", "非。", "#丰古文#𫵮", "【集韻】符風", ""]);
+      .toEqual(["@1", "", "非。", "#丰，古文：𫵮", "【集韻】符風", ""]);
     expect(fmt("丨部，非。#(三)#中古文#𠁧#𠁩【唐韻】陟弓切").split("\n"))
-      .toEqual(["@1", "", "丨部，非。", "#(三)#中古文#𠁧#𠁩", "【唐韻】陟弓切", ""]);
+      .toEqual(["@1", "", "丨部，非。", "#(三)中，古文：𠁧𠁩", "【唐韻】陟弓切", ""]);
   });
 
-  it("异体并列 #丅、#𠄟 为一组（、为组内分隔符，不拆三行）", () => {
-    expect(fmt("文#丅、#𠄟【廣韻】胡雅切").split("\n"))
-      .toEqual(["@1", "", "文", "#丅、#𠄟", "【廣韻】胡雅切", ""]);
+  it("异体并列 #丅、#𠆟 为一组（、为组内分隔符，不拆三行；省冗余 #）", () => {
+    expect(fmt("文#丅、#𠆟【廣韻】胡雅切").split("\n"))
+      .toEqual(["@1", "", "文", "#丅、𠆟", "【廣韻】胡雅切", ""]);
   });
 
   it("古文标注冒号为组内胶水：#世古文：#卋 整组一行（混用 、 亦然）", () => {
-    expect(fmt("#世古文：#卋\n【廣韻】舒制切")).toBe("@1\n\n#世古文：#卋\n【廣韻】舒制切\n");
+    expect(fmt("#世古文：#卋\n【廣韻】舒制切")).toBe("@1\n\n#世，古文：卋\n【廣韻】舒制切\n");
     expect(fmt("#(四#且古文：#𠀇、#𠀃\n【廣韻】淺野切")).toBe(
-      "@1\n\n#(四)#且古文：#𠀇、#𠀃\n【廣韻】淺野切\n",
+      "@1\n\n#(四)且，古文：𠀇、𠀃\n【廣韻】淺野切\n",
     );
   });
 
   it("行首「古文：」承接跨行异体标注，与字头同组不分拆（古文：#㘳）", () => {
-    expect(fmt("古文：#㘳\n【廣韻】去鳩切")).toBe("@1\n\n古文：#㘳\n【廣韻】去鳩切\n");
+    expect(fmt("古文：#㘳\n【廣韻】去鳩切")).toBe("@1\n\n古文：㘳\n【廣韻】去鳩切\n");
   });
 
   it("字头后注音冒号跟随大字同行（#与: 独占一行，冒号不分到下一行）", () => {
@@ -226,21 +233,35 @@ describe("formatGj 规则", () => {
   it("标题行与注释不动；已是独占一行的不变；幂等", () => {
     expect(fmt("# 一部 #甲")).toBe(`@1\n\n# 一部 #甲\n`);
     expect(fmt("釋文。 // 註：#甲不動")).toBe(`@1\n\n釋文。 // 註：#甲不動\n`);
-    expect(fmt("#(增)#𠁦\n【字彙補】籀")).toBe(`@1\n\n#(增)#𠁦\n【字彙補】籀\n`);
+    expect(fmt("#(增)#𠁦\n【字彙補】籀")).toBe(`@1\n\n#(增)𠁦\n【字彙補】籀\n`);
     const once = fmt("去聲。#丮【唐韻】几劇");
     expect(formatGj(once)).toBe(once);
   });
+
+  it("糖输入归一：#(五)(增)𠂂 / #(三)丹古文𠁿㣋 → 标准形（补 ，：、省冗余 #）；幂等", () => {
+    expect(fmt("#(五)#(增)#𠂂")).toBe("@1\n\n#(五)(增)𠂂\n");
+    expect(fmt("#(五)(增)𠂂")).toBe("@1\n\n#(五)(增)𠂂\n");
+    expect(fmt("#(三)丹古文𠁿㣋")).toBe("@1\n\n#(三)丹，古文：𠁿㣋\n");
+    expect(fmt("#(三)#丹古文#𠁿#㣋")).toBe("@1\n\n#(三)丹，古文：𠁿㣋\n");
+    expect(fmt("#(三)丹，古文：𠁿㣋")).toBe("@1\n\n#(三)丹，古文：𠁿㣋\n");
+  });
 });
 
-describe("formatGj 全语料不变量：字符流/大字/overlay/带数不变", () => {
+describe("formatGj 全语料不变量：清洗字符流/大字/overlay/带数不变", () => {
   const dir = fileURLToPath(new URL("../../kangxi-gold/annotations", import.meta.url));
   const files = readdirSync(dir).filter((f) => f.endsWith(".gj"));
 
+  // 字符流按 profile 清洗口径比对：格式化会补全「，古文：」标点（2026-11-14
+  // 标准形），标点在渲染/评测口径下本就剔除——语义字符流不变
   const charStream = (doc: IRDocument) =>
     doc.pages
       .flatMap((p) => p.bands.flatMap((b) => b.lines.flatMap((l) => l.elements.map((e) => e.text))))
       .join("")
-      .replace(/\s/g, "");
+      .replace(/\s/g, "")
+      .split("")
+      .map((ch) => (ch === "◎" ? "○" : ch))
+      .filter((ch) => !"。，·\":：、《》".includes(ch))
+      .join("");
   const largeSeq = (doc: IRDocument) =>
     JSON.stringify(
       doc.pages.flatMap((p) =>

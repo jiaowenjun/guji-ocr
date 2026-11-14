@@ -3,6 +3,18 @@
 // 由 HighlightStyle 映射到具体颜色
 import { HighlightStyle, StreamLanguage } from "@codemirror/language";
 import { tags as t } from "@lezer/highlight";
+import { scanAllClusters, type HeadClusterMatch } from "../../parser/split-line";
+
+// 字头簇（含糖写法）按行缓存：StreamLanguage 对同一行逐 token 回调，扫描器结果复用
+let clusterCacheLine = "";
+let clusterCache: HeadClusterMatch[] = [];
+function clustersOf(line: string): HeadClusterMatch[] {
+  if (line !== clusterCacheLine) {
+    clusterCacheLine = line;
+    clusterCache = scanAllClusters(line);
+  }
+  return clusterCache;
+}
 
 export const gujiLanguage = StreamLanguage.define({
   name: "guji",
@@ -42,6 +54,22 @@ export const gujiLanguage = StreamLanguage.define({
     if (rest.startsWith("//")) {
       stream.skipToEnd();
       return "comment";
+    }
+    // 字头簇（含糖写法 #(五)(增)𠂂 / #(三)丹，古文：𠁿㣋）：
+    // 大字 token=strong、古文标记=keyword、胶水（、：）与尾部=comment
+    const cl = clustersOf(stream.string).find((c) => stream.pos >= c.start && stream.pos < c.end);
+    if (cl) {
+      const pieces: Array<[number, number, string]> = cl.tokens.map((t) => [
+        t.start,
+        t.end,
+        t.kind === "marker" ? "keyword" : t.kind === "sep" ? "comment" : "strong",
+      ]);
+      if (cl.tail.length > 0) pieces.push([cl.end - cl.tail.length, cl.end, "comment"]);
+      const hit = pieces.find(([s, e]) => stream.pos >= s && stream.pos < e);
+      if (hit) {
+        stream.pos = Math.max(stream.pos + 1, hit[1]);
+        return hit[2];
+      }
     }
     // 标点（渲染时会被剔除，按注释弱化显示）
     const punct = rest.match(/^[，。·：:、《》]+/);

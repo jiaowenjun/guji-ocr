@@ -52,15 +52,25 @@ describe("v3 骨架独立（核心原则）", () => {
     }
   });
 
-  it("圆圈是纯 overlay：#(增 与 #增 骨架相同", () => {
+  it("圆圈是纯 overlay：#(增：甲 与 #增：甲 骨架相同（标点隔开裸字连写语境）", () => {
     const noSrc = (d: IRDocument) =>
       JSON.parse(JSON.stringify(d.pages), (k, v) => (k === "src" || k === "cpSrcs" ? undefined : v));
-    const a = gj2ir("@1\n\n#(增甲\n");
-    const b = gj2ir("@1\n\n#增甲\n");
+    const a = gj2ir("@1\n\n#(增：甲\n");
+    const b = gj2ir("@1\n\n#增：甲\n");
     expect(stable(noSrc(a))).toBe(stable(noSrc(b)));
     expect(a.overlays).toHaveLength(1);
     expect(a.overlays[0]).toMatchObject({ kind: "circle" });
     expect(b.overlays).toHaveLength(0);
+  });
+
+  it("糖：#(增甲 ≡ #(增)#甲（带圈后裸字=字头）", () => {
+    const noSrc = (d: IRDocument) =>
+      JSON.parse(JSON.stringify(d.pages), (k, v) => (k === "src" || k === "cpSrcs" ? undefined : v));
+    const a = gj2ir("@1\n\n#(增甲\n");
+    const b = gj2ir("@1\n\n#(增)#甲\n");
+    expect(stable(noSrc(a))).toBe(stable(noSrc(b)));
+    expect(a.overlays).toHaveLength(1);
+    expect(b.overlays).toHaveLength(1);
   });
 
   it("书名括号不产生骨架内容：【A】b 与 Ab 骨架相同", () => {
@@ -100,7 +110,7 @@ describe("v3 骨架独立（核心原则）", () => {
 
 describe("v3 合字", () => {
   it("#(十一)：一个大字格、两个文本字符；圆圈为 overlay", () => {
-    const doc = gj2ir("@6\n\n#甲#(十一)音義\n");
+    const doc = gj2ir("@6\n\n#甲#(十一)：音義\n");
     const els = doc.pages[0].bands[0].lines[0].elements;
     const lig = els.find((e) => e.ligature);
     expect(lig).toMatchObject({ class: "large", text: "十一" });
@@ -277,5 +287,125 @@ describe("v3 JSON 序列化稳定", () => {
     expect(stable(revived)).toBe(stable(doc));
     expect(revived.meta.rangeUnit).toBe("codepoint");
     expect(revived.meta.srcUnit).toBe("utf-16");
+  });
+});
+
+// ---- 字头簇糖（2026-11-14）：糖 ↔ 长式骨架/占格/文本三等价 ----
+// 语法：#(五)#(增)#𠂂 ≡ #(五)(增)𠂂；#(三)#丹古文#𠁿#㣋 ≡ #(三)丹，古文：𠁿㣋
+// （，：可省；标记两侧标点为小字内容，TXT 经 profile 剔除与长式一致）
+describe("v3 字头簇糖", () => {
+  const noSrc = (d: IRDocument) =>
+    JSON.parse(JSON.stringify(d.pages), (k, v) => (k === "src" || k === "cpSrcs" ? undefined : v));
+  const pairs: Array<[string, string]> = [
+    ["#(五)#(增)#𠂂", "#(五)(增)𠂂"],
+    ["#(五)#(增)#𠂂", "#(五)(增)#𠂂"],
+    ["#(十一)#(增)#𠁴", "#(十一)(增)𠁴"],
+    ["#(三)#丹古文#𠁿#㣋", "#(三)丹，古文：𠁿㣋"],
+    ["#(三)#丹古文#𠁿#㣋", "#(三)丹古文𠁿㣋"],
+    ["#(四)#且古文：#𠀇、#𠀃", "#(四)且，古文：𠀇、𠀃"],
+    ["#(四)#且古文：#𠀇、#𠀃", "#(四)且古文：𠀇、𠀃"],
+    ["#一古文#弌", "#一，古文：弌"],
+    ["#上古文#丄、#𠄞", "#上，古文：丄、𠄞"],
+    ["#世古文：#卋", "#世，古文：卋"],
+    ["#(增)#𠀃", "#(增)𠀃"],
+    ["#丅、#𠄟", "#丅、𠄟"],
+    ["#(二)#万", "#(二)万"],
+  ];
+
+  // 骨架比对口径：小字文本按 profile 清洗（糖形「，古文：」的标点是小字内容，
+  // 渲染/评测口径剔除后与长式「古文」同归）；大字元素原样；src/cpSrcs 剥除
+  // （源偏移随拼写长度漂移，非骨架事实）
+  const cleanedPages = (d: IRDocument) => {
+    const doc = JSON.parse(JSON.stringify(d), (k, v) =>
+      k === "src" || k === "cpSrcs" ? undefined : v,
+    );
+    for (const p of doc.pages)
+      for (const b of p.bands)
+        for (const l of b.lines)
+          for (const e of l.elements)
+            if (e.class === "small")
+              e.text = [...e.text]
+                .map((ch) => (ch === "◎" || ch === "〇" ? "○" : ch))
+                .filter((ch) => !"。，·\":：、《》".includes(ch))
+                .join("");
+    return doc.pages;
+  };
+  // layout 比对口径：剔除 rawOffsets/cpStart（行内码点偏移随源形漂移，非占格事实）
+  const laidCells = (d: IRDocument) =>
+    JSON.parse(JSON.stringify(layout3(d)), (k, v) =>
+      k === "rawOffsets" || k === "cpStart" ? undefined : v,
+    );
+
+  it("糖 ↔ 长式：骨架（清洗口径 + 去 src）相同", () => {
+    for (const [long, sugar] of pairs) {
+      const a = gj2ir(`@1\n\n${long}\n`);
+      const b = gj2ir(`@1\n\n${sugar}\n`);
+      expect(stable(cleanedPages(b)), `${sugar} vs ${long}`).toBe(stable(cleanedPages(a)));
+    }
+  });
+
+  it("糖 ↔ 长式：layout3 占格与换行相同（剔除码点偏移）", () => {
+    for (const [long, sugar] of pairs) {
+      const a = gj2ir(`@1\n\n${long}\n`);
+      const b = gj2ir(`@1\n\n${sugar}\n`);
+      expect(stable(laidCells(b)), `${sugar}`).toBe(stable(laidCells(a)));
+    }
+  });
+
+  it("糖 ↔ 长式：阅读序文本相同（标点经 profile 剔除）", () => {
+    for (const [long, sugar] of pairs) {
+      expect(irToText(gj2ir(`@1\n\n${sugar}\n`)), `${sugar}`).toBe(irToText(gj2ir(`@1\n\n${long}\n`)));
+    }
+  });
+
+  it("糖 ↔ 长式：圆圈 overlay 数目一致", () => {
+    for (const [long, sugar] of pairs) {
+      const cs = (t: string) => gj2ir(`@1\n\n${t}\n`).overlays.filter((o) => o.kind === "circle").length;
+      expect(cs(sugar), `${sugar}`).toBe(cs(long));
+    }
+  });
+
+  it("反例：普通 #X 后裸字不连大（#丸俗 → 俗为小字）；正文「古文」不误判", () => {
+    const a = gj2ir("@1\n\n#丸俗\n");
+    expect(a.pages[0].bands[0].lines[0].elements.map((e) => `${e.class}:${e.text}`)).toEqual([
+      "large:丸",
+      "small:俗",
+    ]);
+    // 【字彙補】隔开：古文下 为正文小字
+    const b = gj2ir("@1\n\n#丅【字彙補】古文下\n");
+    expect(b.pages[0].bands[0].lines[0].elements.map((e) => `${e.class}:${e.text}`)).toEqual([
+      "large:丅",
+      "small:字彙補古文下",
+    ]);
+    // 折行把正文「古文酉」折到行首：无冒号不认标记
+    const c = gj2ir("@1\n\n古文酉，从丣。\n");
+    expect(c.pages[0].bands[0].lines[0].elements.map((e) => `${e.class}:${e.text}`)).toEqual([
+      "small:古文酉，从丣。",
+    ]);
+    // 行首承接形须带冒号：古文：㘳 ≡ 古文：#㘳
+    const d1 = gj2ir("@1\n\n古文：㘳\n");
+    const d2 = gj2ir("@1\n\n古文：#㘳\n");
+    expect(stable(noSrc(d1))).toBe(stable(noSrc(d2)));
+  });
+
+  it("速记/全角在糖续写中同样生效：#(5)（Z）𠂂 ≡ #(五)#(增)#𠂂", () => {
+    const a = gj2ir("@1\n\n#(5)(Z)𠂂\n");
+    const b = gj2ir("@1\n\n#(五)#(增)#𠂂\n");
+    expect(stable(noSrc(a))).toBe(stable(noSrc(b)));
+  });
+});
+
+describe("v3 字头簇糖（混排回归）", () => {
+  it("糖行与释义混排：与旧解析器阅读序逐字符一致（小字 frag 先入列保序）", () => {
+    const page = "@1\n\n用安息。*又通作垸。\n#(三)丹，古文：𠁿㣋\n#(五)(增)𠂂\n【唐韻】都寒切。\n";
+    const oldText = (t: string) => {
+      const pages = parsePages(t);
+      const lineText = (line: unknown) =>
+        ("c" in (line as object) ? (line as { c: unknown[] }).c : [line])
+          .map((b) => (b as { t?: string }).t ?? "")
+          .join("");
+      return pages.map((p) => p.l.map(lineText).join("\n") + "\n").join("");
+    };
+    expect(irToText(gj2ir(page))).toBe(oldText(page));
   });
 });
