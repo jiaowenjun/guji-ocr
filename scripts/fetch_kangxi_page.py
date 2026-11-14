@@ -53,7 +53,7 @@ HEADERS = {
     ),
     "Referer": "https://www.kangxizidian.com/v2/",
 }
-MIN_BYTES = 50_000  # 一页扫描图不应小于 50KB
+MIN_BYTES = 20_000  # 下限仅拦截断响应；稀疏页可低至 ~40KB（6846 实测 42KB 完好），原 50KB 误伤
 RETRY_DELAYS = [5, 15, 45]
 
 
