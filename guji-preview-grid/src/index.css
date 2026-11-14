@@ -2,7 +2,6 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/geist";
-@import "./flex.css";
 @import "./matrix.css";
 
 /* 本机刻本字体的跨浏览器别名（Safari 修复）：

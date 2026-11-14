@@ -32,7 +32,6 @@ import { Slider } from "@/components/ui/slider";
 import { GujiEditor } from "@/components/editor/GujiEditor";
 import { formatDocument } from "@/components/dataset/format-document";
 import { MatrixPages } from "@/components/matrix/MatrixPages";
-import { FlexPages } from "@/components/flex/FlexPages";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
 import { gj2ir } from "@/ir/gj2ir";
 import { layout3 } from "@/ir/layout3";
@@ -161,8 +160,7 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
   const [idx, setIdx] = useState(0);
   const [edits, setEdits] = useState<Record<number, string>>({});
   const { texts, ensure, put } = useDatasetText();
-  const [rules, setRules] = useState(false); // 界栏默认关（仅矩阵视图可用）
-  const [flexView, setFlexView] = useState(true); // 默认 Flex 布局
+  const [rules, setRules] = useState(false); // 界栏默认关
   const [zoom, setZoom] = useState<number | "fit">("fit"); // 默认按原图高度适配视口
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState<{ ok: boolean; msg: string } | null>(null);
@@ -579,9 +577,7 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
 
         <Separator orientation="vertical" className="h-5" />
 
-        <Button size="sm" variant={flexView ? "default" : "ghost"} onClick={() => setFlexView(true)}>Flex 对照</Button>
-        <Button size="sm" variant={flexView ? "ghost" : "default"} onClick={() => setFlexView(false)}>矩阵</Button>
-        <Button size="sm" variant="outline" disabled={flexView} aria-pressed={rules} onClick={() => setRules((v) => !v)}>
+        <Button size="sm" variant="outline" aria-pressed={rules} onClick={() => setRules((v) => !v)}>
           界栏{rules ? "开" : "关"}
         </Button>
 
@@ -679,8 +675,7 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
         <ResizablePanel defaultSize={28.5} minSize={20}>
           <div className="flex h-full flex-col">
             <ColumnHeader>
-              {flexView ? "Flex" : `矩阵 · ${cols} 列`} · 字格 {unit.toFixed(1)}px ·{" "}
-              {flexView ? "版框近似对齐（行宽按内容混合，精确对照请用矩阵）" : "与原图版框对齐（含等比纸边）"}
+              矩阵 · {cols} 列 · 字格 {unit.toFixed(1)}px · 与原图版框对齐（含等比纸边）
             </ColumnHeader>
             <ScrollArea className="min-h-0 flex-1" ref={scrollVPRef}>
               <div className="flex justify-center p-2">
@@ -706,17 +701,13 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
                         } as CSSProperties
                       }
                     >
-                      {flexView ? (
-                        <FlexPages doc={irDoc} highlight={highlight} onBandClick={onBandClick} />
-                      ) : (
-                        <MatrixPages
-                          pages={laidPages}
-                          overlays={irDoc.overlays}
-                          rules={rules}
-                          highlight={highlight}
-                          onBandClick={onBandClick}
-                        />
-                      )}
+                      <MatrixPages
+                        pages={laidPages}
+                        overlays={irDoc.overlays}
+                        rules={rules}
+                        highlight={highlight}
+                        onBandClick={onBandClick}
+                      />
                     </div>
                   </div>
                 ) : (

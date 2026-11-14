@@ -1,9 +1,39 @@
 /*
  * Grid 矩阵渲染样式（guji-preview-grid 专属）。
- * 与 flex.css 的关系：复用 .pages/.page/.page-title/.lines 的页面骨架与
- * --guji-unit 缩放机制；.m-lines 覆盖 .lines 的 display 为 grid。
- * 字体、字号、圆圈与书名框视觉参数与 flex.css 逐值一致。
+ * 页面骨架（.pages/.page-title/.lines 与 --guji-unit 缩放机制）原属 flex.css，
+ * Flex 对照视图移除后并入此处；.m-lines 将 .lines 的 display 覆盖为 grid。
+ * 字体、字号、圆圈与书名框视觉参数与姊妹项目 guji-preview 的 flex.css 逐值一致。
  */
+
+.pages {
+  /* 缩放基准：默认 25px，渲染列注入 --guji-scale（如 style="--guji-scale: 35px"） */
+  --guji-unit: var(--guji-scale, 25px);
+
+  /* 多页纵向长滚动布局 + 居中；墨色固定，避免应用暗色主题渗透到纸面 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--guji-unit) * 1.5);
+  color: #1c1c1c;
+}
+
+/* 页码：绝对定位于纸层右下角（与扫描图水印页码位置一致）；
+   定位祖先为数据集对照页的纸层 div（position: relative），
+   且不在版框上方占位——原占位使渲染页比扫描版框高出约 0.85 字格 */
+.page-title {
+  position: absolute;
+  right: calc(var(--guji-unit) * 0.6);
+  bottom: calc(var(--guji-unit) * 0.35);
+  font-size: calc(var(--guji-unit) * 0.55);
+  color: #8a8a8a;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 版框外框（display 由 .m-lines 覆盖为 grid） */
+.lines {
+  width: min-content;
+  border: 1px solid;
+}
 
 .m-lines {
   display: grid;
@@ -31,7 +61,7 @@
   text-align: center;
 }
 
-/* 带圈大字：2×2 格内居中的圆环（参数与 flex.css 的 .large-circle 系列一致） */
+/* 带圈大字：2×2 格内居中的圆环（参数与 guji-preview flex.css 的 .large-circle 系列一致） */
 .m-circle {
   box-sizing: border-box;
   display: flex;
@@ -99,8 +129,8 @@
 }
 
 /*
- * 相邻书名框共线避让（与 flex.css 同款几何）：轨道尺寸固定（显式
- * repeat(calc(unit))），负边距是纯视觉位移，不影响轨道与邻居占位。
+ * 相邻书名框共线避让（与 guji-preview flex.css 同款几何）：轨道尺寸固定
+ * （显式 repeat(calc(unit))），负边距是纯视觉位移，不影响轨道与邻居占位。
  * 只向阅读序后方（下、左）让 1px——相邻框的对面边线因此落在同一像素条：
  * 上框底边 [B,B+1] ≡ 下框顶边 [B,B+1]，右列左边线 ≡ 左列右边线。
  * 方向必须单一：若两边都让，两条线错开成相邻双线（与 flex 三边 -1px 的差异）。
