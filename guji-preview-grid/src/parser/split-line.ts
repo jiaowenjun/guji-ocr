@@ -109,17 +109,18 @@ export function scanHeadCluster(src: string, from = 0): HeadClusterMatch | null 
       i += m[0].length;
       continue;
     }
-    // 糖：带圈续写 (Y)——须已在簇内（大字 token 或标记/、 之后）
-    if ((m = CIRCLED_SUGAR.exec(rest)) && sawToken && (lastLarge || variantMode)) {
+    // 糖：带圈续写 (Y)——大字 token 或标记/、 之后（含行首承接标记后）
+    if ((m = CIRCLED_SUGAR.exec(rest)) && (lastLarge || variantMode)) {
       tokens.push({ kind: "circled", inner: shorthand(m[1]), raw: m[0], start: i, end: i + m[0].length });
       lastLarge = "circled";
       sawToken = true;
       i += m[0].length;
       continue;
     }
-    // 糖：裸字大写——带圈 token 后（字头，一字）或标记/、 后（变体，连串）
+    // 糖：裸字大写——带圈 token 后（字头，一字）或标记/、 后（变体，连串）。
+    // 无需 sawToken 前置：variantMode 只在簇内（标记/、后）为真，行首裸字不触发
     const one = [...rest][0];
-    if (one !== undefined && isBareLargeChar(one) && sawToken && (lastLarge === "circled" || variantMode)) {
+    if (one !== undefined && isBareLargeChar(one) && (lastLarge === "circled" || variantMode)) {
       tokens.push({ kind: "bare", ch: one, start: i, end: i + one.length });
       lastLarge = "bare";
       sawToken = true;

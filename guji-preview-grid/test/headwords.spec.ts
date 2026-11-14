@@ -26,6 +26,8 @@ describe("extractHeadwordClusters", () => {
   it("异体并列、跨行古文前缀、注音冒号", () => {
     expect(extractHeadwordClusters("#丅、#𠄟")[0].chars).toEqual(["丅", "𠄟"]);
     expect(extractHeadwordClusters("古文：#㘳")[0].chars).toEqual(["㘳"]);
+    // formatGj 标准输出（变体省 #）同样可提取
+    expect(extractHeadwordClusters("古文：㘳")[0].chars).toEqual(["㘳"]);
     expect(extractHeadwordClusters("#𠁕:")[0].chars).toEqual(["𠁕"]);
   });
 
