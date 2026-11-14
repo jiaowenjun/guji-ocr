@@ -586,11 +586,15 @@ def ocr_fold_page_lines(page: int, bands: list[list[str]], store: kangxi_store.K
     kept = 0
     cut_set = set()
     pos_in_full = 0
-    # 重新走 full 原文（含 \u0001 与换行），把 merged 折点（归一化序号）转为原文切点
+    # 重新走 full 原文（含 \u0001 与换行），把 merged 折点（归一化序号）转为原文切点。
+    # 折点先去重：OCR 侧相邻组界间有误读缺口（b 侧 gap）而草稿侧连续（a 侧
+    # 相邻块）时，两个组界经匹配块反向映射坍缩到同一位点（@334 实测 24 个
+    # 映射组界含 2 组重复）——下方等值游标在重复位点后永不前进，其后折点
+    # 全部静默丢失（整页只插 2 处、应插 20+，eval_ocr_fold_replay 抓到）
     norm_idx = 0
     pieces: list[str] = []
     last = 0
-    cut_norm = sorted(merged)
+    cut_norm = sorted(set(merged))
     ci = 0
     for i, ch in enumerate(full):
         if ch in PUNCT_STRIP:
