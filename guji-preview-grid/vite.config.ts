@@ -93,13 +93,14 @@ function datasetPageTool(): Plugin {
     req.on('data', (chunk: string) => {
       body += chunk
     })
-    req.on('end', () => {
+      req.on('end', () => {
       let args: string[] | null = null
       try {
-        const { action, page, status } = JSON.parse(body) as {
+        const { action, page, status, tail } = JSON.parse(body) as {
           action?: unknown
           page?: unknown
           status?: unknown
+          tail?: unknown
         }
         const pageOk = /^\d{1,4}$/.test(String(page))
         if (action === 'add' && pageOk) {
@@ -110,6 +111,14 @@ function datasetPageTool(): Plugin {
           args = ['ocr-fold', '--page', String(page)]
         } else if (action === 'ocr-view' && pageOk) {
           args = ['ocr-view', '--page', String(page)]
+        } else if (action === 'ocr-pages') {
+          args = ['ocr-pages']
+        } else if (action === 'prefetch-status' && pageOk) {
+          args = ['prefetch-status', '--page', String(page)]
+        } else if (action === 'prefetch-run' && pageOk) {
+          args = ['prefetch-run', '--page', String(page)]
+        } else if (action === 'prefetch-log' && (tail === undefined || /^\d{1,4}$/.test(String(tail)))) {
+          args = ['prefetch-log', ...(tail === undefined ? [] : ['--tail', String(tail)])]
         }
       } catch {
         args = null
@@ -117,7 +126,7 @@ function datasetPageTool(): Plugin {
       if (!args) {
         res.statusCode = 400
         res.setHeader('content-type', 'application/json')
-        res.end(JSON.stringify({ ok: false, error: '请求体应为 { action: add|status|ocr-fold|ocr-view, page, status? }' }))
+        res.end(JSON.stringify({ ok: false, error: '请求体应为 { action: add|status|ocr-fold|ocr-view|ocr-pages|prefetch-status|prefetch-run|prefetch-log, page, status?, tail? }' }))
         return
       }
       run(args, res)

@@ -170,6 +170,26 @@ class KangxiStore:
             row = c.execute("SELECT * FROM pages WHERE page=?", (page,)).fetchone()
             return dict(row) if row else None
 
+    def page_rows(self) -> list[dict]:
+        """全部页的采集/预取状态汇总（单连接批量，供预取调试视图一次拉取）。
+
+        每行：page / has_reading / scan_sha256 / scan_file / chars_n / entries_missing_n。
+        entries_missing_n 只计有码位而无详情者（与 coded_chars_missing_entries 同口径）。
+        """
+        with self._conn() as c:
+            rows = c.execute(
+                """SELECT p.page,
+                          p.reading_html IS NOT NULL AS has_reading,
+                          p.scan_sha256, p.scan_file,
+                          (SELECT COUNT(*) FROM page_chars pc WHERE pc.page = p.page) AS chars_n,
+                          (SELECT COUNT(*) FROM page_chars pc WHERE pc.page = p.page
+                             AND pc.codepoint IS NOT NULL
+                             AND NOT EXISTS (SELECT 1 FROM entries e
+                                             WHERE e.codepoint = pc.codepoint)) AS entries_missing_n
+                   FROM pages p ORDER BY p.page"""
+            ).fetchall()
+        return [dict(r) for r in rows]
+
     def next_missing_page(self, start: int = 1, total: int = 7738) -> int | None:
         """最小的未完成页（缺阅读页 HTML 或原图）；全部完成返回 None。"""
         with self._conn() as c:

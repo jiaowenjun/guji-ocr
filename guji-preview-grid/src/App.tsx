@@ -1,7 +1,9 @@
-// 应用外壳：顶部标题栏（主题切换 + 字体说明）+ 数据集对照视图
-// （扫描原图 | 刻本渲染 | .gj 编辑器 三列）
-// 原「编辑」双栏模式已移除，应用专注重复校对工作流；通用编辑/预览见姊妹项目 guji-preview
-import { BookOpenText, Info, Monitor, Moon, Sun } from "lucide-react";
+// 应用外壳：顶部标题栏（视图切换 + 主题切换 + 字体说明）+ 当前视图。
+// 校对 = 数据集对照工作流（扫描原图 | 刻本渲染 | .gj 编辑器 三列）；
+// OCR 预取 = 演示/调试视图（各页 OCR 结果对照 + prefetch_next_page 链路可视化）。
+// 原「编辑」双栏模式已移除；通用编辑/预览见姊妹项目 guji-preview
+import { useState } from "react";
+import { BookOpenText, Info, Monitor, Moon, ScanText, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -10,6 +12,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { DatasetView } from "@/components/dataset/DatasetView";
+import { OcrPrefetchView } from "@/components/ocr/OcrPrefetchView";
 import { useTheme, type ThemeSetting } from "@/hooks/use-theme";
 
 const THEME_OPTIONS: { value: ThemeSetting; label: string; icon: typeof Sun }[] = [
@@ -18,8 +21,16 @@ const THEME_OPTIONS: { value: ThemeSetting; label: string; icon: typeof Sun }[] 
   { value: "dark", label: "深色", icon: Moon },
 ];
 
+const VIEW_OPTIONS = [
+  { value: "proof", label: "校对" },
+  { value: "ocr", label: "OCR 预取" },
+] as const;
+
+type View = (typeof VIEW_OPTIONS)[number]["value"];
+
 export default function App() {
   const { setting, resolved, update } = useTheme();
+  const [view, setView] = useState<View>("proof");
 
   return (
     <TooltipProvider>
@@ -30,6 +41,37 @@ export default function App() {
           <span className="text-muted-foreground text-xs">guji-preview-grid</span>
 
           <div className="ml-auto flex items-center gap-2">
+            <div className="border-border flex items-center gap-1 rounded-lg border p-0.5">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    size="icon-sm"
+                    variant={view === "proof" ? "default" : "ghost"}
+                    aria-label="校对视图"
+                    aria-pressed={view === "proof"}
+                    onClick={() => setView("proof")}
+                  >
+                    <BookOpenText />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>校对（数据集对照工作流）</TooltipContent>
+              </Tooltip>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    size="icon-sm"
+                    variant={view === "ocr" ? "default" : "ghost"}
+                    aria-label="OCR 预取视图"
+                    aria-pressed={view === "ocr"}
+                    onClick={() => setView("ocr")}
+                  >
+                    <ScanText />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>OCR 预取（各页 OCR 结果 + 预取链路调试）</TooltipContent>
+              </Tooltip>
+            </div>
+
             <div className="border-border flex items-center gap-1 rounded-lg border p-0.5">
               {THEME_OPTIONS.map(({ value, label, icon: Icon }) => (
                 <Tooltip key={value}>
@@ -70,7 +112,11 @@ export default function App() {
           </div>
         </header>
 
-        <DatasetView editorTheme={resolved} />
+        {view === "proof" ? (
+          <DatasetView editorTheme={resolved} />
+        ) : (
+          <OcrPrefetchView />
+        )}
       </div>
     </TooltipProvider>
   );
