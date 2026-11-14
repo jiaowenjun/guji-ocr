@@ -158,7 +158,7 @@ function MatrixPageView({
             key={bi}
             className={`m-band${
               highlight?.band?.page === page.no && highlight.band.index === bi ? " m-band-active" : ""
-            }`}
+            }${bi === page.bands.length - 1 ? " m-band-last" : ""}`}
             onClick={onBandClick ? () => onBandClick(page.no, bi) : undefined}
             style={
               {

@@ -39,19 +39,29 @@
   display: grid;
 }
 
-/* band（大行）：subgrid 占满整页高，border-left 即贯通界栏 */
+/* band（大行）：subgrid 占满整页高；界栏 = 左缘 1px 伪元素（纯视觉叠加）。
+   不能用 border-left：border 占盒模型空间，subgrid 下会压缩 band 首列字格
+   （25px→24px、文字中心偏右 0.5px，实测 public/rules-test.html）。伪元素
+   画在 band 背景之上，高亮（m-band-active）下界栏仍可见。 */
 .m-band {
   display: grid;
   grid-template-columns: subgrid;
   grid-template-rows: subgrid;
 }
 .m-lines[data-rules="on"] .m-band {
-  border-left: 1px solid;
+  position: relative;
 }
-/* 最左 band 的左缘与版框重合，避免双线 */
-.m-lines[data-rules="on"] .m-band:last-child {
-  border-left: 0;
+.m-lines[data-rules="on"] .m-band:not(.m-band-last)::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: currentColor;
 }
+/* 最左 band 的左缘与版框重合，不画界栏（避免相邻双线）。m-band-last 由
+   渲染层挂——books 渲染在 bands 之后且同为 div，:last-child 永不匹配 */
 
 /* 大字：单个 2×2 格（行向用纵向字格高 --guji-unit-v，字号/圆环等按列宽基准不变形） */
 .m-large {

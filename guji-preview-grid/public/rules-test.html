@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="zh">
+<meta charset="utf-8">
+<title>界栏方案对比测试</title>
+<style>
+  body { font-family: 'PingFang SC', sans-serif; background: #f0efeb; margin: 24px; color: #1c1c1c; }
+  h1 { font-size: 18px; margin: 0 0 6px; }
+  .note { font-size: 13px; color: #555; max-width: 980px; line-height: 1.8; }
+  section.variant { margin: 30px 0; }
+  h2 { font-size: 15px; margin: 0 0 4px; }
+  .desc { font-size: 12px; color: #777; margin: 0 0 8px; }
+  table { border-collapse: collapse; font: 12px/1.6 ui-monospace, Menlo, monospace; background: #fff; margin-top: 10px; }
+  th, td { border: 1px solid #ccc; padding: 2px 9px; text-align: right; }
+  th { background: #faf9f6; }
+  td:first-child, th:first-child { text-align: left; }
+  .ok { color: #116329; }
+  .bad { color: #c0392b; font-weight: bold; }
+
+  /* ===== 复刻 matrix.css 几何（unit=25；行高同宽，原理一致） ===== */
+  .pages { --guji-unit: 25px; display: flex; flex-direction: column; gap: 8px; color: #1c1c1c; }
+  .lines { width: min-content; border: 1px solid; }
+  .m-lines { display: grid; }
+  .m-band { display: grid; grid-template-columns: subgrid; grid-template-rows: subgrid; }
+  .m-run { font-size: calc(var(--guji-unit) * 0.8); font-family: serif; }
+  .m-cell { height: var(--guji-unit); line-height: var(--guji-unit); text-align: center; }
+  .m-book { box-sizing: border-box; display: flex; flex-direction: column;
+            border: 1px solid; border-radius: calc(var(--guji-unit) * 0.3); }
+  .m-band.m-band-active { background: rgba(217, 119, 6, 0.14); }
+
+  /* 书名框共线避让（复刻 matrix.css） */
+  .m-lines > .m-book { margin-left: -1px; }
+  .m-lines > .m-book:not(.open-bottom) { margin-bottom: -1px; }
+  .m-lines[data-rules="on"] .m-book.at-band-left { margin-left: 0; }
+  .m-book.m-flush-r { margin-right: -1px; }
+
+  /* variant: 现状（border-left；:last-child 与生产同构——books 在后时永不匹配） */
+  .v-border .m-lines[data-rules="on"] .m-band { border-left: 1px solid; }
+  .v-border .m-lines[data-rules="on"] .m-band:last-child { border-left: 0; }
+
+  /* 方案 A：::before 绝对定位（不占盒模型） */
+  .v-pseudo .m-lines[data-rules="on"] .m-band { position: relative; }
+  .v-pseudo .m-lines[data-rules="on"] .m-band:last-child::before { content: none; }
+  .v-pseudo .m-lines[data-rules="on"] .m-band::before {
+    content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 1px;
+    background: currentColor;
+  }
+
+  /* 方案 B：inset box-shadow（不占盒模型，画在自身背景之上） */
+  .v-shadow .m-lines[data-rules="on"] .m-band { box-shadow: inset 1px 0 0; }
+  .v-shadow .m-lines[data-rules="on"] .m-band:last-child { box-shadow: none; }
+
+  /* 方案 C：background 渐变条（不占盒模型，但与 m-band-active 的 background 冲突） */
+  .v-bg .m-lines[data-rules="on"] .m-band {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat; background-size: 1px 100%;
+  }
+  .v-bg .m-lines[data-rules="on"] .m-band.m-band-active {
+    /* 复刻生产：active 也用 background 简写 → 界栏条被顶掉（演示冲突点） */
+    background: rgba(217, 119, 6, 0.14);
+  }
+
+  /* 方案 D：独立界栏 div（渲染层生成；不占盒模型） */
+  .v-div .m-lines { position: relative; }
+  .m-rule { position: absolute; top: 0; bottom: 0; width: 1px; background: #1c1c1c; }
+</style>
+
+<body>
+<h1>界栏（band 竖线）方案对比测试</h1>
+<p class="note">
+  复刻 guji-preview-grid 矩阵视图几何：12 列 × 3 band（5+4+3，每列 25px），band 为 subgrid 占满整页高，
+  书名框为 .m-lines 直接子元素（父网格轨道定位）。band1 挂 m-band-active 高亮，
+  观察各方案界栏与高亮背景的层叠关系。DX = 该列文字中心相对理论中心（无界栏轨道位置）的偏差（px）。
+  <b>注意</b>：DOM 顺序复刻生产（books 渲染在 bands 之后），因此各方案沿用生产的 <code>:last-child</code>
+  排除写法在最左 band 上均不生效——与生产行为一致。
+</p>
+<div id="app"></div>
+<div id="summary"></div>
+
+<script>
+const UNIT = 25, BANDS = [5, 4, 3], ROWS = 6;
+const colStarts = [];
+{ let a = 0; for (const c of BANDS) { colStarts.push(a); a += c; } }
+const TOTAL = colStarts[BANDS.length - 1] + BANDS[BANDS.length - 1];
+
+const VARIANTS = [
+  { key: "none",   title: "0. 无界栏（理论基线，rules off）", desc: "各列轨道的理论位置参照。" },
+  { key: "border", title: "1. 现状：.m-band border-left: 1px", desc: "border 占盒模型空间；subgrid 轨道从 content-box 起，列整体偏移待测。" },
+  { key: "pseudo", title: "方案 A：::before 绝对定位", desc: "position:absolute 的 1px 伪元素；不占盒模型，画在 band 背景之上。" },
+  { key: "shadow", title: "方案 B：inset box-shadow", desc: "box-shadow: inset 1px 0 0；不占盒模型，画在自身背景之上。" },
+  { key: "bg",     title: "方案 C：background 渐变条", desc: "1px 背景条；不占盒模型，但与 m-band-active 的 background 属性冲突（本页演示 active 时界栏消失）。" },
+  { key: "div",    title: "方案 D：独立界栏 div（渲染层生成）", desc: ".m-lines 内绝对定位子元素，left 按 colStarts×unit 计算；不占盒模型。" },
+];
+
+function el(tag, cls) {
+  const d = document.createElement(tag);
+  if (cls) d.className = cls;
+  return d;
+}
+
+function buildPage(variantKey) {
+  const page = el("div", "page");
+  const lines = el("div", "lines m-lines");
+  lines.dataset.rules = variantKey === "none" ? "off" : "on";
+  lines.style.gridTemplateColumns = `repeat(${TOTAL}, ${UNIT}px)`;
+  lines.style.gridTemplateRows = `repeat(${ROWS}, ${UNIT}px)`;
+
+  BANDS.forEach((cols, bi) => {
+    const band = el("div", "m-band" + (bi === 1 ? " m-band-active" : ""));
+    band.style.gridColumn = `${colStarts[bi] + 1} / span ${cols}`;
+    band.style.gridRow = "1 / -1";
+    for (let c = 0; c < cols; c++) {
+      const run = el("div", "m-run");
+      run.style.gridRow = "1 / span 1";
+      run.style.gridColumn = `${c + 1}`;
+      const cell = el("div", "m-cell");
+      cell.dataset.col = colStarts[bi] + c;
+      cell.textContent = "字";
+      run.appendChild(cell);
+      band.appendChild(run);
+    }
+    lines.appendChild(band);
+  });
+
+  // 方案 D：界栏 div（bands 之后、books 之前——书名框压线，与生产层序一致）
+  if (variantKey === "div") {
+    BANDS.forEach((_, bi) => {
+      const r = el("div", "m-rule");
+      r.style.left = `${colStarts[bi] * UNIT}px`;
+      lines.appendChild(r);
+    });
+  }
+
+  // 书名框（复刻生产渲染顺序：books 在 bands 之后）
+  const mk = (col, rowStart, rowEnd, cls) => {
+    const b = el("div", "m-book" + (cls ? " " + cls : ""));
+    b.style.gridRow = `${rowStart + 1} / span ${rowEnd - rowStart}`;
+    b.style.gridColumn = `${col + 1}`;
+    lines.appendChild(b);
+  };
+  mk(colStarts[1], 1, 4, "at-band-left"); // A：band1 左缘列，界栏开时 margin-left:0 共线
+  mk(TOTAL - 1, 1, 3, "m-flush-r");       // B：最右列，右边线叠版框
+  mk(3, 4, 6, "");                        // C：普通框（margin-left:-1px）
+
+  page.appendChild(lines);
+  return page;
+}
+
+function measure(section) {
+  const lines = section.querySelector(".m-lines");
+  const lr = lines.getBoundingClientRect();
+  const contentLeft = lr.left + lines.clientLeft; // 版框 border 内缘 = 网格起点
+  const cells = {};
+  section.querySelectorAll(".m-cell").forEach((c) => {
+    const r = c.getBoundingClientRect();
+    const col = +c.dataset.col;
+    const theory = contentLeft + (col + 0.5) * UNIT;
+    cells[col] = { dx: r.left + r.width / 2 - theory, w: r.width };
+  });
+  const bands = [...section.querySelectorAll(".m-band")].map((b) => {
+    const r = b.getBoundingClientRect();
+    return { left: r.left - contentLeft, w: r.width };
+  });
+  const bookA = section.querySelector(".m-book.at-band-left").getBoundingClientRect().left - contentLeft;
+  const bookB = section.querySelector(".m-book.m-flush-r").getBoundingClientRect().right - contentLeft;
+  return { cells, bands, bookA, bookB };
+}
+
+const fmt = (x) => (Math.abs(x) < 0.005 ? "0" : (x < 0 ? "−" : "") + Math.abs(x).toFixed(2));
+const cellOf = (m, col) => m.cells[col] ? m.cells[col].dx : null;
+const wOf = (m, col) => m.cells[col] ? m.cells[col].w : null;
+
+const results = {};
+const app = document.getElementById("app");
+
+VARIANTS.forEach((v) => {
+  const sec = el("section", `variant v-${v.key}`);
+  const h = el("h2"); h.textContent = v.title;
+  const d = el("p", "desc"); d.textContent = v.desc;
+  const pages = el("div", "pages");
+  pages.appendChild(buildPage(v.key));
+  sec.append(h, d, pages);
+  app.appendChild(sec);
+  results[v.key] = measure(sec);
+});
+
+// 汇总表
+const cols = [0, 4, 5, 8, 9, 11];
+let html = `<h2>测量汇总（px）</h2><table><tr><th>variant</th>${cols.map((c) => `<th>dx col${c}</th>`).join("")}<th>max&#8203;|dx|</th><th>cell宽</th><th>框A左线−band1左缘</th><th>框B右缘−版框内缘</th></tr>`;
+for (const v of VARIANTS) {
+  const m = results[v.key];
+  const dxs = Object.values(m.cells).map((c) => c.dx);
+  const maxAbs = Math.max(...dxs.map(Math.abs));
+  const ws = Object.values(m.cells).map((c) => c.w);
+  const wMin = Math.min(...ws), wMax = Math.max(...ws);
+  const cls = (x) => (Math.abs(x) < 0.01 ? "ok" : "bad");
+  html += `<tr><td>${v.key}</td>${cols.map((c) => `<td class="${cls(cellOf(m, c))}">${fmt(cellOf(m, c))}</td>`).join("")}<td class="${cls(maxAbs)}">${fmt(maxAbs)}</td><td>${wMin === wMax ? wMin.toFixed(2) : wMin.toFixed(2) + "~" + wMax.toFixed(2)}</td><td>${fmt(m.bookA - colStarts[1] * UNIT)}</td><td>${fmt(m.bookB - TOTAL * UNIT)}</td></tr>`;
+}
+html += "</table>";
+document.getElementById("summary").innerHTML = html;
+</script>
+</body>
+</html>
