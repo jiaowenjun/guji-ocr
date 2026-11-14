@@ -3,7 +3,7 @@
 
 来源 kangxizidian.com：全圖頁（index2.php?page=N）引用的整页图直链
 https://p.kangxizidian.com/kangxi2/NNNN.jpg（NNNN 为 4 位零填充页码）。
-站点默认版本即武英殿版，与 guji-preview/src/samples/kangxi-yibu.gj 的页码体系一致
+站点默认版本即武英殿版，与 guji-preview-grid/src/samples/kangxi-yibu.gj 的页码体系一致
 （0312.jpg 已目视核对为「子集上·一部·一」起始页）。
 
 策略：robots.txt 先行核查（全站 Disallow 即中止）；请求间隔 >=1.2s+抖动；
@@ -159,7 +159,7 @@ def main() -> int:
         "site": "https://www.kangxizidian.com/v2/",
         "edition_note": (
             "站点默认版本即武英殿版；部首「一」指向 index.php?page=312，"
-            "与 guji-preview/src/samples/kangxi-yibu.gj 的 @312 页码体系一致；"
+            "与 guji-preview-grid/src/samples/kangxi-yibu.gj 的 @312 页码体系一致；"
             "0312.jpg 已目视核对为「子集上·一部·一」起始页（版心：康熙字典 子集上）"
         ),
         "image_url_template": IMAGE_URL_TEMPLATE,

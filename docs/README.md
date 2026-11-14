@@ -10,8 +10,7 @@
 | 查论文题名、原始链接、阅读深度或用户提供的文章 | [参考文献与来源](research/references.md) |
 | 按任务、许可、资源 ID 继续筛选或编写脚本 | [机器可读资源索引](research/resources.json) |
 | 检查 AncientDoc、Chronicles 和 11 页样本的具体核查依据 | [证据目录说明](research/evidence/README.md) |
-| 使用 `.gj` 流式排版预览 | [guji-preview 使用与开发说明](../guji-preview/README.md) |
-| 使用字格矩阵排版和两种渲染对照 | [guji-preview-grid 使用与开发说明](../guji-preview-grid/README.md) |
+| 使用字格矩阵预览与数据集对照校对 | [guji-preview-grid 使用与开发说明](../guji-preview-grid/README.md) |
 | 核验康熙字典未编码字头（K0000）与字体缺字判定 | [未编码字头字体核验流程](research/2026-11-13-kangxi-未编码字头字体核验流程.md) |
 | 向康熙字典體补录缺字字形（K0000 字形入库） | [字体补录流程](research/2026-11-13-kangxi-字体补录流程.md) |
 
@@ -37,8 +36,7 @@ docs/
     ├── 2026-11-12-kangxizidian-网站结构调研.md      字头索引与抓取可行性
     ├── 2026-11-13-kangxi-未编码字头字体核验流程.md  K0000 身份判定与缺字判定
     └── 2026-11-13-kangxi-字体补录流程.md           K0000 缺字字形入库操作手册
-guji-preview/README.md                  流式预览应用文档
-guji-preview-grid/README.md             字格预览应用文档
+guji-preview-grid/README.md             字格预览与数据集校对应用文档
 ```
 
 结构按“综合结论—来源索引—核查证据—历史参考”组织。旧报告保留原路径和原文，以免破坏已有引用；各应用的使用说明继续由应用自身维护。

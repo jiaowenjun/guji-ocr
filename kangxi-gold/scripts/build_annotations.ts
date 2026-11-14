@@ -1,24 +1,24 @@
-// 拆分 guji-preview 的 17 页人工精标样例为单页金标：
+// 拆分 guji-preview-grid 的 17 页人工精标样例为单页金标：
 //   kangxi-gold/annotations/NNNN.gj   单页 .gj 原文（按 @N 拆分，逐行原样保留）
-//   kangxi-gold/annotations/NNNN.json 结构化金标（复用 guji-preview 解析器的单页输出）
+//   kangxi-gold/annotations/NNNN.json 结构化金标（复用 guji-preview-grid 解析器的单页输出）
 //   kangxi-gold/annotations/NNNN.txt  阅读序纯文本（CER 参考文本）
 // 并做两层零漂移校验：
 //   1) 单页解析结果 === 整篇解析结果中对应页（拆分不改变语义）
-//   2) 整篇解析结果 === guji-preview/test/fixtures/kangxi-yibu.expected.json
+//   2) 整篇解析结果 === guji-preview-grid/test/fixtures/kangxi-yibu.expected.json
 //      （原 vscode-guji-preview 扩展解析器的黄金期望，见 test/parser.spec.ts）
 // 运行：npx -y tsx kangxi-gold/scripts/build_annotations.ts
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { parsePages } from "../../guji-preview/src/parser/parse-pages";
-import type { BlockModel, LineModel, PageModel } from "../../guji-preview/src/components/guji/model";
+import { parsePages } from "../../guji-preview-grid/src/parser/parse-pages";
+import type { BlockModel, LineModel, PageModel } from "../../guji-preview-grid/src/components/flex/model";
 import { gj2ir } from "../../guji-preview-grid/src/ir/gj2ir";
 import { irPageToText } from "../../guji-preview-grid/src/ir/text";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(here, "../..");
-const SOURCE = join(repoRoot, "guji-preview/src/samples/kangxi-yibu.gj");
-const FIXTURE = join(repoRoot, "guji-preview/test/fixtures/kangxi-yibu.expected.json");
+const SOURCE = join(repoRoot, "guji-preview-grid/src/samples/kangxi-yibu.gj");
+const FIXTURE = join(repoRoot, "guji-preview-grid/test/fixtures/kangxi-yibu.expected.json");
 const OUT_DIR = join(repoRoot, "kangxi-gold/annotations");
 const MANIFEST = join(repoRoot, "kangxi-gold/manifest.json");
 
@@ -66,7 +66,7 @@ console.log(`拆分得到 ${pages.length} 页：@${pages[0]}–@${pages[pages.le
 
 // ---- 2. 逐页解析 + 两层零漂移校验 ----
 // 模式说明：
-//   默认（严格）：以 guji-preview 样例为唯一源，重新生成全部 .gj/.json/.txt，
+//   默认（严格）：以 guji-preview-grid 样例为唯一源，重新生成全部 .gj/.json/.txt，
 //     并与 fixture（原扩展解析器黄金期望）逐页比对，任何不一致即失败。
 //   --allow-drift：annotations/NNNN.gj 视为人工修订源（数据集对照页保存所得）——
 //     已存在的 .gj 不被样例覆盖，json/txt 从该页 .gj 重新生成；
@@ -198,7 +198,7 @@ for (const entry of manifest.pages ?? []) {
 }
 manifest["annotations_schema"] = "guji-ir/3"; // NNNN.json 为 Guji IR v3（骨架+overlay 双层；v2 前为段流/PageModel）
 manifest["annotation_source"] =
-  "guji-preview/src/samples/kangxi-yibu.gj（人工精标，源自 vscode-guji-preview/example；零漂移对照通过）";
+  "guji-preview-grid/src/samples/kangxi-yibu.gj（人工精标，源自 vscode-guji-preview/example；零漂移对照通过）";
 writeFileSync(MANIFEST, JSON.stringify(manifest, null, 2) + "\n", "utf-8");
 
 const total = summary.reduce((acc, s) => acc + s.chars, 0);

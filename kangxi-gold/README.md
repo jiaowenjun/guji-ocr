@@ -8,7 +8,7 @@
 | --- | --- |
 | 规模 | 17 页，正文 5,933 字（Unicode 码点，含扩展 B 区） |
 | 图片 | 整页扫描 JPEG（1130px 宽），共 9.04 MB，存于 WD-2T（见下） |
-| 标注来源 | [guji-preview/src/samples/kangxi-yibu.gj](../guji-preview/src/samples/kangxi-yibu.gj) 人工精标（源自 vscode-guji-preview 扩展 example） |
+| 标注来源 | [guji-preview-grid/src/samples/kangxi-yibu.gj](../guji-preview-grid/src/samples/kangxi-yibu.gj) 人工精标（源自 vscode-guji-preview 扩展 example） |
 | 金标版本 | v1（2026-11-12） |
 
 ## 目录结构
@@ -17,7 +17,7 @@
 kangxi-gold/
   manifest.json            页清单：来源 URL、图片 sha256/尺寸/路径、标注文件、版本证据
   annotations/NNNN.gj      单页 .gj 原文（按 @页码 拆分，逐行原样保留）
-  annotations/NNNN.json    结构化金标（guji-preview 解析器的单页输出，PageModel）
+  annotations/NNNN.json    结构化金标（guji-preview-grid 解析器的单页输出，PageModel）
   annotations/NNNN.txt     阅读序纯文本（CER 参考文本）
   scripts/download_pages.py   下载扫描图（限速、校验、断点续传、维护 manifest）
   scripts/build_annotations.ts 拆页 + 解析 + 零漂移校验 + 产出三件套
@@ -54,8 +54,8 @@ kangxi-gold/
 
 ## 标注规范
 
-- 语法与语义以 [guji-preview 的 .gj 语法](../guji-preview/README.md) 为准；
-  构建时与 `guji-preview/test/fixtures/kangxi-yibu.expected.json`
+- 语法与语义以 [guji-preview-grid 的 .gj 语法](../guji-preview-grid/README.md) 为准；
+  构建时与 `guji-preview-grid/test/fixtures/kangxi-yibu.expected.json`
   （原扩展解析器黄金期望）做**零漂移对照**，单页解析 = 整篇解析 = fixture。
 - **识别范围**：字头（大字）、正文、双行夹注（小字）、书名框、带圈标注入金标；
   版心、边框、鱼尾、印章、页脚水印**不在**金标内。
@@ -74,7 +74,7 @@ kangxi-gold/
 python3 scripts/download_pages.py
 
 # 2. 重建标注
-#    严格模式（默认）：以 guji-preview 样例为唯一源重新生成三件套，
+#    严格模式（默认）：以 guji-preview-grid 样例为唯一源重新生成三件套，
 #    与 fixture 零漂移校验；检测到人工修订页会拒绝执行（防覆盖）
 npx -y tsx scripts/build_annotations.ts
 #    --allow-drift：人工修订模式——annotations/NNNN.gj（如经 guji-preview-grid

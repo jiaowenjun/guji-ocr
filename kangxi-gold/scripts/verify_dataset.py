@@ -23,7 +23,7 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-PARSER_STRIP_SET = '。，·":：、《》'  # 与 guji-preview/src/parser/split-line.ts 剔除集一致
+PARSER_STRIP_SET = '。，·":：、《》'  # 与 guji-preview-grid/src/parser/split-line.ts 剔除集一致
 
 
 def jpeg_size(data: bytes):

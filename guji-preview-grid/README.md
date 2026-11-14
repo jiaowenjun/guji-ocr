@@ -1,19 +1,19 @@
 # guji-preview-grid
 
-以 **CSS Grid 字格矩阵**重构古籍刻本渲染层的实验性 Web 应用，姊妹项目：
-[guji-preview](../guji-preview)（flex 流式渲染，保持不动）。
+以 **CSS Grid 字格矩阵**重构古籍刻本渲染层的 Web 应用。原姊妹项目 guji-preview
+（flex 流式渲染移植版）已于 2026-11-14 删除，本项目为唯一的预览与校对应用。
 
-## 与 guji-preview 的差异
+## 与原 flex 流式版的设计差异
 
-| | guji-preview（flex） | guji-preview-grid（本项目） |
+| | flex 流式版（旧，已删除） | 矩阵版（本项目） |
 |---|---|---|
 | 布局模型 | 流式：`row-reverse` flex，行对齐由内容"涌现" | 严格矩阵：布局引擎推导 1em 字格坐标，显式 grid 轨道 |
 | 跨行书名 | `book-start/middle/end` 三态 + 负边距阶梯 + `:has()` 按边删 border 拼接 | 同列连续片段合并为**单个跨行矩形项**（单一边框）；仅 wrap 连接边开口 |
 | 行线贯通 | 无（仅外框） | 大行之间界栏全页高（`border-left` + subgrid 占满行，可开关） |
-| 渲染管线 | `parsePages → React 组件`（旧版，姊妹项目保留） | 主路径 `gj2ir → layout3（骨架布局）→ overlay 装饰 → 矩阵组件`（[Guji IR v3](../docs/design/guji-ir.md) 双层结构；原 Flex 对照视图已于 2026-11-14 移除） |
+| 渲染管线 | `parsePages → React 组件`（旧版，项目已删除） | 主路径 `gj2ir → layout3（骨架布局）→ overlay 装饰 → 矩阵组件`（[Guji IR v3](../docs/design/guji-ir.md) 双层结构；原 Flex 对照视图已于 2026-11-14 移除） |
 
-解析器、CodeMirror 编辑器与 guji-preview 完全一致；应用外壳已分叉——本项目自
-2026-11-12 起移除独立「编辑」双栏模式，打开即数据集对照视图（通用编辑/预览用 guji-preview）。
+解析器、CodeMirror 编辑器移植自原 guji-preview（行为一致、fixture 测试锁定）；应用外壳自
+2026-11-12 起移除独立「编辑」双栏模式，打开即数据集对照视图。
 
 ## 架构
 
@@ -104,6 +104,37 @@ bash scripts/link-dataset.sh        # 需挂载存放扫描图的外置盘（man
 python3 scripts/prefetch_ocr.py      # 可选：预识别近期页（默认数据集末页起，限 20 页/次）
 ```
 
-Guji 语法、字体安装说明见 [guji-preview README](../guji-preview/README.md)。本仓库扩展输入：带圈字头支持
+## Guji 語法
+
+（自原 guji-preview README 移入，本项目为语法定义之唯一来源。）
+
+|    特殊符號    |    作用範圍    |         含義         |
+| :------------: | :------------: | :------------------: |
+| `//`_comment_  |     至行尾     |        行注釋        |
+|    `@`_num_    |     至行尾     |     指定當前頁數     |
+|     `空行`     |                |       大行換行       |
+|     `EOF`      |                |       大行換行       |
+|   `#␣`_text_   |     至行尾     |       一行大字       |
+|  `##␣`_text_   |     至行尾     |   一行大字縮進一格   |
+|  `###␣`_text_  |     至行尾     |   一行大字縮進兩格   |
+|  `↵` (換行符)  |                |       小行換行       |
+|   `#`_char_    |   後一個字符   |    行內的一個大字    |
+|   `#(`_char_   |   後一個字符   |  行內的一個帶圈大字  |
+| `#(`_A_ _B_`)` | 括號內兩個字符 | 兩字合成一個帶圈大字 |
+| `【`_text_`】` |   括號內文本   |       行內書名       |
+| `【`_text_`↵`  |   括號至行尾   |      行內半書名      |
+| `^`_text_`】`  |   行首至括號   |      行內半書名      |
+|      `*`       |                |       行內空格       |
+
+> 注：实际语料中单字带圈大字写作 `#(一`（不闭合，后接下一个 `#` 标记），
+> 两字合成的带圈大字写作 `#(十五)`。
+
+本仓库扩展输入：带圈字头支持
 全角括号 `#（X）`/`#（X`（等同半角）与括号内速记 `z`→增、数字→汉字（`(15)`≡`(十五)`）；编辑器
 「格式化」按钮一键归一为标准写法（parser 与 IR 管线均已支持，`src/parser/split-line.ts`）。
+
+## 字體
+
+刻本字体已随仓库入库（`public/fonts/`，url() 优先加载，见「已知偏差」），无需本地安装。
+字体来源：大字 `康熙傳承版 KangXiZiDian.com`（[官網](https://www.chinesecj.com/forum/forum.php?mod=viewthread&tid=195626)）；
+小字 `中華書局宋體00/02/15平面`（[官網](https://www.ancientbooks.cn/helpcore?font)）。

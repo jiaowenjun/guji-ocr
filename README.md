@@ -31,7 +31,6 @@ OCR 部分尚未安装、运行模型或复现性能；报告中的性能数字�
 
 | 应用 | 用途 |
 | --- | --- |
-| [guji-preview](guji-preview/README.md) | `.gj` 文本编辑与仿刻本实时预览，流式排版、HTML 导出 |
-| [guji-preview-grid](guji-preview-grid/README.md) | 字格矩阵排版实验，支持与流式渲染对照 |
+| [guji-preview-grid](guji-preview-grid/README.md) | 字格矩阵刻本渲染 + kangxi-gold 数据集对照校对，Guji IR v3 与 `.gj` 语法定义所在 |
 
 预览应用承接文本编辑与排版展示；OCR、源图定位和自动版式识别仍属于后续工作。

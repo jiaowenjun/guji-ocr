@@ -4,7 +4,7 @@
   "gold_version": "v1",
   "source": {
     "site": "https://www.kangxizidian.com/v2/",
-    "edition_note": "站点默认版本即武英殿版；部首「一」指向 index.php?page=312，与 guji-preview/src/samples/kangxi-yibu.gj 的 @312 页码体系一致；0312.jpg 已目视核对为「子集上·一部·一」起始页（版心：康熙字典 子集上）",
+    "edition_note": "站点默认版本即武英殿版；部首「一」指向 index.php?page=312，与 guji-preview-grid/src/samples/kangxi-yibu.gj 的 @312 页码体系一致；0312.jpg 已目视核对为「子集上·一部·一」起始页（版心：康熙字典 子集上）",
     "image_url_template": "https://p.kangxizidian.com/kangxi2/{page:04d}.jpg",
     "text_page_template": "https://www.kangxizidian.com/v2/index.php?page={page}",
     "watermark_note": "页脚有站点水印「kangxizidian.com 0312」，非原书内容",
@@ -479,6 +479,6 @@
       "origin": "kangxizidian.com 爬取草稿（kangxi_page_tool.py add）"
     }
   ],
-  "annotation_source": "guji-preview/src/samples/kangxi-yibu.gj（人工精标，源自 vscode-guji-preview/example；零漂移对照通过）",
+  "annotation_source": "guji-preview-grid/src/samples/kangxi-yibu.gj（人工精标，源自 vscode-guji-preview/example；零漂移对照通过）",
   "annotations_schema": "guji-ir/3"
 }
