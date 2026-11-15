@@ -14,6 +14,8 @@
 | 使用字格矩阵预览与数据集对照校对 | [guji-preview-grid 使用与开发说明](../guji-preview-grid/README.md) |
 | 核验康熙字典未编码字头（K0000）与字体缺字判定 | [未编码字头字体核验流程](research/2026-11-13-kangxi-未编码字头字体核验流程.md) |
 | 向康熙字典體补录缺字字形（K0000 字形入库） | [字体补录流程](research/2026-11-13-kangxi-字体补录流程.md) |
+| 查 guji-large 首例补录（U+2BD6E）的实际执行、验证与回滚 | [补录落地报告](research/2026-11-14-kangxi-guji-large补录U+2BD6E落地报告.md) |
+| 查字体操作登记制度 / 各字体文件哈希基线 / 补录历史 | [字体操作留痕登记簿](font-operations.md) |
 | 查 歹部「歺」旁刻形（如〈歺㐱〉=殄）的码位与小字字体覆盖 | [歹部歺形码位核验](research/2026-11-14-kangxi-歹部歺形码位核验.md) |
 
 ## 文档结构
@@ -23,6 +25,7 @@ README.md                              仓库入口
 docs/
 ├── README.md                          本导航
 ├── data-storage.md                    数据文件存放规范（git/var/外置盘分层）
+├── font-operations.md                 字体操作留痕登记簿（制度+登记+哈希基线）
 └── research/
     ├── README.md                      新综合报告，主要阅读入口
     ├── references.md                  论文与文章来源索引
@@ -40,7 +43,8 @@ docs/
     ├── 2026-11-12-kangxizidian-网站结构调研.md      字头索引与抓取可行性
     ├── 2026-11-13-kangxi-未编码字头字体核验流程.md  K0000 身份判定与缺字判定
     ├── 2026-11-13-kangxi-字体补录流程.md           K0000 缺字字形入库操作手册
-    └── 2026-11-14-kangxi-歹部歺形码位核验.md       歺旁刻形码位规律与殄 U+6B84 判定
+    ├── 2026-11-14-kangxi-歹部歺形码位核验.md       歺旁刻形码位规律与殄 U+6B84 判定
+    └── 2026-11-14-kangxi-guji-large补录U+2BD6E落地报告.md  首例补录执行记录与验证回滚
 guji-preview-grid/README.md             字格预览与数据集校对应用文档
 ```
 
