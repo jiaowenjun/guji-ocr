@@ -14,7 +14,14 @@
 // \s 含 U+3000 全角空格，无需另列。
 import { Prec } from "@codemirror/state";
 import { EditorView, keymap, type Command } from "@codemirror/view";
-import { getCM } from "@replit/codemirror-vim";
+import { Vim, getCM } from "@replit/codemirror-vim";
+
+// vim normal 模态 J → gJ：合并下一行时不在本行末尾插空格（.gj 行密排无行
+// 首尾空白，与 gJ「保留下行行首空白」的差异实际不可见；count 前缀与 . 重
+// 复随 keyToKey 重放保留）。ctx 限定 normal，visual J 维持引擎默认。
+// keyToKey 映射经 unshift 进全局 keymap，所有编辑器实例按键时实时查表；
+// 模块重复求值（HMR）会重复 unshift 同映射，命中首个，无害。
+Vim.map("J", "gJ", "normal");
 
 // vim 扩展激活且处于非 insert 模态（normal/visual 等）时本键位组让位。
 // vim 插件经 DOM keydown 自行接管按键（不走 CM keymap），若不让位，

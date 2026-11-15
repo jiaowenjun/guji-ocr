@@ -74,6 +74,19 @@ describe("vim 开启：模态协议", () => {
     expect(doc(view)).toBe("一行字\n二行字\n");
   });
 
+  it("normal 模态 J 合并不插空格（J→gJ 映射），计数前缀保留", () => {
+    // 三行密排：J 应纯边界拼接（无 " " 注入）；3J 一次并起两行
+    const view = track(
+      new EditorView({ doc: "一行\n二行\n三行\n", parent: document.body, extensions: [vim(), gujiKeymap] }),
+    );
+    key(view, "J");
+    expect(doc(view)).toBe("一行二行\n三行\n");
+    key(view, "3");
+    key(view, "J");
+    // 3J 三行并作一行：末尾 \n 是空行，一并被吞（vim J 语义），尾换行消失
+    expect(doc(view)).toBe("一行二行三行");
+  });
+
   it("整树 reconfigure（@uiw 每渲染路径）不打断模态", () => {
     // vim() 各段为包内模块级常量：即便每次调用重新组装、reconfigure 整组
     // extensions，CM6 按插件 spec 身份保活实例，insert 模态不丢——这是
