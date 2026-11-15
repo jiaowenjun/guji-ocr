@@ -7,20 +7,18 @@
       "char": "⿰亻⿱人人",
       "description": "〈亻人人〉＝康熙 @349 乑字按语「《正字通》獨改作❌」处刻形（与㐺相分的另一字），无 Unicode 码位",
       "first_seen": "kangxi-gold @349",
-      "scheme": "scan-trace",
-      "version": 2,
+      "scheme": "compose",
+      "version": 3,
       "patched_at": "2026-11-15",
-      "source": "tools/dataset/font-sources/e701-scan-v1.json",
-      "source_note": "原 scan-trace v1 折线入库保存；大字继续采用此方案。",
+      "source": "tools/dataset/font-sources/e701-songti-v2.json",
+      "source_note": "仅用于小字内容；使用已审定的宋体部件构形，不向 guji-large 补录。",
       "verify_image": "tools/dataset/font-sources/e701-scan-clean.png",
       "verify_note": "chamfer 闸基准（清洗扫描）",
       "fonts": [
-        "guji-preview-grid/public/fonts/guji-plane0.ttf",
-        "guji-preview-grid/public/fonts/guji-large.ttf"
+        "guji-preview-grid/public/fonts/guji-plane0.ttf"
       ],
       "sha256_after": {
-        "guji-plane0.ttf": "0e5eda61b7324f8bcf9c420a9633537799021a45f0bcfdad22574fac25a1d257",
-        "guji-large.ttf": "f79d2765b6900a90822971eea286631e93f08f43080d1b8f3e2b8b20af63b9f0"
+        "guji-plane0.ttf": "0e5eda61b7324f8bcf9c420a9633537799021a45f0bcfdad22574fac25a1d257"
       },
       "history": [
         {
@@ -63,19 +61,43 @@
             }
           ],
           "cache_version": "e701-2-songti"
+        },
+        {
+          "at": "2026-11-15T14:37:18+08:00",
+          "version": 3,
+          "operation": "remove-from-font",
+          "reason": "仅用于小字内容，撤销大字字体补录",
+          "results": [
+            {
+              "font": "guji-preview-grid/public/fonts/guji-large.ttf",
+              "cp": "U+E701",
+              "glyph": "uniE701",
+              "sha256_before": "f79d2765b6900a90822971eea286631e93f08f43080d1b8f3e2b8b20af63b9f0",
+              "sha256_after": "99be6a77b93afa746b2d29e37d6014cab9f9c21471f685a2392426760a17dabf",
+              "bytes_before": 46624036,
+              "bytes_after": 46623752,
+              "cmap_before": 49409,
+              "cmap_after": 49408,
+              "glyph_count_before": 49412,
+              "glyph_count_after": 49411,
+              "remaining_glyf_bytes_identical": true,
+              "other_cmaps_and_metrics_unchanged": true,
+              "post_target_name_removed": true,
+              "retained_2BD6E": true,
+              "restored_from": "f3cfefdef4ff7bda953de9c88ed450fd3b8ef7ce:guji-preview-grid/public/fonts/guji-large.ttf",
+              "backup": "var/unencoded/kangxi-unencoded/font-backups/guji-large.ttf.f79d2765b6900a90822971eea286631e93f08f43080d1b8f3e2b8b20af63b9f0.ttf"
+            }
+          ],
+          "small_font_sha256_unchanged": "0e5eda61b7324f8bcf9c420a9633537799021a45f0bcfdad22574fac25a1d257",
+          "cache_version_before": "001015-2bd6e-e701",
+          "cache_version": "001015-2bd6e-no-e701"
         }
       ],
       "font_versions": {
-        "guji-plane0.ttf": 2,
-        "guji-large.ttf": 1
+        "guji-plane0.ttf": 2
       },
-      "font_overrides": {
-        "guji-plane0.ttf": {
-          "scheme": "compose",
-          "source": "tools/dataset/font-sources/e701-songti-v2.json",
-          "source_note": "按已审定的宋体部件构形替换；码位稳定，具体部件与轮廓摘要见 source。"
-        }
-      }
+      "usage": "small-only",
+      "usage_note": "该字符只出现在小字内容中，仅收录于 guji-plane0.ttf。"
     }
   ]
 }

@@ -13,8 +13,8 @@
    Chrome 兜底。小字三个平面保持独立别名，保留逐字回退。 */
 @font-face {
     font-family: "GujiLarge";
-    /* ?v= 缓存戳：字体已补录 K0000 字形（U+2BD6E）与 PUA 自补字形（U+E701），更新时递增 */
-    src: url("/fonts/guji-large.ttf?v=001015-2bd6e-e701") format("truetype"),
+    /* 保留 U+2BD6E 补录；仅用于小字的 U+E701 已从此字体移除。 */
+    src: url("/fonts/guji-large.ttf?v=001015-2bd6e-no-e701") format("truetype"),
         local("KangXiFontFullVersion"),
         local("康熙字典體傳承版 KangXiZiDian.com"),
         local("康熙傳承版 KangXiZiDian.com");
@@ -22,7 +22,7 @@
 }
 @font-face {
     font-family: "GujiPlane0";
-    /* U+E701 v2：小字采用宋体部件构形；大字保留刻形。更新时递增缓存戳。 */
+    /* U+E701 v2：仅在小字字体收录宋体部件构形。更新时递增缓存戳。 */
     src: url("/fonts/guji-plane0.ttf?v=e701-2-songti") format("truetype"),
         local("FZSONG_ZHSJ_SIP--GB1-5"), local("中华书局宋体00平面");
     font-display: swap;
