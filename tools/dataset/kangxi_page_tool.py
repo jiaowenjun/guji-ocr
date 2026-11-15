@@ -428,7 +428,7 @@ def page_column_ocr(page: int, model: str = "paddle") -> list[dict] | None:
         if entry and entry.get("sha256") == img_found.sha256 and entry.get("model") == model:
             _COLUMN_CACHE[page] = entry["columns"]
             return entry["columns"]
-    if not _ocr_service_up():
+    if not ocr_service_up():
         return None
     seg = page_columns(page)
     if "error" in seg:
@@ -445,7 +445,7 @@ def page_column_ocr(page: int, model: str = "paddle") -> list[dict] | None:
         box = (max(0, maj["x1"] - 4), by0, min(W, maj["x2"] + 4), by1)
         buf = io.BytesIO()
         g.crop(box).save(buf, format="JPEG", quality=92)
-        md = _ocr_submit_markdown(buf.getvalue(), f"{page:04d}-c{j + 1}.jpg")
+        md = ocr_submit_markdown(buf.getvalue(), f"{page:04d}-c{j + 1}.jpg")
         out.append({"index": j + 1, "x1": maj["x1"], "x2": maj["x2"], "markdown": md})
     if all(c["markdown"] is None for c in out):
         return None
@@ -499,7 +499,7 @@ def _ocr_cache_meta(page: int, cur_sha: str) -> dict:
     }
 
 
-def _ocr_cache_write(page: int, store: kangxi_store.KangxiStore, markdown: str) -> None:
+def ocr_cache_write(page: int, store: kangxi_store.KangxiStore, markdown: str) -> None:
     _, sha = _scan_for(page, store)
     if not sha:
         return
@@ -511,7 +511,7 @@ def _ocr_cache_write(page: int, store: kangxi_store.KangxiStore, markdown: str) 
     )
 
 
-def _ocr_service_up() -> bool:
+def ocr_service_up() -> bool:
     """本地 paddleocr-baseline 服务是否在线。"""
     import urllib.request
 
@@ -522,7 +522,7 @@ def _ocr_service_up() -> bool:
         return False
 
 
-def _ocr_submit_markdown(payload: bytes, filename: str) -> str | None:
+def ocr_submit_markdown(payload: bytes, filename: str) -> str | None:
     """提交图片字节到本地 OCR 服务（job → 轮询 → 提取 markdown）。
 
     _ocr_markdown（整页）与 page_column_ocr（大列条带）共用的服务调用段：
@@ -532,7 +532,7 @@ def _ocr_submit_markdown(payload: bytes, filename: str) -> str | None:
     import urllib.request
 
     base = "http://127.0.0.1:8010"
-    if not _ocr_service_up():
+    if not ocr_service_up():
         return None
     boundary = uuid.uuid4().hex
     file_field = (
@@ -596,12 +596,12 @@ def _ocr_markdown(page: int, store: kangxi_store.KangxiStore) -> str | None:
     if img is None:
         _OCR_CACHE[page] = ""
         return None
-    md_text = _ocr_submit_markdown(img.read_bytes(), img.name)
+    md_text = ocr_submit_markdown(img.read_bytes(), img.name)
     if not md_text:
         _OCR_CACHE[page] = ""
         return None
     _OCR_CACHE[page] = md_text
-    _ocr_cache_write(page, store, md_text)
+    ocr_cache_write(page, store, md_text)
     return md_text
 
 
@@ -951,7 +951,7 @@ def ocr_regroup_bands(page: int, bands: list[list[str]]) -> tuple[list[list[str]
              if not l.strip().startswith("//") and not _is_section_header(l)]
     if len(lines) < 2:
         return bands, "行数不足，未按大列重组"
-    res = kangxi_column_seg.segment(page)
+    res = page_columns(page)  # 图定位/失败口径与查询 API 统一（error 键不抛异常）
     if "error" in res:
         return bands, f"大列分割不可用（{res['error']}），未重组"
     ests = [m["chars_est"] for maj in res["majors"] for m in maj["minors"]]

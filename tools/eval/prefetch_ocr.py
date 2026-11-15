@@ -4,6 +4,13 @@
 添加新页时 kangxi_page_tool 的 OCR 裁剪/折行优先读本缓存，未命中才提交
 新 job——新页 OCR 等待从 ~40s+（冷启动/排队）降为 0（命中时零联网）。
 
+服务调用/缓存写入/图定位消费 kangxi_page_tool 公开函数
+（ocr_service_up / ocr_submit_markdown / ocr_cache_write / page_image），
+本脚本只保留批量编排：限速、--force、哨兵跳过、todo 集合构造。
+--pages 显式指定的页走 page_image 定位（store ∪ manifest）——直接下载
+入库的 312–328 页也可预取（原版只认 store scan 行，一律「无扫描图」跳过，
+这些页的缓存永远补不上）。
+
 缓存位置：var/ocr-cache/<page:04d>.json
   {page, sha256, fetched_at, markdown}（sha256 与扫描图绑定，图变则失效重跑）
   以及零文本哨兵 {"markdown": ""}（避免无文本页反复提交）。
@@ -17,33 +24,26 @@
 from __future__ import annotations
 
 import argparse
-import difflib  # noqa: F401  （与 kangxi_page_tool 口径一致，便于日后复用对齐）
-import hashlib
 import json
 import sys
 import time
-import urllib.request
-import uuid
-from datetime import datetime
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "dataset"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "crawl"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import paths  # noqa: E402
 import kangxi_store  # noqa: E402
+from kangxi_page_tool import (  # noqa: E402
+    ocr_cache_write,
+    ocr_service_up,
+    ocr_submit_markdown,
+    page_image,
+)
 
 REPO = paths.REPO_ROOT
 CACHE_DIR = paths.OCR_CACHE_DIR
 MANIFEST = REPO / "kangxi-gold" / "manifest.json"
-BASE = "http://127.0.0.1:8010"
-
-
-def service_up() -> bool:
-    try:
-        with urllib.request.urlopen(f"{BASE}/health", timeout=3) as r:
-            return json.loads(r.read()).get("service") == "ocr"
-    except Exception:
-        return False
 
 
 def cache_entry(page: int) -> dict | None:
@@ -56,75 +56,28 @@ def cache_entry(page: int) -> dict | None:
         return None
 
 
-def cache_valid(page: int, store: kangxi_store.KangxiStore) -> bool:
-    """缓存存在且 sha256 与库内扫描图一致（图变即失效）。"""
+def cache_valid(page: int) -> bool:
+    """缓存存在且 sha256 与当前扫描图一致（图变即失效）。
+
+    图 sha 走 page_image 口径（store scan_file → manifest 回退），与
+    ocr_cache_write 写入侧同源——manifest 直接入库页的校验不再恒失效。
+    """
     entry = cache_entry(page)
-    if entry is None:
+    if entry is None or not entry.get("sha256"):
         return False
-    row = store.get_page(page) or {}
-    return bool(entry.get("sha256")) and entry["sha256"] == row.get("scan_sha256")
+    img = page_image(page)
+    return img is not None and entry["sha256"] == img.sha256
 
 
-def ocr_one(page: int, store: kangxi_store.KangxiStore) -> tuple[str | None, str]:
-    """提交单页并返回 (markdown, note)；markdown None = 失败/无文本。"""
-    row = store.get_page(page) or {}
-    img = Path(row.get("scan_file") or "")
-    if not img.is_file():
+def ocr_one(page: int) -> tuple[str | None, str]:
+    """提交单页并返回 (markdown, note)；None = 失败，"" = 无文本（哨兵）。"""
+    img = page_image(page)
+    if img is None:
         return None, "无扫描图"
-    payload = img.read_bytes()
-    boundary = uuid.uuid4().hex
-    body = (
-        f"--{boundary}\r\n"
-        f'Content-Disposition: form-data; name="file"; filename="{img.name}"\r\n'
-        f"Content-Type: image/jpeg\r\n\r\n"
-    ).encode() + payload + f"\r\n--{boundary}--\r\n".encode()
-    req = urllib.request.Request(
-        f"{BASE}/ocr/images",
-        data=body,
-        headers={"content-type": f"multipart/form-data; boundary={boundary}"},
-        method="POST",
-    )
-    with urllib.request.urlopen(req, timeout=120) as r:
-        submit = json.loads(r.read())
-    image_id = submit.get("image_id")
-    if not image_id:
-        return None, "提交未返回 image_id"
-    deadline = time.time() + 600
-    while time.time() < deadline:
-        time.sleep(3)  # 服务端 SHA 去重：同图历史 job 直接复用，秒回
-        with urllib.request.urlopen(f"{BASE}/ocr/images/{image_id}", timeout=30) as r:
-            view = json.loads(r.read())
-        if view.get("result") is not None:
-            break
-        if view.get("error") is not None:
-            return None, f"任务失败（{view.get('error')}）"
-    else:
-        return None, "轮询超时"
-    result_view = view["result"]
-    md = result_view.get("markdown") or ""
-    if not md:
-        md = (
-            ((result_view.get("json") or {}).get("result") or {}).get("layoutParsingResults")
-            or [{}]
-        )[0].get("markdown", {}).get("text", "")
-    return (md or ""), "ok"
-
-
-def save_cache(page: int, sha: str, markdown: str) -> None:
-    CACHE_DIR.mkdir(parents=True, exist_ok=True)
-    (CACHE_DIR / f"{page:04d}.json").write_text(
-        json.dumps(
-            {
-                "page": page,
-                "sha256": sha,
-                "fetched_at": datetime.now().isoformat(timespec="seconds"),
-                "markdown": markdown,
-            },
-            ensure_ascii=False,
-        )
-        + "\n",
-        encoding="utf-8",
-    )
+    md = ocr_submit_markdown(img.path.read_bytes(), img.path.name)
+    if md is None:
+        return None, "提交/轮询失败或超时"
+    return md, "ok"
 
 
 def dataset_last_page() -> int:
@@ -156,7 +109,7 @@ def main() -> int:
     ap.add_argument("--force", action="store_true", help="忽略有效缓存强制重跑")
     args = ap.parse_args()
 
-    if not service_up():
+    if not ocr_service_up():
         print("✗ paddleocr-baseline 服务未运行（127.0.0.1:8010）。先启动：", file=sys.stderr)
         print("  cd paddleocr-baseline && OCR_TOKEN=<token> .venv/bin/python -m paddleocr_baseline", file=sys.stderr)
         return 2
@@ -174,14 +127,14 @@ def main() -> int:
         todo = crawled
     elif args.pages:
         wanted = parse_pages_arg(args.pages)
-        todo = [p for p in crawled if p in wanted]
-        missing = sorted(set(wanted) - set(todo))
+        todo = [p for p in wanted if page_image(p) is not None]  # store ∪ manifest
+        missing = [p for p in wanted if p not in set(todo)]
         if missing:
-            print(f"提示：{len(missing)} 页未爬取（跳过）：@{missing[:10]}{'…' if len(missing) > 10 else ''}")
+            print(f"提示：{len(missing)} 页无扫描图（未爬取且不在数据集，跳过）：@{missing[:10]}{'…' if len(missing) > 10 else ''}")
     else:
         last = dataset_last_page()
-        todo = [p for p in crawled if p > last and not cache_valid(p, store)]
-    todo = [p for p in todo if args.force or not cache_valid(p, store)]
+        todo = [p for p in crawled if p > last and not cache_valid(p)]
+    todo = [p for p in todo if args.force or not cache_valid(p)]
     todo = todo[: args.limit]
     if not todo:
         print("✓ 没有待预识别的页面（缓存均有效）。")
@@ -192,7 +145,7 @@ def main() -> int:
     for n, page in enumerate(todo, 1):
         time.sleep(1.2)  # 对上游礼貌限速
         try:
-            md, note = ocr_one(page, store)
+            md, note = ocr_one(page)
         except Exception as e:  # noqa: BLE001 —— 单页失败不终止批次
             print(f"[{n}/{len(todo)}] @{page} ✗ {e}", flush=True)
             fail += 1
@@ -201,8 +154,7 @@ def main() -> int:
             print(f"[{n}/{len(todo)}] @{page} ✗ {note}", flush=True)
             fail += 1
             continue
-        sha = (store.get_page(page) or {}).get("scan_sha256", "")
-        save_cache(page, sha, md)
+        ocr_cache_write(page, store, md)
         if md:
             ok += 1
             print(f"[{n}/{len(todo)}] @{page} ✓ {len(md)} 字符", flush=True)
