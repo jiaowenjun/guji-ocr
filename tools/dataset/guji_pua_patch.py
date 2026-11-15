@@ -4,8 +4,9 @@
 注册表：guji-preview-grid/src/pua-registry.json（码位=字位；改进=version+1 重补同码位）。
 scheme：
   scan-trace  截图轮廓（x_contours.json：闭运算+Moore+DP 的折线），现有实现；
-  compose     字体自有部件合成（E703 路线），预留接口 NotImplementedError；
-  copy-glyph  整字复制（E702 路线），预留接口 NotImplementedError。
+  compose     已审定的字体部件合成；校验来源字形后恢复冻结轮廓；
+  copy-glyph  整字复制，预留接口 NotImplementedError。
+同一码位可通过 font_overrides 为小字/大字选择不同方案。
 校准：每字体以其 U+343A 㐺 字形 bbox 为锚（同族形），轮廓方向对齐该字体自身外轮廓。
 注入：glyf/glyphOrder/maxp/hmtx（advance=锚字）/**vmtx（有则必补，否则 compile KeyError）**/cmap format-4。
 验证：rsvg 免依赖——PIL 渲染补录字形 vs verify_image 归一化 chamfer，闸默认 0.5
@@ -14,13 +15,21 @@ scheme：
 
 用法（自仓库根）：
   python3 tools/dataset/guji_pua_patch.py --cp E701 [--dry-run] [--gate 0.5]
+  # 同码位、仅小字升级（expected-version 为运行时的当前登记版本）：
+  python3 tools/dataset/guji_pua_patch.py --cp E701 --font guji-plane0.ttf \
+    --replace --expected-version 1 --scheme compose \
+    --source tools/dataset/font-sources/e701-songti-v2.json --dry-run
 """
 
 import argparse
 import hashlib
 import json
 import os
-import time
+import shutil
+import tempfile
+from array import array
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
@@ -30,6 +39,8 @@ from fontTools.pens.boundsPen import BoundsPen
 from fontTools.pens.recordingPen import RecordingPen
 from fontTools.pens.ttGlyphPen import TTGlyphPen
 from fontTools.ttLib import TTFont
+from fontTools.ttLib.tables._g_l_y_f import Glyph, GlyphCoordinates
+from fontTools.ttLib.tables.ttProgram import Program
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 REGISTRY = os.path.join(REPO, "guji-preview-grid/src/pua-registry.json")
@@ -102,12 +113,32 @@ def build_scan_trace(font, contours):
     return tp.glyph()
 
 
-def build_compose(font, contours):
-    raise NotImplementedError("compose 方案（E703 路线）预留：字体部件合成，见试验 var/unihan/trial_pua_patch.py")
+def build_compose(font, recipe):
+    """恢复已审定的合成轮廓；生成器及部件变换另存于 recipe，避免重新拟合漂移。"""
+    if font['head'].unitsPerEm != recipe['units_per_em']:
+        raise ValueError('compose 源与目标字体 unitsPerEm 不同')
+    cmap = font.getBestCmap()
+    for cp, expected in recipe['donor_glyph_sha256'].items():
+        name = cmap.get(int(cp, 16))
+        if name is None or hashlib.sha256(font['glyf'][name].compile(font['glyf'])).hexdigest() != expected:
+            raise ValueError(f'compose 来源字 U+{cp} 已变化，请重新审定部件')
+    data = recipe['approved_glyph']
+    glyph = Glyph()
+    glyph.numberOfContours = data['number_of_contours']
+    glyph.coordinates = GlyphCoordinates(data['coordinates'])
+    glyph.endPtsOfContours = data['end_points']
+    glyph.flags = array('B', data['flags'])
+    glyph.program = Program()
+    glyph.program.fromBytecode(data['instructions'])
+    glyph.recalcBounds(font['glyf'])
+    actual = hashlib.sha256(glyph.compile(font['glyf'])).hexdigest()
+    if actual != data['compiled_sha256']:
+        raise ValueError('compose 冻结轮廓校验失败')
+    return glyph
 
 
 def build_copy_glyph(font, contours):
-    raise NotImplementedError("copy-glyph 方案（E702 路线）预留：整字复制")
+    raise NotImplementedError("copy-glyph 方案预留：整字复制")
 
 
 BUILDERS = {"scan-trace": build_scan_trace, "compose": build_compose, "copy-glyph": build_copy_glyph}
@@ -116,6 +147,8 @@ BUILDERS = {"scan-trace": build_scan_trace, "compose": build_compose, "copy-glyp
 def norm_ink(arr, size=128):
     a = arr if arr.dtype == bool else arr < 128
     ys, xs = np.nonzero(a)
+    if not len(xs):
+        raise ValueError('字形没有实际墨迹')
     sub = a[ys.min():ys.max() + 1, xs.min():xs.max() + 1]
     h, w = sub.shape
     out = np.zeros((size, size), bool)
@@ -134,12 +167,20 @@ def chamfer(a, b):
     return 0.5 * (ea[b].mean() + eb[a].mean())
 
 
-def patch_font(font_path, cp, glyph, adv, has_vmtx_expected):
-    font = TTFont(font_path)
+def patch_font(font_path, cp, glyph, adv, has_vmtx_expected, output_path=None):
+    font = TTFont(font_path, recalcTimestamp=False)
     cmap = font.getBestCmap()
-    name = f"uni{cp:04X}"
+    name = cmap.get(cp, f"uni{cp:04X}")
+    if any(code != cp and mapped == name for code, mapped in cmap.items()):
+        raise ValueError(f'{name} 被其他码位共用，拒绝修改')
     _, _, _, has_vmtx = font_facts(font)
     glyf = font["glyf"]
+    vertical_origin = None
+    if cp in cmap:
+        adv = font['hmtx'][name][0]
+        if has_vmtx:
+            va, tsb = font['vmtx'][name]
+            vertical_origin = (va, glyf[name].yMax + tsb)
     glyf.glyphs[name] = glyph  # 调用方按该字体坐标构建
     glyph.recalcBounds(glyf)
     if name not in font.glyphOrder:
@@ -150,8 +191,11 @@ def patch_font(font_path, cp, glyph, adv, has_vmtx_expected):
     font["hhea"].numberOfHMetrics = len(hm.metrics)
     if has_vmtx:
         vm = font["vmtx"]
-        va, vtsb = vm[cmap[ANCHOR_CP]]
-        vm.metrics[name] = (va, vtsb)
+        if vertical_origin:
+            va, origin = vertical_origin
+            vm.metrics[name] = (va, origin - glyph.yMax)
+        else:
+            vm.metrics[name] = vm[cmap[ANCHOR_CP]]
     hit = 0
     # 只写 Windows/Unicode 子表；Mac (1,0,*) 的 format-0/6 子表区间小，
     # 塞 BMP PUA 会使 entryCount 撑爆 length 字段（guji-large 实测坑）
@@ -162,70 +206,145 @@ def patch_font(font_path, cp, glyph, adv, has_vmtx_expected):
             hit += 1
     if hit == 0:
         raise SystemExit(f"error: {font_path} 无可注入 cmap 子表")
-    tmp = font_path + ".tmp"
+    tmp = output_path or font_path + ".tmp"
     font.save(tmp)
     return tmp
 
 
+def verify_replacement(before, after, cp):
+    """A replacement may change only the selected outline and its bearings."""
+    if before.getBestCmap() != after.getBestCmap() or before.getGlyphOrder() != after.getGlyphOrder():
+        raise ValueError('替换不应改变 cmap 或 glyphOrder')
+    target = before.getBestCmap()[cp]
+    for name in before.getGlyphOrder():
+        if name == target:
+            continue
+        if before['glyf'][name].compile(before['glyf']) != after['glyf'][name].compile(after['glyf']):
+            raise ValueError(f'非目标轮廓变化：{name}')
+        for tag in ('hmtx', 'vmtx'):
+            if tag in before and before[tag][name] != after[tag][name]:
+                raise ValueError(f'非目标度量变化：{tag}/{name}')
+    if before['hmtx'][target][0] != after['hmtx'][target][0]:
+        raise ValueError('替换改变了 advance')
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    ap.add_argument("--cp", required=True, help="注册表内码位，如 E701")
-    ap.add_argument("--gate", type=float, default=0.5, help="chamfer 验证闸（光栅源默认 0.5）")
-    ap.add_argument("--dry-run", action="store_true", help="只验证字形与 chamfer，不写文件")
+    ap.add_argument('--cp', required=True, help='注册表内码位，如 E701')
+    ap.add_argument('--gate', type=float, default=0.5)
+    ap.add_argument('--dry-run', action='store_true', help='只生成临时字体并验证')
+    ap.add_argument('--font', action='append', help='仅处理注册表内指定文件（可重复；省略为全部）')
+    ap.add_argument('--replace', action='store_true', help='替换已有字位，保持 cmap 与 advance')
+    ap.add_argument('--expected-version', type=int, help='替换时必须给出当前登记版本')
+    ap.add_argument('--scheme', choices=tuple(BUILDERS), help='本次选中字体的新方案')
+    ap.add_argument('--source', help='新方案的仓库相对 JSON 路径')
+    ap.add_argument('--cache-version', help='记录本次配套 CSS 缓存戳')
     args = ap.parse_args()
-
-    reg = json.load(open(REGISTRY))
-    entry = next((g for g in reg["glyphs"] if g["cp"].upper() == args.cp.upper()), None)
+    if bool(args.scheme) != bool(args.source):
+        ap.error('--scheme 与 --source 须同时给出')
+    if args.replace and args.expected_version is None:
+        ap.error('--replace 须带 --expected-version')
+    with open(REGISTRY) as f:
+        reg = json.load(f)
+    entry = next((g for g in reg['glyphs'] if g['cp'].upper() == args.cp.upper()), None)
     if entry is None:
-        raise SystemExit(f"error: {args.cp} 不在注册表 {REGISTRY}")
-    builder = BUILDERS[entry["scheme"]]
-    contours = json.load(open(os.path.join(REPO, entry["source"])))
-    verify = np.asarray(Image.open(os.path.join(REPO, entry["verify_image"])).convert("L")) < 128
-    ref = norm_ink(verify)
-
-    results = []
-    for rel in entry["fonts"]:
-        path = os.path.join(REPO, rel)
-        before_hash, before_bytes = sha256(path), os.path.getsize(path)
-        font = TTFont(path)
-        if int(args.cp, 16) in font.getBestCmap():
-            raise SystemExit(f"error: U+{args.cp} 已在 {rel} cmap（重补须先删或走 version 升级流程）")
-        bbox, adv, _, _ = font_facts(font)
-        glyph = builder(font, contours)          # 按该字体自身锚校准
-        # 验证：临时保存渲染 vs 参照
-        tmp = patch_font(path, int(args.cp, 16), glyph, adv, False)
-        f = ImageFont.truetype(tmp, 220)
-        img = Image.new("L", (300, 300), 255)
-        ImageDraw.Draw(img).text((40, 40), chr(int(args.cp, 16)), font=f, fill=0)
-        score = chamfer(norm_ink(np.asarray(img) < 128), ref)
-        print(f"{rel}: chamfer={score:.3f} (gate {args.gate})", end="")
-        if score > args.gate:
-            os.unlink(tmp)
-            raise SystemExit(f"  ✗ 闸失败，拒绝写入")
-        print(f" ✓  {before_bytes}→{os.path.getsize(tmp)} B")
-        if not args.dry_run:
+        raise SystemExit(f'U+{args.cp} 未登记')
+    if args.expected_version is not None and entry['version'] != args.expected_version:
+        raise SystemExit(f'登记版本已变化：{entry["version"]} != {args.expected_version}')
+    selected = [rel for rel in entry['fonts'] if not args.font or
+                rel in args.font or os.path.basename(rel) in args.font]
+    if not selected or (args.font and any(not any(value in (r, os.path.basename(r)) for r in selected) for value in args.font)):
+        ap.error('--font 不在该字位登记的字体清单中')
+    cp = int(args.cp, 16)
+    stamp = datetime.now(ZoneInfo('Asia/Shanghai')).isoformat(timespec='seconds')
+    results, plans = [], []
+    with tempfile.TemporaryDirectory(prefix='guji-pua-') as temp:
+        for rel in selected:
+            path = os.path.join(REPO, rel)
+            basename = os.path.basename(rel)
+            before_hash, before_bytes = sha256(path), os.path.getsize(path)
+            if args.replace and entry.get('sha256_after', {}).get(basename) != before_hash:
+                raise SystemExit(f'{rel} 与登记哈希不一致，拒绝覆盖')
+            override = entry.get('font_overrides', {}).get(basename, {})
+            scheme = args.scheme or override.get('scheme', entry['scheme'])
+            source = args.source or override.get('source', entry['source'])
+            verify_path = override.get('verify_image', entry['verify_image'])
+            with open(os.path.join(REPO, source)) as f:
+                data = json.load(f)
+            if scheme == 'compose' and data['font'] != basename:
+                raise SystemExit('compose 字形源不适用于目标字体')
+            font = TTFont(path, recalcTimestamp=False)
+            exists = cp in font.getBestCmap()
+            if exists != args.replace:
+                raise SystemExit('已有字位须显式 --replace；新增字位不能使用 --replace')
+            _, adv, _, has_vmtx = font_facts(font)
+            glyph = BUILDERS[scheme](font, data)
+            tmp = patch_font(path, cp, glyph, adv, has_vmtx, os.path.join(temp, basename))
+            after = TTFont(tmp, recalcTimestamp=False)
+            if args.replace:
+                verify_replacement(font, after, cp)
+            if scheme == 'compose':
+                target = after.getBestCmap()[cp]
+                for tag, expected in data['metrics'].items():
+                    if list(after[tag][target]) != expected:
+                        raise ValueError(f'{tag} 与审定字形的度量不一致')
+            verify = np.asarray(Image.open(os.path.join(REPO, verify_path)).convert('L')) < 128
+            image = Image.new('L', (440, 440), 255)
+            ImageDraw.Draw(image).text((44, 44), chr(cp), font=ImageFont.truetype(tmp, 220), fill=0)
+            score = chamfer(norm_ink(np.asarray(image) < 128), norm_ink(verify))
+            if score > args.gate:
+                raise SystemExit(f'{rel} chamfer={score:.3f} 超出 {args.gate}')
+            result = {'font': rel, 'scheme': scheme, 'source': source,
+                      'sha256_before': before_hash, 'sha256_after': sha256(tmp),
+                      'bytes_before': before_bytes, 'bytes_after': os.path.getsize(tmp),
+                      'chamfer': round(float(score), 3), 'cmap_before': len(font.getBestCmap()),
+                      'cmap_after': len(after.getBestCmap()),
+                      'other_glyphs_and_metrics_unchanged': bool(args.replace)}
+            print(json.dumps(result, ensure_ascii=False))
+            results.append(result)
+            plans.append((path, tmp, result))
+        if args.dry_run:
+            print('干跑通过；字体、注册表和流水均未写入。')
+            return
+        # Validate all inputs again before replacing any font.
+        for path, _, result in plans:
+            if sha256(path) != result['sha256_before']:
+                raise SystemExit(f'{path} 在验证期间发生变化，拒绝覆盖')
+        backup_root = os.path.join(os.path.dirname(PATCH_LOG), 'font-backups')
+        os.makedirs(backup_root, exist_ok=True)
+        for path, _, result in plans:
+            backup = os.path.join(backup_root, os.path.basename(path)+'.'+result['sha256_before']+'.ttf')
+            if not os.path.exists(backup):
+                shutil.copy2(path, backup)
+            if sha256(backup) != result['sha256_before']:
+                raise ValueError('回滚备份校验失败')
+            result['backup'] = os.path.relpath(backup, REPO)
+        version = entry['version'] + 1
+        entry.setdefault('font_versions', {os.path.basename(r): entry['version'] for r in entry['fonts']})
+        for path, tmp, result in plans:
             os.replace(tmp, path)
-            entry["sha256_after"][os.path.basename(rel)] = sha256(path)
-        else:
-            os.unlink(tmp)
-        results.append({"font": rel, "chamfer": round(score, 3),
-                        "bytes_before": before_bytes, "bytes_after": os.path.getsize(path)})
+            basename = os.path.basename(path)
+            entry['sha256_after'][basename] = result['sha256_after']
+            entry['font_versions'][basename] = version
+            if args.scheme:
+                entry.setdefault('font_overrides', {})[basename] = {
+                    'scheme': result['scheme'], 'source': result['source'],
+                    'source_note': '按已审定的宋体部件构形替换；码位稳定，具体部件与轮廓摘要见 source。'}
+        entry['version'] = version
+        entry['patched_at'] = stamp[:10]
+        event = {'version': version, 'at': stamp, 'operation': 'replace' if args.replace else 'insert',
+                 'results': results}
+        if args.cache_version:
+            event['cache_version'] = args.cache_version
+        entry.setdefault('history', []).append(event)
+        with open(REGISTRY, 'w') as f:
+            json.dump(reg, f, ensure_ascii=False, indent=2)
+            f.write('\n')
+        os.makedirs(os.path.dirname(PATCH_LOG), exist_ok=True)
+        with open(PATCH_LOG, 'a') as f:
+            f.write(json.dumps({'tool': 'guji_pua_patch', 'cp': f'U+{cp:X}', **event}, ensure_ascii=False)+'\n')
+        print(f'已写入 {len(results)} 份字体；登记版本 {version}；机器流水已追加。')
 
-    if not args.dry_run:
-        entry["version"] += 1
-        entry["patched_at"] = time.strftime("%Y-%m-%d")
-        entry.setdefault("history", []).append(
-            {"version": entry["version"], "at": entry["patched_at"],
-             "scheme": entry["scheme"], "results": results})
-        json.dump(reg, open(REGISTRY, "w"), ensure_ascii=False, indent=2)
-        with open(PATCH_LOG, "a") as f:
-            f.write(json.dumps({
-                "at": time.strftime("%Y-%m-%dT%H:%M:%S"), "tool": "guji_pua_patch",
-                "cp": f"U+{int(args.cp, 16):X}", "scheme": entry["scheme"],
-                "version": entry["version"], "results": results}, ensure_ascii=False) + "\n")
-        print(f"已写入 {len(results)} 字体；注册表 version → {entry['version']}；jsonl 已追加。")
-        print("收尾：index.css 缓存戳递增 + docs/font-operations.md 登记行。")
 
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

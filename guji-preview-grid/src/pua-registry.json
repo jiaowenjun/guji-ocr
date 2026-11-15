@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "comment": "guji-ocr 自补字形登记簿（PUA U+E700–U+E7FF 段，项目私有；避开站方释文 PUA U+E815–U+E864，系统字体有意不同步）。码位=字位：改进字形=换 version 重补同码位，.gj 引用不变；由 tools/dataset/guji_pua_patch.py 读写，人工勿改 hashes/version。scheme 可选：scan-trace（截图轮廓，现有）/ compose（字体部件合成，E703 路线，预留）/ copy-glyph（整字复制，E702 路线，预留）。",
+  "comment": "guji-ocr 自补字形登记簿（PUA U+E700–U+E7FF；避开站方 E815–E864）。码位是稳定字位；version 是登记操作版本，font_versions 是各字体的最近更新版本。scheme/source 为默认方案，font_overrides 可按文件名选择小字宋体或大字刻形；hashes/version 由 guji_pua_patch 更新。 项目私有 PUA 不同步到系统字体。",
   "glyphs": [
     {
       "cp": "E701",
@@ -8,18 +8,18 @@
       "description": "〈亻人人〉＝康熙 @349 乑字按语「《正字通》獨改作❌」处刻形（与㐺相分的另一字），无 Unicode 码位",
       "first_seen": "kangxi-gold @349",
       "scheme": "scan-trace",
-      "version": 1,
+      "version": 2,
       "patched_at": "2026-11-15",
-      "source": "var/unihan/x_contours.json",
-      "source_note": "84×88 截图：闭运算+Moore 追踪+DP ε1.2（管线 var/unihan/trace_glyph.py，本地 var/ 留档）",
-      "verify_image": "var/unihan/x_scan_clean.png",
+      "source": "tools/dataset/font-sources/e701-scan-v1.json",
+      "source_note": "原 scan-trace v1 折线入库保存；大字继续采用此方案。",
+      "verify_image": "tools/dataset/font-sources/e701-scan-clean.png",
       "verify_note": "chamfer 闸基准（清洗扫描）",
       "fonts": [
         "guji-preview-grid/public/fonts/guji-plane0.ttf",
         "guji-preview-grid/public/fonts/guji-large.ttf"
       ],
       "sha256_after": {
-        "guji-plane0.ttf": "6cdaddc31a13c41bdc602e904fc6d28a6b99422ed62d31651aac7c46345a8f9e",
+        "guji-plane0.ttf": "0e5eda61b7324f8bcf9c420a9633537799021a45f0bcfdad22574fac25a1d257",
         "guji-large.ttf": "f79d2765b6900a90822971eea286631e93f08f43080d1b8f3e2b8b20af63b9f0"
       },
       "history": [
@@ -41,8 +41,41 @@
               "bytes_after": 46624036
             }
           ]
+        },
+        {
+          "version": 2,
+          "at": "2026-11-15T14:24:28+08:00",
+          "operation": "replace",
+          "results": [
+            {
+              "font": "guji-preview-grid/public/fonts/guji-plane0.ttf",
+              "scheme": "compose",
+              "source": "tools/dataset/font-sources/e701-songti-v2.json",
+              "sha256_before": "6cdaddc31a13c41bdc602e904fc6d28a6b99422ed62d31651aac7c46345a8f9e",
+              "sha256_after": "0e5eda61b7324f8bcf9c420a9633537799021a45f0bcfdad22574fac25a1d257",
+              "bytes_before": 17251716,
+              "bytes_after": 17251812,
+              "chamfer": 0.44,
+              "cmap_before": 30707,
+              "cmap_after": 30707,
+              "other_glyphs_and_metrics_unchanged": true,
+              "backup": "var/unencoded/kangxi-unencoded/font-backups/guji-plane0.ttf.6cdaddc31a13c41bdc602e904fc6d28a6b99422ed62d31651aac7c46345a8f9e.ttf"
+            }
+          ],
+          "cache_version": "e701-2-songti"
         }
-      ]
+      ],
+      "font_versions": {
+        "guji-plane0.ttf": 2,
+        "guji-large.ttf": 1
+      },
+      "font_overrides": {
+        "guji-plane0.ttf": {
+          "scheme": "compose",
+          "source": "tools/dataset/font-sources/e701-songti-v2.json",
+          "source_note": "按已审定的宋体部件构形替换；码位稳定，具体部件与轮廓摘要见 source。"
+        }
+      }
     }
   ]
 }
