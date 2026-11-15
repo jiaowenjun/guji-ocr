@@ -28,6 +28,15 @@
                         未爬页会联网爬取）——独立验证 prefetch_next_page 行为
   prefetch-log --tail 50
                         var/ocr-cache/prefetch.log 尾部行（时间线展示）
+  replay-pages          流程演示样例集：所有初校（first）页 + 金标带/行数
+  pipeline-replay --page N
+                        单页全管线只读重放（零写盘）：数据现状→前页续入→
+                        续文裁剪→草稿四态演化（原始/尾裁/折行/重组）→
+                        金标对照（字符流/行界带界 F1/漏多折/首分歧）
+  ocr-skeleton-replay --page N
+                        新版流程实验（只读演示）：整页 OCR 底稿→分列分段→
+                        库文蓝本对齐替换→按列切段终稿→金标对照——
+                        OCR 骨架范式的各步骤与实证弱点展示
 
 按页码只读查询（供 import 的消费者 API，不走子命令）：
   page_image(page)       → PageImage(path, sha256) | None（扫描图，两级定位同 _scan_for）
@@ -1483,6 +1492,242 @@ def cmd_prefetch_log(tail_n: int = 50) -> dict:
     return {"ok": True, "total": len(lines), "lines": lines[-tail_n:]}
 
 
+def cmd_replay_pages() -> dict:
+    """流程演示样例集：manifest 中所有初校（first）页 + 金标带/行数。"""
+    pages = []
+    for p in load_manifest().get("pages", []):
+        if p.get("status") != "first":
+            continue
+        raw = page_gj(p["page"])
+        _, bands = parse_gj_bands(raw) if raw else ([], [])
+        pages.append({
+            "page": p["page"],
+            "bands_n": len(bands),
+            "lines_n": sum(len(b) for b in bands),
+        })
+    return {"ok": True, "pages": pages, "total": len(pages)}
+
+
+def _compare_bands(auto: list[list[str]], gold: list[list[str]]) -> dict:
+    """自动带 vs 金标带（找错核心）：字符流一致性 + 行界/带界 F1 + 差集 + 首分歧。
+
+    指标口径复用 eval_pipeline_replay（norm_offsets/f1/stream），函数体内
+    延迟 import 避免循环依赖（该模块 import 本模块）。差集为精确集合差
+    （f1 的 ±tol 匹配只作分数），偏移均为归一化字符坐标。"""
+    if str(EVAL) not in sys.path:
+        sys.path.insert(0, str(EVAL))
+    from eval_pipeline_replay import f1, norm_offsets, stream
+
+    a_stream, g_stream = stream(auto), stream(gold)
+    _, al, ab = norm_offsets(auto)
+    _, gl, gb = norm_offsets(gold)
+    # 首分歧（逐位比对，直观入口）
+    first_diff = None
+    for i, (x, y) in enumerate(zip(a_stream, g_stream)):
+        if x != y:
+            first_diff = {"offset": i,
+                          "auto_ctx": a_stream[max(0, i - 20):i + 20],
+                          "gold_ctx": g_stream[max(0, i - 20):i + 20]}
+            break
+    if first_diff is None and len(a_stream) != len(g_stream):
+        i = min(len(a_stream), len(g_stream))
+        first_diff = {"offset": i, "auto_ctx": a_stream[i:i + 20], "gold_ctx": g_stream[i:i + 20]}
+    # 分歧块（SequenceMatcher 对齐后的非 equal 区间）：replace/delete/insert
+    # 三型 + 两侧上下文——字符流有差时漏/多折清单的偏移空间会错位，块列表
+    # 是更可靠的找错入口（金标含人工校订/标题/注释，与库内重建天然有差）
+    sm = difflib.SequenceMatcher(None, a_stream, g_stream, autojunk=False)
+    diff_blocks = []
+    for tag, i1, i2, j1, j2 in sm.get_opcodes():
+        if tag == "equal":
+            continue
+        diff_blocks.append({
+            "tag": tag,
+            "auto": a_stream[i1:i2][:60],
+            "gold": g_stream[j1:j2][:60],
+            "ctx": g_stream[max(0, j1 - 10):j1] + "▸" + g_stream[j1:j2][:30] + "◂" + g_stream[j2:j2 + 10],
+        })
+        if len(diff_blocks) >= 20:
+            break
+    return {
+        "ok_stream": a_stream == g_stream,
+        "lf1": round(f1(al, gl), 3),
+        "bf1": round(f1(ab, gb), 3),
+        "auto": {"bands": len(auto), "lines": sum(len(b) for b in auto),
+                 "chars": len(a_stream)},
+        "gold": {"bands": len(gold), "lines": sum(len(b) for b in gold),
+                 "chars": len(g_stream)},
+        # 漏/多以金标为基准命名：missing = 金标有自动无（欠折/欠带）
+        "missing_line_breaks": sorted(gl - al),
+        "extra_line_breaks": sorted(al - gl),
+        "missing_band_breaks": sorted(gb - ab),
+        "extra_band_breaks": sorted(ab - gb),
+        "first_diff": first_diff,
+        "diff_blocks": diff_blocks,
+        "diff_blocks_total": len([1 for t, *_ in sm.get_opcodes() if t != "equal"]),
+    }
+
+
+def cmd_pipeline_replay(page: int) -> dict:
+    """单页全管线只读重放（流程演示视图数据源）：逐步骤中间结果 + 金标对照。
+
+    零写盘：不爬取、不落 .gj/manifest、不触发预取；数据补齐步只报现状。
+    前页 .gj 用初校版（人工校订后的真值）——与当年 add 时的草稿前页不同，
+    重放结果代表「管线对干净输入的行为」，供观察/调试/找错。"""
+    store = kangxi_store.KangxiStore()
+
+    # ① 数据现状（add 的补齐步只读版）
+    chars = page_heads(page, store)
+    data = {
+        "heads": [c["char"] for c in chars if c["char"]],
+        "unencoded_n": sum(1 for c in chars if not c["char"]),
+        "missing_entries": store.coded_chars_missing_entries(page),
+    }
+
+    # ② 前页续入 → ③ 续文 OCR 裁剪
+    cont, info = continuation_from_prev(page, store)
+    if cont:
+        kept, trim_note = ocr_trim_continuation(page, cont, store)
+        trim_cont = {"note": trim_note, "kept": kept}
+    else:
+        trim_cont = {"note": "无续文", "kept": []}
+    continuation = {"info": info, "rest_paragraphs": cont}
+
+    # ④ 草稿构建四态演化（拆开 build_draft_gj 内部调用以保留中间产物）
+    details = {i["codepoint"]: entry_detail(i["codepoint"], store)
+               for i in chars if i["char"]}
+    bands0, counts = _draft_bands(chars, details, trim_cont["kept"] or None, info.get("head"))
+    bands1, cut_note = _trim_bands_to_page(page, bands0, store)
+    bands2, fold_note = ocr_fold_page_lines(page, bands1, store)
+    bands3, regroup_note = ocr_regroup_bands(page, bands2)
+    draft = {
+        "counts": counts,
+        "stages": [
+            {"name": "raw", "label": "原始带", "bands": bands0,
+             "note": f"_draft_bands：字头 {counts.get('chars', 0)}、含释义 {counts.get('with_text', 0)}"},
+            {"name": "tail_cut", "label": "尾裁后", "bands": bands1, "note": cut_note},
+            {"name": "fold", "label": "折行后", "bands": bands2, "note": fold_note},
+            {"name": "regroup", "label": "重组后", "bands": bands3, "note": regroup_note},
+        ],
+    }
+
+    # ⑤⑥ 金标对照 + 原文
+    raw = page_gj(page)
+    _, gold_bands = parse_gj_bands(raw) if raw else ([], [])
+    return {
+        "ok": True,
+        "page": page,
+        "data": data,
+        "continuation": continuation,
+        "trim_cont": trim_cont,
+        "draft": draft,
+        "compare": _compare_bands(bands3, gold_bands),
+        "gold": raw,
+    }
+
+
+def cmd_ocr_skeleton_replay(page: int) -> dict:
+    """新版流程实验（只读演示，评估用）：OCR 为骨架、库文为校对蓝本。
+
+    与生产流程（库文字符 + OCR 标尺）相反的范式——各步骤：
+      ① 整页 OCR = 文字底稿；② 分列 OCR = 分段（列界=带界）；
+      ③ 蓝本（前页续入裁后 + 本页字头详情，即 _draft_bands+尾裁的库文流）
+        对底稿做对齐替换（SequenceMatcher 非等块：replace=错字改库文、
+        insert=OCR 伪读删去、delete=OCR 漏识补入）；
+      ④ 终稿 = 纠错后字符流按列字符量切段（每列一带）。
+    演示要点（评估实证）：替换完全的终稿字符≡蓝本（殊途同归）；分段为
+    累计偏移推断，空列/漏识会雪崩（后续列界全错）；折行证据缺位
+    （分列行组真值率仅 32%，见实验记录）。"""
+    store = kangxi_store.KangxiStore()
+
+    # ① 底稿：整页 OCR（剥邊題）
+    md = page_ocr(page, store=store)
+    if md is None:
+        raise RuntimeError(f"@{page} 整页 OCR 不可用（缓存未命中且服务未运行）")
+    groups = _ocr_groups(md)
+    ocr_n = _norm("".join(groups))
+
+    # ② 分段：分列 OCR（列界 = 带界）
+    cols = page_column_ocr(page, store=store)
+    if cols is None:
+        raise RuntimeError(f"@{page} 分列 OCR 不可用（分割失败或服务未运行）")
+    _, gold_bands = parse_gj_bands(page_gj(page) or "")
+    col_infos = []
+    for j, c in enumerate(cols):
+        cn = len(_norm(c["markdown"] or ""))
+        gn = (sum(len(_norm(l)) for l in gold_bands[j])
+              if j < len(gold_bands) else None)
+        col_infos.append({
+            "index": c["index"], "norm_len": cn,
+            "groups_n": len([g for g in (c["markdown"] or "").split("\n\n") if g.strip()]),
+            "markdown": c["markdown"] or "",
+            "empty": cn == 0,
+            "gold_band_chars": gn,
+            "gold_band_lines": len(gold_bands[j]) if j < len(gold_bands) else None,
+        })
+
+    # ③ 蓝本纠错：库文流（同生产流程字符源）对底稿整页对齐
+    chars = page_heads(page, store)
+    cont, info = continuation_from_prev(page, store)
+    kept = ocr_trim_continuation(page, cont, store)[0] if cont else []
+    details = {i["codepoint"]: entry_detail(i["codepoint"], store)
+               for i in chars if i["char"]}
+    bands0, _ = _draft_bands(chars, details, kept or None, info.get("head"))
+    bp_bands, _ = _trim_bands_to_page(page, bands0, store)
+    bp_n = _norm("".join(l.strip(" \t") for b in bp_bands for l in b))
+    sm = difflib.SequenceMatcher(None, bp_n, ocr_n, autojunk=False)
+    n_replace = n_ocr_only = n_bp_only = 0
+    diff_blocks = []
+    for tag, i1, i2, j1, j2 in sm.get_opcodes():
+        if tag == "equal":
+            continue
+        if tag == "replace":
+            n_replace += i2 - i1
+        elif tag == "insert":
+            n_ocr_only += j2 - j1
+        else:
+            n_bp_only += i2 - i1
+        diff_blocks.append({
+            "tag": tag,
+            "blueprint": bp_n[i1:i2][:40],
+            "ocr": ocr_n[j1:j2][:40],
+        })
+        if len(diff_blocks) >= 30:
+            break
+
+    # ④ 终稿：蓝本字符流按列 norm 长度切段（每列一带；折行证据缺位，平铺）
+    result_bands: list[list[str]] = []
+    pos = 0
+    for c in col_infos:
+        seg = bp_n[pos:pos + c["norm_len"]]
+        pos += c["norm_len"]
+        result_bands.append([seg] if seg else [])
+    result_bands = [b for b in result_bands if b]
+    residual = bp_n[pos:]  # 蓝本剩余（列字符总量 < 蓝本时）
+
+    empty_cols = sum(1 for c in col_infos if c["empty"])
+    return {
+        "ok": True,
+        "page": page,
+        "draft_ocr": {"norm_len": len(ocr_n), "groups_n": len(groups)},
+        "columns": col_infos,
+        "blueprint": {"norm_len": len(bp_n), "source": "前页续入(裁后)+本页字头详情（库文）"},
+        "fix": {
+            "replace_chars": n_replace,
+            "ocr_only_chars": n_ocr_only,
+            "blueprint_only_chars": n_bp_only,
+            "diff_blocks": diff_blocks,
+            "diff_blocks_total": sum(1 for t, *_ in sm.get_opcodes() if t != "equal"),
+        },
+        "result": {"bands": result_bands, "residual_chars": len(residual)},
+        "compare": _compare_bands(result_bands, gold_bands),
+        "verdict": {
+            "empty_cols": empty_cols,
+            "cols_n": len(col_infos),
+            "gold_bands_n": len(gold_bands),
+        },
+    }
+
+
 def load_manifest() -> dict:
     return json.loads(MANIFEST.read_text(encoding="utf-8"))
 
@@ -1766,6 +2011,11 @@ def main() -> int:
     pr.add_argument("--page", type=int, required=True)
     pl = sub.add_parser("prefetch-log")
     pl.add_argument("--tail", type=int, default=50)
+    sub.add_parser("replay-pages")
+    rp = sub.add_parser("pipeline-replay")
+    rp.add_argument("--page", type=int, required=True)
+    sk = sub.add_parser("ocr-skeleton-replay")
+    sk.add_argument("--page", type=int, required=True)
     args = ap.parse_args()
 
     try:
@@ -1783,6 +2033,12 @@ def main() -> int:
             result = cmd_prefetch_run(args.page)
         elif args.cmd == "prefetch-log":
             result = cmd_prefetch_log(args.tail)
+        elif args.cmd == "replay-pages":
+            result = cmd_replay_pages()
+        elif args.cmd == "pipeline-replay":
+            result = cmd_pipeline_replay(args.page)
+        elif args.cmd == "ocr-skeleton-replay":
+            result = cmd_ocr_skeleton_replay(args.page)
         else:
             result = cmd_status(args.page, args.to)
         print(json.dumps(result, ensure_ascii=False), flush=True)

@@ -1,9 +1,19 @@
 // 应用外壳：顶部标题栏（视图切换 + 主题切换 + 字体说明）+ 当前视图。
 // 校对 = 数据集对照工作流（扫描原图 | 刻本渲染 | .gj 编辑器 三列）；
-// OCR 预取 = 演示/调试视图（各页 OCR 结果对照 + prefetch_next_page 链路可视化）。
+// OCR 预取 = 调试视图（各页 OCR 结果对照 + prefetch_next_page 链路可视化）；
+// 流程演示 = 添加新页管线逐步骤重放（初校页样例集 + 金标对照找错）。
 // 原「编辑」双栏模式已移除；通用编辑/预览见姊妹项目 guji-preview
 import { useState } from "react";
-import { BookOpenText, Info, Monitor, Moon, ScanText, SquareTerminal, Sun } from "lucide-react";
+import {
+  BookOpenText,
+  Info,
+  Monitor,
+  Moon,
+  ScanText,
+  SquareTerminal,
+  Sun,
+  Workflow,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -13,6 +23,7 @@ import {
 } from "@/components/ui/tooltip";
 import { DatasetView } from "@/components/dataset/DatasetView";
 import { OcrPrefetchView } from "@/components/ocr/OcrPrefetchView";
+import { PipelineReplayView } from "@/components/ocr/PipelineReplayView";
 import { useTheme, type ThemeSetting } from "@/hooks/use-theme";
 import { useVimMode } from "@/hooks/use-vim-mode";
 
@@ -25,6 +36,7 @@ const THEME_OPTIONS: { value: ThemeSetting; label: string; icon: typeof Sun }[] 
 const VIEW_OPTIONS = [
   { value: "proof", label: "校对" },
   { value: "ocr", label: "OCR 预取" },
+  { value: "pipeline", label: "流程演示" },
 ] as const;
 
 type View = (typeof VIEW_OPTIONS)[number]["value"];
@@ -71,6 +83,22 @@ export default function App() {
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>OCR 预取（各页 OCR 结果 + 预取链路调试）</TooltipContent>
+              </Tooltip>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    size="icon-sm"
+                    variant={view === "pipeline" ? "default" : "ghost"}
+                    aria-label="流程演示视图"
+                    aria-pressed={view === "pipeline"}
+                    onClick={() => setView("pipeline")}
+                  >
+                    <Workflow />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  流程演示（添加新页管线逐步骤重放，初校页样例集 + 金标对照找错）
+                </TooltipContent>
               </Tooltip>
             </div>
 
@@ -134,8 +162,10 @@ export default function App() {
 
         {view === "proof" ? (
           <DatasetView editorTheme={resolved} vimMode={vimMode.enabled} />
-        ) : (
+        ) : view === "ocr" ? (
           <OcrPrefetchView />
+        ) : (
+          <PipelineReplayView />
         )}
       </div>
     </TooltipProvider>

@@ -119,6 +119,12 @@ function datasetPageTool(): Plugin {
           args = ['prefetch-run', '--page', String(page)]
         } else if (action === 'prefetch-log' && (tail === undefined || /^\d{1,4}$/.test(String(tail)))) {
           args = ['prefetch-log', ...(tail === undefined ? [] : ['--tail', String(tail)])]
+        } else if (action === 'replay-pages') {
+          args = ['replay-pages']
+        } else if (action === 'pipeline-replay' && pageOk) {
+          args = ['pipeline-replay', '--page', String(page)]
+        } else if (action === 'ocr-skeleton-replay' && pageOk) {
+          args = ['ocr-skeleton-replay', '--page', String(page)]
         }
       } catch {
         args = null
@@ -126,7 +132,7 @@ function datasetPageTool(): Plugin {
       if (!args) {
         res.statusCode = 400
         res.setHeader('content-type', 'application/json')
-        res.end(JSON.stringify({ ok: false, error: '请求体应为 { action: add|status|ocr-fold|ocr-view|ocr-pages|prefetch-status|prefetch-run|prefetch-log, page, status?, tail? }' }))
+        res.end(JSON.stringify({ ok: false, error: '请求体应为 { action: add|status|ocr-fold|ocr-view|ocr-pages|prefetch-status|prefetch-run|prefetch-log|replay-pages|pipeline-replay, page, status?, tail? }' }))
         return
       }
       run(args, res)
