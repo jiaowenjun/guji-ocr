@@ -33,12 +33,13 @@
 | 3 | 2026-11-15 | 补录 PUA **U+E701**〈亻人人〉（@349 乑按语，无 Unicode 码位；scheme=scan-trace v1；系统字体有意不同步） | guji-plane0.ttf + guji-large.ttf | chamfer 0.366/0.405（闸 0.5）；cmap 30,706→30,707 / 49,408→49,409，双字体渲染 ✓ | ad09533 | [pua-registry.json](../guji-preview-grid/src/pua-registry.json) + jsonl；工具 tools/dataset/guji_pua_patch.py |
 | 4 | 2026-11-15T14:24:28+08:00 | U+E701 小字升级为宋体部件构形（原试验 E702 v3）；大字保留刻形；小字缓存戳 `e701-2-songti` | guji-plane0.ttf | chamfer 0.440；cmap 30,707 不变；其余轮廓/度量不变；272 测试与构建通过 | 7ff192c | [转正报告](research/2026-11-15-U+E701小字宋体转正.md) |
 | 5 | 2026-11-15T14:37:18+08:00 | U+E701 仅限小字，撤销大字补录；缓存戳 `001015-2bd6e-no-e701` | guji-large.ttf | cmap 49,409→49,408；其余 glyf 字节/度量一致；U+2BD6E 保留；小字哈希不变 | 8fd8063 | [范围修订](research/2026-11-15-U+E701仅限小字.md) |
+| 6 | 2026-11-15T16:03:48+08:00 | U+E701 顶撇与中竖整体取自𠂹；四部件构形；缓存戳 `e701-4-joined` | guji-plane0.ttf；plane2 仅只读来源 | chamfer 0.558（本方案闸 0.6）；其余字形与度量不变；来源轮廓完整、浏览器及构建通过 | 859ad28 | [整体取件报告](research/2026-11-15-U+E701顶撇中竖整体取件.md) |
 
 ## 哈希基线（2026-11-15 更新，SHA-256 全量）
 
-- `guji-preview-grid/public/fonts/guji-plane0.ttf`（17,251,812 B，小字宋体转正 #4）
-  `0e5eda61b7324f8bcf9c420a9633537799021a45f0bcfdad22574fac25a1d257`
-  （#4 前：`6cdaddc31a13c41bdc602e904fc6d28a6b99422ed62d31651aac7c46345a8f9e`，17,251,716 B；更早基线见历史报告与 Git）
+- `guji-preview-grid/public/fonts/guji-plane0.ttf`（17,251,780 B，整体取件构形 #6）
+  `b4433eb2cb5218d3e507dd1757398813ac105d6c384dbbf8a841a60107b53c0f`
+  （#6 前：`0e5eda61b7324f8bcf9c420a9633537799021a45f0bcfdad22574fac25a1d257`，17,251,812 B；更早基线见历史报告与 Git）
 - `guji-preview-grid/public/fonts/guji-large.ttf`（46,623,752 B，#5 移除 E701，保留 U+2BD6E）
   `99be6a77b93afa746b2d29e37d6014cab9f9c21471f685a2392426760a17dabf`
   （#5 前：`f79d2765b6900a90822971eea286631e93f08f43080d1b8f3e2b8b20af63b9f0`，46,624,036 B）
