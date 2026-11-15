@@ -13,8 +13,8 @@
    Chrome 兜底。小字三个平面保持独立别名，保留逐字回退。 */
 @font-face {
     font-family: "GujiLarge";
-    /* ?v= 缓存戳：字体已补录 K0000 字形（U+2BD6E 等），更新时递增 */
-    src: url("/fonts/guji-large.ttf?v=001015-2bd6e") format("truetype"),
+    /* ?v= 缓存戳：字体已补录 K0000 字形（U+2BD6E）与 PUA 自补字形（U+E701），更新时递增 */
+    src: url("/fonts/guji-large.ttf?v=001015-2bd6e-e701") format("truetype"),
         local("KangXiFontFullVersion"),
         local("康熙字典體傳承版 KangXiZiDian.com"),
         local("康熙傳承版 KangXiZiDian.com");
@@ -22,7 +22,8 @@
 }
 @font-face {
     font-family: "GujiPlane0";
-    src: url("/fonts/guji-plane0.ttf") format("truetype"),
+    /* ?v= 缓存戳：已补录 PUA 自补字形（U+E701），随 guji_pua_patch 递增 */
+    src: url("/fonts/guji-plane0.ttf?v=e701-1") format("truetype"),
         local("FZSONG_ZHSJ_SIP--GB1-5"), local("中华书局宋体00平面");
     font-display: swap;
 }
