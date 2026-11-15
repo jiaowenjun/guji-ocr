@@ -236,6 +236,9 @@ def _fit_for_block(dark, bbox, pitch_range):
     if bx1 - bx0 < N_SLOTS * pitch_range[0] * 0.8:  # 块太窄放不下 16 列
         return None
     blk = dark[by0:by1, bx0:bx1]
+    if blk.size == 0 or min(blk.shape) < SMOOTH_K:
+        # bbox 内缩/越界后过扁过窄或空切片（@5 等版式实测，np.convolve 曾抛 v cannot be empty）
+        return None
     prof = moving_avg(blk.mean(axis=0), SMOOTH_K)
     prof[:SMOOTH_K] = prof[SMOOTH_K:2 * SMOOTH_K].mean()
     prof[-SMOOTH_K:] = prof[-2 * SMOOTH_K:-SMOOTH_K].mean()
