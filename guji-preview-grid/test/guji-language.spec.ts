@@ -6,13 +6,20 @@ import { nextGujiToken } from "@/components/editor/guji-language";
 
 /** 整行 → 着色分段（token 名 null 归一为 plain） */
 function segments(line: string): Array<[string, string]> {
+  return segments2(line, false);
+}
+
+/** 同上，但行首带书名跨行态、逐 token 穿透 inBookAfter（镜像 token 包装器） */
+function segments2(line: string, inBook: boolean): Array<[string, string]> {
   const out: Array<[string, string]> = [];
   let pos = 0;
+  let book = inBook;
   while (pos < line.length) {
-    const { next, tok } = nextGujiToken(line, pos);
+    const { next, tok, inBookAfter } = nextGujiToken(line, pos, book);
     expect(next).toBeGreaterThan(pos); // 永不原地踏步
     out.push([line.slice(pos, next), tok ?? "plain"]);
     pos = next;
+    book = inBookAfter;
   }
   return out;
 }
@@ -116,6 +123,44 @@ describe("字头簇糖高亮", () => {
       ["古", "plain"],
       ["文", "plain"],
       ["下", "plain"],
+    ]);
+  });
+});
+
+describe("跨行书名状态（inBook 行首注入）", () => {
+  it("跨页书名三段：开启行整行 link 并跨行；纯延续行（無】）整行 link 续跨；闭合行含】", () => {
+    // 356 末：【韻 → 會 → 357 首：補】古文始字。註
+    const open = nextGujiToken("【韻", 0);
+    expect(open).toMatchObject({ next: 2, tok: "link", inBookAfter: true });
+    const mid = nextGujiToken("會", 0, open.inBookAfter);
+    expect(mid).toMatchObject({ next: 1, tok: "link", inBookAfter: true });
+    const close = nextGujiToken("補】古文始字。註", 0, mid.inBookAfter);
+    expect(close).toMatchObject({ next: 2, tok: "link", inBookAfter: false });
+  });
+
+  it("行首 #/【 退出书名：字头照常 strong，新【另起书名", () => {
+    expect(nextGujiToken("#𠃭", 0, true)).toMatchObject({ tok: "strong", inBookAfter: false });
+    // 延续遇 # 截断：# 前段 link、字头 strong
+    expect(segments2("會#𠃭", true)).toEqual([
+      ["會", "link"],
+      ["#𠃭", "strong"],
+    ]);
+    // 行首【：延续分支空匹配让位，开启行照常 link
+    expect(nextGujiToken("【韻", 0, true)).toMatchObject({ tok: "link", inBookAfter: true });
+  });
+
+  it("结构性整行穿透：@页码/===/行注释保各自 token，书名状态不变", () => {
+    expect(nextGujiToken("@357", 0, true)).toMatchObject({ tok: "keyword", inBookAfter: true });
+    expect(nextGujiToken("======", 0, true)).toMatchObject({ tok: "meta", inBookAfter: true });
+    expect(nextGujiToken("// 校注", 0, true)).toMatchObject({ tok: "comment", inBookAfter: true });
+    expect(nextGujiToken("### 一部", 0, true)).toMatchObject({ tok: "heading", inBookAfter: false });
+  });
+
+  it("无状态回归：inBook=false 时延续分支不启用，旧启发（^text】）保持", () => {
+    expect(nextGujiToken("會", 0, false)).toMatchObject({ tok: null, inBookAfter: false });
+    expect(segments2("史記儒】續", false)).toEqual([
+      ["史記儒】", "link"],
+      ["續", "plain"],
     ]);
   });
 });
