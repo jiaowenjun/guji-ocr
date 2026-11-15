@@ -92,11 +92,13 @@ print(f"headword-svg.json：{len(mapping)} 字符 → SVG", file=sys.stderr)
 PY
 
 # 字头详情弹窗与字头栏「爬取」段数据源：爬取库（tools/crawl SQLite，与爬取
-# 演示页同源）。逐数据集页取 page_chars →
-#   entries.json    有码位者取 entries.record_json，按码位键出词条全文
+# 演示页同源），复用 kangxi_page_tool 七件套查询 API（page_heads/entry_detail，
+# 自带 sys.path 修正——消费者只 insert tools/dataset）：
+#   entries.json    有码位者取词条 record，按码位键出全文子集
 #                   （未编码 k_code 无详情端点，不在表内——前端回退并注明）
 #   page-heads.json 逐页原始字头索引（含未编码 K 码项），键为页码字符串
-# 库不可用（外置盘未挂载等）写空表并告警，不阻断其余生成步骤。
+# 库不可用（外置盘未挂载等）写空表并告警，不阻断其余生成步骤——先判
+# DEFAULT_DB 存在再调用（KangxiStore 构造即建库，只读导出不留副作用）。
 python3 - "$ROOT" "$DEST/entries.json" "$DEST/page-heads.json" <<'PY'
 import json, sys
 from pathlib import Path
@@ -121,22 +123,20 @@ def head_item(it: dict) -> dict:
             "svg": it.get("svg"), "entry_no": it.get("entry_no")}
 
 try:
-    sys.path.insert(0, str(Path(root) / "tools/crawl"))
-    import kangxi_store  # 自带 sys.path 修正（tools/），无需先导入 paths
+    sys.path.insert(0, str(Path(root) / "tools/dataset"))
+    import kangxi_page_tool as kpt  # 查询 API 门面（b6868ff：消费者 import 即用）
 
-    if Path(kangxi_store.DEFAULT_DB).is_file():
-        store = kangxi_store.KangxiStore()
-        db = kangxi_store.DEFAULT_DB
+    if Path(kpt.kangxi_store.DEFAULT_DB).is_file():
+        db = kpt.kangxi_store.DEFAULT_DB
         for page in pages:
-            items = store.get_page_chars(page)
+            items = kpt.page_heads(page)
             heads_by_page[str(page)] = [head_item(it) for it in items]
             for it in items:
                 cp = it.get("codepoint")
                 if not cp:
                     continue  # 未编码 k_code：无详情端点
-                row = store.get_entry(cp)
-                if row and row.get("record_json"):
-                    rec = json.loads(row["record_json"])
+                rec = kpt.entry_detail(cp)
+                if rec:
                     records[f"{cp:X}"] = {k: rec.get(k) for k in KEEP}
 except Exception as e:  # noqa: BLE001
     print(f"⚠ 爬取库不可用（{type(e).__name__}: {e}）——entries/page-heads 写空表，前端回退 .gj", file=sys.stderr)
