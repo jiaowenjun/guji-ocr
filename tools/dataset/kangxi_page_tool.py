@@ -142,7 +142,7 @@ def continuation_from_prev(
         return [], info
 
     def host_in(raw_text: str):
-        """在单页文本中找最后一个有库内详情的主字头；返回 (head, entry, tail_raw)。
+        """在单页文本中找最后一个有库内详情的主字头；返回 (head, detail, tail_raw)。
 
         字头行的两种实存格式都要认（@313–336 实测混用）：
           行内式 #(注)#頭古文#變1#變2（如 @331「#(三)#中古文#𠁧#𠁩」）
@@ -179,15 +179,15 @@ def continuation_from_prev(
             guwen_open = re.match(r"[，\s]*古文", raw_text[end:]) is not None
             heads.append((head, end))
         for cand, end in reversed(heads):
-            e = store.get_entry(ord(cand)) if len(cand) == 1 else None
+            e = entry_detail(ord(cand), store) if len(cand) == 1 else None
             if e is not None:
                 return cand, e, raw_text[end:]
         return None, None, ""
 
     raw = prev_gj.read_text(encoding="utf-8")
-    head, entry, tail_raw = host_in(raw)
+    head, detail, tail_raw = host_in(raw)
     info["host_page"] = page - 1
-    if entry is None:
+    if detail is None:
         # 前页是纯延续页：逐页向前找宿主页，边回溯边累计纯延续页全文（正序），
         # 尾部 = 宿主页字头后文本 + 其后各页（含前页）全文拼接——支持任意长延续链
         chained: list[str] = [raw]  # 回溯途经的纯延续页（倒序收集，最后正序拼接）
@@ -199,16 +199,16 @@ def continuation_from_prev(
             cand_raw = cand_gj.read_text(encoding="utf-8")
             h, e, t = host_in(cand_raw)
             if e is not None:
-                head, entry = h, e
+                head, detail = h, e
                 tail_raw = t + "\n" + "\n".join(reversed(chained))
                 info["host_page"] = back
                 break
             chained.append(cand_raw)
             back -= 1
-        if entry is None:
+        if detail is None:
             info["skipped"] = "前页及回溯各页的字头在库中均无详情"
             return [], info
-    if entry is None:
+    if detail is None:
         info["skipped"] = "前页字头在库中均无详情"
         return [], info
     info["head"] = head
@@ -230,9 +230,7 @@ def continuation_from_prev(
     tail_raw = "\n".join(
         l for l in tail_raw.splitlines() if l.strip() and not l.strip().startswith("//")
     )
-    paragraphs = [
-        p for p in (json.loads(entry["record_json"]).get("text_paragraphs") or []) if p.strip()
-    ]
+    paragraphs = [p for p in (detail.get("text_paragraphs") or []) if p.strip()]
     if not paragraphs:
         info["skipped"] = f"字头「{head}」无释义段"
         return [], info
@@ -309,40 +307,58 @@ def _scan_for(page: int, store: kangxi_store.KangxiStore) -> tuple[Path | None, 
     return None, ""
 
 
+def _page_sha(page: int, store: kangxi_store.KangxiStore) -> str:
+    """当前图 sha 的两级登记值查找（store 优先，回退 manifest），不查文件存在。
+
+    与 _scan_for 的分工：_scan_for 找「实际可用文件」（img 与 sha 同源返回，
+    文件不在则跳过该级），本函数只取登记指纹——图文件被移动/未挂载时缓存
+    校验（_ocr_cache_meta 判 stale）仍能拿到归属值。"""
+    sha = (store.get_page(page) or {}).get("scan_sha256") or ""
+    if sha:
+        return sha
+    for e in load_manifest().get("pages", []):
+        if e["page"] == page:
+            return e.get("sha256") or ""
+    return ""
+
+
 # ---- 按页码只读查询 API（供消费者 import；定位/数据口径与 add/OCR 链路一致）----
+# store 可选注入共享实例（add 链路逐函数传同一 store）；缺省现开——
+# KangxiStore.__init__ 每次跑建表脚本（executescript SCHEMA），循环调用务必注入。
+
 
 class PageImage(NamedTuple):
     path: Path
     sha256: str
 
 
-def page_image(page: int) -> PageImage | None:
+def page_image(page: int, store: kangxi_store.KangxiStore | None = None) -> PageImage | None:
     """给定页码 → 该页扫描图 (path, sha256)；未收录（未爬且不在数据集清单）返回 None。
 
     定位两级回退同 _scan_for：crawl store 的 scan_file 优先，未登记页
     （如直接下载入库的 312–328）回退 manifest 的 images_dir；sha256 供缓存键。
     """
-    img, sha = _scan_for(page, kangxi_store.KangxiStore())
+    img, sha = _scan_for(page, store or kangxi_store.KangxiStore())
     return PageImage(img, sha) if img else None
 
 
-def page_image_bytes(page: int) -> bytes | None:
+def page_image_bytes(page: int, store: kangxi_store.KangxiStore | None = None) -> bytes | None:
     """给定页码 → 扫描图字节（直接送 OCR / 预览用）；未收录返回 None。"""
-    found = page_image(page)
+    found = page_image(page, store)
     return found.path.read_bytes() if found else None
 
 
-def page_heads(page: int) -> list[dict]:
+def page_heads(page: int, store: kangxi_store.KangxiStore | None = None) -> list[dict]:
     """给定页码 → 该页字头记录（页面顺序；含未编码字形）。
 
     字段同 page_chars 表：char（未编码字形为 None）、codepoint、k_code、
     svg、page_seq…。快速展示：[c["char"] or "□" for c in page_heads(n)]。
     纯延续页（如 @332）站点不标字头，返回 []；金标页的人工校订以 .gj 为准。
     """
-    return kangxi_store.KangxiStore().get_page_chars(page)
+    return (store or kangxi_store.KangxiStore()).get_page_chars(page)
 
 
-def entry_detail(head: str | int) -> dict | None:
+def entry_detail(head: str | int, store: kangxi_store.KangxiStore | None = None) -> dict | None:
     """给定字头 → 词条详情（record_json 已解析的结构化记录）；未收录返回 None。
 
     head 收单字（'丹'）或十进制码位（ord，如 20025）；未编码字形无码位不可查。
@@ -350,14 +366,15 @@ def entry_detail(head: str | int) -> dict | None:
     「、」分隔）/text_paragraphs（释义段，有序）/juan/unihan/cangjie 等。
     raw_html 不含（体积），需要原始页走 KangxiStore.get_entry。
     """
-    store = kangxi_store.KangxiStore()
-    row = store.get_entry(head) if isinstance(head, int) else store.get_entry_by_char(head)
+    s = store or kangxi_store.KangxiStore()
+    row = s.get_entry(head) if isinstance(head, int) else s.get_entry_by_char(head)
     if row is None:
         return None
     return json.loads(row["record_json"])
 
 
-def page_ocr(page: int, model: str = "paddle") -> str | None:
+def page_ocr(page: int, model: str = "paddle",
+             store: kangxi_store.KangxiStore | None = None) -> str | None:
     """给定页码 → 该页扫描图的 OCR 文本（markdown）；不可得返回 None。
 
     model 预留换 OCR 引擎，当前仅 "paddle"（本地 paddleocr-baseline 服务，
@@ -370,10 +387,20 @@ def page_ocr(page: int, model: str = "paddle") -> str | None:
     """
     if model != "paddle":
         raise NotImplementedError(f"OCR 模型 {model} 暂不可用（当前仅 paddle）")
-    return _ocr_markdown(page, kangxi_store.KangxiStore())
+    return _ocr_markdown(page, store or kangxi_store.KangxiStore())
 
 
-def page_columns(page: int) -> dict:
+def _column_seg():
+    """惰性导入列分割模块（EVAL 目录注入 sys.path，幂等）——page_columns
+    与 ocr_regroup_bands 共用的唯一入口，避免两处各写一份路径注入。"""
+    if str(EVAL) not in sys.path:
+        sys.path.insert(0, str(EVAL))
+    import kangxi_column_seg  # noqa: E402
+
+    return kangxi_column_seg
+
+
+def page_columns(page: int, store: kangxi_store.KangxiStore | None = None) -> dict:
     """给定页码 → 列分割坐标（像素绝对坐标，右→左阅读序）。
 
     直接透传 kangxi_column_seg.segment（单页默认参数，与该脚本 CLI 单页
@@ -387,20 +414,17 @@ def page_columns(page: int) -> dict:
     分割失败时含 "error" 键——判断口径同 ocr_regroup_bands。numpy/Pillow
     惰性导入，即时计算不缓存（单页亚秒级）。
     """
-    img = page_image(page)
+    img = page_image(page, store)
     if img is None:
         return {"page": page, "error": "扫描图不存在（store 与 manifest 均未定位到）"}
-    if str(EVAL) not in sys.path:
-        sys.path.insert(0, str(EVAL))
-    import kangxi_column_seg  # noqa: E402
-
-    return kangxi_column_seg.segment(page, img_path=str(img.path))
+    return _column_seg().segment(page, img_path=str(img.path))
 
 
 _COLUMN_CACHE: dict[int, list[dict]] = {}
 
 
-def page_column_ocr(page: int, model: str = "paddle") -> list[dict] | None:
+def page_column_ocr(page: int, model: str = "paddle",
+                    store: kangxi_store.KangxiStore | None = None) -> list[dict] | None:
     """给定页码 → 按大列分割成批 OCR：8 列各自的识别结果（阅读序，右→左）。
 
     复用 page_columns 的分割坐标，把原图裁成 8 个大列条带（y 取 block 范围，
@@ -416,7 +440,7 @@ def page_column_ocr(page: int, model: str = "paddle") -> list[dict] | None:
         raise NotImplementedError(f"OCR 模型 {model} 暂不可用（当前仅 paddle）")
     if page in _COLUMN_CACHE:
         return _COLUMN_CACHE[page]
-    img_found = page_image(page)
+    img_found = page_image(page, store)
     if img_found is None:
         return None
     cache_f = paths.OCR_CACHE_DIR / "columns" / f"{page:04d}.json"
@@ -934,8 +958,7 @@ def ocr_regroup_bands(page: int, bands: list[list[str]]) -> tuple[list[list[str]
     修复见 ocr_fold_page_lines 的结构保护注释与本文 // 附着/部题行独立
     成带逻辑；旧的「重折个别折点偏移」限制已随 \u0001 对齐剔除消除。
     """
-    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "eval"))
-    import kangxi_column_seg  # noqa: E402
+    kangxi_column_seg = _column_seg()
 
     # // 注释行不参与分配，但必须保留（附着到其前一个正文行所在的大列带）
     # ——早期版本直接丢弃会破坏字符流（草稿 #□ 占位常带 //未编码字 说明）。
@@ -997,12 +1020,11 @@ def ocr_regroup_bands(page: int, bands: list[list[str]]) -> tuple[list[list[str]
     return groups, f"大列重组：{len(groups)} 带（各行数 {sizes}）"
 
 
-def _guwen_list(entry) -> list[str]:
-    """词条的站点古文变体列表（guwen 字段按「、」分隔）。"""
-    if not entry:
+def _guwen_list(detail: dict | None) -> list[str]:
+    """词条的站点古文变体列表（guwen 字段按「、」分隔）；吃 entry_detail 的结构化记录。"""
+    if not detail:
         return []
-    gw = json.loads(entry["record_json"]).get("guwen")
-    return [g for g in (gw or "").split("、") if g]
+    return [g for g in (detail.get("guwen") or "").split("、") if g]
 
 
 def _classify_unencoded(chars: list[dict]) -> tuple[dict[int, dict], list[dict]]:
@@ -1107,7 +1129,7 @@ def build_draft_gj(
     fold=True 且 OCR 服务可用时，按 OCR 行组在大行内插入折行（只插入换行
     不改字符；不可用/不可信时草稿为未折行的平铺段——校对者回退到手工折行）。
     """
-    chars = store.get_page_chars(page)
+    chars = page_heads(page, store)
     if not chars and not continuation:
         raise RuntimeError(
             f"页 {page} 无字头索引（page_chars 为空）且无前页续文——"
@@ -1131,14 +1153,14 @@ def build_draft_gj(
         head_band = [f"#{item['char']}"]
         bands.append(head_band)
         counts["chars"] += 1
-        entry = store.get_entry(item["codepoint"])
+        detail = entry_detail(item["codepoint"], store)
         ex = extra.get(item["ord"]) or {}
         for c in ex.get("companions") or []:
             bands.append([f"// 站点伴随字形（{c['svg']}）：非词条，确认后删除本行"])
             counts["companions"] = counts.get("companions", 0) + 1
         kcodes = ex.get("kcodes") or []
         if kcodes:
-            gw = _guwen_list(entry)
+            gw = _guwen_list(detail)
             if len(gw) == len(kcodes):
                 # 数量精确匹配才归并（128/136 簇）；字头行同人工校对风格
                 head_band[0] = f"#{item['char']}古文" + "".join(f"#{g}" for g in gw)
@@ -1153,9 +1175,8 @@ def build_draft_gj(
                         "疑似前字头变体（guwen 缺失/数量不符），请对照原图补录"
                     ])
                     counts["unencoded"] += 1
-        if entry:
-            record = json.loads(entry["record_json"])
-            paragraphs = [p for p in record.get("text_paragraphs") or [] if p.strip()]
+        if detail:
+            paragraphs = [p for p in detail.get("text_paragraphs") or [] if p.strip()]
             if paragraphs:
                 counts["with_text"] += 1
                 bands.extend([p] for p in paragraphs)
@@ -1252,12 +1273,10 @@ def cmd_ocr_fold(page: int, fold: bool = True) -> dict:
 def cmd_ocr_view(page: int) -> dict:
     """返回该页的 OCR markdown（供前端弹窗展示）。"""
     store = kangxi_store.KangxiStore()
-    img, sha = _scan_for(page, store)
-    if img is None or not sha:
+    found = page_image(page, store)
+    if found is None or not found.sha256:
         raise RuntimeError(f"页 {page} 无扫描图（crawl store 与数据集清单均未登记）")
-    entry = _ocr_cache_read(page, store)
-    if entry is None:
-        entry = _ocr_markdown(page, store)
+    entry = page_ocr(page, "paddle", store)
     if entry is None:
         return {"ok": True, "page": page, "markdown": None,
                 "hint": "OCR 缓存未命中且服务未运行——先跑 tools/eval/prefetch_ocr.py 或启动服务"}
@@ -1308,17 +1327,10 @@ def cmd_prefetch_status(page: int) -> dict:
     scope 同口径，只查 codepoint 为空者）。
     """
     store = kangxi_store.KangxiStore()
-    row = store.get_page(page) or {}
     missing = store.page_missing(page, ("reading", "scan"))
-    chars = store.get_page_chars(page)
+    chars = page_heads(page, store)
     miss_entries = store.coded_chars_missing_entries(page)
-    cur_sha = row.get("scan_sha256") or ""
-    if not cur_sha:
-        for e in load_manifest().get("pages", []):
-            if e["page"] == page:
-                cur_sha = e.get("sha256") or ""
-                break
-    ocr = _ocr_cache_meta(page, cur_sha)
+    ocr = _ocr_cache_meta(page, _page_sha(page, store))
     wanted = [c["svg"] for c in chars if c["codepoint"] is None and c.get("svg")]
     have = sum(1 for rel in wanted if (paths.RAW_KANGXI_SVG / rel).is_file())
     ocr_detail = {
@@ -1505,10 +1517,10 @@ def cmd_add(page: int) -> dict:
         summaries.append(run_fetch("fetch_kangxi_page.py", page, "页数据"))
     else:
         summaries.append("页数据：库中已有，未联网")
-    chars = store.get_page_chars(page)
+    chars = page_heads(page, store)
     missing_entries = [
         c["char"] for c in chars
-        if c["char"] and store.get_entry(c["codepoint"]) is None
+        if c["char"] and entry_detail(c["codepoint"], store) is None
     ]
     if chars and missing_entries:
         summaries.append(run_fetch("fetch_kangxi_entry.py", page, "字头详情"))
