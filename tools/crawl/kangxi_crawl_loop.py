@@ -2,8 +2,8 @@
 """全书慢速循环爬取：每页之间以「截断正态分布」随机间隔（默认均值 2 分钟，
 落在 1–5 分钟内）持续抓取，直至 7738 页全部入库。
 
-选页策略：默认 random（在未完成页中均匀随机选下一页，分散抓取顺序）；
---order sequential 恢复从小到大顺序抓取。配合 kangxi_store 去重：已入库
+选页策略：默认 sequential（取最小未完成页，从小到大顺序抓取）；
+--order random 恢复未完成页均匀随机。配合 kangxi_store 去重：已入库
 页/字头零网络，中断重启自动续抓（random 下从不完整集合重抽）。
 
 间隔采样：N(μ=120s, σ=60s) 拒绝采样至落在 [60s, 600s]（真截断，非钳制，
@@ -63,8 +63,8 @@ def main() -> int:
                     help=f"字头 svg 缓存目录（默认 {WD_DIRS['svg']}；"
                          "随爬缓存该页未编码字头，作字体补录字形源）")
     ap.add_argument("--from-page", type=int, default=1, help="起始页码（默认 1）")
-    ap.add_argument("--order", choices=["random", "sequential"], default="random",
-                    help="选页策略：random 未完成页中均匀随机（默认）；sequential 最小未完成页")
+    ap.add_argument("--order", choices=["random", "sequential"], default="sequential",
+                    help="选页策略：sequential 最小未完成页（默认）；random 未完成页均匀随机")
     ap.add_argument("--mean-seconds", type=float, default=120.0, help="间隔均值（秒，默认 120）")
     ap.add_argument("--sigma-seconds", type=float, default=60.0, help="间隔标准差（秒，默认 60）")
     ap.add_argument("--min-seconds", type=float, default=60.0, help="间隔下限（秒，默认 60）")

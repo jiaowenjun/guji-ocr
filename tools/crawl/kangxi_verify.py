@@ -118,7 +118,7 @@ def verify(db_path: Path, verbose: bool = False) -> bool:
         for _ord, nth, edpage in seq:
             if nth is None or edpage != page:
                 continue
-            if nth <= prev:
+            if nth < prev:  # 并列=站点简繁共字位特性（如 p4701 脈/脉同第3字），仅下降才是问题
                 ed_bad.append(f"页 {page} 第{nth}字 未随 ord 递增（前值 {prev}）")
             prev = nth
     problems += [f"[详情] 缺 entries: {x}" for x in miss_entry]

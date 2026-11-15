@@ -97,8 +97,8 @@ def main() -> int:
     ap.add_argument("--svg-dir", type=Path, default=None,
                     help=f"字头 svg 缓存目录（默认 {WD_DIRS['svg']}；外置盘未挂载则退出）")
     ap.add_argument("--from-page", type=int, default=1, help="起始页码（默认 1）")
-    ap.add_argument("--order", choices=["random", "sequential"], default="random",
-                    help="选页策略：random 未完成页中均匀随机（默认）；sequential 最小未完成页")
+    ap.add_argument("--order", choices=["random", "sequential"], default="sequential",
+                    help="选页策略：sequential 最小未完成页（默认）；random 未完成页中均匀随机")
     args = ap.parse_args()
 
     store = kangxi_store.KangxiStore(args.db)
