@@ -1,8 +1,8 @@
-"""E702 made solely from existing guji-plane0 Songti outlines.
+"""Build U+E701 from existing Songti components.
 
-Every curve is copied from a donor, then transformed affinely. The top stroke
-is a closed subpath of 乑; the closing edge is hidden under the centre stem.
-No scan-traced or newly drawn stroke outline is used for E702.
+The current recipe takes the joined top stroke and stem as the complete first
+contour of 𠂹 in guji-plane2. The historical v2 recipe remains reproducible with
+its separate 乑 top stroke and 丨 stem. No production font is saved here.
 """
 import hashlib
 import json
@@ -57,35 +57,44 @@ def from_anchors(source, target):
     return Transform(result[0,0],result[0,1],result[1,0],result[1,1],result[2,0],result[2,1])
 
 
-def build_songti(font, scan_contours, mapping):
+def build_songti(font, scan_contours, mapping, joined_font=None):
     global PARTS
     PARTS = []
     s,tx,ty,_ = mapping
     def point(x,y):return tx+s*x,ty-s*y
     def box(x0,y0,x1,y1):return (*point(x0,y1),*point(x1,y0))
-    def add(ch, index, role, rec, transform, note='complete contour'):
+    def add(ch, index, role, rec, transform, note='complete contour', source_font='guji-plane0.ttf'):
         assert transform.xx*transform.yy-transform.xy*transform.yx>0, 'Reflected donor'
         dest = moved(rec,transform)
-        PARTS.append({'source_char':ch,'codepoint':f'U+{ord(ch):04X}',
+        PARTS.append({'source_char':ch,'codepoint':f'U+{ord(ch):04X}', 'source_font':source_font,
                       'contour':index,'role':role,'extraction':note,
                       'source_outline_sha256':hashlib.sha256(repr(rec.value).encode()).hexdigest(),
                       'transform':list(transform),'source_bounds':bbox(rec),'bounds':bbox(dest),
                       'recording':dest, 'source_recording':rec})
-    # 乑 top stroke only: preserve its source curves and triangular terminal.
-    src = contours(font,'乑')[0]
-    assert src.value[5] == ('qCurveTo',((677,718),(542,699)))
-    assert src.value[27] == ('lineTo',((490,692),))
-    top = RecordingPen()
-    top.value = src.value[:6] + [src.value[27]] + src.value[28:]
-    top_shape = Transform(.56,.068,0,.8,0,0)
-    b = bbox(moved(top,top_shape))
-    px,py = point(25,8)
-    add('乑',0,'顶撇',top,Transform(.56,.068,0,.8,px-b[0],py-b[3]),
-        'top-stroke subpath; one closing edge across the original stem junction')
-    # 丨: retain the original stem width, head serif and lower terminal.
-    stem = contours(font,'丨')[0]
-    sy = s*(75-16)/(853+132)
-    add('丨',0,'中竖',stem,Transform(.95,0,0,sy,point(43.5,0)[0]-.95*508,point(0,16)[1]-sy*853))
+    if joined_font is not None:
+        if joined_font['head'].unitsPerEm != font['head'].unitsPerEm:
+            raise ValueError('Joined component donor uses different unitsPerEm')
+        # One untouched closed contour, one affine transform: preserve the
+        # native top/stem junction instead of assembling two separate strokes.
+        top_stem = contours(joined_font, '𠂹')[0]
+        add('𠂹', 0, '顶撇与中竖整体', top_stem,
+            Transform(.66, .068, 0, 1.0126083333333333, 193.38, -55.97839166666667),
+            source_font='guji-plane2.ttf')
+    else:
+        # Historical v2 construction; keep available for reproducibility.
+        src = contours(font,'乑')[0]
+        assert src.value[5] == ('qCurveTo',((677,718),(542,699)))
+        assert src.value[27] == ('lineTo',((490,692),))
+        top = RecordingPen()
+        top.value = src.value[:6] + [src.value[27]] + src.value[28:]
+        top_shape = Transform(.56,.068,0,.8,0,0)
+        b = bbox(moved(top,top_shape))
+        px,py = point(25,8)
+        add('乑',0,'顶撇',top,Transform(.56,.068,0,.8,px-b[0],py-b[3]),
+            'top-stroke subpath; one closing edge across the original stem junction')
+        stem = contours(font,'丨')[0]
+        sy = s*(75-16)/(853+132)
+        add('丨',0,'中竖',stem,Transform(.95,0,0,sy,point(43.5,0)[0]-.95*508,point(0,16)[1]-sy*853))
     # 从: the left person already includes the short right branch.
     left = contours(font,'从')[1]
     add('从',1,'左侧撇与短分支',left,from_anchors([(285,800),(17,-70),(449,150)],
@@ -107,28 +116,30 @@ def build_songti(font, scan_contours, mapping):
     return glyph
 
 
-def export_parts(path, mapping, font):
+def export_parts(path, mapping, font, joined_font=None, prefix='e701'):
     s,tx,ty,_ = mapping
-    colors = ['#ad6332','#336f9e','#287c59','#9257a2','#c04642']
+    colors = (['#336f9e','#287c59','#9257a2','#c04642'] if joined_font is not None
+              else ['#ad6332','#336f9e','#287c59','#9257a2','#c04642'])
     paths = []
     records = []
     for index,(part,color) in enumerate(zip(PARTS,colors)):
         pen = SVGPathPen(None);part['recording'].replay(pen)
         paths.append(f'<path d="{pen.getCommands()}" fill="{color}"/>')
         source = SVGPathPen(None);part['source_recording'].replay(source)
-        gs = font.getGlyphSet()
+        donor = joined_font if part['source_font']=='guji-plane2.ttf' else font
+        gs = donor.getGlyphSet()
         whole = SVGPathPen(gs)
-        gs[font.getBestCmap()[ord(part['source_char'])]].draw(whole)
-        (path/f'e702-source-{index}.svg').write_text(
+        gs[donor.getBestCmap()[ord(part['source_char'])]].draw(whole)
+        (path/f'{prefix}-source-{index}.svg').write_text(
             '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">'
             '<g transform="matrix(1 0 0 -1 0 864)">'
             f'<path d="{whole.getCommands()}" fill="#d3cec3"/>'
             f'<path d="{source.getCommands()}" fill="{color}"/></g></svg>')
         records.append({k:v for k,v in part.items() if k not in ('recording','source_recording')}
                        |{'color':color,'path':pen.getCommands(),'source_path':source.getCommands()})
-    (path/'e702-components.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 84 88">'
+    (path/f'{prefix}-components.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 84 88">'
         f'<g transform="matrix({1/s} 0 0 {-1/s} {-tx/s} {ty/s})">'+''.join(paths)+'</g></svg>')
-    (path/'e702-components.json').write_text(json.dumps({'font':'guji-plane0.ttf','parts':records},ensure_ascii=False,indent=2)+'\n')
+    (path/f'{prefix}-components.json').write_text(json.dumps({'font':'guji-plane0.ttf','parts':records},ensure_ascii=False,indent=2)+'\n')
 
 
 def main():
@@ -143,17 +154,20 @@ def main():
     root = Path(__file__).resolve().parents[2]
     parser = argparse.ArgumentParser(description=main.__doc__)
     parser.add_argument('--font', type=Path, default=root/'guji-preview-grid/public/fonts/guji-plane0.ttf')
-    parser.add_argument('--recipe', type=Path, default=root/'tools/dataset/font-sources/e701-songti-v2.json')
+    parser.add_argument('--recipe', type=Path, default=root/'tools/dataset/font-sources/e701-songti-v4.json')
     args = parser.parse_args()
     recipe = json.loads(args.recipe.read_text())
     font = TTFont(args.font, recalcTimestamp=False)
     name = font.getBestCmap()[0xE701]
-    font['glyf'][name] = build_songti(font, None, recipe['coordinate_mapping'])
+    joined = None
+    if recipe.get('construction') == 'joined-top-stem':
+        joined = TTFont(root/recipe['external_donors'][0]['font'], recalcTimestamp=False)
+    font['glyf'][name] = build_songti(font, None, recipe['coordinate_mapping'], joined_font=joined)
     removeOverlaps(font, glyphNames=[name])
     actual = hashlib.sha256(font['glyf'][name].compile(font['glyf'])).hexdigest()
     if actual != recipe['approved_glyph']['compiled_sha256']:
         raise SystemExit('Generated components differ from approved recipe; review before updating it.')
-    print('Five native components reproduce the approved U+E701 Songti outline exactly:', actual)
+    print(f'{len(PARTS)} native components reproduce the approved U+E701 Songti outline exactly:', actual)
 
 
 if __name__ == '__main__':

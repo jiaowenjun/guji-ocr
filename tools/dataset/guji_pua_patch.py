@@ -9,7 +9,7 @@ scheme：
 同一码位可通过 font_overrides 为小字/大字选择不同方案。
 校准：每字体以其 U+343A 㐺 字形 bbox 为锚（同族形），轮廓方向对齐该字体自身外轮廓。
 注入：glyf/glyphOrder/maxp/hmtx（advance=锚字）/**vmtx（有则必补，否则 compile KeyError）**/cmap format-4。
-验证：rsvg 免依赖——PIL 渲染补录字形 vs verify_image 归一化 chamfer，闸默认 0.5
+验证：PIL 渲染补录字形 vs verify_image 归一化 chamfer，方案可显式指定阈值，否则默认 0.5
 （光栅源管线标尺：E701 实测 0.366，含 DP 简化误差；矢量源管线沿用 0.15 见 kangxi_font_patch.py）。
 留痕：font-patches.jsonl 追加 + 注册表 version/hash 更新 + 登记簿人工行（docs/font-operations.md）。
 
@@ -17,8 +17,8 @@ scheme：
   python3 tools/dataset/guji_pua_patch.py --cp E701 [--dry-run] [--gate 0.5]
   # 同码位、仅小字升级（expected-version 为运行时的当前登记版本）：
   python3 tools/dataset/guji_pua_patch.py --cp E701 --font guji-plane0.ttf \
-    --replace --expected-version 1 --scheme compose \
-    --source tools/dataset/font-sources/e701-songti-v2.json --dry-run
+    --replace --expected-version 4 --scheme compose \
+    --source tools/dataset/font-sources/e701-songti-v4.json --dry-run
 """
 
 import argparse
@@ -122,6 +122,17 @@ def build_compose(font, recipe):
         name = cmap.get(int(cp, 16))
         if name is None or hashlib.sha256(font['glyf'][name].compile(font['glyf'])).hexdigest() != expected:
             raise ValueError(f'compose 来源字 U+{cp} 已变化，请重新审定部件')
+    # A small-font component may come from another plane of the same family.
+    # Read-only validation prevents silently applying a stale external outline.
+    for donor in recipe.get('external_donors', []):
+        with TTFont(os.path.join(REPO, donor['font']), recalcTimestamp=False) as source_font:
+            if source_font['head'].unitsPerEm != recipe['units_per_em']:
+                raise ValueError('compose 外部来源字体 unitsPerEm 不同')
+            source_cmap = source_font.getBestCmap()
+            for code, expected in donor['glyph_sha256'].items():
+                name = source_cmap.get(int(code, 16))
+                if name is None or hashlib.sha256(source_font['glyf'][name].compile(source_font['glyf'])).hexdigest() != expected:
+                    raise ValueError(f'compose 外部来源字 {donor["font"]}/U+{code} 已变化，请重新审定部件')
     data = recipe['approved_glyph']
     glyph = Glyph()
     glyph.numberOfContours = data['number_of_contours']
@@ -231,7 +242,7 @@ def verify_replacement(before, after, cp):
 def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument('--cp', required=True, help='注册表内码位，如 E701')
-    ap.add_argument('--gate', type=float, default=0.5)
+    ap.add_argument('--gate', type=float, help='覆盖方案的 chamfer 阈值（方案未指定时为 0.5）')
     ap.add_argument('--dry-run', action='store_true', help='只生成临时字体并验证')
     ap.add_argument('--font', action='append', help='仅处理注册表内指定文件（可重复；省略为全部）')
     ap.add_argument('--replace', action='store_true', help='替换已有字位，保持 cmap 与 advance')
@@ -271,6 +282,7 @@ def main():
             verify_path = override.get('verify_image', entry['verify_image'])
             with open(os.path.join(REPO, source)) as f:
                 data = json.load(f)
+            gate = args.gate if args.gate is not None else data.get('verification', {}).get('max_chamfer', 0.5)
             if scheme == 'compose' and data['font'] != basename:
                 raise SystemExit('compose 字形源不适用于目标字体')
             font = TTFont(path, recalcTimestamp=False)
@@ -292,12 +304,12 @@ def main():
             image = Image.new('L', (440, 440), 255)
             ImageDraw.Draw(image).text((44, 44), chr(cp), font=ImageFont.truetype(tmp, 220), fill=0)
             score = chamfer(norm_ink(np.asarray(image) < 128), norm_ink(verify))
-            if score > args.gate:
-                raise SystemExit(f'{rel} chamfer={score:.3f} 超出 {args.gate}')
+            if score > gate:
+                raise SystemExit(f'{rel} chamfer={score:.3f} 超出 {gate}')
             result = {'font': rel, 'scheme': scheme, 'source': source,
                       'sha256_before': before_hash, 'sha256_after': sha256(tmp),
                       'bytes_before': before_bytes, 'bytes_after': os.path.getsize(tmp),
-                      'chamfer': round(float(score), 3), 'cmap_before': len(font.getBestCmap()),
+                      'chamfer': round(float(score), 3), 'chamfer_gate': gate, 'cmap_before': len(font.getBestCmap()),
                       'cmap_after': len(after.getBestCmap()),
                       'other_glyphs_and_metrics_unchanged': bool(args.replace)}
             print(json.dumps(result, ensure_ascii=False))

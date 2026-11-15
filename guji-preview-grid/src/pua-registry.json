@@ -8,17 +8,17 @@
       "description": "〈亻人人〉＝康熙 @349 乑字按语「《正字通》獨改作❌」处刻形（与㐺相分的另一字），无 Unicode 码位",
       "first_seen": "kangxi-gold @349",
       "scheme": "compose",
-      "version": 3,
+      "version": 4,
       "patched_at": "2026-11-15",
-      "source": "tools/dataset/font-sources/e701-songti-v2.json",
-      "source_note": "仅用于小字内容；使用已审定的宋体部件构形，不向 guji-large 补录。",
+      "source": "tools/dataset/font-sources/e701-songti-v4.json",
+      "source_note": "仅用于小字；𠂹的顶撇与中竖整体取自同系列 plane2，第 0 轮廓完整提取。其余部件仍取自 plane0。",
       "verify_image": "tools/dataset/font-sources/e701-scan-clean.png",
       "verify_note": "chamfer 闸基准（清洗扫描）",
       "fonts": [
         "guji-preview-grid/public/fonts/guji-plane0.ttf"
       ],
       "sha256_after": {
-        "guji-plane0.ttf": "0e5eda61b7324f8bcf9c420a9633537799021a45f0bcfdad22574fac25a1d257"
+        "guji-plane0.ttf": "b4433eb2cb5218d3e507dd1757398813ac105d6c384dbbf8a841a60107b53c0f"
       },
       "history": [
         {
@@ -91,10 +91,33 @@
           "small_font_sha256_unchanged": "0e5eda61b7324f8bcf9c420a9633537799021a45f0bcfdad22574fac25a1d257",
           "cache_version_before": "001015-2bd6e-e701",
           "cache_version": "001015-2bd6e-no-e701"
+        },
+        {
+          "version": 4,
+          "at": "2026-11-15T16:03:48+08:00",
+          "operation": "replace",
+          "results": [
+            {
+              "font": "guji-preview-grid/public/fonts/guji-plane0.ttf",
+              "scheme": "compose",
+              "source": "tools/dataset/font-sources/e701-songti-v4.json",
+              "sha256_before": "0e5eda61b7324f8bcf9c420a9633537799021a45f0bcfdad22574fac25a1d257",
+              "sha256_after": "b4433eb2cb5218d3e507dd1757398813ac105d6c384dbbf8a841a60107b53c0f",
+              "bytes_before": 17251812,
+              "bytes_after": 17251780,
+              "chamfer": 0.558,
+              "chamfer_gate": 0.6,
+              "cmap_before": 30707,
+              "cmap_after": 30707,
+              "other_glyphs_and_metrics_unchanged": true,
+              "backup": "var/unencoded/kangxi-unencoded/font-backups/guji-plane0.ttf.0e5eda61b7324f8bcf9c420a9633537799021a45f0bcfdad22574fac25a1d257.ttf"
+            }
+          ],
+          "cache_version": "e701-4-joined"
         }
       ],
       "font_versions": {
-        "guji-plane0.ttf": 2
+        "guji-plane0.ttf": 4
       },
       "usage": "small-only",
       "usage_note": "该字符只出现在小字内容中，仅收录于 guji-plane0.ttf。"
