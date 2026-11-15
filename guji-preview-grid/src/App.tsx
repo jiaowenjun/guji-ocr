@@ -3,7 +3,7 @@
 // OCR 预取 = 演示/调试视图（各页 OCR 结果对照 + prefetch_next_page 链路可视化）。
 // 原「编辑」双栏模式已移除；通用编辑/预览见姊妹项目 guji-preview
 import { useState } from "react";
-import { BookOpenText, Info, Monitor, Moon, ScanText, Sun } from "lucide-react";
+import { BookOpenText, Info, Monitor, Moon, ScanText, SquareTerminal, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -14,6 +14,7 @@ import {
 import { DatasetView } from "@/components/dataset/DatasetView";
 import { OcrPrefetchView } from "@/components/ocr/OcrPrefetchView";
 import { useTheme, type ThemeSetting } from "@/hooks/use-theme";
+import { useVimMode } from "@/hooks/use-vim-mode";
 
 const THEME_OPTIONS: { value: ThemeSetting; label: string; icon: typeof Sun }[] = [
   { value: "auto", label: "跟随系统", icon: Monitor },
@@ -30,6 +31,7 @@ type View = (typeof VIEW_OPTIONS)[number]["value"];
 
 export default function App() {
   const { setting, resolved, update } = useTheme();
+  const vimMode = useVimMode();
   const [view, setView] = useState<View>("proof");
 
   return (
@@ -72,6 +74,24 @@ export default function App() {
               </Tooltip>
             </div>
 
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  size="icon-sm"
+                  variant={vimMode.enabled ? "default" : "ghost"}
+                  aria-label="Vim 模式"
+                  aria-pressed={vimMode.enabled}
+                  onClick={() => vimMode.update(!vimMode.enabled)}
+                >
+                  <SquareTerminal />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                vim 模式（默认关）：normal/insert 双模态，i/a/A/o/O/c/C 进入
+                insert，Esc 返回 normal；insert 模态保留 emacs/Alt 快捷键
+              </TooltipContent>
+            </Tooltip>
+
             <div className="border-border flex items-center gap-1 rounded-lg border p-0.5">
               {THEME_OPTIONS.map(({ value, label, icon: Icon }) => (
                 <Tooltip key={value}>
@@ -113,7 +133,7 @@ export default function App() {
         </header>
 
         {view === "proof" ? (
-          <DatasetView editorTheme={resolved} />
+          <DatasetView editorTheme={resolved} vimMode={vimMode.enabled} />
         ) : (
           <OcrPrefetchView />
         )}

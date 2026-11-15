@@ -1,0 +1,91 @@
+// vim 模式集成测试：@replit/codemirror-vim 与 guji 键位的模态让位协议。
+// 口径：vim 开启 → 初始 normal；normal 下 emacs/Alt 键位让位（Ctrl-J 不合并行、
+// Alt-Z 不插入糖）；i 进入 insert 后现有方案照常（Ctrl-J 合并行、Alt-Z 插入）；
+// Esc 返回 normal；vim 未开启时行为与从前完全一致。
+// @vitest-environment jsdom
+import { afterEach, describe, expect, it } from "vitest";
+import { EditorView } from "@codemirror/view";
+import { StateEffect, type Extension } from "@codemirror/state";
+import { vim, getCM } from "@replit/codemirror-vim";
+import { gujiKeymap } from "@/components/editor/keymap";
+
+function makeView(extensions: Extension[]): EditorView {
+  return new EditorView({
+    doc: "一行字\n二行字\n",
+    parent: document.body,
+    extensions,
+  });
+}
+
+/** 派发真实 keydown 到 contentDOM（CM keymap 与 vim 插件都监听此事件） */
+function key(view: EditorView, k: string, init: KeyboardEventInit = {}) {
+  view.contentDOM.dispatchEvent(
+    new KeyboardEvent("keydown", { key: k, bubbles: true, cancelable: true, ...init }),
+  );
+}
+
+const ctrlJ = (view: EditorView) => key(view, "j", { ctrlKey: true });
+const doc = (view: EditorView) => view.state.doc.toString();
+const insertMode = (view: EditorView) => !!getCM(view)?.state.vim?.insertMode;
+
+const views: EditorView[] = [];
+const track = (view: EditorView) => (views.push(view), view);
+
+afterEach(() => {
+  for (const v of views.splice(0)) v.destroy();
+});
+
+describe("vim 关闭（默认）：emacs 键位原样", () => {
+  it("Ctrl-J 合并下一行", () => {
+    const view = track(makeView([gujiKeymap]));
+    ctrlJ(view);
+    expect(doc(view)).toBe("一行字二行字\n");
+  });
+});
+
+describe("vim 开启：模态协议", () => {
+  it("初始为 normal，i 进 insert、Esc 回 normal", () => {
+    const view = track(makeView([vim(), gujiKeymap]));
+    expect(insertMode(view)).toBe(false);
+    key(view, "i");
+    expect(insertMode(view)).toBe(true);
+    key(view, "Escape");
+    expect(insertMode(view)).toBe(false);
+  });
+
+  it("normal 模态 Ctrl-J 让位给 vim（文档不变，不再合并行）", () => {
+    const view = track(makeView([vim(), gujiKeymap]));
+    ctrlJ(view);
+    expect(doc(view)).toBe("一行字\n二行字\n");
+  });
+
+  it("insert 模态保留现有方案：Ctrl-J 合并行、Alt-Z 插入 #(增)", () => {
+    const view = track(makeView([vim(), gujiKeymap]));
+    key(view, "i");
+    ctrlJ(view);
+    expect(doc(view)).toBe("一行字二行字\n");
+    key(view, "z", { altKey: true, code: "KeyZ" });
+    expect(doc(view)).toContain("#(增)");
+  });
+
+  it("normal 模态 Alt-Z 让位（不插入糖）", () => {
+    const view = track(makeView([vim(), gujiKeymap]));
+    key(view, "z", { altKey: true, code: "KeyZ" });
+    expect(doc(view)).toBe("一行字\n二行字\n");
+  });
+
+  it("整树 reconfigure（@uiw 每渲染路径）不打断模态", () => {
+    // vim() 各段为包内模块级常量：即便每次调用重新组装、reconfigure 整组
+    // extensions，CM6 按插件 spec 身份保活实例，insert 模态不丢——这是
+    // extensions 每渲染重建（现状风格）可行的依据。
+    const view = track(makeView([vim(), gujiKeymap]));
+    key(view, "a"); // append 进入 insert
+    expect(insertMode(view)).toBe(true);
+    view.dispatch({
+      effects: StateEffect.reconfigure.of([vim(), gujiKeymap]),
+    });
+    expect(insertMode(view)).toBe(true);
+    key(view, "Escape");
+    expect(insertMode(view)).toBe(false);
+  });
+});

@@ -157,7 +157,14 @@ function ColumnHeader({ children }: { children: ReactNode }) {
   );
 }
 
-export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" | "dark" }) {
+export function DatasetView({
+  editorTheme = "light",
+  vimMode = false,
+}: {
+  editorTheme?: "light" | "dark";
+  /** 编辑器 vim 模式（顶栏开关，默认关） */
+  vimMode?: boolean;
+}) {
   const { index, error, reload } = useDatasetIndex();
   const [idx, setIdx] = useState(0);
   const [edits, setEdits] = useState<Record<number, string>>({});
@@ -742,6 +749,7 @@ export function DatasetView({ editorTheme = "light" }: { editorTheme?: "light" |
                   onCursor={setCursor}
                   requestCursor={requestCursor}
                   onFormat={formatText}
+                  vimMode={vimMode}
                 />
               ) : (
                 <div className="text-muted-foreground flex h-full items-center justify-center text-sm">

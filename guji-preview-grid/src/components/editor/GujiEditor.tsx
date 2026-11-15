@@ -1,11 +1,18 @@
-// 左侧 .gj 编辑器：CodeMirror 6 + Guji 语法高亮
+// 左侧 .gj 编辑器：CodeMirror 6 + Guji 语法高亮（可选 vim 双模态）
 import { useEffect, useRef } from "react";
 import CodeMirror from "@uiw/react-codemirror";
 import { EditorView, keymap } from "@codemirror/view";
 import { syntaxHighlighting } from "@codemirror/language";
+import { vim } from "@replit/codemirror-vim";
 import { gujiHighlight, gujiLanguage } from "./guji-language";
 import { gujiKeymap } from "./keymap";
 import { gujiLargeCharDecoration } from "./large-char-decoration";
+
+const BASIC_SETUP = { highlightActiveLine: true, foldGutter: false } as const;
+// 模块级常量：vim() 的返回各段（插件 spec/主题/面板）皆为包内模块级常量，
+// 调用只是组装——@uiw 每渲染对 extensions 整树 reconfigure 时，CM6 按 spec
+// 身份 diff 保活 ViewPlugin 实例，vim 模态/寄存器等状态不会被打回 normal。
+const VIM = vim({ status: true });
 
 export function GujiEditor({
   value,
@@ -14,6 +21,7 @@ export function GujiEditor({
   onCursor,
   requestCursor,
   onFormat,
+  vimMode = false,
 }: {
   value: string;
   onChange: (value: string) => void;
@@ -25,6 +33,8 @@ export function GujiEditor({
   requestCursor?: number | null;
   /** Ctrl-Alt-F 格式化（父级实现：归一 + 保存） */
   onFormat?: () => void;
+  /** vim 模式（normal/insert 双模态，normal 为初始模态）；默认关 */
+  vimMode?: boolean;
 }) {
   const viewRef = useRef<EditorView | null>(null);
 
@@ -46,6 +56,9 @@ export function GujiEditor({
       onChange={onChange}
       theme={theme}
       extensions={[
+        // vim 置于其余 keymap 之前（README 建议）；emacs/Alt 键位在 normal 模态
+        // 让位（见 keymap.ts），insert 模态照常生效
+        ...(vimMode ? [VIM] : []),
         gujiKeymap,
         // Ctrl-Alt-F 格式化（每渲染重建闭包取最新 onFormat，与 extensions 现状一致）
         keymap.of([
@@ -72,10 +85,7 @@ export function GujiEditor({
       }}
       height="100%"
       className="h-full"
-      basicSetup={{
-        highlightActiveLine: true,
-        foldGutter: false,
-      }}
+      basicSetup={BASIC_SETUP}
     />
   );
 }

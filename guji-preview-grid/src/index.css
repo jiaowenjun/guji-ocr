@@ -240,3 +240,19 @@
 .cm-editor.cm-focused {
   outline: none;
 }
+
+/* vim 状态面板（@replit/codemirror-vim status:true）：底部 -- NORMAL --/-- INSERT --
+   徽标（首 span）+ 待决键/命令回显，融入应用令牌配色 */
+.cm-editor .cm-panels.cm-panels-bottom .cm-vim-panel {
+  padding: 2px 10px;
+  font-size: 12px;
+  border-top: 1px solid var(--border);
+  color: var(--muted-foreground); /* 待决键回显弱化 */
+  background: var(--background);
+  gap: 8px;
+}
+/* 模态徽标（-- NORMAL --/-- INSERT --，面板首元素 span）稍强调 */
+.cm-editor .cm-vim-panel > span:first-child {
+  color: var(--foreground);
+  font-weight: 600;
+}
