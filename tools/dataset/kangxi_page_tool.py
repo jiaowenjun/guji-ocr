@@ -90,19 +90,11 @@ def _log_ts(marker: str) -> None:
         pass
 
 
-def run_fetch(script: str, page: int, label: str) -> str:
-    """复用既有爬取 CLI 增量补数据（库里有则零网络）。
+def _fetch_summary(last: str, label: str) -> str:
+    """fetch 脚本末行输出 → 一句带 label 的人话摘要（纯函数）。
 
     末行是全库 stats JSON（两个 fetch 脚本打印同一份），原样入 summaries 会让
-    前端状态栏出现两段重复长 JSON——转为一句带 label 的人话摘要。
-    """
-    r = subprocess.run(
-        [sys.executable, str(CRAWL / script), "--pages", str(page)],
-        capture_output=True, text=True, timeout=600,
-    )
-    if r.returncode != 0:
-        raise RuntimeError(f"{script} 退出码 {r.returncode}\n{r.stdout}\n{r.stderr}")
-    last = (r.stdout or r.stderr).strip().splitlines()[-1] if (r.stdout or r.stderr) else ""
+    前端状态栏出现两段重复长 JSON。"""
     try:
         stats = json.loads(last)
     except ValueError:
@@ -112,12 +104,106 @@ def run_fetch(script: str, page: int, label: str) -> str:
     return f"{label}：{last[:80]}" if last else f"{label}：完成"
 
 
+def run_fetch(script: str, page: int, label: str) -> str:
+    """复用既有爬取 CLI 增量补数据（库里有则零网络）；摘要转换在 _fetch_summary。"""
+    r = subprocess.run(
+        [sys.executable, str(CRAWL / script), "--pages", str(page)],
+        capture_output=True, text=True, timeout=600,
+    )
+    if r.returncode != 0:
+        raise RuntimeError(f"{script} 退出码 {r.returncode}\n{r.stdout}\n{r.stderr}")
+    last = (r.stdout or r.stderr).strip().splitlines()[-1] if (r.stdout or r.stderr) else ""
+    return _fetch_summary(last, label)
+
+
 PUNCT_STRIP = "。，·\"：:、；《》【】*　 \t\n\r"
 
 
 def _norm(text: str) -> str:
     """清洗为匹配口径：去标点/空白/书名括号（与 .gj 词法的剔除集一致）。"""
     return "".join(ch for ch in text if ch not in PUNCT_STRIP)
+
+
+def find_host_marks(raw_text: str) -> list[tuple[str, int]]:
+    """文本 → 主字头标记序列 [(主字头, 尾部起点)]，纯解析（宿主判定由调用方查库）。
+
+    字头行的两种实存格式都要认（@313–336 实测混用）：
+      行内式 #(注)#頭古文#變1#變2（如 @331「#(三)#中古文#𠁧#𠁩」）
+      独占式 #頭古文 一行、变体各自成 #行（如 @313 丁/𠆤）
+    糖写法（2026-11-14 语法扩展）同样要认：簇内 token 的 # 可省——
+      #(三)丹，古文：𠁿㣋 / #(五)(增)𠂂。圈注前缀随字头一并匹配
+      （#(?:圈)*頭）；裸字头连写（#丶宔 ≡ #丶#宔）头部串延伸、宿主取
+      串末字；裸字变体不产生 # 标记，天然不是宿主候选。
+    古文变体不是宿主候选（@331 #𠁩 自带详情曾被误选为宿主致锚定失败）：
+    上一标记到本标记之间只有「古文」或空白（变体链）即判变体；紧贴本
+    字头的 #(注) 前缀（(增)/(二)/(三)…）先剥掉再判。
+    """
+    _circ = r"\([^)#\n]{1,2}\)?"
+    # 糖裸字头连写（#丶宔 ≡ #丶#宔）：头部串延伸到首个非内容字符，宿主取
+    # 串末字。「古」截断——是「古文」标记首字/跨行半个标记（#下古↵文#丅）
+    _bare = r"[^\s#【】()（）、。，：；！？·,.!?;\"'《》*◎〇○古a-zA-Z0-9]"
+    marks = list(re.finditer(rf"#(?:{_circ})*([^#()\s【□])", raw_text))
+    heads: list[tuple[str, int]] = []  # (主字头, 尾部起点)
+    guwen_open = False  # 上一主字头带「古文」，紧随的 # 段是变体链
+    for i, m in enumerate(marks):
+        seg = raw_text[marks[i - 1].end() if i else 0: m.start()]
+        seg = re.sub(r"\s*#\([^)]*\)\s*$", "", seg)  # 剥紧贴的 #(注)
+        seg_cmp = re.sub(r"\s+", "", seg)  # 竖排会把「古文」拆成两行（@320 不）
+        if guwen_open and re.fullmatch(r"[、，,]*", seg_cmp):
+            continue  # 变体链上的 #段（#𠁧#𠁩 / #𠀚、#𠙐 / 独占式 #𠆤 行）
+        if re.fullmatch(r"古文[：:]?", seg_cmp):
+            guwen_open = True
+            continue  # 「#頭古文(：)」后的首个变体
+        head, end = m.group(1), m.end()
+        ext = re.match(rf"{_bare}+", raw_text[end:])
+        if ext:
+            head, end = ext.group(0)[-1], end + len(ext.group(0))
+        # 糖写法标记可带「，」前缀（#(三)丹，古文：…）
+        guwen_open = re.match(r"[，\s]*古文", raw_text[end:]) is not None
+        heads.append((head, end))
+    return heads
+
+
+GUWEN_PREFIX_RE = re.compile(
+    r"^[，\s]*古\s*文[\s：:、，,]*"
+    r"(?:#[^#\s【(，。][\s：:、，,]*|(?<=\S)[^#\s【(，。][：:、，]*){1,6}"
+)
+
+
+def strip_guwen_prefix(tail_raw: str) -> str:
+    """剥尾部的「古文#变体…」前缀：变体字头是词条页元数据，不在释义段文本内。
+
+    兼容实存格式全家（@312–336 实测）：行内 顿号分隔（古文#丄、#𠄞）、
+    冒号（古文：#𠀇、#𠀃）、变体独占成行（古文\n#𠆤）、竖排把「古文」
+    拆成两行（古\n文\n#𠀚、#𠙐）——旧正则逐一失配致锚定失败。
+    糖写法（2026-11-14）：标记前可带「，」、变体的 # 可省（，古文：𠁿㣋）。
+    裸字变体须紧跟非空白（同行紧贴，不跨行）——与释义首字区分；# 式变体
+    仍可跨行（古文\n#𠆤）；变体字符类排除句读（，。）防误吞释义
+    """
+    return GUWEN_PREFIX_RE.sub("", tail_raw)
+
+
+def locate_tail(entry_n: str, tail_n: str) -> tuple[int | None, str]:
+    """续入锚定：尾部前缀锚定 + 容差对齐。返回 (库文坐标末界, "") 或
+    (None, 原因)，原因 ∈ {"anchor"} | {"coverage 覆盖/总长"} | {"fully"}——
+    前页可能有个别校订增删（如站点文本少一字），整串子串匹配会整体失败，
+    故先按 24→8 字递减锚定再 SequenceMatcher 容差（覆盖率 ≥0.9）。"""
+    anchor = -1
+    for k in range(min(len(tail_n), 24), 7, -1):
+        anchor = entry_n.find(tail_n[:k])
+        if anchor >= 0:
+            break
+    if anchor < 0:
+        return None, "anchor"
+    sm = difflib.SequenceMatcher(None, entry_n, tail_n, autojunk=False)
+    blocks = [b for b in sm.get_matching_blocks() if b.size > 0]
+    covered = sum(b.size for b in blocks)
+    if covered / len(tail_n) < 0.9:
+        return None, f"coverage {covered}/{len(tail_n)}"
+    end = max(b.a + b.size for b in blocks)
+    if end >= len(entry_n):
+        return None, "fully"
+    return end, ""
 
 
 def continuation_from_prev(
@@ -136,55 +222,21 @@ def continuation_from_prev(
     本页行首的孤儿】延续渲染为上开口（无需跨文件机制）。
     """
     info = {"prev_page": page - 1, "head": None, "paragraphs": 0, "skipped": None}
-    prev_gj = ANNOTATIONS / f"{page - 1:04d}.gj"
-    if not prev_gj.exists():
+    raw_prev = page_gj(page - 1)
+    if raw_prev is None:
         info["skipped"] = f"前页 {page - 1} 不在数据集"
         return [], info
 
     def host_in(raw_text: str):
         """在单页文本中找最后一个有库内详情的主字头；返回 (head, detail, tail_raw)。
-
-        字头行的两种实存格式都要认（@313–336 实测混用）：
-          行内式 #(注)#頭古文#變1#變2（如 @331「#(三)#中古文#𠁧#𠁩」）
-          独占式 #頭古文 一行、变体各自成 #行（如 @313 丁/𠆤）
-        糖写法（2026-11-14 语法扩展）同样要认：簇内 token 的 # 可省——
-          #(三)丹，古文：𠁿㣋 / #(五)(增)𠂂。圈注前缀随字头一并匹配
-          （#(?:圈)*頭）；裸字头连写（#丶宔 ≡ #丶#宔）头部串延伸、宿主取
-          串末字；裸字变体不产生 # 标记，天然不是宿主候选。
-        古文变体不是宿主候选（@331 #𠁩 自带详情曾被误选为宿主致锚定失败）：
-        上一标记到本标记之间只有「古文」或空白（变体链）即判变体；紧贴本
-        字头的 #(注) 前缀（(增)/(二)/(三)…）先剥掉再判。
-        """
-        _circ = r"\([^)#\n]{1,2}\)?"
-        # 糖裸字头连写（#丶宔 ≡ #丶#宔）：头部串延伸到首个非内容字符，宿主取
-        # 串末字。「古」截断——是「古文」标记首字/跨行半个标记（#下古↵文#丅）
-        _bare = r"[^\s#【】()（）、。，：；！？·,.!?;\"'《》*◎〇○古a-zA-Z0-9]"
-        marks = list(re.finditer(rf"#(?:{_circ})*([^#()\s【□])", raw_text))
-        heads: list[tuple[str, int]] = []  # (主字头, 尾部起点)
-        guwen_open = False  # 上一主字头带「古文」，紧随的 # 段是变体链
-        for i, m in enumerate(marks):
-            seg = raw_text[marks[i - 1].end() if i else 0: m.start()]
-            seg = re.sub(r"\s*#\([^)]*\)\s*$", "", seg)  # 剥紧贴的 #(注)
-            seg_cmp = re.sub(r"\s+", "", seg)  # 竖排会把「古文」拆成两行（@320 不）
-            if guwen_open and re.fullmatch(r"[、，,]*", seg_cmp):
-                continue  # 变体链上的 #段（#𠁧#𠁩 / #𠀚、#𠙐 / 独占式 #𠆤 行）
-            if re.fullmatch(r"古文[：:]?", seg_cmp):
-                guwen_open = True
-                continue  # 「#頭古文(：)」后的首个变体
-            head, end = m.group(1), m.end()
-            ext = re.match(rf"{_bare}+", raw_text[end:])
-            if ext:
-                head, end = ext.group(0)[-1], end + len(ext.group(0))
-            # 糖写法标记可带「，」前缀（#(三)丹，古文：…）
-            guwen_open = re.match(r"[，\s]*古文", raw_text[end:]) is not None
-            heads.append((head, end))
-        for cand, end in reversed(heads):
+        标记解析走 find_host_marks（纯），库内详情查询在此（I/O）。"""
+        for cand, end in reversed(find_host_marks(raw_text)):
             e = entry_detail(ord(cand), store) if len(cand) == 1 else None
             if e is not None:
                 return cand, e, raw_text[end:]
         return None, None, ""
 
-    raw = prev_gj.read_text(encoding="utf-8")
+    raw = raw_prev
     head, detail, tail_raw = host_in(raw)
     info["host_page"] = page - 1
     if detail is None:
@@ -212,19 +264,7 @@ def continuation_from_prev(
         info["skipped"] = "前页字头在库中均无详情"
         return [], info
     info["head"] = head
-    # 剥离尾部的「古文#变体…」前缀：变体字头是词条页元数据，不在释义段文本内。
-    # 兼容实存格式全家（@312–336 实测）：行内 顿号分隔（古文#丄、#𠄞）、
-    # 冒号（古文：#𠀇、#𠀃）、变体独占成行（古文\n#𠆤）、竖排把「古文」
-    # 拆成两行（古\n文\n#𠀚、#𠙐）——旧正则逐一失配致锚定失败。
-    # 糖写法（2026-11-14）：标记前可带「，」、变体的 # 可省（，古文：𠁿㣋）。
-    # 裸字变体须紧跟非空白（同行紧贴，不跨行）——与释义首字区分；# 式变体
-    # 仍可跨行（古文\n#𠆤）；变体字符类排除句读（，。）防误吞释义
-    tail_raw = re.sub(
-        r"^[，\s]*古\s*文[\s：:、，,]*"
-        r"(?:#[^#\s【(，。][\s：:、，,]*|(?<=\S)[^#\s【(，。][：:、，]*){1,6}",
-        "",
-        tail_raw,
-    )
+    tail_raw = strip_guwen_prefix(tail_raw)
     # 剥离注释行（伴随字形/归并来源等工具注释不是页面文本，混进尾部会让
     # 锚点在库内段落中找不到起点——@340 读 @339 丹条尾巴实测踩坑）
     tail_raw = "\n".join(
@@ -251,32 +291,20 @@ def continuation_from_prev(
                 idx_map.append((pi, ci))
     entry_n = "".join(norm_chars)
 
-    # 定位：先锚定（尾部前缀在库文中找起点），再容差对齐到尾串末尾——
-    # 前页可能有个别校订增删（如站点文本少一字），整串子串匹配会整体失败
-    anchor = -1
-    for k in range(min(len(tail_n), 24), 7, -1):
-        anchor = entry_n.find(tail_n[:k])
-        if anchor >= 0:
-            break
-    if anchor < 0:
-        info["skipped"] = "前页尾部与库内段落不匹配（可能已大幅校订），未自动续入"
-        return [], info
-    sm = difflib.SequenceMatcher(None, entry_n, tail_n, autojunk=False)
-    blocks = [b for b in sm.get_matching_blocks() if b.size > 0]
-    covered = sum(b.size for b in blocks)
-    if covered / len(tail_n) < 0.9:
-        info["skipped"] = (
-            f"前页尾部与库内段落对齐覆盖率 {covered}/{len(tail_n)} 过低，未自动续入"
-        )
-        return [], info
-    end = max(b.a + b.size for b in blocks)
-    if end >= len(entry_n):
-        info["skipped"] = (
-            f"前页 {page - 1} 的 .gj 已完整收录字头「{head}」全部 {len(paragraphs)} 段"
-            f"（前页添加时 OCR 不可用未做页尾裁剪）——请先在校对中把前页裁剪到"
-            f"其物理页界，再添加本页，余段将自动续入"
-        )
-        info["fully_included"] = True
+    # 定位：先锚定（尾部前缀在库文中找起点），再容差对齐到尾串末尾（locate_tail）
+    end, why = locate_tail(entry_n, tail_n)
+    if end is None:
+        if why == "anchor":
+            info["skipped"] = "前页尾部与库内段落不匹配（可能已大幅校订），未自动续入"
+        elif why.startswith("coverage"):
+            info["skipped"] = f"前页尾部与库内段落对齐覆盖率 {why.partition(' ')[2]} 过低，未自动续入"
+        else:  # fully：前页已收全，余段为空
+            info["skipped"] = (
+                f"前页 {page - 1} 的 .gj 已完整收录字头「{head}」全部 {len(paragraphs)} 段"
+                f"（前页添加时 OCR 不可用未做页尾裁剪）——请先在校对中把前页裁剪到"
+                f"其物理页界，再添加本页，余段将自动续入"
+            )
+            info["fully_included"] = True
         return [], info
     pi0, ci0 = idx_map[end]
     out: list[str] = []
@@ -286,6 +314,74 @@ def continuation_from_prev(
     out.extend(paragraphs[pi0 + 1:])
     info["paragraphs"] = len(out)
     return out, info
+
+
+def page_gj(page: int) -> str | None:
+    """给定页码 → 该页 .gj 原文（金标标注，人工校订后的真值）；未入库返回 None。
+
+    数据集页的语义真值以本文件为准（page_heads 是站点爬取的原始索引）。"""
+    gj = ANNOTATIONS / f"{page:04d}.gj"
+    return gj.read_text(encoding="utf-8") if gj.exists() else None
+
+
+def parse_gj_bands(raw: str) -> tuple[list[str], list[list[str]]]:
+    """ .gj 原文 → (头部行（注释 + @页码 行）, 大列带列表)（纯函数）。
+
+    空行分隔 = 大列带（regroup 后的语义）；带内连续非空行 = 折叠小行。
+    cmd_ocr_fold 与基准/评估脚本共用的解析口径。"""
+    lines = raw.splitlines()
+    head: list[str] = []
+    body_start = 0
+    for i, l in enumerate(lines):
+        head.append(l)
+        if l.strip().startswith("@"):
+            body_start = i + 1
+            break
+    bands: list[list[str]] = []
+    cur: list[str] = []
+    for l in lines[body_start:]:
+        if l.strip():
+            cur.append(l)
+        elif cur:
+            bands.append(cur)
+            cur = []
+    if cur:
+        bands.append(cur)
+    return head, bands
+
+
+def page_prefetch_state(page: int, store: kangxi_store.KangxiStore | None = None) -> dict:
+    """给定页码 → 预取四步现状（只读，不抓取）：fetch/entries/ocr/svg。
+
+    与 _prefetch_pipeline 四步一一对应，调试视图与 prefetch-status 子命令
+    共用。svg 口径 = codepoint 为空的未编码字形（与回补 scope 同口径）。"""
+    s = store or kangxi_store.KangxiStore()
+    missing = s.page_missing(page, ("reading", "scan"))
+    chars = page_heads(page, s)
+    miss_entries = s.coded_chars_missing_entries(page)
+    ocr = _ocr_cache_meta(page, _page_sha(page, s))
+    wanted = [c["svg"] for c in chars if c["codepoint"] is None and c.get("svg")]
+    have = sum(1 for rel in wanted if (paths.RAW_KANGXI_SVG / rel).is_file())
+    ocr_detail = {
+        "valid": f"缓存有效（{ocr['chars']} 字，{ocr['fetched_at']}）",
+        "stale": f"缓存失效（图已变或无图可比对，{ocr['chars']} 字）",
+        "none": "无 OCR 缓存（需预取或启动服务现算）",
+    }[ocr["state"]]
+    return {
+        "page": page,
+        "steps": {
+            "fetch": {"ok": not missing,
+                      "detail": "阅读页+原图齐全" if not missing else f"缺 {sorted(missing)}"},
+            "entries": {"ok": not miss_entries,
+                        "detail": (f"字头 {len(chars)}，缺详情 {len(miss_entries)}"
+                                   + (f"（{''.join(miss_entries[:8])}…）" if miss_entries else ""))},
+            "ocr": {"ok": ocr["state"] == "valid", "detail": ocr_detail},
+            "svg": {"ok": have == len(wanted),
+                    "detail": (f"未编码字形 svg {have}/{len(wanted)}" if wanted
+                               else "本页无未编码字形")},
+        },
+        "ocr": ocr,
+    }
 
 
 _OCR_CACHE: dict[int, str] = {}
@@ -671,14 +767,13 @@ def _tail_stats(blocks: list, e: int, window: int = _TAIL_WINDOW) -> tuple[int, 
     return m, e - lo, run
 
 
-def ocr_page_cut(
-    page: int, text: str, store: kangxi_store.KangxiStore, full_page: bool = False
-) -> tuple[int | None, int, str]:
-    """OCR 对齐求本页物理末界：返回 (裁点, 候选归一化长度, 说明)。
+def _align_cut(cand_n: str, ocr_n: str, full_page: bool = False) -> tuple[int | None, str]:
+    """归一化双串对齐求裁点（纯函数）：返回 (裁点, 回缩说明) 或 (None, 拒绝原因)。
 
-    裁点是候选文本归一化坐标里页面的最后一字位置；None = 不可信/不可用，
-    调用方不应裁剪。文本始终以库内转写为准，OCR 只作范围标尺（全量测试：
-    21 页 micro-CER 5.65%；干净链路 @332→333 裁剪与人工初校差 1 字）。
+    裁点是候选坐标里页面的最后一字位置。门槛按「裁点前区域」判信而非
+    OCR 全长：页面含新字头时匹配数天然小于 OCR 全文（334：候选末段 375
+    字，页面上只有前 ~79 字）。要求裁点区域至少 20 字且其中过半是真实
+    匹配（连续性证据），否则放弃裁剪回退全量。
     full_page=True 用于整页草稿候选（含溢出到下页的全量词条）：此时候选天然
     大于页面，判信改按 OCR 侧——页面文本须过半被候选解释（@334 实测：候选
     961 字仅 ~270 字在页上，按候选侧判信会误拒正确裁点 924）。
@@ -691,15 +786,6 @@ def ocr_page_cut(
     （末端连续匹配 ≥2）」的块尾作裁点；全部不达标 → 不可信不裁。好页实测
     末窗密度 0.83–1.00 且以 ≥2 连续块收尾，不受影响。
     """
-    md_text = _ocr_markdown(page, store)
-    cand_n = _norm(text)
-    if md_text is None:
-        return None, len(cand_n), "OCR 不可用"
-    ocr_n = _norm("".join(_ocr_groups(md_text)))
-    if not ocr_n:
-        return None, len(cand_n), "OCR 无文本输出"
-    if not cand_n:
-        return None, 0, "候选文本为空"
     sm = difflib.SequenceMatcher(None, cand_n, ocr_n, autojunk=False)
     blocks = [b for b in sm.get_matching_blocks() if b.size > 0]
     cover = sum(b.size for b in blocks)
@@ -712,18 +798,39 @@ def ocr_page_cut(
             end = e
             break
     else:
-        return None, len(cand_n), "对齐不可信（末段匹配稀疏）"
+        return None, "对齐不可信（末段匹配稀疏）"
     if end < end0:
         why_tail = f"，末段判信回缩 {end0 - end} 字"
-    # 门槛按「裁点前区域」判信而非 OCR 全长：页面含新字头时匹配数天然小于
-    # OCR 全文（334：候选末段 375 字，页面上只有前 ~79 字）。要求裁点区域
-    # 至少 20 字且其中过半是真实匹配（连续性证据），否则放弃裁剪回退全量
     if end < 20:
-        return None, len(cand_n), f"对齐不可信（裁点 {end} 字过短）"
+        return None, f"对齐不可信（裁点 {end} 字过短）"
     span = len(ocr_n) if full_page else end
     if cover < span * 0.5:
-        return None, len(cand_n), f"对齐不可信（页面 {span} 字中匹配 {cover}）"
-    return end, len(cand_n), why_tail
+        return None, f"对齐不可信（页面 {span} 字中匹配 {cover}）"
+    return end, why_tail
+
+
+def ocr_page_cut(
+    page: int, text: str, store: kangxi_store.KangxiStore, full_page: bool = False
+) -> tuple[int | None, int, str]:
+    """OCR 对齐求本页物理末界：返回 (裁点, 候选归一化长度, 说明)。
+
+    裁点是候选文本归一化坐标里页面的最后一字位置；None = 不可信/不可用，
+    调用方不应裁剪。文本始终以库内转写为准，OCR 只作范围标尺（全量测试：
+    21 页 micro-CER 5.65%；干净链路 @332→333 裁剪与人工初校差 1 字）。
+    判信规则见 _align_cut。"""
+    md_text = _ocr_markdown(page, store)
+    cand_n = _norm(text)
+    if md_text is None:
+        return None, len(cand_n), "OCR 不可用"
+    ocr_n = _norm("".join(_ocr_groups(md_text)))
+    if not ocr_n:
+        return None, len(cand_n), "OCR 无文本输出"
+    if not cand_n:
+        return None, 0, "候选文本为空"
+    end, why = _align_cut(cand_n, ocr_n, full_page)
+    if end is None:
+        return None, len(cand_n), why
+    return end, len(cand_n), why
 
 
 _OPEN_BRACKETS = "【《"
@@ -792,127 +899,82 @@ def ocr_trim_continuation(
     return ocr_trim_to_page(page, continuation, store, what="续文")
 
 
-def ocr_fold_page_lines(page: int, bands: list[list[str]], store: kangxi_store.KangxiStore) -> tuple[list[list[str]], str]:
-    """按 OCR 行组在草稿大行内插入折行（小行换行）。
+def _flatten_band(band: list[str]) -> str:
+    """大行压平为单串（重折幂等的第一步）。
 
-    行组界即物理行界：25 页初校真值对照（2026-11-14）组界 91.5% 为真行界，
-    短行组（书名堆叠「廣韻集/韻韻會」逐行、短行接书证）同样是真实断行，
-    不做短片段合并（原 <8 合并规则误删 63% 真界，详见下方实测注释）。
-    安全性：只插入换行、不改任何字符——最坏情况折点偏移 1-2 字或过分裂
-    多折一处，对照页中即刻可见、拖动即可；库内转写文本永不因折行改动。
+    含 // 注释行的大行保持原样（换行连接——行内注释截断语义不能被并入
+    单行）；普通行只剥半角空白拼接——全角空格 U+3000 是内容字符（空字格
+    ≡*），@312 老样式行尾「入聲。　/【說文】」经 strip 丢字实测（331→330）。
     """
-    md_text = _ocr_markdown(page, store)
-    if md_text is None:
-        return bands, "OCR 不可用，未折行"
-    groups = _ocr_groups(md_text)
-    if len(groups) < 2:
-        return bands, "OCR 行组不足，未折行"
-    ocr_n = _norm("".join(groups))
-    if not ocr_n:
-        return bands, "OCR 无文本，未折行"
+    if any("//" in l for l in band):
+        return "\n".join(band)
+    return "".join(l.strip(" \t") for l in band)
 
-    # 全页草稿文本（按 band 拼接）与 OCR 对齐；fold 边界 = OCR 组界映射到草稿。
-    # 输入大行先压平：旧折行换行不再泄漏进新片段（重折幂等；含 // 注释行的
-    # 大行保持原样——行内注释截断语义不能被并入单行）
-    def _flatten(band: list[str]) -> str:
-        if any("//" in l for l in band):
-            return "\n".join(band)
-        # 只剥半角空白：全角空格 U+3000 是内容字符（空字格 ≡*），
-        # @312 老样式行尾「入聲。　/【說文】」经 strip 丢字实测（331→330）
-        return "".join(l.strip(" \t") for l in band)
 
-    full = "\u0001".join(_flatten(b) for b in bands)
-    # 结构大行（字头行 # / 注释行 //）不可被折行打断：折点落其内则整点丢弃
-    # ——少折一处可见可补，拆断字头行/注释行则破坏语义（@339 丹字头行实测
-    # 被 OCR 变体字形组界拆成 #\n丹\n古文\n#𠁿#㣋#𠕑）。字头簇在页面上是
-    # 一列，人工校对惯例也是整行不折。
-    # 行级保护（与分带布局无关）：任何 # / // 起始的行保护其自身跨度。
-    # 旧的「带首行 # → 整带保护」对分带布局敏感——同一字符内容在
-    # 「字头行居带中」时无保护（一击拆成 #丁/古文/#𠆤…），regroup 把
-    # 字头行挪到带首后又有保护（二击并回）→ 按钮不幂等、行数逐击递减
-    # （@313 实测 17→15；全库 12/28 页不收敛）。
+def _structural_spans(bands: list[list[str]]) -> list[tuple[int, int]]:
+    """结构行（# / // 起始）在 \\u0001 拼接文本中的保护区间（纯函数）。
+
+    行级保护（与分带布局无关）：任何 # / // 起始的行保护其自身跨度。
+    字头行/注释行不可被折行打断——@339 丹字头行实测被 OCR 变体字形组界
+    拆成 #\\n丹\\n古文\\n#𠁿#㣋#𠕑。旧的「带首行 # → 整带保护」对分带布局
+    敏感（regroup 前后保护忽有忽无 → 不幂等，@313 实测 17→15 逐击递减）。
+    """
     structural: list[tuple[int, int]] = []
-    _pos = 0
+    pos = 0
     for b in bands:
-        _fb = _flatten(b)
-        _has_comment = any("//" in l for l in b)
-        _off = 0
+        fb = _flatten_band(b)
+        has_comment = any("//" in l for l in b)
+        off = 0
         for l in b:
-            _ls = l.lstrip(" \t")
-            if _ls.startswith("#") or _ls.startswith("//"):
-                structural.append((_pos + _off, _pos + _off + len(_ls)))
-            _off += len(_ls) + (1 if _has_comment else 0)
-        _pos += len(_fb) + 1  # \u0001 分隔符
+            ls = l.lstrip(" \t")
+            if ls.startswith("#") or ls.startswith("//"):
+                structural.append((pos + off, pos + off + len(ls)))
+            off += len(ls) + (1 if has_comment else 0)
+        pos += len(fb) + 1  # \u0001 分隔符
+    return structural
 
-    def _structural_at(i: int) -> bool:
-        # 只挡结构行内部（s < i < e）：i == s（头的首字符）放行——把字头行
-        # 与前行分开不破坏头本身；若连起点都挡，字头行会与前行融合成
-        # 「…正文。#丁古文」，该行不再以 # 起始 → 下一击失去保护被拆开
-        # → 周期 2 振荡（@313 实测 16→18→16 行）。
-        return any(s < i < e for s, e in structural)
 
-    # 对齐空间剔除 \u0001 带界符：它永远匹配不上 OCR 文本，只会把匹配块
-    # 打碎；且其数量随分带布局变化（regroup 后带界移动）→ 同一字符内容
-    # 的折点映射随布局漂移 → 按钮不幂等（@313 实测周期 2 摆动 16→18→16）。
-    # 下方折点游标同样跳过 \u0001 不计数。
-    full_n = "".join(ch for ch in full if ch not in PUNCT_STRIP and ch != "\u0001")
-    sm = difflib.SequenceMatcher(None, full_n, ocr_n, autojunk=False)
-    blocks = [b for b in sm.get_matching_blocks() if b.size > 0]
-    cover = sum(b.size for b in blocks)
-    # 判信两侧过半。重尾溢出页（全量词条未裁/裁剪回退）full_n 远大于页面，
-    # 草稿侧按「页内可比长度」衡量（取两者较小者），页面侧仍须过半——
-    # 否则 @334 类页面（候选 961 字仅 ~270 字在页）永远折不了行
-    if cover < len(ocr_n) * 0.5 or cover < min(len(full_n), len(ocr_n)) * 0.5:
-        return bands, f"OCR 与草稿对齐不可信（{cover} 字匹配），未折行"
+def _map_group_offsets(blocks: list, ocr_off: list[int]) -> list[int]:
+    """OCR 组界（归一化偏移）经匹配块反向映射到草稿归一化坐标（纯函数）。
 
-    # OCR 组界（归一化偏移）→ 草稿归一化坐标（经匹配块反向映射）
-    ocr_off, acc = [], 0
-    for g in groups[:-1]:
-        acc += len(_norm(g))
-        ocr_off.append(acc)
-    full_positions = []
+    组界落在块间隙（无块覆盖）时该组界被丢弃。"""
+    positions = []
     for o in ocr_off:
-        pos = None
         for b in blocks:
             if b.b <= o <= b.b + b.size:
-                pos = b.a + (o - b.b)
+                positions.append(b.a + (o - b.b))
                 break
-        if pos is not None:
-            full_positions.append(pos)
-    if not full_positions:
-        return bands, "OCR 组界无法映射，未折行"
+    return positions
 
-    # 不做短片段合并。原 <8 合并规则的实测（25 页初校真值对照，2026-11-14）：
-    # 被删组界 213 个中 135 个（63%）是真行界——书名堆叠（廣韻集/韻韻會逐行）、
-    # 短行接书证（。【說文】|）等都是真实物理短行；真正的过分裂集中在个别页
-    # （@320 样式）。OCR-VL 行组本身 91.5% 可信，过分裂折点保留在稿中可见即删
-    # （本函数只插换行、永不改字，误折删除无风险，漏折补行才是隐性成本）。
-    merged = full_positions
 
-    buf_lines: list[str] = []
-    kept = 0
-    cut_set = set()
-    pos_in_full = 0
-    # 重新走 full 原文（含 \u0001 与换行），把 merged 折点（归一化序号）转为原文切点。
-    # 折点先去重：OCR 侧相邻组界间有误读缺口（b 侧 gap）而草稿侧连续（a 侧
-    # 相邻块）时，两个组界经匹配块反向映射坍缩到同一位点（@334 实测 24 个
-    # 映射组界含 2 组重复）——下方等值游标在重复位点后永不前进，其后折点
-    # 全部静默丢失（整页只插 2 处、应插 20+，eval_ocr_fold_replay 抓到）
+def _apply_folds(full: str, cut_norm: list[int], structural: list[tuple[int, int]]) -> list[str] | None:
+    """折点游标切分拼接原文（纯函数）：返回 pieces；折点全未生效返回 None。
+
+    规则（实测踩坑逐条入档）：
+    - \\u0001 带界与 PUNCT_STRIP 字符不计归一化序号（对齐空间已剔除）
+    - 结构行内部不折（整点丢弃——少折一处可见可补）；起点放行——把字头行
+      与前行分开不破坏头本身，若连起点都挡，字头行与前行融合后不再以 #
+      起始 → 下一击失去保护 → 周期 2 振荡（@313 实测 16→18→16 行）
+    - 括号贴字：切点落在【】剥离带内侧时外移——带内含【则移到最左【之前
+      （开书名号随下文起行），含】则移到最右】之后（闭书名号随上文收尾）；
+      普通句读仍留行尾
+    - 折点须先去重：OCR 组界经反向映射可坍缩到同一位点（@334 实测 24 个
+      映射组界含 2 组重复），等值游标在重复位点后永不前进 → 其后折点全部
+      静默丢失（整页只插 2 处、应插 20+）
+    """
+    def _structural_at(i: int) -> bool:
+        return any(s < i < e for s, e in structural)
+
     norm_idx = 0
     pieces: list[str] = []
     last = 0
-    cut_norm = sorted(set(merged))
+    cuts = sorted(set(cut_norm))
     ci = 0
     for i, ch in enumerate(full):
         if ch in PUNCT_STRIP or ch == "\u0001":
-            continue  # \u0001 不计入 norm 序号（对齐空间已剔除，见上）
-        if ci < len(cut_norm) and norm_idx == cut_norm[ci]:
-            # 结构行内不折（整点丢弃——少折一处可见可补，拆断字头行破坏语义）
+            continue
+        if ci < len(cuts) and norm_idx == cuts[ci]:
             if not _structural_at(i):
-                # 括号贴字：归一化剥掉【】，切点可能落在书名号内侧。判定须越过剥离带
-                # （句读/空格/旧折行换行）扫描：带内含【则 cut 移到最左【之前（开书名
-                # 号随下文起行），带内含】则 cut 移到最右】之后（闭书名号随上文收尾）；
-                # 只有书名号触发移动，普通句读仍留行尾。j 走剥离字符，不越 \u0001 带界。
                 cut = i
                 j = cut
                 while j < len(full) and full[j] in PUNCT_STRIP and full[j] != "【":
@@ -930,18 +992,117 @@ def ocr_fold_page_lines(page: int, bands: list[list[str]], store: kangxi_store.K
         norm_idx += 1
     pieces.append(full[last:])
     if len(pieces) <= 1:
-        return bands, "折点未落在草稿内，未折行"
-    # pieces 按原文切分；把 \u0001 分隔的 band 重组。空串带丢弃、带首尾换行
-    # 剥离：切点贴带界时 piece 尾部/首部携带裸 \u0001，与 pieces 的 \n 连接
-    # 叠加成空行带或带内前导空行（@339 注释带后双空行实测）
+        return None
+    return pieces
+
+
+def _rebuild_bands(pieces: list[str]) -> list[list[str]]:
+    """pieces 重组为 band 列表（纯函数）：\\u0001 分隔切带、空带丢弃、带首尾
+    换行剥离——切点贴带界时 piece 尾/首携带裸 \\u0001，与 \\n 连接叠加成空行
+    带或带内前导空行（@339 注释带后双空行实测）。"""
     flat = "\n".join(pieces)
-    result = [
+    return [
         b.strip("\n").split("\n")
         for b in flat.split("\u0001")
         if b.strip("\n")
     ]
+
+
+def ocr_fold_page_lines(page: int, bands: list[list[str]], store: kangxi_store.KangxiStore) -> tuple[list[list[str]], str]:
+    """按 OCR 行组在草稿大行内插入折行（小行换行）——编排层。
+
+    行组界即物理行界：25 页初校真值对照（2026-11-14）组界 91.5% 为真行界，
+    短行组（书名堆叠「廣韻集/韻韻會」逐行、短行接书证）同样是真实断行，
+    不做短片段合并（原 <8 合并规则误删 63% 真界——书名堆叠/短行接书证都
+    是真实物理短行；过分裂折点保留在稿中可见即删，误折删除无风险，漏折
+    补行才是隐性成本）。
+    安全性：只插入换行、不改任何字符——最坏情况折点偏移 1-2 字或过分裂
+    多折一处，对照页中即刻可见、拖动即可；库内转写文本永不因折行改动。
+    纯逻辑在 _flatten_band/_structural_spans/_map_group_offsets/_apply_folds/
+    _rebuild_bands（可单测），本函数只做 OCR 读取、对齐判信与组装。
+    """
+    md_text = _ocr_markdown(page, store)
+    if md_text is None:
+        return bands, "OCR 不可用，未折行"
+    groups = _ocr_groups(md_text)
+    if len(groups) < 2:
+        return bands, "OCR 行组不足，未折行"
+    ocr_n = _norm("".join(groups))
+    if not ocr_n:
+        return bands, "OCR 无文本，未折行"
+
+    full = "\u0001".join(_flatten_band(b) for b in bands)
+    structural = _structural_spans(bands)
+    # 对齐空间剔除 \u0001 带界符：它永远匹配不上 OCR 文本，只会把匹配块
+    # 打碎；且其数量随分带布局变化（regroup 后带界移动）→ 同一字符内容
+    # 的折点映射随布局漂移 → 按钮不幂等（@313 实测周期 2 摆动 16→18→16）。
+    full_n = "".join(ch for ch in full if ch not in PUNCT_STRIP and ch != "\u0001")
+    sm = difflib.SequenceMatcher(None, full_n, ocr_n, autojunk=False)
+    blocks = [b for b in sm.get_matching_blocks() if b.size > 0]
+    cover = sum(b.size for b in blocks)
+    # 判信两侧过半。重尾溢出页（全量词条未裁/裁剪回退）full_n 远大于页面，
+    # 草稿侧按「页内可比长度」衡量（取两者较小者），页面侧仍须过半——
+    # 否则 @334 类页面（候选 961 字仅 ~270 字在页）永远折不了行
+    if cover < len(ocr_n) * 0.5 or cover < min(len(full_n), len(ocr_n)) * 0.5:
+        return bands, f"OCR 与草稿对齐不可信（{cover} 字匹配），未折行"
+
+    ocr_off, acc = [], 0
+    for g in groups[:-1]:
+        acc += len(_norm(g))
+        ocr_off.append(acc)
+    full_positions = _map_group_offsets(blocks, ocr_off)
+    if not full_positions:
+        return bands, "OCR 组界无法映射，未折行"
+
+    pieces = _apply_folds(full, full_positions, structural)
+    if pieces is None:
+        return bands, "折点未落在草稿内，未折行"
+    result = _rebuild_bands(pieces)
     inserted = len(pieces) - 1
     return result, f"OCR 折行：插入 {inserted} 处换行"
+
+
+def _is_section_header(l: str) -> bool:
+    """部题行（## / ### / 「# 」带空格的卷部标题）——regroup 中永远独立成带。"""
+    ls = l.lstrip(" \t")
+    return ls.startswith("##") or ls.startswith("# ")
+
+
+def _regroup_body(body: list[str], line_major: dict[int, int]) -> list[list[str]]:
+    """按行→大列归属重组带（纯函数）。body = 展平的非空行序列；
+    line_major = 正文行序号 → 大列号（// 注释与部题行不在其中）。
+
+    规则：// 注释行不参与分配但必须保留（附着到其前一个正文行所在的大列
+    带）——早期版本直接丢弃会破坏字符流（草稿 #□ 占位常带 //未编码字
+    说明）；部题行永远独立成带且不参与分配——它们不是列内容，并进大列
+    带后会被下一击 flatten 融合（部题间无 OCR 折点支持，@312 实测
+    「## 子集上### 一部」周期 2 振荡）。"""
+    groups: list[list[str]] = []
+    buf: list[str] = []
+    buf_major = -1
+    seen = 0
+    for l in body:
+        ls = l.strip()
+        if _is_section_header(l):
+            if buf:
+                groups.append(buf)
+                buf = []
+            groups.append([l])
+            continue
+        if ls.startswith("//"):
+            if buf or seen < len(line_major):
+                buf.append(l)
+            continue
+        m = line_major[seen]
+        seen += 1
+        if buf and m != buf_major:
+            groups.append(buf)
+            buf = []
+        buf_major = m
+        buf.append(l)
+    if buf:
+        groups.append(buf)
+    return groups
 
 
 def ocr_regroup_bands(page: int, bands: list[list[str]]) -> tuple[list[list[str]], str]:
@@ -956,18 +1117,10 @@ def ocr_regroup_bands(page: int, bands: list[list[str]]) -> tuple[list[list[str]
     幂等性（2026-11-14 修复，全库 28 页实测）：fold∘regroup 二击内必达
     不动点（14 页严格幂等 + 14 页二击收敛），字符流恒不变。三处根因
     修复见 ocr_fold_page_lines 的结构保护注释与本文 // 附着/部题行独立
-    成带逻辑；旧的「重折个别折点偏移」限制已随 \u0001 对齐剔除消除。
+    成带逻辑（_regroup_body）；旧的「重折个别折点偏移」限制已随
+    \u0001 对齐剔除消除。
     """
     kangxi_column_seg = _column_seg()
-
-    # // 注释行不参与分配，但必须保留（附着到其前一个正文行所在的大列带）
-    # ——早期版本直接丢弃会破坏字符流（草稿 #□ 占位常带 //未编码字 说明）。
-    # 部题行（## / ### / 「# 」带空格）永远独立成带且不参与分配：它们不是
-    # 列内容，并进大列带后会被下一击 flatten 融合（部题间无 OCR 折点支持，
-    # @312 实测「## 子集上### 一部」周期 2 振荡）。
-    def _is_section_header(l: str) -> bool:
-        ls = l.lstrip(" \t")
-        return ls.startswith("##") or ls.startswith("# ")
 
     body = [l for b in bands for l in b if l.strip()]
     lines = [l for l in body
@@ -989,31 +1142,7 @@ def ocr_regroup_bands(page: int, bands: list[list[str]]) -> tuple[list[list[str]
                     line_major[k] = j
     if len(line_major) != len(lines):
         return bands, "大列分配退化，未重组"
-    groups: list[list[str]] = []
-    buf: list[str] = []
-    buf_major = -1
-    seen = 0
-    for l in body:
-        ls = l.strip()
-        if _is_section_header(l):
-            if buf:
-                groups.append(buf)
-                buf = []
-            groups.append([l])
-            continue
-        if ls.startswith("//"):
-            if buf or seen < len(lines):
-                buf.append(l)
-            continue
-        m = line_major[seen]
-        seen += 1
-        if buf and m != buf_major:
-            groups.append(buf)
-            buf = []
-        buf_major = m
-        buf.append(l)
-    if buf:
-        groups.append(buf)
+    groups = _regroup_body(body, line_major)
     if len(groups) < 2:
         return bands, "大列分配退化，未重组"
     sizes = ",".join(str(len(g)) for g in groups)
@@ -1051,15 +1180,55 @@ def _classify_unencoded(chars: list[dict]) -> tuple[dict[int, dict], list[dict]]
     return extra, orphans
 
 
+def _locate_band_cut(bands: list[list[str]], end: int) -> tuple[int, int, int] | None:
+    """归一化裁点 end → (band_idx, line_idx, char_idx)（纯函数）。
+
+    注释行（//）不计归一化序号（svg 路径等非页面文本）；裁点落在注释行
+    之间的缝隙时返回 None（调用方保守不裁）。"""
+    kept = 0
+    for bi, band in enumerate(bands):
+        for li, line in enumerate(band):
+            if line.strip().startswith("//"):
+                continue
+            for ci, ch in enumerate(line):
+                if ch in PUNCT_STRIP:
+                    continue
+                if kept == end:
+                    return bi, li, ci
+                kept += 1
+    return None
+
+
+def _cut_bands_at(bands: list[list[str]], cut: tuple[int, int, int]) -> list[list[str]]:
+    """按 (bi, li, ci) 裁剪 band 序列（纯函数）。
+
+    裁点落在字头行上时整行保留、其后裁去——末界恰在新字头处的罕见情形，
+    宁少裁不误删字头（错留的字头行校对中一眼可见，下页 page_chars 亦会
+    收录）。裁点所在 band 的前行属本页（@338 实测踩坑：裁在大行第二行
+    行首时，首行曾被误丢）；行首/行尾悬挂的开书名号随段剥除（下页续入
+    时由库文补全）。"""
+    bi, li, ci = cut
+    if bands[bi][li].lstrip().startswith("#"):
+        return [list(b) for b in bands[: bi + 1]]  # 字头行整行保留
+    head_bands = [list(b) for b in bands[:bi]]
+    band_cut = list(bands[bi][:li])
+    line_cut = _strip_dangling_open(bands[bi][li][:ci].rstrip())
+    if line_cut:
+        band_cut.append(line_cut)
+    if band_cut:
+        band_cut[-1] = _strip_dangling_open(band_cut[-1])  # 裁点落行首时前行整行保留，同样剥
+        if band_cut[-1]:
+            head_bands.append(band_cut)
+    return head_bands
+
+
 def _trim_bands_to_page(
     page: int, bands: list[list[str]], store: kangxi_store.KangxiStore
 ) -> tuple[list[list[str]], str]:
-    """把草稿大行裁剪到本页物理末界（band 感知版 ocr_trim_to_page）。
+    """把草稿大行裁剪到本页物理末界（band 感知版 ocr_trim_to_page）——编排层。
 
-    注释行不参与对齐（svg 路径等非页面文本会污染归一化候选）。裁点落在
-    字头行上时整行保留、其后裁去——末界恰在新字头处的罕见情形，宁少裁
-    不误删字头（错留的字头行校对中一眼可见，下页 page_chars 亦会收录）。
-    """
+    注释行不参与对齐（svg 路径等非页面文本会污染归一化候选）。定位/裁剪
+    规则在 _locate_band_cut / _cut_bands_at（可单测）。"""
     flat = "\n".join(
         line for band in bands for line in band if not line.strip().startswith("//")
     )
@@ -1071,74 +1240,32 @@ def _trim_bands_to_page(
         )
     if end >= total:
         return bands, "OCR 尾裁：本页内容未溢出页界"
-    kept = 0
-    cut = None  # (band_idx, line_idx, char_idx)
-    for bi, band in enumerate(bands):
-        for li, line in enumerate(band):
-            if line.strip().startswith("//"):
-                continue
-            for ci, ch in enumerate(line):
-                if ch in PUNCT_STRIP:
-                    continue
-                if kept == end:
-                    cut = (bi, li, ci)
-                    break
-                kept += 1
-            if cut:
-                break
-        if cut:
-            break
+    cut = _locate_band_cut(bands, end)
     if cut is None:  # 裁点在注释行之间的缝隙：保守不裁
         return bands, "OCR 尾裁：裁点未落定，保守保留全量"
-    bi, li, ci = cut
-    if bands[bi][li].lstrip().startswith("#"):
-        trimmed = [list(b) for b in bands[: bi + 1]]  # 字头行整行保留
-    else:
-        head_bands = [list(b) for b in bands[:bi]]
-        band_cut = list(bands[bi][:li])  # 裁点所在 band 的前行属本页（@338 实测踩坑：
-        line_cut = _strip_dangling_open(bands[bi][li][:ci].rstrip())  # 裁在大行第二行行首时，首行曾被误丢）
-        if line_cut:
-            band_cut.append(line_cut)
-        if band_cut:
-            band_cut[-1] = _strip_dangling_open(band_cut[-1])  # 裁点落行首时前行整行保留，同样剥
-            if band_cut[-1]:
-                head_bands.append(band_cut)
-        trimmed = head_bands
+    trimmed = _cut_bands_at(bands, cut)
     return trimmed, (
         f"OCR 尾裁：保留 {end}/{total} 字（页面物理末界{why}），"
         f"溢出 {total - end} 字留给下页自动续入"
     )
 
 
-def build_draft_gj(
-    page: int,
-    store: kangxi_store.KangxiStore,
+def _draft_bands(
+    chars: list[dict],
+    details: dict[int, dict | None],
     continuation: list[str] | None = None,
     skip_head: str | None = None,
-    fold: bool = True,
-) -> tuple[str, dict]:
-    """由库内 page_chars + entries 生成 .gj 草稿与统计。
+) -> tuple[list[list[str]], dict]:
+    """chars + 预取注入的字头详情 → band 序列（纯函数，可单测）。
 
-    continuation 为前页未完字头的续文行（置于新字头之前，符合阅读顺序）；
-    skip_head 防重复收录延续字头（站点 page_chars 通常不标延续，此为保险）。
-    未编码字形按 _classify_unencoded 的归属生成：K 码簇与前主字头 guwen 数量
-    精确一致时并入字头行（#头古文#A#B），否则 #□ 占位紧跟主字头行；2 段名
-    伴随字形只留注释（人工先例是删除）。
-    页尾 OCR 裁剪（_trim_bands_to_page）把溢出到下页的尾段裁掉——库内全量
-    在，添加下页时自动续入；OCR 不可用时回退全量并在 notes 警告。
-    fold=True 且 OCR 服务可用时，按 OCR 行组在大行内插入折行（只插入换行
-    不改字符；不可用/不可信时草稿为未折行的平铺段——校对者回退到手工折行）。
-    """
-    chars = page_heads(page, store)
-    if not chars and not continuation:
-        raise RuntimeError(
-            f"页 {page} 无字头索引（page_chars 为空）且无前页续文——"
-            "阅读页数据不完整或该页既无新字头也无延续内容"
-        )
-
+    details 键为 codepoint（值 = entry_detail 结果，缺词条为 None）——数据
+    获取由调用方完成，组装逻辑零 I/O。continuation 为前页未完字头的续文行
+    （置于新字头之前，符合阅读顺序）；skip_head 防重复收录延续字头。
+    未编码字形按 _classify_unencoded 的归属生成：K 码簇与前主字头 guwen
+    数量精确一致时并入字头行（#头古文#A#B），否则 #□ 占位紧跟主字头行；
+    2 段名伴随字形只留注释（人工先例是删除）。"""
     bands: list[list[str]] = []  # 每项 = 一个大行（未折行时单元素）
     counts = {"chars": 0, "unencoded": 0, "with_text": 0}
-    notes: list[str] = []
     if continuation:
         for para in continuation:
             bands.append([para])
@@ -1153,7 +1280,7 @@ def build_draft_gj(
         head_band = [f"#{item['char']}"]
         bands.append(head_band)
         counts["chars"] += 1
-        detail = entry_detail(item["codepoint"], store)
+        detail = details.get(item["codepoint"])
         ex = extra.get(item["ord"]) or {}
         for c in ex.get("companions") or []:
             bands.append([f"// 站点伴随字形（{c['svg']}）：非词条，确认后删除本行"])
@@ -1185,6 +1312,37 @@ def build_draft_gj(
         bands.append(["#□"])
         bands.append([f"// 未编码字（{k}）：本页无前邻主字头，请对照原图补录"])
         counts["unencoded"] += 1
+    return bands, counts
+
+
+def build_draft_gj(
+    page: int,
+    store: kangxi_store.KangxiStore,
+    continuation: list[str] | None = None,
+    skip_head: str | None = None,
+    fold: bool = True,
+) -> tuple[str, dict]:
+    """由库内 page_chars + entries 生成 .gj 草稿与统计——编排层。
+
+    band 组装在 _draft_bands（纯函数）；页尾 OCR 裁剪（_trim_bands_to_page）
+    把溢出到下页的尾段裁掉——库内全量在，添加下页时自动续入；OCR 不可用
+    时回退全量并在 notes 警告。fold=True 且 OCR 服务可用时，按 OCR 行组
+    在大行内插入折行（只插入换行不改字符）并按大列重组带；不可用/不可信
+    时草稿为未折行的平铺段——校对者回退到手工折行。
+    """
+    chars = page_heads(page, store)
+    if not chars and not continuation:
+        raise RuntimeError(
+            f"页 {page} 无字头索引（page_chars 为空）且无前页续文——"
+            "阅读页数据不完整或该页既无新字头也无延续内容"
+        )
+
+    details = {
+        item["codepoint"]: entry_detail(item["codepoint"], store)
+        for item in chars if item["char"]
+    }
+    bands, counts = _draft_bands(chars, details, continuation, skip_head)
+    notes: list[str] = []
 
     bands, note = _trim_bands_to_page(page, bands, store)
     notes.append(note)
@@ -1215,30 +1373,12 @@ def cmd_ocr_fold(page: int, fold: bool = True) -> dict:
     页面已有折行会被先去掉再按 OCR 重折（幂等）。写回 .gj 并刷新 json/txt。
     """
     gj_path = ANNOTATIONS / f"{page:04d}.gj"
-    if not gj_path.exists():
+    raw = page_gj(page)
+    if raw is None:
         raise RuntimeError(f"页 {page} 不在数据集中")
     store = kangxi_store.KangxiStore()
-    raw = gj_path.read_text(encoding="utf-8")
 
-    # 保留头部（注释 + @页码 行）与正文大行
-    lines = raw.splitlines()
-    head: list[str] = []
-    body_start = 0
-    for i, l in enumerate(lines):
-        head.append(l)
-        if l.strip().startswith("@"):
-            body_start = i + 1
-            break
-    bands: list[list[str]] = []
-    cur: list[str] = []
-    for l in lines[body_start:]:
-        if l.strip():
-            cur.append(l)
-        elif cur:
-            bands.append(cur)
-            cur = []
-    if cur:
-        bands.append(cur)
+    head, bands = parse_gj_bands(raw)  # 头部（注释 + @页码 行）与正文大列带
 
     folded, note = ocr_fold_page_lines(page, bands, store)
     if folded is not bands and fold:
@@ -1320,40 +1460,8 @@ def cmd_ocr_pages() -> dict:
 
 
 def cmd_prefetch_status(page: int) -> dict:
-    """单页预取四步深查（只读现状，不执行任何抓取）。
-
-    四步与 _prefetch_pipeline 一一对应：fetch（阅读页+原图）/ entries
-    （字头详情）/ ocr（缓存三态）/ svg（未编码字形 svg 存在性——与回补
-    scope 同口径，只查 codepoint 为空者）。
-    """
-    store = kangxi_store.KangxiStore()
-    missing = store.page_missing(page, ("reading", "scan"))
-    chars = page_heads(page, store)
-    miss_entries = store.coded_chars_missing_entries(page)
-    ocr = _ocr_cache_meta(page, _page_sha(page, store))
-    wanted = [c["svg"] for c in chars if c["codepoint"] is None and c.get("svg")]
-    have = sum(1 for rel in wanted if (paths.RAW_KANGXI_SVG / rel).is_file())
-    ocr_detail = {
-        "valid": f"缓存有效（{ocr['chars']} 字，{ocr['fetched_at']}）",
-        "stale": f"缓存失效（图已变或无图可比对，{ocr['chars']} 字）",
-        "none": "无 OCR 缓存（需预取或启动服务现算）",
-    }[ocr["state"]]
-    return {
-        "ok": True,
-        "page": page,
-        "steps": {
-            "fetch": {"ok": not missing,
-                      "detail": "阅读页+原图齐全" if not missing else f"缺 {sorted(missing)}"},
-            "entries": {"ok": not miss_entries,
-                        "detail": (f"字头 {len(chars)}，缺详情 {len(miss_entries)}"
-                                   + (f"（{''.join(miss_entries[:8])}…）" if miss_entries else ""))},
-            "ocr": {"ok": ocr["state"] == "valid", "detail": ocr_detail},
-            "svg": {"ok": have == len(wanted),
-                    "detail": (f"未编码字形 svg {have}/{len(wanted)}" if wanted
-                               else "本页无未编码字形")},
-        },
-        "ocr": ocr,
-    }
+    """单页预取四步深查（只读现状，不执行任何抓取）——薄壳，逻辑在 page_prefetch_state。"""
+    return {"ok": True, **page_prefetch_state(page)}
 
 
 def cmd_prefetch_run(page: int) -> dict:
@@ -1379,24 +1487,29 @@ def load_manifest() -> dict:
     return json.loads(MANIFEST.read_text(encoding="utf-8"))
 
 
+def _index_from_manifest(manifest: dict) -> dict:
+    """manifest → 前端页清单结构（纯函数）。"""
+    return {
+        "source": "kangxi-gold",
+        "images_dir": manifest["images_dir"],
+        "pages": [
+            {
+                "page": p["page"],
+                "image": p["image"],
+                "gj": p.get("annotations", {}).get("gj", f"{p['page']:04d}.gj"),
+                "width": p.get("width"),
+                "height": p.get("height"),
+                "status": p.get("status", "first"),
+            }
+            for p in manifest.get("pages", [])
+        ],
+    }
+
+
 def write_index(manifest: dict) -> None:
-    pages = [
-        {
-            "page": p["page"],
-            "image": p["image"],
-            "gj": p.get("annotations", {}).get("gj", f"{p['page']:04d}.gj"),
-            "width": p.get("width"),
-            "height": p.get("height"),
-            "status": p.get("status", "first"),
-        }
-        for p in manifest.get("pages", [])
-    ]
     INDEX_JSON.parent.mkdir(parents=True, exist_ok=True)
     INDEX_JSON.write_text(
-        json.dumps(
-            {"source": "kangxi-gold", "images_dir": manifest["images_dir"], "pages": pages},
-            ensure_ascii=False, indent=2,
-        ) + "\n",
+        json.dumps(_index_from_manifest(manifest), ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )
 
