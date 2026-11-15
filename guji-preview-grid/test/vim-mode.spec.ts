@@ -87,6 +87,19 @@ describe("vim 开启：模态协议", () => {
     expect(doc(view)).toBe("一行二行三行");
   });
 
+  it("normal 模态 I 落行首：高代理位光标不再被修正器掰偏（I→^i 映射）", () => {
+    // 上游缺陷：#𠃕 的 𠃕 是 Ext-B 代理对，光标盖在高代理位（head=1）按 I，
+    // firstNonBlank 的 {0,0} 会被 updateSelectionForSurrogateCharacters 误 +1
+    // 成 {0,1}（落在 # 之后）。映射 ^i 绕开修正器，行为等价。
+    const view = track(
+      new EditorView({ doc: "#𠃕\n", parent: document.body, extensions: [vim(), gujiKeymap] }),
+    );
+    view.dispatch({ selection: { anchor: 1 } });
+    key(view, "I");
+    expect(insertMode(view)).toBe(true);
+    expect(view.state.selection.main.head).toBe(0);
+  });
+
   it("整树 reconfigure（@uiw 每渲染路径）不打断模态", () => {
     // vim() 各段为包内模块级常量：即便每次调用重新组装、reconfigure 整组
     // extensions，CM6 按插件 spec 身份保活实例，insert 模态不丢——这是

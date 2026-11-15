@@ -23,6 +23,14 @@ import { Vim, getCM } from "@replit/codemirror-vim";
 // 模块重复求值（HMR）会重复 unshift 同映射，命中首个，无害。
 Vim.map("J", "gJ", "normal");
 
+// vim normal 模态 I → ^i：绕开 enterInsertMode firstNonBlank 分支的代理对
+// 修正器缺陷——光标停在高代理码元（康熙 Ext-B 字头常态，如 #𠃕 的 𠃕）上按
+// I，正确的行首 {0,0} 会被 updateSelectionForSurrogateCharacters 误 +1 成
+// {0,1}（守卫 curStart.ch >= curEnd.ch - 1 对同行后退移动恒真 + 高代理上界
+// 笔误只认 0xD800–0xD8FF，Ext-B 全区中招）。^（motion）与 i（inplace）均不
+// 过修正器，行为与 I 等价且保留计数前缀。复现与分析见 public/vim-i-bug.html。
+Vim.map("I", "^i", "normal");
+
 // vim 扩展激活且处于非 insert 模态（normal/visual 等）时本键位组让位。
 // vim 插件经 DOM keydown 自行接管按键（不走 CM keymap），若不让位，
 // Prec.highest 的绑定会在 normal 模态抢先命中（如 Ctrl-J 误合并行）。

@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>vim I 键代理对缺陷演示 · guji-preview-grid</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #fff; --fg: #1a1a1a; --muted: #666; --border: #ddd;
+    --accent: #b91c1c; --ok: #15803d; --code-bg: #f5f5f5;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #17171a; --fg: #e6e6e6; --muted: #999; --border: #333; --code-bg: #202024; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 24px; background: var(--bg); color: var(--fg);
+         font: 14px/1.7 -apple-system, "PingFang SC", "Hiragino Sans GB", sans-serif; }
+  main { max-width: 860px; margin: 0 auto; }
+  h1 { font-size: 18px; margin: 0 0 4px; }
+  .sub { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
+  h2 { font-size: 15px; margin: 28px 0 8px; }
+  .editor { border: 1px solid var(--border); height: 190px; }
+  .cm-editor { height: 100%; font-size: 16px; }
+  .cm-editor .cm-scroller { font-family: ui-monospace, Menlo, "GujiPlane0", "GujiPlane2", serif; line-height: 1.9; }
+  .readout { margin-top: 10px; padding: 10px 12px; background: var(--code-bg);
+             border: 1px solid var(--border); border-radius: 6px;
+             font: 12.5px/1.8 ui-monospace, Menlo, monospace; white-space: pre-wrap; }
+  ol, ul { padding-left: 22px; } li { margin: 4px 0; }
+  code { background: var(--code-bg); padding: 1px 5px; border-radius: 4px; font-size: 12.5px; }
+  pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 6px;
+        padding: 12px 14px; overflow-x: auto; font-size: 12.5px; line-height: 1.6; }
+  .bad { color: var(--accent); font-weight: 600; } .good { color: var(--ok); font-weight: 600; }
+  label.tgl { display: inline-flex; gap: 8px; align-items: center; cursor: pointer;
+              padding: 6px 10px; border: 1px solid var(--border); border-radius: 6px; }
+  .hint { color: var(--muted); font-size: 12.5px; }
+</style>
+<script type="importmap">
+{
+  "imports": {
+    "@codemirror/state": "https://esm.sh/@codemirror/state@6.7.6",
+    "@codemirror/view": "https://esm.sh/@codemirror/view@6.43.15?external=@codemirror/state",
+    "@codemirror/language": "https://esm.sh/@codemirror/language@6.13.1",
+    "@codemirror/commands": "https://esm.sh/@codemirror/commands@6.11.1",
+    "@codemirror/search": "https://esm.sh/@codemirror/search@6.7.2",
+    "@replit/codemirror-vim": "https://esm.sh/@replit/codemirror-vim@6.4.0?external=@codemirror/view,@codemirror/state,@codemirror/language,@codemirror/commands,@codemirror/search"
+  }
+}
+</script>
+<script type="module">
+import { EditorView, drawSelection } from "@codemirror/view";
+import { vim, getCM, Vim } from "@replit/codemirror-vim";
+
+const DOC = "#𠃕\n#一\n#a\n古𠃕\n";
+
+const view = new EditorView({
+  doc: DOC,
+  parent: document.querySelector("#editor"),
+  extensions: [drawSelection(), EditorView.lineWrapping, vim(), readout()],
+});
+window.__view = view; // 调试出口
+
+function readout() {
+  return EditorView.updateListener.of(() => render());
+}
+
+function cpInfo(text, ch) {
+  if (ch >= text.length) return "行尾之后";
+  const c = text.charCodeAt(ch);
+  if (c >= 0xd800 && c <= 0xdbff) return `0x${c.toString(16).toUpperCase()} 高代理（配对起点）`;
+  if (c >= 0xdc00 && c <= 0xdfff) return `0x${c.toString(16).toUpperCase()} 低代理（配对后半）`;
+  return `0x${c.toString(16).toUpperCase()} BMP/常规字符`;
+}
+
+function render() {
+  const cm = getCM(view);
+  const vimState = cm?.state.vim;
+  const sel = view.state.selection.main;
+  const line = view.state.doc.lineAt(sel.head);
+  const ch = sel.head - line.from;
+  const mode = vimState ? (vimState.insertMode ? "INSERT" : "NORMAL") : "（vim 未初始化）";
+  document.querySelector("#status").textContent =
+    `模态: ${mode}   CM6 head: ${sel.head}   Pos: {line: ${line.number - 1}, ch: ${ch}}\n` +
+    `该位字符: ${cpInfo(line.text, ch)}\n` +
+    `注: 引擎修正器只把 0xD800–0xD8FF 当高代理（0xD900–0xDBFF 是笔误漏掉的一半）`;
+}
+
+// 一键把光标放到第 1 行的 𠃕 上（normal 块光标盖住该字）
+document.querySelector("#put").onclick = () => {
+  const line = view.state.doc.line(1);
+  view.dispatch({ selection: { anchor: line.from + 1 } }); // 1 = '#' 之后，即 𠃕 的高代理位
+  view.focus();
+  render();
+};
+document.querySelector("#reset").onclick = () => {
+  view.dispatch({ changes: { from: 0, to: view.state.doc.length, insert: DOC } });
+  view.focus();
+  render();
+};
+
+// 规避映射开关：I → ^i（motion ^ 与 i 的 inplace 分支都不经过代理对修正器）
+let mapped = false;
+document.querySelector("#workaround").onchange = (e) => {
+  const on = e.target.checked;
+  if (on && !mapped) { Vim.map("I", "^i", "normal"); mapped = true; }
+  else if (!on && mapped) { Vim.unmap("I", "normal"); mapped = false; }
+  view.focus();
+  render();
+};
+
+render();
+</script>
+</head>
+<body>
+<main>
+  <h1>vim <code>I</code> 键代理对缺陷演示</h1>
+  <p class="sub">
+    @replit/codemirror-vim 6.4.0 · 引擎源码 vim.js 的
+    <code>updateSelectionForSurrogateCharacters</code> 误伤
+    <code>I</code>（firstNonBlank 路径）——与 guji-preview-grid 的集成无关，是上游缺陷。
+  </p>
+
+  <div class="hint">先点编辑器获得焦点（或点下方按钮定位光标），再按演示步骤操作。每行演示一个变量。</div>
+  <div id="editor" class="editor"></div>
+  <div class="readout" id="status"></div>
+
+  <p>
+    <button id="put">光标 → 第 1 行 𠃕 上</button>
+    <button id="reset">重置文档</button>
+    <label class="tgl"><input type="checkbox" id="workaround"> 启用规避映射 <code>I → ^i</code></label>
+  </p>
+
+  <h2>复现步骤</h2>
+  <ol>
+    <li>第 1 行 <code>#𠃕</code>（𠃕 = U+200D5，UTF-16 代理对）：光标放到 <code>𠃕</code> 上，按 <code>I</code> ——
+      <span class="bad">缺陷：进入 insert 但光标落在 # 之后（ch=1），不在行首</span>。</li>
+    <li>对照组 A：同一位置先 <code>A</code> 再 <code>Esc</code> 再 <code>I</code> ——
+      <span class="good">正常：光标到行首</span>。差异原因见下方分析。</li>
+    <li>对照组 B：第 2 行 <code>#一</code>（BMP 汉字，单码元）同样按 <code>I</code> ——
+      <span class="good">正常</span>。触发条件是「光标停在高代理位」，不是汉字本身。</li>
+    <li>对照组 C：第 4 行 <code>古𠃕</code>，光标放 <code>𠃕</code> 上按 <code>I</code> ——
+      <span class="bad">同样缺陷：落在 古 之后</span>（与 # 无关，任何「光标在高代理位 + 同行跳到行首」都触发）。</li>
+  </ol>
+
+  <h2>根因链</h2>
+  <pre>// @replit/codemirror-vim-core/dist/vim.js —— enterInsertMode，firstNonBlank 分支：
+} else if (insertAt == 'firstNonBlank') {
+  // motion 算出的目标 {line, 0} 是对的；但随后经过代理对修正器：
+  var newPosition = updateSelectionForSurrogateCharacters(cm, head /*旧光标*/,
+      motions.moveToFirstNonWhiteSpaceCharacter(cm, head));
+  head = newPosition.end;
+}
+
+function updateSelectionForSurrogateCharacters(cm, curStart, curEnd) {
+  // 守卫本意是「移动了一格」（normal 光标在字上、选区边界差 1 的半开偏移），
+  // 但 curStart.ch >= curEnd.ch - 1 对一切同行后退移动恒真——包括跳到行首：
+  if (curStart.line === curEnd.line && curStart.ch >= curEnd.ch - 1) {
+    var charCode = cm.getLine(curStart.line).charCodeAt(curStart.ch);
+    if (0xD800 &lt;= charCode &amp;&amp; charCode &lt;= 0xD8FF) {  // 上界应为 0xDBFF（笔误）
+      curEnd.ch += 1;   // ← 把正确的行首 {0,0} 掰成 {0,1}，光标即落在 # 之后
+    }
+  }
+  return {start: curStart, end: curEnd};
+}</pre>
+  <ul>
+    <li><b>触发三条件</b>：旧光标停在高代理码元上（本例 0xD840，𠃕 的高半区）＋ 同行后退移动
+      （<code>I</code> 跳行首必满足）＋ 高代理值恰在 <code>0xD800–0xD8FF</code>（<code>0xD900–0xDBFF</code>
+      因上界笔误反而躲过，即 U+40000 以上的字不触发）。</li>
+    <li><b>为何 A→Esc→I 正常</b>：<code>A</code> 进 insert 于行尾（eol 分支不经过修正器）；
+      <code>Esc</code> 退回 normal 时光标按<b>码元</b> −1 落在<b>低代理位</b>（ch=2，0xDCD5），
+      不在修正器认定的「高代理」区间 → 修正器不动作 → <code>I</code> 得到正确的行首。</li>
+    <li><b>影响面</b>：仅 <code>I</code>（normal，firstNonBlank 路径）。<code>a</code>（charAfter）、
+      <code>r</code>、<code>d/y/c</code> 的选区边界走同一函数是<b>设计内用法</b>（跨代理对整字操作），
+      <code>i / A / o / O</code> 不经过该函数，均正常。</li>
+  </ul>
+
+  <h2>规避方案（本页可开关体验）</h2>
+  <ul>
+    <li>映射 <code>Vim.map("I", "^i", "normal")</code>：<code>^</code>（motion）与 <code>i</code>
+      （inplace）都不经过修正器，行为与 <code>I</code> 等价（首非空进入 insert）。已验证修复本缺陷且保留计数前缀。</li>
+    <li>根治须上游修 <code>updateSelectionForSurrogateCharacters</code>：守卫收窄为「移动恰为一格」
+      （<code>|curEnd.ch - curStart.ch| &lt;= 2</code> 且目标/起点跨代理边界），或 firstNonBlank 分支不再过修正器。</li>
+  </ul>
+</main>
+</body>
+</html>
