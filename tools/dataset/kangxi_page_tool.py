@@ -1665,6 +1665,46 @@ def cmd_ocr_skeleton_replay(page: int) -> dict:
             "gold_band_lines": len(gold_bands[j]) if j < len(gold_bands) else None,
         })
 
+    # ②' 归列重排：整页行组按分列证据归列（同列聚合一段、列间空行）。
+    # 实测（37 初校页）：整页行组 100% 可子串定位到唯一列且列聚簇（竖排
+    # OCR 按列扫描输出）；分列正常页的重排结构与金标带逐字吻合（@332 类
+    # bf1 0.86+），失败模式明确可判——首尾大字列漏识产生无主行组
+    # （@356：19 组）、列分割坐标崩页列字符分布畸形（@336）。
+    col_norms = [_norm(c["markdown"] or "") for c in cols]
+    # 严格约束版：不修改文字/文字顺序/行组顺序，只重排空行——行组按原顺序
+    # 遍历归列，列号变化处开新段（\n\n），同列内组间用 \n；组原文保留
+    # （含组内换行，不剥邊題组——邊題归 None 段独立成节）。误判最多导致
+    # 段界位置偏移，永不重排内容。
+    raw_groups = [g for g in md.split("\n\n") if g.strip()]
+    col_of: list[int | None] = []
+    stray_n = 0
+    last_col: int | None = None
+    for g in raw_groups:
+        gn = _norm(g)
+        hits = [j for j, cn in enumerate(col_norms) if gn and gn in cn]
+        if hits:
+            last_col = hits[0] if len(hits) == 1 else max(
+                hits, key=lambda k: difflib.SequenceMatcher(None, gn, col_norms[k]).ratio())
+        # 无主（分列漏识区）：沿用前一组列号（阅读序连续）；页首无主 → None
+        col_of.append(last_col)
+    parts: list[str] = []
+    seg_lines: list[int] = []
+    buf: list[str] = []
+    prev: int | None = None
+    for g, c in zip(raw_groups, col_of):
+        if c != prev:
+            if buf:
+                parts.append("\n".join(buf))
+                seg_lines.append(len(buf))
+                buf = []
+        buf.append(g.rstrip("\n"))
+        prev = c
+    if buf:
+        parts.append("\n".join(buf))
+        seg_lines.append(len(buf))
+    regrouped_md = "\n\n".join(parts)
+    stray = sum(1 for c in col_of if c is None)
+
     # ③ 蓝本纠错：库文流（同生产流程字符源）对底稿整页对齐
     chars = page_heads(page, store)
     cont, info = continuation_from_prev(page, store)
@@ -1708,7 +1748,7 @@ def cmd_ocr_skeleton_replay(page: int) -> dict:
     return {
         "ok": True,
         "page": page,
-        "draft_ocr": {"norm_len": len(ocr_n), "groups_n": len(groups)},
+        "draft_ocr": {"markdown": md, "norm_len": len(ocr_n), "groups_n": len(groups)},
         "columns": col_infos,
         "blueprint": {"norm_len": len(bp_n), "source": "前页续入(裁后)+本页字头详情（库文）"},
         "fix": {
@@ -1719,6 +1759,12 @@ def cmd_ocr_skeleton_replay(page: int) -> dict:
             "diff_blocks_total": sum(1 for t, *_ in sm.get_opcodes() if t != "equal"),
         },
         "result": {"bands": result_bands, "residual_chars": len(residual)},
+        "regrouped_ocr": {
+            "markdown": regrouped_md,
+            "seg_lines": seg_lines,
+            "gold_band_lines": [len(b) for b in gold_bands],
+            "stray": stray,
+        },
         "compare": _compare_bands(result_bands, gold_bands),
         "verdict": {
             "empty_cols": empty_cols,

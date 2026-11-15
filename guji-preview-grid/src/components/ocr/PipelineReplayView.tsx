@@ -6,6 +6,11 @@ import { useCallback, useEffect, useState } from "react";
 import { CircleDashed, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable";
 
 type ReplayPage = { page: number; bands_n: number; lines_n: number };
 
@@ -77,7 +82,13 @@ type SkeletonCol = {
 
 type Skeleton = {
   page: number;
-  draft_ocr: { norm_len: number; groups_n: number };
+  draft_ocr: { markdown: string; norm_len: number; groups_n: number };
+  regrouped_ocr: {
+    markdown: string;
+    seg_lines: number[];
+    gold_band_lines: number[];
+    stray: number;
+  };
   columns: SkeletonCol[];
   blueprint: { norm_len: number; source: string };
   fix: {
@@ -210,7 +221,8 @@ export function PipelineReplayView() {
     return () => {
       alive = false;
     };
-  }, [selected, mode]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- reloadKey 让「刷新」按钮也重取重放
+  }, [selected, mode, reloadKey]);
 
   if (error || (!pages && !error)) {
     return (
@@ -307,13 +319,79 @@ export function PipelineReplayView() {
               title="① OCR 底稿（整页）"
               meta="page_ocr：文字骨架来源，含 ~7% 错字（vs 金标实测）"
             >
-              <div className="flex flex-wrap gap-3 text-xs">
+              <div className="mb-2 flex flex-wrap gap-3 text-xs">
                 <span>归一字符 <b className="tabular-nums">{curSkeleton.draft_ocr.norm_len}</b></span>
                 <span className="text-muted-foreground">行组 {curSkeleton.draft_ocr.groups_n}</span>
                 <span className="text-muted-foreground">
                   蓝本（库文流）{curSkeleton.blueprint.norm_len} 字
                 </span>
               </div>
+              {/* 原图 ↔ 整页 OCR ↔ 分列 OCR 三列对照（图按视口高度等比缩放，整页一屏可见） */}
+              <ResizablePanelGroup orientation="horizontal" className="min-h-0 rounded border">
+                <ResizablePanel defaultSize={30} minSize={15}>
+                  <ScrollArea className="h-[72vh]">
+                    <img
+                      src={`/dataset/images/${String(curSkeleton.page).padStart(4, "0")}.jpg`}
+                      alt={`@${curSkeleton.page} 扫描图`}
+                      className="mx-auto max-h-[72vh] w-auto max-w-full object-contain"
+                      onError={(e) => {
+                        e.currentTarget.style.display = "none";
+                        e.currentTarget.after(
+                          Object.assign(document.createElement("p"), {
+                            className: "text-muted-foreground p-3 text-xs",
+                            textContent: "扫描图不可访问（软链或外置盘未挂载）",
+                          }),
+                        );
+                      }}
+                    />
+                  </ScrollArea>
+                </ResizablePanel>
+                <ResizableHandle />
+                <ResizablePanel defaultSize={24} minSize={12}>
+                  <ScrollArea className="h-[72vh]">
+                    <div className="text-muted-foreground px-2 py-1 text-[10px]">整页 OCR</div>
+                    <pre className="font-mono text-[11px] leading-5 whitespace-pre-wrap p-2">
+                      {curSkeleton.draft_ocr.markdown}
+                    </pre>
+                  </ScrollArea>
+                </ResizablePanel>
+                <ResizableHandle />
+                <ResizablePanel defaultSize={32} minSize={15}>
+                  <ScrollArea className="h-[72vh]">
+                    <div className="text-muted-foreground px-2 py-1 text-[10px]">
+                      分列 OCR（列 1 = 最右，阅读序）
+                    </div>
+                    {curSkeleton.columns.map((c) => (
+                      <div key={c.index} className="border-t px-2 py-1">
+                        <div
+                          className={`text-[10px] ${c.empty ? "text-destructive" : "text-muted-foreground"}`}
+                        >
+                          列 {c.index} · {c.norm_len} 字 · 行组 {c.groups_n}
+                          {c.empty ? "（空列漏识）" : ""}
+                        </div>
+                        <pre className="font-mono text-[11px] leading-5 whitespace-pre-wrap">
+                          {c.markdown ? c.markdown.replace(/\n{2,}/g, "\n") : "∅"}
+                        </pre>
+                      </div>
+                    ))}
+                  </ScrollArea>
+                </ResizablePanel>
+                <ResizableHandle />
+                <ResizablePanel defaultSize={24} minSize={15}>
+                  <ScrollArea className="h-[72vh]">
+                    <div className="text-muted-foreground px-2 py-1 text-[10px]">
+                      归列重排（整页行组×分列证据：同列聚合、列间空行；无主 {curSkeleton.regrouped_ocr.stray}）
+                    </div>
+                    <div className="text-muted-foreground px-2 pb-1 font-mono text-[10px]">
+                      段行数 {curSkeleton.regrouped_ocr.seg_lines.join(",")} | 金标{" "}
+                      {curSkeleton.regrouped_ocr.gold_band_lines.join(",")}
+                    </div>
+                    <pre className="font-mono text-[11px] leading-5 whitespace-pre-wrap p-2">
+                      {curSkeleton.regrouped_ocr.markdown}
+                    </pre>
+                  </ScrollArea>
+                </ResizablePanel>
+              </ResizablePanelGroup>
             </SectionCard>
 
             <SectionCard
