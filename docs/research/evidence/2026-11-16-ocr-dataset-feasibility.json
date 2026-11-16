@@ -1,0 +1,967 @@
+{
+  "schema": "ocr-dataset-feasibility/1",
+  "checkedAt": "2026-11-16T08:31:57.343250+00:00",
+  "scope": "Current 45 first-proofread pages; feasibility only, no training or dataset image export; no full image-by-image transcription review.",
+  "manifestSha256": "7e16c645db46b3693937b27207810841ec82bd4d61e9926d7377e9d22f7e9782",
+  "validation": {
+    "verifyDataset": "python3 -I kangxi-gold/scripts/verify_dataset.py: exit 0, 45 pages/images, integrity/hash/dimension and annotation checks passed",
+    "layoutCommand": "node tools/eval/audit_gj_layout.mjs --check --strict-layout",
+    "layoutExitCode": 0,
+    "checks": {
+      "jsonFresh": {
+        "pass": 45,
+        "failedPages": []
+      },
+      "txtFresh": {
+        "pass": 45,
+        "failedPages": []
+      },
+      "legacyTextEqual": {
+        "pass": 37,
+        "failedPages": [
+          336,
+          339,
+          341,
+          348,
+          349,
+          351,
+          357,
+          358
+        ]
+      },
+      "overlaySourceIndependent": {
+        "pass": 45,
+        "failedPages": []
+      }
+    },
+    "warningPages": [],
+    "emptyBands": 8
+  },
+  "corpus": {
+    "pageCount": 45,
+    "statuses": {
+      "first": 45
+    },
+    "totals": {
+      "pageMarkers": 45,
+      "activeSourceLines": 1146,
+      "headSourceLines": 156,
+      "literalStars": 326,
+      "openBrackets": 1031,
+      "closeBrackets": 1034,
+      "literalCircledIntroducers": 66,
+      "guwenOccurrences": 56,
+      "guwenColonOccurrences": 17,
+      "headings": 7,
+      "bands": 360,
+      "lines": 1101,
+      "elements": 1242,
+      "largeElements": 275,
+      "smallElements": 967,
+      "largeCodepoints": 279,
+      "smallCodepoints": 18535,
+      "txtNonWhitespaceCodepoints": 15266,
+      "bookOverlays": 1041,
+      "bookSpans": 1116,
+      "multiSpanBooks": 74,
+      "crossBandBooks": 28,
+      "circleOverlays": 73,
+      "nestedOpeners": 0
+    },
+    "nonWhitespaceCodepoints": 15266,
+    "uniqueCodepoints": 2204,
+    "singleOccurrenceCodepoints": 931,
+    "supplementaryOccurrences": 307,
+    "pua": [
+      {
+        "page": 342,
+        "codepoint": "U+E815",
+        "count": 2
+      },
+      {
+        "page": 349,
+        "codepoint": "U+E701",
+        "count": 1
+      }
+    ],
+    "replacementOrSquarePlaceholderCount": 0,
+    "width": 1130,
+    "heightRange": [
+      1665,
+      1719
+    ]
+  },
+  "renderInventory": {
+    "counts": {
+      "runs": 948,
+      "largeSlots": 275,
+      "smallCells": 15313,
+      "whitespaceCells": 326,
+      "renderedCodepoints": 15266,
+      "bookRects": 1116,
+      "parallelGroups": 487,
+      "halfShiftRuns": 26
+    },
+    "pages": [
+      {
+        "page": 312,
+        "runs": 11,
+        "largeSlots": 11,
+        "bookRects": 21
+      },
+      {
+        "page": 313,
+        "runs": 17,
+        "largeSlots": 2,
+        "bookRects": 24
+      },
+      {
+        "page": 314,
+        "runs": 16,
+        "largeSlots": 0,
+        "bookRects": 24
+      },
+      {
+        "page": 315,
+        "runs": 20,
+        "largeSlots": 2,
+        "bookRects": 28
+      },
+      {
+        "page": 316,
+        "runs": 22,
+        "largeSlots": 7,
+        "bookRects": 30
+      },
+      {
+        "page": 317,
+        "runs": 19,
+        "largeSlots": 2,
+        "bookRects": 29
+      },
+      {
+        "page": 318,
+        "runs": 19,
+        "largeSlots": 3,
+        "bookRects": 29
+      },
+      {
+        "page": 319,
+        "runs": 20,
+        "largeSlots": 4,
+        "bookRects": 28
+      },
+      {
+        "page": 320,
+        "runs": 20,
+        "largeSlots": 6,
+        "bookRects": 26
+      },
+      {
+        "page": 321,
+        "runs": 20,
+        "largeSlots": 2,
+        "bookRects": 25
+      },
+      {
+        "page": 322,
+        "runs": 27,
+        "largeSlots": 9,
+        "bookRects": 36
+      },
+      {
+        "page": 323,
+        "runs": 18,
+        "largeSlots": 1,
+        "bookRects": 29
+      },
+      {
+        "page": 324,
+        "runs": 22,
+        "largeSlots": 5,
+        "bookRects": 29
+      },
+      {
+        "page": 325,
+        "runs": 16,
+        "largeSlots": 0,
+        "bookRects": 18
+      },
+      {
+        "page": 326,
+        "runs": 23,
+        "largeSlots": 5,
+        "bookRects": 25
+      },
+      {
+        "page": 327,
+        "runs": 28,
+        "largeSlots": 9,
+        "bookRects": 29
+      },
+      {
+        "page": 328,
+        "runs": 26,
+        "largeSlots": 13,
+        "bookRects": 14
+      },
+      {
+        "page": 330,
+        "runs": 20,
+        "largeSlots": 8,
+        "bookRects": 18
+      },
+      {
+        "page": 331,
+        "runs": 23,
+        "largeSlots": 6,
+        "bookRects": 31
+      },
+      {
+        "page": 332,
+        "runs": 16,
+        "largeSlots": 0,
+        "bookRects": 28
+      },
+      {
+        "page": 333,
+        "runs": 16,
+        "largeSlots": 0,
+        "bookRects": 23
+      },
+      {
+        "page": 334,
+        "runs": 25,
+        "largeSlots": 6,
+        "bookRects": 23
+      },
+      {
+        "page": 335,
+        "runs": 26,
+        "largeSlots": 15,
+        "bookRects": 28
+      },
+      {
+        "page": 336,
+        "runs": 14,
+        "largeSlots": 8,
+        "bookRects": 9
+      },
+      {
+        "page": 338,
+        "runs": 16,
+        "largeSlots": 6,
+        "bookRects": 24
+      },
+      {
+        "page": 339,
+        "runs": 19,
+        "largeSlots": 6,
+        "bookRects": 21
+      },
+      {
+        "page": 340,
+        "runs": 18,
+        "largeSlots": 4,
+        "bookRects": 18
+      },
+      {
+        "page": 341,
+        "runs": 18,
+        "largeSlots": 12,
+        "bookRects": 22
+      },
+      {
+        "page": 342,
+        "runs": 22,
+        "largeSlots": 7,
+        "bookRects": 28
+      },
+      {
+        "page": 343,
+        "runs": 21,
+        "largeSlots": 6,
+        "bookRects": 29
+      },
+      {
+        "page": 344,
+        "runs": 22,
+        "largeSlots": 5,
+        "bookRects": 19
+      },
+      {
+        "page": 345,
+        "runs": 23,
+        "largeSlots": 7,
+        "bookRects": 29
+      },
+      {
+        "page": 346,
+        "runs": 18,
+        "largeSlots": 2,
+        "bookRects": 22
+      },
+      {
+        "page": 347,
+        "runs": 24,
+        "largeSlots": 5,
+        "bookRects": 30
+      },
+      {
+        "page": 348,
+        "runs": 24,
+        "largeSlots": 6,
+        "bookRects": 24
+      },
+      {
+        "page": 349,
+        "runs": 24,
+        "largeSlots": 6,
+        "bookRects": 15
+      },
+      {
+        "page": 350,
+        "runs": 26,
+        "largeSlots": 14,
+        "bookRects": 30
+      },
+      {
+        "page": 351,
+        "runs": 20,
+        "largeSlots": 6,
+        "bookRects": 15
+      },
+      {
+        "page": 352,
+        "runs": 16,
+        "largeSlots": 4,
+        "bookRects": 21
+      },
+      {
+        "page": 353,
+        "runs": 22,
+        "largeSlots": 3,
+        "bookRects": 22
+      },
+      {
+        "page": 354,
+        "runs": 20,
+        "largeSlots": 5,
+        "bookRects": 31
+      },
+      {
+        "page": 355,
+        "runs": 31,
+        "largeSlots": 17,
+        "bookRects": 28
+      },
+      {
+        "page": 356,
+        "runs": 28,
+        "largeSlots": 9,
+        "bookRects": 21
+      },
+      {
+        "page": 357,
+        "runs": 27,
+        "largeSlots": 10,
+        "bookRects": 31
+      },
+      {
+        "page": 358,
+        "runs": 25,
+        "largeSlots": 11,
+        "bookRects": 32
+      }
+    ],
+    "ligatures": [
+      {
+        "page": 328,
+        "text": "十五",
+        "elId": "p0328-b6-e2"
+      },
+      {
+        "page": 336,
+        "text": "十一",
+        "elId": "p0336-b2-e5"
+      },
+      {
+        "page": 341,
+        "text": "十二",
+        "elId": "p0341-b5-e3"
+      },
+      {
+        "page": 358,
+        "text": "十二",
+        "elId": "p0358-b2-e9"
+      }
+    ]
+  },
+  "renderInventoryNotes": {
+    "method": "Invoke production layout3 / projectBooks on current per-page IR; iterate runs and large slots; counts are logical placements, not measured ink boxes.",
+    "blankRuns": [
+      {
+        "page": 318,
+        "line": "p0318-b1-l1"
+      }
+    ],
+    "nonblankRuns": 947,
+    "nonblankSlots": 15262,
+    "smallNonblankCodepoints": 14987,
+    "largeCodepoints": 279,
+    "largeDistinct": 187,
+    "smallDistinct": 2130
+  },
+  "readingOrder": {
+    "method": "Serialize planLayoutBand segments in skeleton order and compare with irToText; separately concatenate layout3 band.items, the order used by MatrixPages JSX. Strip whitespace only.",
+    "planEqualsTextPages": 45,
+    "itemOrderMismatchPages": [
+      312,
+      313,
+      315,
+      316,
+      317,
+      318,
+      319,
+      320,
+      321,
+      322,
+      323,
+      324,
+      326,
+      327,
+      328,
+      330,
+      331,
+      334,
+      335,
+      336,
+      338,
+      339,
+      340,
+      341,
+      342,
+      343,
+      344,
+      345,
+      346,
+      347,
+      348,
+      349,
+      350,
+      351,
+      352,
+      353,
+      354,
+      355,
+      356,
+      357,
+      358
+    ]
+  },
+  "fontAudit": {
+    "method": "fontTools TTFont getBestCmap in production CSS stack order; BoundsPen on every distinct non-whitespace rendered codepoint; a nonempty outline is availability evidence, not historical glyph fidelity.",
+    "fonts": {
+      "guji-large.ttf": {
+        "sha256": "99be6a77b93afa746b2d29e37d6014cab9f9c21471f685a2392426760a17dabf",
+        "cmapEntries": 49408
+      },
+      "guji-plane0.ttf": {
+        "sha256": "b4433eb2cb5218d3e507dd1757398813ac105d6c384dbbf8a841a60107b53c0f",
+        "cmapEntries": 30707
+      },
+      "guji-plane2.ttf": {
+        "sha256": "80df094a2e63091b222706696a8b244c9dba45219af866226a097d0fbb2bf28d",
+        "cmapEntries": 61228
+      },
+      "guji-planef.ttf": {
+        "sha256": "cfeb8527cfc75fe244b1c773056ed8e8896e67918f368999d12f6bd86dee323b",
+        "cmapEntries": 42620
+      }
+    },
+    "coverage": {
+      "large": {
+        "occurrences": 279,
+        "unique": 187,
+        "selected": {
+          "guji-large.ttf": 279
+        },
+        "missing": [],
+        "emptyGlyphs": []
+      },
+      "small": {
+        "occurrences": 14987,
+        "unique": 2130,
+        "selected": {
+          "guji-plane0.ttf": 14769,
+          "guji-plane2.ttf": 218,
+          "guji-planef.ttf": 0
+        },
+        "missing": [],
+        "emptyGlyphs": []
+      }
+    }
+  },
+  "columnProbe": {
+    "method": "Existing segment(page) called read-only on 5 scans; 8/16 count is imposed by prior, not measured accuracy. No boxes were human adjudicated.",
+    "pages": [
+      {
+        "page": 312,
+        "block": [
+          1,
+          160,
+          1014,
+          1572
+        ],
+        "block_src": "frame",
+        "pitch": 59.4,
+        "n_minors": 16,
+        "n_majors": 8,
+        "lines_evidence": "10/17"
+      },
+      {
+        "page": 328,
+        "block": [
+          4,
+          133,
+          1039,
+          1592
+        ],
+        "block_src": "frame",
+        "pitch": 60.2,
+        "n_minors": 16,
+        "n_majors": 8,
+        "lines_evidence": "10/17"
+      },
+      {
+        "page": 334,
+        "block": [
+          4,
+          163,
+          1040,
+          1594
+        ],
+        "block_src": "frame",
+        "pitch": 60.4,
+        "n_minors": 16,
+        "n_majors": 8,
+        "lines_evidence": "15/17"
+      },
+      {
+        "page": 349,
+        "block": [
+          54,
+          176,
+          1026,
+          1593
+        ],
+        "block_src": "vl",
+        "pitch": 59.8,
+        "n_minors": 16,
+        "n_majors": 8,
+        "lines_evidence": "13/17"
+      },
+      {
+        "page": 351,
+        "block": [
+          110,
+          135,
+          1078,
+          1648
+        ],
+        "block_src": "frame",
+        "pitch": 58.4,
+        "n_minors": 16,
+        "n_majors": 8,
+        "lines_evidence": "9/17"
+      }
+    ]
+  },
+  "visualReview": {
+    "tool": "CUA in-app browser at localhost:5173",
+    "pages": [
+      312,
+      328
+    ],
+    "scope": "Compared scan and current grid rendering after page content settled; observed different fonts/texture, spatial widths/positions and absent scan margin content in render. Not a character-level proofreading or bounding-box evaluation."
+  },
+  "implementationSha256": {
+    "guji-preview-grid/src/ir/layout3.ts": "9e6a9837fb34f4951c08303ca21ab468bade9c0c0f51213531a31f6a73eb2304",
+    "guji-preview-grid/src/ir/projection.ts": "58a478ac944f66e9b506ea3d2931c3649e3e7d46f44f14ade4aadb8e811344b0",
+    "guji-preview-grid/src/ir/text.ts": "1adef646dbac71bb0eac67be54e414464a541c97bdca00315fb661807d85d92c",
+    "guji-preview-grid/src/components/matrix/MatrixPages.tsx": "47e5a43ac90bc9b04219ab99efc0f483a1bf0cc9eb3a917913d92c52c74b6169",
+    "guji-preview-grid/src/components/dataset/DatasetView.tsx": "06cbf74c02e1c24924490a2c7710c0d72ac01bfacd4210bfc4389f409d1e5958",
+    "guji-preview-grid/src/index.css": "d3bb4e0d29760a1a90094922e51288d725705197a6e2110fe4576176df1256cb",
+    "guji-preview-grid/src/matrix.css": "5bd5ca294e1f462561424fd0038f5dc0a0f04a13af62d9f15091143ca66af1c6",
+    "guji-preview-grid/src/pua-registry.json": "d4f0224de01c33eb30823f3752a24d18d6999d077066341c9c4947cae9d695ab",
+    "tools/eval/kangxi_column_seg.py": "b4d415bbf9de10c43660cbc8fc68af74cb14439a99be352528421e8de3a194fa"
+  },
+  "annotationSha256": [
+    {
+      "page": 312,
+      "sha256": {
+        "gj": "f9c861595bb385e0ac51bf16a6b070b81e75ca1c5f87f011c1dc16a724c25835",
+        "json": "3df9df8226acc79c01437da2db55c3f65bd103f707c598abf642a81a21e7f51d",
+        "txt": "31207ad9ccb1734ee44e47ee62795279f9e97aafbcdc0214566eb56152ef390f"
+      }
+    },
+    {
+      "page": 313,
+      "sha256": {
+        "gj": "341422db3a6fcd5e5ddd16ca088a0c9eb6cf609abba105d78d46aade393d3ba8",
+        "json": "da858cbbdaa680222d12d61ee9f5d916a801098f37b29d46b0c99a8e360c0df0",
+        "txt": "b9a048c2ee05962d5f14e6bfc5504cf5de4e423ebe9d1bfd99b2431491688ab8"
+      }
+    },
+    {
+      "page": 314,
+      "sha256": {
+        "gj": "62c443a238892c0a7493ddc9196e2722aff398ca902e7d29dad2d6f0ae072325",
+        "json": "51f667bf6ca31a5092cae2b134e974744c84e0d632c968d42a17d1ac2b5cd339",
+        "txt": "45fa1dd581d1384318bbc678a1ee7944cff6f93af09684d0962321e77e211e9f"
+      }
+    },
+    {
+      "page": 315,
+      "sha256": {
+        "gj": "5503d49d743e29f9bf1d82bc0554b2ee403a4d97dfaec9a54fabca4c11729a0f",
+        "json": "dc2351f3a0d86d3b2bcb323693f6db47d41e73033a17f564d7f49e0feba59125",
+        "txt": "c64048de28cd834c70013adc645d97863ea3ef8472c78a45694eb3bb005d9f74"
+      }
+    },
+    {
+      "page": 316,
+      "sha256": {
+        "gj": "27ed73660d3e396b7825212dcef1c4c4e2ccf3d422b21d43a01cc23ca1bf4b08",
+        "json": "8837e425b0c04d39d2dab91bce3d715240390f404f9aca59c4c63d2c356e527b",
+        "txt": "c45fbd12ad7437063913d9d6827032bf0ee491db2bf3f9ba79c6a209d44653f8"
+      }
+    },
+    {
+      "page": 317,
+      "sha256": {
+        "gj": "3b7ea1369b82d1fe7c63f5f8c5165ba24038b383dc3fedd8ee1833fbfacf98cd",
+        "json": "2ce004f7b6307537a619aef3c044110997ebcb405effe27890290c23f0f8d236",
+        "txt": "c70f675b822df46b3c50f9b1c375833a8d052fd66a50c47d0c6491637f76d92a"
+      }
+    },
+    {
+      "page": 318,
+      "sha256": {
+        "gj": "56f0af666e0fe6b41d349089075cfb5cde68d76e03870e44e1e32ac8e9765552",
+        "json": "0b050b353f3a3080e7d8d212c976a35887cf437457b9a1c889aceb3c791a86fc",
+        "txt": "7faba5ec782a2a35f2863f66b340638ee0063d70d2d22f281e96b3fbc7c1e3b4"
+      }
+    },
+    {
+      "page": 319,
+      "sha256": {
+        "gj": "e088242cf1df34028f484ba3268d8989db15328eb39e74c7e719d775c6570a6e",
+        "json": "237b3ae43e55f939fa166730913126931bdefce164c9a497921e808b50a83458",
+        "txt": "9520644d122d842c849f41ede14b2acc815b2c95dd73f7c5ea84c0192f2c0a14"
+      }
+    },
+    {
+      "page": 320,
+      "sha256": {
+        "gj": "a4b40a222fb911ef20c7a72e949d26ca279f3888d0ce018576522f6ea7090214",
+        "json": "e649dabe03f2057188972b8e1ae7fcffe853b29859a7c0a8be300ca3d7ec3fc7",
+        "txt": "9cbde7e78e22d98682f9dbe90f6a081a26ab1ed0aa7c2ee3ab481f9dbde8831c"
+      }
+    },
+    {
+      "page": 321,
+      "sha256": {
+        "gj": "d888d8949289a1f166f6e9dfe21f3b977d820afcf84521d5151a268729b35e0f",
+        "json": "6aeb35b19581f6db22c3eeb12a38c0b67fb6393f592f259883edca62e979ce4c",
+        "txt": "c6e01cdf25b6a7b903db64710c5fdcc262c782c7ecb228aa8e5d3f5578ac59f9"
+      }
+    },
+    {
+      "page": 322,
+      "sha256": {
+        "gj": "b31c6ecf95c1f9a66e824d25afa1462a37940e39ee969bb2105a140ff4c5b9b1",
+        "json": "a9564cc067e537f291d9a56b0d8ddcca2f0d1e2129f3634123873ecefab78547",
+        "txt": "e5981aaf358df66dd8b05155ff6b8122cd7df6b8a76931d2e41193e81608228d"
+      }
+    },
+    {
+      "page": 323,
+      "sha256": {
+        "gj": "ed5c906e0450a8fa3c392b29f4744acc2cbf95ea442a093d7e28d51daa035f80",
+        "json": "48bae2da14e1590bf9801fa00b3a63dca367232b32bfeaedb19c088cded5e3de",
+        "txt": "cdbd676f4cc9c70cc1ba24af7645a03654c929afc3f87a4719f71ed4db5a6ab2"
+      }
+    },
+    {
+      "page": 324,
+      "sha256": {
+        "gj": "2e1ae2c19eb6caa45d9edb9594c25475cbd19282a09951f957ae78cf44a893e8",
+        "json": "534bda60c8cb7dac229f54295eafdde74bbec1f03d645a0e6baba2d32120fead",
+        "txt": "4fb3ce3247d468ff78a1bcb61cdabb4cf8e31d6ac7698dd829b9f946719ac9b3"
+      }
+    },
+    {
+      "page": 325,
+      "sha256": {
+        "gj": "0fcbbcb8cc83bceb46159afbb41d98f9b7ca4a16d552fc7980019422eaf2abcf",
+        "json": "08f03a290a67fed1193f6e60a36e496d09972f899c961d94032cc2e0b85c0b66",
+        "txt": "57262634d75b12eae3a80f492f5224e17aadb5d4a331878ab9acbab82250a504"
+      }
+    },
+    {
+      "page": 326,
+      "sha256": {
+        "gj": "e14aa34ba6201ebbb3a1a2243e57276f5c66e808c6a8361d34e54bff1f1a0306",
+        "json": "e48c2fb586cc09ad8769ea01658119324bd22174ebc714e2c4d9d2e04d5618dc",
+        "txt": "f5e250a4921a08f8f7f9e9184ca36695e29535dabae9cd2e71b8c88af516538f"
+      }
+    },
+    {
+      "page": 327,
+      "sha256": {
+        "gj": "9d35969ad509482e5306036005cb7e0a78a6db9355d6f56a75376b7de01ee2de",
+        "json": "539f4a9f60df44d4db35e1845d3759f580bc8e99c944b3492a217ae0297dd090",
+        "txt": "2347aceb7f9dd6e9f2a71f54e4fa4322a6d004cc2ff1d79013c5b9d2dd38870e"
+      }
+    },
+    {
+      "page": 328,
+      "sha256": {
+        "gj": "2515fb1523484e1aa44f51a8952376334834962b617cd78834110e965bb7bf24",
+        "json": "3c3c351f9358eb00fd782fbc5c2414e30fbb6a48bb9f8ddf296704a7f9ea88bb",
+        "txt": "b344188f2f7859b5fda00b1b36481db62ebc976196d1ba9c5d4fa08671e574ad"
+      }
+    },
+    {
+      "page": 330,
+      "sha256": {
+        "gj": "50101a065fde8dcf7020e31920a4afab8f784005958bc90a5fe8aa83c161e1b9",
+        "json": "9d7e4038fcc2c33f90ffbafed5a74979af2f9f253caf37d0fca5a32d3203f32e",
+        "txt": "2dd48d6a94e82c11cf7cbfa3ca00aa68c7b8e7a476a809fdbb0455dff2ca56f3"
+      }
+    },
+    {
+      "page": 331,
+      "sha256": {
+        "gj": "170f36b18340af6b67ecdfde72960d01781803444aab28e97b4911ba16ef69b3",
+        "json": "0f2362a8dc82332d01194cc94d794c8eb011366b074618f498692ac0a3a1f601",
+        "txt": "23c7f7ba73bd589323c1596f96d2fe0d6e7c49b84d0dea4f31dc9a4bcd7c17a0"
+      }
+    },
+    {
+      "page": 332,
+      "sha256": {
+        "gj": "19f362b36ec133254b2a1b94bb3ad8219324f7e2f76ca17c56090fe2b696c6b2",
+        "json": "f03d5c002af1137a8b1804da9f5932ba7e9c0d1323b0693be038b685cedd76ea",
+        "txt": "708b7a07803f64c366decfea40c3ca7990bc19bdc97c5144f72a182e03b14e68"
+      }
+    },
+    {
+      "page": 333,
+      "sha256": {
+        "gj": "b374a6eb7f41d4dd41f04766ea2df5ea53a66c1ed5e61dae8ce7e0ca1714c84b",
+        "json": "fb5b76df5153af5703955936df8391de1d46167402a03495909981b79756bfed",
+        "txt": "bf4153f5942c9e70e5bc5e75f40e3e737abdace9eab1188e14a19fe761fceaa7"
+      }
+    },
+    {
+      "page": 334,
+      "sha256": {
+        "gj": "41e749112b2bc74ea7aaa45e236b1139db17f54863c294b31aae02824784d89d",
+        "json": "b54f21ed56fbad205b1fc98399e6db6a3700184ef27feb20e247af486d3397a9",
+        "txt": "fe9df63cdaa71010c014e5665c6d8f21afe374751e0c800bfd2e74d3b74c090b"
+      }
+    },
+    {
+      "page": 335,
+      "sha256": {
+        "gj": "124fa6faac719f57d1884502f04e1b96b92ef32faf7abbcae374204611870a08",
+        "json": "a18f66ad852195452f2ee033650a4b74b3b320d3a343be61f28502f488492e0c",
+        "txt": "6dfe3200697ba16ca9228f4eff78c748a8aaa20d116f19105e0068c62a0a8fe4"
+      }
+    },
+    {
+      "page": 336,
+      "sha256": {
+        "gj": "428558ced929e16e548f0b1da18e5f7443238593352ca81a7a6f3fb44f081254",
+        "json": "32a610c6e1fd4f8960ab657628a2c5408ebe2701d6bc63f7bfcbb6eefc892ed7",
+        "txt": "6e48dc92145ad35a94fea01c5ffd2c750ded0db279f242743eedb7539f9e0741"
+      }
+    },
+    {
+      "page": 338,
+      "sha256": {
+        "gj": "ce3914ec66181322ac18ca094931d12de2fbf63884b8d19d799ef1a7ce1163bb",
+        "json": "7c60d386ede71f738cce2410c3e91c13f72b75f757e872b0b140905ae2943cb9",
+        "txt": "012f060ec944f2c8d4072fa038c99a6e8c75e9447c2a54cac6d2796ab263ffbd"
+      }
+    },
+    {
+      "page": 339,
+      "sha256": {
+        "gj": "b0fe9d552dc0071453442f374c8a576e72a9ed0541606ae0dcc7a1c50c723c09",
+        "json": "57733fead3d0027b2ae4d0611f24a4ae7f7469e4128502ea8532bbf394f797e4",
+        "txt": "0db01fa0ea4c058d54947d4b5e4989f636e64eb31b8bbad63930a4124c291658"
+      }
+    },
+    {
+      "page": 340,
+      "sha256": {
+        "gj": "f0be8242183259e9d3247418188669fe5285cf4feb949075228921dbea579ad2",
+        "json": "ecbdebea1b8905b0ea2d6d526ac0c5c3d8fc1404c0def089589e236544b64e10",
+        "txt": "aa367e27c10e044acc63779250eee09b14c114d25d210f2219ac55ab3a7641aa"
+      }
+    },
+    {
+      "page": 341,
+      "sha256": {
+        "gj": "178cf1918e292240f5384232051ef8326dcddea3f9e0e2b4ab5858a70b9fe5a0",
+        "json": "e0ee07b6d7bdf89ddeac5adee9b5ea81d8425e53c5dfbbe6b9c29ce779b675de",
+        "txt": "dfd7e962f9c5ff322a7208bc0e786596d36336e1c267a892e0bde92c9309355b"
+      }
+    },
+    {
+      "page": 342,
+      "sha256": {
+        "gj": "4a75f876f1f8687a1c615f27c53df4e5ee4cbed569df2cf48417fd07ec7d42b2",
+        "json": "f6848d854465f365c7558dcd226fca4ffeb9746a00f96bcb1073c85c75685bc7",
+        "txt": "befbb112d67accfa9556878410909792c03f21d25a7d73009272204c4c0aa11e"
+      }
+    },
+    {
+      "page": 343,
+      "sha256": {
+        "gj": "e4b24a521501b740cf90ab131da8b18713a83cbc4da2b3db2d8993cc7bbf2f06",
+        "json": "d8c0435c871ffc227e65f93139bbbcfc92ba7f96c9036420def7cb8fabb0ae5e",
+        "txt": "d37b1a0e4e6bccc133d9721ae401bd1a29b2d72f794c1e2ea99ff2b9b212adba"
+      }
+    },
+    {
+      "page": 344,
+      "sha256": {
+        "gj": "9dcae4d325f845df3046b37923265de97cc5d58dad9f65f4aae4721bec490579",
+        "json": "37c0dec3166aeed513b3e897049ccfe5567d6c948e7a4713aece3e7d8e33b35e",
+        "txt": "346c13c8ad8f3d5d89a79daa8629a7aefd8e6dd3c81d0ca4c744ce90242b870e"
+      }
+    },
+    {
+      "page": 345,
+      "sha256": {
+        "gj": "793e59d7711efba0e56a4ffc8c874414de2fcd3d114dbce47e4effad424db5b2",
+        "json": "c5d3a84222822b0192b537b71ee05b6742a43790d5dc7a7e1bb444ccae25c5d5",
+        "txt": "9206538d9e6308511c249ebbf70cceaa9016c0c5be680c85d6c38ebb07ed704f"
+      }
+    },
+    {
+      "page": 346,
+      "sha256": {
+        "gj": "2df70e51e2023433f6723f1e6d8c335360546679e93014faa91d5217b040fe0c",
+        "json": "a67f0bca9d6123baf2bcebe14854e18213135132174f74ae9f5c63026c2c34e2",
+        "txt": "50e28c2ee3445c04403f62c1d0cc6888d3f79a77b9c69b4a527931f9546dc523"
+      }
+    },
+    {
+      "page": 347,
+      "sha256": {
+        "gj": "6d2b9fbd53db98ac982481ea0a36767ffdc086b49c6f55acf283d467b4592d78",
+        "json": "5661c5571e616a4fea1f9ce00fc23e4d3ce451c90307f92f7ee84fae32f5a8ce",
+        "txt": "98f1b0e2f963ecf49fdfd1a3d59152ee91b0647d8297a80c55722066d131beb2"
+      }
+    },
+    {
+      "page": 348,
+      "sha256": {
+        "gj": "cc6e3b882e8d3d8eb3957a71dcb69aed4f9ee352d89f45a3bdec80120f65e7c2",
+        "json": "11c7f822fc193d0e14c0fcb3272fe9e7ea6a62dc05ac1408d5840fff3c1df896",
+        "txt": "ca12558cc3c4db3e198a9ebf5f168102f7b1a23c3b2fda4a58960bef922c3d5a"
+      }
+    },
+    {
+      "page": 349,
+      "sha256": {
+        "gj": "7541d97ce42835e0768b1e349a9cce80b49b512e37a0f3ae4559561a5d6e28ea",
+        "json": "1d24d47382a6e46a5c6b76ba88f0ae7ce11a6d8d351f7462120cd59005e48822",
+        "txt": "92c671a40da7bcc167bedbd3ad259d21bcfd896a3b76fd63529f206ed39150c8"
+      }
+    },
+    {
+      "page": 350,
+      "sha256": {
+        "gj": "4d84340accc753653570c100b30c1b282a69424d823ec5c418bf65b2da9d408d",
+        "json": "4db239a62efce42376dc10bfa9f4f1ed6302542bb442a0cdc93e1cef68fbe7ca",
+        "txt": "354d21d394dedb7db6f4f39d5e617346e4b31b1e1c3e966c16c159b6f0d7e7d7"
+      }
+    },
+    {
+      "page": 351,
+      "sha256": {
+        "gj": "8d3a93773a125d366faeb48f674b968c6185bac29ab6b8beca2452365602e33c",
+        "json": "befcb0e848b205a413f304593631caace92d4e111a5d15093ef94181c3c94e7b",
+        "txt": "9b924b92cec54f114c5abf0b2e612629fdbe79b1bff342d1f4f7c88867347605"
+      }
+    },
+    {
+      "page": 352,
+      "sha256": {
+        "gj": "973d30a167ed7dd84543b3cf9e1c8b5de95f4404f85ce2f0f07d951f7f21877d",
+        "json": "60c3c1c8dbaeae57b6444dfde5149642e9b054795502c1671c62b422aa76c321",
+        "txt": "1427110cc629f7c571684c2a291984e309ffdc31e816b6b571e6aec2a377ab25"
+      }
+    },
+    {
+      "page": 353,
+      "sha256": {
+        "gj": "cd979577ac385593f9aad63ff3f6360f054f96b3ac7f973e3279ae2a0c8391bd",
+        "json": "74c7b0fc90cabc438cadb6b07373829ee52eea9294dc64cff33a5f7e2aa05a12",
+        "txt": "761c1a74385b06b5c7534c44e92203418df923310d4689fa60c2604064e998ae"
+      }
+    },
+    {
+      "page": 354,
+      "sha256": {
+        "gj": "939b3dddc1d555c4da7027a2bb387cea7803fd2a4029ea09269e188f107fd2cb",
+        "json": "df15109e8b7d3f78cfc959445aa1963a4be593d0d0213fb60075834de8c2c3af",
+        "txt": "e8e715c094782eafe631a59d9b238e8635dc366748050975702f34a8f02b61ab"
+      }
+    },
+    {
+      "page": 355,
+      "sha256": {
+        "gj": "0ea3733e25df4545f5726516e0927c27288c6795c1b9f3682f410f00a4a9ae6d",
+        "json": "0a68a292a13dbed76247883d3c13890c2c1530e9dd4b86c0d3a196990c284233",
+        "txt": "7015551266c0e5e022e743cfaeed7a45147de66061ac38d3600921451b904a2a"
+      }
+    },
+    {
+      "page": 356,
+      "sha256": {
+        "gj": "352c6de4dc98b639ff6528da13289eaca397d0dc713839ee291294f19b988dcf",
+        "json": "b404ab7c15566253af34bd8ab7b318abc1b873cb5c150161f1610c4936202593",
+        "txt": "00061f53d4879c16ea4104f1a89cd750dc017458715fdce2c6d9b60ff6a932f2"
+      }
+    },
+    {
+      "page": 357,
+      "sha256": {
+        "gj": "35ff8ba907509b64f6385e687556956cdf802927fd8697f13d2a71ddfb76c687",
+        "json": "69843efe91d60ed0c5384ca907d728e533fc77f6c25907692245f542ec830314",
+        "txt": "99a92bcdc0a536421e0dd2eeec91b93dd813a4b151db2870d1f967ad5a46ee87"
+      }
+    },
+    {
+      "page": 358,
+      "sha256": {
+        "gj": "b581733f7212a567fc6a65da93e728e396c9205551743f9490bd0b83766d1f9f",
+        "json": "d7885f6bdccdc1ff08e5d4785e307db200a68b8147da67e13385e229660bce29",
+        "txt": "c2610ed20b87323471fd2cacb9d7c58f54e88466e682058b86c8511171fdff9f"
+      }
+    }
+  ],
+  "limitations": [
+    "No new OCR inference, training, CER or IoU result.",
+    "Synthetic coordinates cannot certify scan coordinates.",
+    "First proofreading status is not final adjudication.",
+    "Font coverage does not certify browser loading, exact glyph shape, or licensing."
+  ]
+}

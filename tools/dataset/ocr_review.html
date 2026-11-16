@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="zh"><meta charset="utf-8"><title>古籍 OCR 数据集核对</title>
+<style>
+body{font:14px system-ui;margin:0;background:#f5f3ee;color:#25251e}header{padding:16px 24px;background:#fff;border-bottom:1px solid #ddd;display:flex;align-items:center;gap:12px;flex-wrap:wrap}h1{font-size:18px;margin:0 12px 0 0}button,select,input{font:inherit;padding:7px;border:1px solid #bbb;border-radius:5px;background:white}main{display:grid;grid-template-columns:minmax(460px,1fr) 320px;gap:20px;padding:20px;max-width:1600px;margin:auto}svg{width:100%;height:auto;background:white;max-height:85vh}aside{background:white;padding:18px;border-radius:8px;align-self:start}p{line-height:1.6}#details{white-space:pre-wrap;overflow-wrap:anywhere}label{display:block;margin:12px 0 5px}input{width:calc(100% - 16px)}.box{fill:transparent;stroke-width:2;cursor:pointer}.box:hover,.selected{fill:#ffd54033;stroke-width:4}.muted{color:#666;font-size:12px}#note{color:#9a5b05}button{cursor:pointer}#selection{min-height:40px}
+</style>
+<header><h1>古籍 OCR 数据集核对</h1><select id="page" aria-label="页面"></select><select id="domain" aria-label="输入图"><option value="synthetic">渲染图</option><option value="scan">扫描原图</option></select><select id="layer" aria-label="标注层"><option value="regions">文字片段</option><option value="bands">大列</option><option value="glyphs">字格</option><option value="decorations">书名框与圈号</option></select><select id="zoom" aria-label="缩放"><option value="fit">适应窗口</option><option value="1">原始尺寸</option><option value="1.5">150%</option></select><button id="download">下载定位修订</button></header>
+<main><div id="viewer"></div><aside><strong id="status"></strong><p id="note"></p><div id="selection">点击框查看对应文字和阅读序。</div><div id="editor" hidden><label for="bbox">所选框 x1, y1, x2, y2</label><input id="bbox"><button id="apply">应用到核对视图</button></div><p class="muted">蓝：小字；红：大字；绿：大列。原图自动定位仍是候选框，须复核后用于定位训练。修改只在本页暂存；下载后使用构建命令导入。</p><pre id="details"></pre></aside></main>
+<script>
+const DATA=__DATA__;
+const $=id=>document.getElementById(id);const ns='http://www.w3.org/2000/svg';
+let selected=null;const edits={schema:'guji-ocr-review/1',pages:{}};
+for(const p of DATA){const o=document.createElement('option');o.value=p.page;o.textContent='@'+p.page+' · '+p.proofread_status;$('page').append(o);}
+function current(){return DATA.find(p=>p.page===Number($('page').value));}
+function svgNode(name,attrs){const n=document.createElementNS(ns,name);for(const [k,v]of Object.entries(attrs))n.setAttribute(k,v);return n;}
+function show(){const p=current();if(!p)return;const domain=$('domain').value;const a=p[domain];const layer=$('layer').value;selected=null;$('editor').hidden=true;$('details').textContent='';$('selection').textContent='点击框查看对应文字和阅读序。';
+ $('status').textContent='@'+p.page+' · '+(domain==='scan'?'原图定位候选':'合成图标注');
+ $('note').textContent=domain==='scan'?'大列状态：'+a.band_geometry_status+'；片段与字格：proposed。'+(a.quality_flags||[]).join('，'):'图像与标签由同一布局生成；框表示字格占位。';
+ const svg=svgNode('svg',{viewBox:`0 0 ${a.width} ${a.height}`,role:'img','aria-label':'图像与定位框'});if($('zoom').value!=='fit'){svg.style.width=(a.width*Number($('zoom').value))+'px';svg.style.maxHeight='none';}$('viewer').style.overflow='auto';svg.append(svgNode('image',{href:p[domain+'_image'],width:a.width,height:a.height}));
+ for(const obj of a[layer]){const b=obj.bbox;const rect=svgNode('rect',{x:b[0],y:b[1],width:b[2]-b[0],height:b[3]-b[1],stroke:layer==='bands'?'#16934a':obj.size_class==='large'?'#d52824':'#0069d9',class:'box'});const title=svgNode('title',{});title.textContent=obj.id+' '+(obj.text||'');rect.append(title);rect.onclick=()=>{svg.querySelectorAll('.selected').forEach(n=>n.classList.remove('selected'));rect.classList.add('selected');selected={obj,rect,layer};$('selection').textContent=(obj.text||obj.id)+' · 阅读序 '+(obj.order??'—');$('bbox').value=b.join(', ');$('editor').hidden=domain!=='scan'||!['bands','regions'].includes(layer);$('details').textContent=JSON.stringify({id:obj.id,bbox:b,text_range:obj.text_range,ligature:obj.ligature,ink_fraction:obj.ink_fraction},null,2);};svg.append(rect);}
+ $('viewer').replaceChildren(svg);
+}
+for(const id of ['page','domain','layer','zoom'])$(id).onchange=show;
+$('apply').onclick=()=>{if(!selected)return;const p=current(),a=p.scan;const b=$('bbox').value.split(',').map(Number);if(b.length!==4||!b.every(Number.isFinite)||!(0<=b[0]&&b[0]<b[2]&&b[2]<=a.width&&0<=b[1]&&b[1]<b[3]&&b[3]<=a.height)){alert('请输入图像范围内的四个坐标。');return;}
+ const e=edits.pages[p.page]??={source_sha256:p.source_sha256,image_sha256:p.image_sha256,band_bboxes:{},region_bboxes:{},band_geometry_status:'proposed'};
+ e[selected.layer==='bands'?'band_bboxes':'region_bboxes'][selected.obj.id]=b;selected.obj.bbox=b;
+ for(const [k,v]of Object.entries({x:b[0],y:b[1],width:b[2]-b[0],height:b[3]-b[1]}))selected.rect.setAttribute(k,v);
+ $('note').textContent='修订已暂存。下载并导入后，构建器会重新生成该页；大列变化会重算子框。';
+};
+$('download').onclick=()=>{const blob=new Blob([JSON.stringify(edits,null,2)+'\n'],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='guji-ocr-review.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
+show();
+</script></html>

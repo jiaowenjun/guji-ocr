@@ -74,6 +74,11 @@ kangxi-gold/
 
 ## 用法
 
+版式与文字 OCR 数据集的双域导出、原图定位核对和后续初校页增量构建，见
+[增量构建指南](../docs/development/ocr-dataset.md)。入口：
+`python3 tools/dataset/build_ocr_dataset.py`（在仓库根目录执行）。
+生成物位于 `var/datasets/kangxi-ocr/`；原图自动框明确标为候选，不作为终校定位金标。
+
 ```bash
 # 1. 下载/补齐图片（WD-2T 需挂载；可用 --images-dir 换路径）
 python3 scripts/download_pages.py

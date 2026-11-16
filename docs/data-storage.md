@@ -41,6 +41,7 @@ guji-ocr/
 └── var/                     # gitignore 整目录；结构见下
     ├── crawl/               #   kangxi-crawl.sqlite3（状态库）+ *-events.jsonl + kangxi-demo-cache/
     ├── ocr-cache/           #   共享 OCR markdown 缓存 NNNN.json（prefetch_ocr 产，5 处消费）
+    ├── datasets/            #   自建可再生 OCR 导出：原图副本、合成图、标签、裁剪、核对页
     ├── unencoded/           #   未编码字头分析产物：svg/ png/ report + font-patches.jsonl
     └── logs/                #   crawl.log、demo.log
 ```
