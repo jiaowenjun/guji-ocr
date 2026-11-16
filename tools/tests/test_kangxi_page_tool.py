@@ -49,6 +49,12 @@ class TestAlignCut(unittest.TestCase):
         end, why = kpt._align_cut(cand, ocr)
         self.assertIsNone(end)
 
+    def test_zero_matching_blocks_rejected(self):
+        """两串非空但零公共块（@358：残缺 OCR 单字与续文无交集）→ 拒绝而非崩溃。"""
+        end, why = kpt._align_cut(distinct_chars(40), distinct_chars(40, 0x9000))
+        self.assertIsNone(end)
+        self.assertIn("零匹配", why)
+
     def test_full_page_span_uses_ocr_side(self):
         """full_page=True 判信按 OCR 侧：候选远大于页面仍可裁（@334 场景）。"""
         ocr = distinct_chars(50)

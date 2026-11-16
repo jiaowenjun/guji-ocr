@@ -395,6 +395,7 @@ def page_prefetch_state(page: int, store: kangxi_store.KangxiStore | None = None
 
 _OCR_CACHE: dict[int, str] = {}
 _OCR_CACHE_DIR = paths.OCR_CACHE_DIR
+_MIN_OCR_CHARS = 20  # 整页 OCR 归一化下限：低于此视为服务残缺结果，不落缓存
 
 
 def _scan_for(page: int, store: kangxi_store.KangxiStore) -> tuple[Path | None, str]:
@@ -592,7 +593,11 @@ def page_column_ocr(page: int, model: str = "paddle",
 
 
 def _ocr_cache_read(page: int, store: kangxi_store.KangxiStore) -> str | None:
-    """持久缓存命中（sha256 与扫描图一致）→ markdown；空串哨兵=None；未命中=None。"""
+    """持久缓存命中（sha256 与扫描图一致）→ markdown；空串哨兵=None；未命中=None。
+
+    残缓存的 sha 也会匹配（图没变），但内容是服务侧残缺结果（@358 整页
+    只识别出单字「寧」）——归一化不足 _MIN_OCR_CHARS 视同未缓存，触发重试。
+    """
     f = _OCR_CACHE_DIR / f"{page:04d}.json"
     if not f.exists():
         return None
@@ -604,6 +609,8 @@ def _ocr_cache_read(page: int, store: kangxi_store.KangxiStore) -> str | None:
     if not entry.get("sha256") or entry["sha256"] != cur_sha:
         return None  # 图已变（重爬），缓存失效
     md = entry.get("markdown") or ""
+    if len(_norm("".join(_ocr_groups(md)))) < _MIN_OCR_CHARS:
+        return None
     return md or None
 
 
@@ -726,7 +733,9 @@ def _ocr_markdown(page: int, store: kangxi_store.KangxiStore) -> str | None:
         _OCR_CACHE[page] = ""
         return None
     md_text = ocr_submit_markdown(img.read_bytes(), img.name)
-    if not md_text:
+    if not md_text or len(_norm("".join(_ocr_groups(md_text)))) < _MIN_OCR_CHARS:
+        # 整页归一化后不足 20 字 = 服务侧残缺结果（@358 实测整页只返回
+        # 单字「寧」），视同无文本且绝不落持久缓存，避免坏结果长期遮蔽重试
         _OCR_CACHE[page] = ""
         return None
     _OCR_CACHE[page] = md_text
@@ -797,6 +806,10 @@ def _align_cut(cand_n: str, ocr_n: str, full_page: bool = False) -> tuple[int | 
     """
     sm = difflib.SequenceMatcher(None, cand_n, ocr_n, autojunk=False)
     blocks = [b for b in sm.get_matching_blocks() if b.size > 0]
+    if not blocks:
+        # 两串非空但零公共块（@358：坏 OCR 单字「寧」与续文无交集）→
+        # 判不可信拒绝，而非 max() 空序列崩溃
+        return None, "对齐不可信（零匹配块）"
     cover = sum(b.size for b in blocks)
     end0 = max(b.a + b.size for b in blocks)
     # 末段局部判信回缩（见 docstring）
