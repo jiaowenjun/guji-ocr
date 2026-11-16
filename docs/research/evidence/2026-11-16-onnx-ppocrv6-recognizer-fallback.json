@@ -1,0 +1,217 @@
+{
+ "schema": "guji-ocr-research/1",
+ "topic": "ONNX PP-OCRv6 as local recognition fallback vs online PaddleOCR-VL (whole-page)",
+ "date": "2026-11-16",
+ "engines": {
+  "online": {
+   "provider": "https://paddleocr.aistudio-app.com/api/v2/ocr/jobs (via paddleocr-baseline 127.0.0.1:8010)",
+   "model": "PaddleOCR-VL-1.6",
+   "mode": "full page upload, markdown/JSON result"
+  },
+  "local": {
+   "recognizer": "PP-OCRv6_medium_rec.onnx via ultralytics 8.4.215 TextRecognizer (onnxruntime 1.32.0, CPU)",
+   "mode": "project scan-alignment crops (text_run + large), tall crops rotated 90 CCW, h48, assembled right-to-left bands / lanes / top-to-bottom"
+  }
+ },
+ "inputs": {
+  "pages": [
+   312,
+   318,
+   328,
+   342,
+   349,
+   358
+  ],
+  "gold": "kangxi-gold/annotations/NNNN.txt, whitespace-stripped",
+  "assembly_validation": "concatenating GOLD crop texts in assembly order reproduces the gold page transcription exactly on 6/6 pages",
+  "crops_per_page": [
+   22,
+   21,
+   39,
+   29,
+   30,
+   36
+  ],
+  "gold_len_per_page": [
+   236,
+   362,
+   280,
+   318,
+   364,
+   344
+  ]
+ },
+ "whole_page": [
+  {
+   "page": 312,
+   "crops": 22,
+   "assembly_gold_exact": true,
+   "gold_len": 236,
+   "online": {
+    "cer": 0.1822,
+    "len_ratio": 1.161,
+    "measured_s": 6.172
+   },
+   "local": {
+    "cer": 0.0212,
+    "len_ratio": 1.0,
+    "recognize_ms": 1952
+   }
+  },
+  {
+   "page": 318,
+   "crops": 21,
+   "assembly_gold_exact": true,
+   "gold_len": 362,
+   "online": {
+    "cer": 0.1851,
+    "len_ratio": 1.146,
+    "measured_s": 8.396
+   },
+   "local": {
+    "cer": 0.0359,
+    "len_ratio": 0.997,
+    "recognize_ms": 2475
+   }
+  },
+  {
+   "page": 328,
+   "crops": 39,
+   "assembly_gold_exact": true,
+   "gold_len": 280,
+   "online": {
+    "cer": 0.2571,
+    "len_ratio": 1.193,
+    "measured_s": 10.201
+   },
+   "local": {
+    "cer": 0.0929,
+    "len_ratio": 0.986,
+    "recognize_ms": 2738
+   }
+  },
+  {
+   "page": 342,
+   "crops": 29,
+   "assembly_gold_exact": true,
+   "gold_len": 318,
+   "online": {
+    "cer": 0.4119,
+    "len_ratio": 1.157,
+    "measured_s": 4.955
+   },
+   "local": {
+    "cer": 0.0912,
+    "len_ratio": 0.969,
+    "recognize_ms": 2334
+   }
+  },
+  {
+   "page": 349,
+   "crops": 30,
+   "assembly_gold_exact": true,
+   "gold_len": 364,
+   "online": {
+    "cer": 0.1978,
+    "len_ratio": 1.118,
+    "measured_s": 7.362
+   },
+   "local": {
+    "cer": 0.0852,
+    "len_ratio": 0.986,
+    "recognize_ms": 2556
+   }
+  },
+  {
+   "page": 358,
+   "crops": 36,
+   "assembly_gold_exact": true,
+   "gold_len": 344,
+   "online": {
+    "cer": 0.9971,
+    "len_ratio": 0.116,
+    "measured_s": 55.719
+   },
+   "local": {
+    "cer": 0.0727,
+    "len_ratio": 0.991,
+    "recognize_ms": 2809
+   }
+  }
+ ],
+ "summary": {
+  "online_cer": {
+   "mean": 0.3719,
+   "median_without_358_outlier": 0.1978,
+   "worst": {
+    "page": 358,
+    "cer": 0.9971,
+    "len_ratio": 0.116
+   }
+  },
+  "local_cer": {
+   "mean": 0.0665,
+   "range": [
+    0.0212,
+    0.0929
+   ]
+  },
+  "online_latency_s": {
+   "cached_runs_1113_1115": [
+    6.2,
+    8.4,
+    10.2,
+    5.0,
+    7.4,
+    55.7
+   ],
+   "live_observation_2026-11-16": "7-45s per whole page; one job stuck running >20min; one HTTP 500 failure at 04:03 UTC"
+  },
+  "local_latency": {
+   "recognize_ms_per_page_sequential": [
+    1952,
+    2475,
+    2738,
+    2334,
+    2556,
+    2809
+   ],
+   "batched_ms_per_crop": 85.3,
+   "per_crop_ms_mean_p95": [
+    82.8,
+    154.5
+   ]
+  }
+ },
+ "online_failure_modes": {
+  "page_358": "only 5 blocks returned: single char 寧 + footer/number; all main columns lost (55.7s)",
+  "page_342": "layout confusion: doc_title=人部, merged header junk column, dropped content -> CER 41%"
+ },
+ "supplementary_per_crop_onnx_224": {
+  "by_kind": {
+   "text_run": {
+    "n": 126,
+    "em": 0.5,
+    "cer": 0.0529
+   },
+   "band": {
+    "n": 47,
+    "em": 0.0426,
+    "cer": 0.6696,
+    "note": "h48 squeeze of 20-48 char columns, structural"
+   },
+   "large": {
+    "n": 51,
+    "em": 0.4118,
+    "cer": 0.5849,
+    "note": "CER inflated by 1-2 char items; misses concentrated in out-of-charset headwords"
+   }
+  },
+  "charset_gap": "182/3808 gold chars (4.8%) outside PP-OCRv6 18,708 charset (PUA/unencoded/rare ext); 102/224 crops contain at least one"
+ },
+ "caveats": [
+  "local crops derive from the project scan alignment (reviewed), i.e. local pipeline uses project grid segmentation while online does its own detection",
+  "online whole-page results taken from service cache (uploaded 2026-11-13..15), not re-run today",
+  "6 pages, 1904 gold chars total; feasibility verdict, not a production benchmark"
+ ]
+}
