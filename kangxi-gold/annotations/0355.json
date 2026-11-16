@@ -1,0 +1,1781 @@
+{
+  "version": 3,
+  "meta": {
+    "sourceFormat": "gj",
+    "generatedBy": "guji-ir/3",
+    "fidelity": "full",
+    "profile": {
+      "stripPunct": [
+        "。",
+        "，",
+        "·",
+        "\"",
+        ":",
+        "：",
+        "、",
+        "《",
+        "》"
+      ],
+      "normalize": [
+        [
+          "◎",
+          "○"
+        ],
+        [
+          "〇",
+          "○"
+        ]
+      ]
+    },
+    "lineLayout": "fold",
+    "orientation": "vertical-rtl",
+    "rangeUnit": "codepoint",
+    "srcUnit": "utf-16"
+  },
+  "pages": [
+    {
+      "id": "p0355",
+      "no": 355,
+      "src": [
+        0,
+        4
+      ],
+      "bands": [
+        {
+          "id": "p0355-b0",
+          "ord": 0,
+          "src": [
+            6,
+            64
+          ],
+          "lines": [
+            {
+              "id": "p0355-b0-l0",
+              "ord": 0,
+              "src": [
+                6,
+                22
+              ],
+              "elements": [
+                {
+                  "id": "p0355-b0-e0",
+                  "class": "small",
+                  "text": "借爲與人之乞，音氣。因與人之義，"
+                }
+              ],
+              "cpSrcs": [
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18,
+                19,
+                20,
+                21
+              ]
+            },
+            {
+              "id": "p0355-b0-l1",
+              "ord": 1,
+              "src": [
+                23,
+                37
+              ],
+              "elements": [
+                {
+                  "id": "p0355-b0-e1",
+                  "class": "small",
+                  "text": "借爲求人之乞，此因借而借也。"
+                }
+              ],
+              "cpSrcs": [
+                23,
+                24,
+                25,
+                26,
+                27,
+                28,
+                29,
+                30,
+                31,
+                32,
+                33,
+                34,
+                35,
+                36
+              ]
+            },
+            {
+              "id": "p0355-b0-l2",
+              "ord": 2,
+              "src": [
+                38,
+                46
+              ],
+              "elements": [
+                {
+                  "id": "p0355-b0-e2",
+                  "class": "large",
+                  "text": "也"
+                },
+                {
+                  "id": "p0355-b0-e3",
+                  "class": "small",
+                  "text": "，古文："
+                },
+                {
+                  "id": "p0355-b0-e4",
+                  "class": "large",
+                  "text": "𠃟"
+                }
+              ],
+              "cpSrcs": [
+                39,
+                40,
+                41,
+                42,
+                43,
+                44
+              ]
+            },
+            {
+              "id": "p0355-b0-l3",
+              "ord": 3,
+              "src": [
+                47,
+                54
+              ],
+              "elements": [
+                {
+                  "id": "p0355-b0-e5",
+                  "class": "small",
+                  "text": "唐韻羊者切"
+                }
+              ],
+              "cpSrcs": [
+                48,
+                49,
+                51,
+                52,
+                53
+              ]
+            },
+            {
+              "id": "p0355-b0-l4",
+              "ord": 4,
+              "src": [
+                55,
+                64
+              ],
+              "elements": [
+                {
+                  "id": "p0355-b0-e6",
+                  "class": "small",
+                  "text": "集韻正韻以"
+                }
+              ],
+              "cpSrcs": [
+                56,
+                57,
+                60,
+                61,
+                63
+              ]
+            }
+          ]
+        },
+        {
+          "id": "p0355-b1",
+          "ord": 1,
+          "src": [
+            66,
+            132
+          ],
+          "lines": [
+            {
+              "id": "p0355-b1-l0",
+              "ord": 0,
+              "src": [
+                66,
+                98
+              ],
+              "elements": [
+                {
+                  "id": "p0355-b1-e0",
+                  "class": "small",
+                  "text": "者切，𠀤音野。語已辭。說文徐註語之餘也。凡言也，則氣出口下"
+                }
+              ],
+              "cpSrcs": [
+                66,
+                67,
+                68,
+                69,
+                71,
+                72,
+                73,
+                74,
+                75,
+                76,
+                77,
+                79,
+                80,
+                81,
+                82,
+                84,
+                85,
+                86,
+                87,
+                88,
+                89,
+                90,
+                91,
+                92,
+                93,
+                94,
+                95,
+                96,
+                97
+              ]
+            },
+            {
+              "id": "p0355-b1-l1",
+              "ord": 1,
+              "src": [
+                99,
+                132
+              ],
+              "elements": [
+                {
+                  "id": "p0355-b1-e1",
+                  "class": "small",
+                  "text": "而盡。玉篇所以窮上成文也。廣韻語助之終。柳宗元曰：決辭也。"
+                }
+              ],
+              "cpSrcs": [
+                99,
+                100,
+                101,
+                103,
+                104,
+                106,
+                107,
+                108,
+                109,
+                110,
+                111,
+                112,
+                113,
+                115,
+                116,
+                118,
+                119,
+                120,
+                121,
+                122,
+                123,
+                124,
+                125,
+                126,
+                127,
+                128,
+                129,
+                130,
+                131
+              ]
+            }
+          ]
+        },
+        {
+          "id": "p0355-b2",
+          "ord": 2,
+          "src": [
+            134,
+            196
+          ],
+          "lines": [
+            {
+              "id": "p0355-b2-l0",
+              "ord": 0,
+              "src": [
+                134,
+                164
+              ],
+              "elements": [
+                {
+                  "id": "p0355-b2-e0",
+                  "class": "small",
+                  "text": " 又發語辭。岑參詩也知鄕信曰應疎。 又姓。明也伯先。 又"
+                }
+              ],
+              "cpSrcs": [
+                134,
+                135,
+                136,
+                137,
+                138,
+                139,
+                141,
+                142,
+                143,
+                145,
+                146,
+                147,
+                148,
+                149,
+                150,
+                151,
+                152,
+                153,
+                154,
+                155,
+                156,
+                157,
+                158,
+                159,
+                160,
+                161,
+                162,
+                163
+              ]
+            },
+            {
+              "id": "p0355-b2-l1",
+              "ord": 1,
+              "src": [
+                165,
+                196
+              ],
+              "elements": [
+                {
+                  "id": "p0355-b2-e1",
+                  "class": "small",
+                  "text": "劉攽曰詞人多以也字作夜音讀。杜甫詩靑袍也自公，是也。 "
+                }
+              ],
+              "cpSrcs": [
+                166,
+                167,
+                168,
+                170,
+                171,
+                172,
+                173,
+                174,
+                175,
+                176,
+                177,
+                178,
+                179,
+                180,
+                182,
+                183,
+                184,
+                186,
+                187,
+                188,
+                189,
+                190,
+                191,
+                192,
+                193,
+                194,
+                195
+              ]
+            }
+          ]
+        },
+        {
+          "id": "p0355-b3",
+          "ord": 3,
+          "src": [
+            198,
+            260
+          ],
+          "lines": [
+            {
+              "id": "p0355-b3-l0",
+              "ord": 0,
+              "src": [
+                198,
+                215
+              ],
+              "elements": [
+                {
+                  "id": "p0355-b3-e0",
+                  "class": "small",
+                  "text": "又正韻養里切，同迤。 又六書"
+                }
+              ],
+              "cpSrcs": [
+                198,
+                200,
+                201,
+                203,
+                204,
+                205,
+                206,
+                207,
+                208,
+                209,
+                210,
+                211,
+                213,
+                214
+              ]
+            },
+            {
+              "id": "p0355-b3-l1",
+              "ord": 1,
+              "src": [
+                216,
+                231
+              ],
+              "elements": [
+                {
+                  "id": "p0355-b3-e1",
+                  "class": "small",
+                  "text": "正譌古文匜字。註詳匚部三畫。"
+                }
+              ],
+              "cpSrcs": [
+                216,
+                217,
+                219,
+                220,
+                221,
+                222,
+                223,
+                224,
+                225,
+                226,
+                227,
+                228,
+                229,
+                230
+              ]
+            },
+            {
+              "id": "p0355-b3-l2",
+              "ord": 2,
+              "src": [
+                232,
+                241
+              ],
+              "elements": [
+                {
+                  "id": "p0355-b3-e2",
+                  "class": "large",
+                  "text": "三"
+                },
+                {
+                  "id": "p0355-b3-e3",
+                  "class": "large",
+                  "text": "增"
+                },
+                {
+                  "id": "p0355-b3-e4",
+                  "class": "large",
+                  "text": "𠃕"
+                }
+              ],
+              "cpSrcs": [
+                234,
+                237,
+                239
+              ]
+            },
+            {
+              "id": "p0355-b3-l3",
+              "ord": 3,
+              "src": [
+                242,
+                252
+              ],
+              "elements": [
+                {
+                  "id": "p0355-b3-e5",
+                  "class": "small",
+                  "text": "集韻州古作𠃕。"
+                }
+              ],
+              "cpSrcs": [
+                243,
+                244,
+                246,
+                247,
+                248,
+                249,
+                251
+              ]
+            },
+            {
+              "id": "p0355-b3-l4",
+              "ord": 4,
+              "src": [
+                253,
+                260
+              ],
+              "elements": [
+                {
+                  "id": "p0355-b3-e6",
+                  "class": "small",
+                  "text": "註詳巛部三畫。"
+                }
+              ],
+              "cpSrcs": [
+                253,
+                254,
+                255,
+                256,
+                257,
+                258,
+                259
+              ]
+            }
+          ]
+        },
+        {
+          "id": "p0355-b4",
+          "ord": 4,
+          "src": [
+            262,
+            323
+          ],
+          "lines": [
+            {
+              "id": "p0355-b4-l0",
+              "ord": 0,
+              "src": [
+                262,
+                265
+              ],
+              "elements": [
+                {
+                  "id": "p0355-b4-e0",
+                  "class": "large",
+                  "text": "𠃖"
+                }
+              ],
+              "cpSrcs": [
+                263
+              ]
+            },
+            {
+              "id": "p0355-b4-l1",
+              "ord": 1,
+              "src": [
+                266,
+                274
+              ],
+              "elements": [
+                {
+                  "id": "p0355-b4-e1",
+                  "class": "small",
+                  "text": "篇海居幽切，"
+                }
+              ],
+              "cpSrcs": [
+                267,
+                268,
+                270,
+                271,
+                272,
+                273
+              ]
+            },
+            {
+              "id": "p0355-b4-l2",
+              "ord": 2,
+              "src": [
+                275,
+                282
+              ],
+              "elements": [
+                {
+                  "id": "p0355-b4-e2",
+                  "class": "small",
+                  "text": "音鳩。目繚也。"
+                }
+              ],
+              "cpSrcs": [
+                275,
+                276,
+                277,
+                278,
+                279,
+                280,
+                281
+              ]
+            },
+            {
+              "id": "p0355-b4-l3",
+              "ord": 3,
+              "src": [
+                283,
+                288
+              ],
+              "elements": [
+                {
+                  "id": "p0355-b4-e3",
+                  "class": "large",
+                  "text": "四"
+                },
+                {
+                  "id": "p0355-b4-e4",
+                  "class": "large",
+                  "text": "㐌"
+                }
+              ],
+              "cpSrcs": [
+                285,
+                287
+              ]
+            },
+            {
+              "id": "p0355-b4-l4",
+              "ord": 4,
+              "src": [
+                289,
+                302
+              ],
+              "elements": [
+                {
+                  "id": "p0355-b4-e5",
+                  "class": "small",
+                  "text": "類篇余支切，音移。粵中"
+                }
+              ],
+              "cpSrcs": [
+                290,
+                291,
+                293,
+                294,
+                295,
+                296,
+                297,
+                298,
+                299,
+                300,
+                301
+              ]
+            },
+            {
+              "id": "p0355-b4-l5",
+              "ord": 5,
+              "src": [
+                303,
+                316
+              ],
+              "elements": [
+                {
+                  "id": "p0355-b4-e6",
+                  "class": "small",
+                  "text": "猺種。北史後魏主猗㐌。"
+                }
+              ],
+              "cpSrcs": [
+                303,
+                304,
+                305,
+                307,
+                308,
+                310,
+                311,
+                312,
+                313,
+                314,
+                315
+              ]
+            },
+            {
+              "id": "p0355-b4-l6",
+              "ord": 6,
+              "src": [
+                317,
+                323
+              ],
+              "elements": [
+                {
+                  "id": "p0355-b4-e7",
+                  "class": "large",
+                  "text": "增"
+                },
+                {
+                  "id": "p0355-b4-e8",
+                  "class": "large",
+                  "text": "𠃞"
+                }
+              ],
+              "cpSrcs": [
+                319,
+                321
+              ]
+            }
+          ]
+        },
+        {
+          "id": "p0355-b5",
+          "ord": 5,
+          "src": [
+            325,
+            393
+          ],
+          "lines": [
+            {
+              "id": "p0355-b5-l0",
+              "ord": 0,
+              "src": [
+                325,
+                336
+              ],
+              "elements": [
+                {
+                  "id": "p0355-b5-e0",
+                  "class": "small",
+                  "text": "集韻禮古作𠃞。註"
+                }
+              ],
+              "cpSrcs": [
+                326,
+                327,
+                329,
+                330,
+                331,
+                332,
+                334,
+                335
+              ]
+            },
+            {
+              "id": "p0355-b5-l1",
+              "ord": 1,
+              "src": [
+                337,
+                344
+              ],
+              "elements": [
+                {
+                  "id": "p0355-b5-e1",
+                  "class": "small",
+                  "text": "詳示部十三畫。"
+                }
+              ],
+              "cpSrcs": [
+                337,
+                338,
+                339,
+                340,
+                341,
+                342,
+                343
+              ]
+            },
+            {
+              "id": "p0355-b5-l2",
+              "ord": 2,
+              "src": [
+                345,
+                348
+              ],
+              "elements": [
+                {
+                  "id": "p0355-b5-e2",
+                  "class": "large",
+                  "text": "𠃟"
+                }
+              ],
+              "cpSrcs": [
+                346
+              ]
+            },
+            {
+              "id": "p0355-b5-l3",
+              "ord": 3,
+              "src": [
+                349,
+                370
+              ],
+              "elements": [
+                {
+                  "id": "p0355-b5-e3",
+                  "class": "small",
+                  "text": "類篇古文也字。說文秦時刻石也。字从"
+                }
+              ],
+              "cpSrcs": [
+                350,
+                351,
+                353,
+                354,
+                355,
+                356,
+                357,
+                359,
+                360,
+                362,
+                363,
+                364,
+                365,
+                366,
+                367,
+                368,
+                369
+              ]
+            },
+            {
+              "id": "p0355-b5-l4",
+              "ord": 4,
+              "src": [
+                371,
+                393
+              ],
+              "elements": [
+                {
+                  "id": "p0355-b5-e4",
+                  "class": "small",
+                  "text": "此。亢倉子·兵道篇人之悅𠃟。餘詳二畫。"
+                }
+              ],
+              "cpSrcs": [
+                371,
+                372,
+                374,
+                375,
+                376,
+                377,
+                378,
+                379,
+                380,
+                382,
+                383,
+                384,
+                385,
+                387,
+                388,
+                389,
+                390,
+                391,
+                392
+              ]
+            }
+          ]
+        },
+        {
+          "id": "p0355-b6",
+          "ord": 6,
+          "src": [
+            395,
+            459
+          ],
+          "lines": [
+            {
+              "id": "p0355-b6-l0",
+              "ord": 0,
+              "src": [
+                395,
+                400
+              ],
+              "elements": [
+                {
+                  "id": "p0355-b6-e0",
+                  "class": "large",
+                  "text": "五"
+                },
+                {
+                  "id": "p0355-b6-e1",
+                  "class": "large",
+                  "text": "乨"
+                }
+              ],
+              "cpSrcs": [
+                397,
+                399
+              ]
+            },
+            {
+              "id": "p0355-b6-l1",
+              "ord": 1,
+              "src": [
+                401,
+                410
+              ],
+              "elements": [
+                {
+                  "id": "p0355-b6-e2",
+                  "class": "small",
+                  "text": "玉篇古文始字。"
+                }
+              ],
+              "cpSrcs": [
+                402,
+                403,
+                405,
+                406,
+                407,
+                408,
+                409
+              ]
+            },
+            {
+              "id": "p0355-b6-l2",
+              "ord": 2,
+              "src": [
+                411,
+                418
+              ],
+              "elements": [
+                {
+                  "id": "p0355-b6-e3",
+                  "class": "small",
+                  "text": "註詳女部五畫。"
+                }
+              ],
+              "cpSrcs": [
+                411,
+                412,
+                413,
+                414,
+                415,
+                416,
+                417
+              ]
+            },
+            {
+              "id": "p0355-b6-l3",
+              "ord": 3,
+              "src": [
+                419,
+                421
+              ],
+              "elements": [
+                {
+                  "id": "p0355-b6-e4",
+                  "class": "large",
+                  "text": "乩"
+                }
+              ],
+              "cpSrcs": [
+                420
+              ]
+            },
+            {
+              "id": "p0355-b6-l4",
+              "ord": 4,
+              "src": [
+                422,
+                443
+              ],
+              "elements": [
+                {
+                  "id": "p0355-b6-e5",
+                  "class": "small",
+                  "text": "集韻正韻𠀤堅奚切，音雞。說文"
+                }
+              ],
+              "cpSrcs": [
+                423,
+                424,
+                427,
+                428,
+                430,
+                432,
+                433,
+                434,
+                435,
+                436,
+                437,
+                438,
+                440,
+                441
+              ]
+            },
+            {
+              "id": "p0355-b6-l5",
+              "ord": 5,
+              "src": [
+                444,
+                459
+              ],
+              "elements": [
+                {
+                  "id": "p0355-b6-e6",
+                  "class": "small",
+                  "text": "卜以問疑也。通典西國用羊卜"
+                }
+              ],
+              "cpSrcs": [
+                444,
+                445,
+                446,
+                447,
+                448,
+                449,
+                451,
+                452,
+                454,
+                455,
+                456,
+                457,
+                458
+              ]
+            }
+          ]
+        },
+        {
+          "id": "p0355-b7",
+          "ord": 7,
+          "src": [
+            461,
+            522
+          ],
+          "lines": [
+            {
+              "id": "p0355-b7-l0",
+              "ord": 0,
+              "src": [
+                461,
+                468
+              ],
+              "elements": [
+                {
+                  "id": "p0355-b7-e0",
+                  "class": "small",
+                  "text": "卜師謂之廝乩。"
+                }
+              ],
+              "cpSrcs": [
+                461,
+                462,
+                463,
+                464,
+                465,
+                466,
+                467
+              ]
+            },
+            {
+              "id": "p0355-b7-l1",
+              "ord": 1,
+              "src": [
+                469,
+                479
+              ],
+              "elements": [
+                {
+                  "id": "p0355-b7-e1",
+                  "class": "small",
+                  "text": "通雅乩當與卟同。"
+                }
+              ],
+              "cpSrcs": [
+                470,
+                471,
+                473,
+                474,
+                475,
+                476,
+                477,
+                478
+              ]
+            },
+            {
+              "id": "p0355-b7-l2",
+              "ord": 2,
+              "src": [
+                480,
+                486
+              ],
+              "elements": [
+                {
+                  "id": "p0355-b7-e2",
+                  "class": "large",
+                  "text": "增"
+                },
+                {
+                  "id": "p0355-b7-e3",
+                  "class": "large",
+                  "text": "𠃤"
+                }
+              ],
+              "cpSrcs": [
+                482,
+                484
+              ]
+            },
+            {
+              "id": "p0355-b7-l3",
+              "ord": 3,
+              "src": [
+                487,
+                497
+              ],
+              "elements": [
+                {
+                  "id": "p0355-b7-e4",
+                  "class": "small",
+                  "text": "字彙補古文荒字。"
+                }
+              ],
+              "cpSrcs": [
+                488,
+                489,
+                490,
+                492,
+                493,
+                494,
+                495,
+                496
+              ]
+            },
+            {
+              "id": "p0355-b7-l4",
+              "ord": 4,
+              "src": [
+                498,
+                505
+              ],
+              "elements": [
+                {
+                  "id": "p0355-b7-e5",
+                  "class": "small",
+                  "text": "註詳艸部六畫。"
+                }
+              ],
+              "cpSrcs": [
+                498,
+                499,
+                500,
+                501,
+                502,
+                503,
+                504
+              ]
+            },
+            {
+              "id": "p0355-b7-l5",
+              "ord": 5,
+              "src": [
+                506,
+                509
+              ],
+              "elements": [
+                {
+                  "id": "p0355-b7-e6",
+                  "class": "large",
+                  "text": "𠃥"
+                }
+              ],
+              "cpSrcs": [
+                507
+              ]
+            },
+            {
+              "id": "p0355-b7-l6",
+              "ord": 6,
+              "src": [
+                510,
+                516
+              ],
+              "elements": [
+                {
+                  "id": "p0355-b7-e7",
+                  "class": "small",
+                  "text": "字彙補古"
+                }
+              ],
+              "cpSrcs": [
+                511,
+                512,
+                513,
+                515
+              ]
+            },
+            {
+              "id": "p0355-b7-l7",
+              "ord": 7,
+              "src": [
+                517,
+                522
+              ],
+              "elements": [
+                {
+                  "id": "p0355-b7-e8",
+                  "class": "small",
+                  "text": "文舉字。註"
+                }
+              ],
+              "cpSrcs": [
+                517,
+                518,
+                519,
+                520,
+                521
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "overlays": [
+    {
+      "id": "o0",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0355-b0-l3",
+          "range": [
+            0,
+            2
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        47,
+        51
+      ]
+    },
+    {
+      "id": "o1",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0355-b0-l4",
+          "range": [
+            0,
+            2
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        55,
+        59
+      ]
+    },
+    {
+      "id": "o2",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0355-b0-l4",
+          "range": [
+            2,
+            4
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        59,
+        63
+      ]
+    },
+    {
+      "id": "o3",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0355-b1-l0",
+          "range": [
+            11,
+            15
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        78,
+        84
+      ]
+    },
+    {
+      "id": "o4",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0355-b1-l1",
+          "range": [
+            3,
+            5
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        102,
+        106
+      ]
+    },
+    {
+      "id": "o5",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0355-b1-l1",
+          "range": [
+            13,
+            15
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        114,
+        118
+      ]
+    },
+    {
+      "id": "o6",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0355-b2-l0",
+          "range": [
+            6,
+            9
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        140,
+        145
+      ]
+    },
+    {
+      "id": "o7",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0355-b2-l1",
+          "range": [
+            0,
+            3
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        165,
+        170
+      ]
+    },
+    {
+      "id": "o8",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0355-b2-l1",
+          "range": [
+            14,
+            17
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        181,
+        186
+      ]
+    },
+    {
+      "id": "o9",
+      "kind": "circle",
+      "target": "p0355-b3-e2"
+    },
+    {
+      "id": "o10",
+      "kind": "circle",
+      "target": "p0355-b3-e3"
+    },
+    {
+      "id": "o11",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0355-b3-l0",
+          "range": [
+            1,
+            3
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        199,
+        203
+      ]
+    },
+    {
+      "id": "o12",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0355-b3-l0",
+          "range": [
+            12,
+            14
+          ]
+        },
+        {
+          "line": "p0355-b3-l1",
+          "range": [
+            0,
+            2
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        212,
+        219
+      ]
+    },
+    {
+      "id": "o13",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0355-b3-l3",
+          "range": [
+            0,
+            2
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        242,
+        246
+      ]
+    },
+    {
+      "id": "o14",
+      "kind": "circle",
+      "target": "p0355-b4-e3"
+    },
+    {
+      "id": "o15",
+      "kind": "circle",
+      "target": "p0355-b4-e7"
+    },
+    {
+      "id": "o16",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0355-b4-l1",
+          "range": [
+            0,
+            2
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        266,
+        270
+      ]
+    },
+    {
+      "id": "o17",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0355-b4-l4",
+          "range": [
+            0,
+            2
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        289,
+        293
+      ]
+    },
+    {
+      "id": "o18",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0355-b4-l5",
+          "range": [
+            3,
+            5
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        306,
+        310
+      ]
+    },
+    {
+      "id": "o19",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0355-b5-l0",
+          "range": [
+            0,
+            2
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        325,
+        329
+      ]
+    },
+    {
+      "id": "o20",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0355-b5-l3",
+          "range": [
+            0,
+            2
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        349,
+        353
+      ]
+    },
+    {
+      "id": "o21",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0355-b5-l3",
+          "range": [
+            7,
+            9
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        358,
+        362
+      ]
+    },
+    {
+      "id": "o22",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0355-b5-l4",
+          "range": [
+            2,
+            9
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        373,
+        382
+      ]
+    },
+    {
+      "id": "o23",
+      "kind": "circle",
+      "target": "p0355-b6-e0"
+    },
+    {
+      "id": "o24",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0355-b6-l1",
+          "range": [
+            0,
+            2
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        401,
+        405
+      ]
+    },
+    {
+      "id": "o25",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0355-b6-l4",
+          "range": [
+            0,
+            2
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        422,
+        426
+      ]
+    },
+    {
+      "id": "o26",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0355-b6-l4",
+          "range": [
+            2,
+            4
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        426,
+        430
+      ]
+    },
+    {
+      "id": "o27",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0355-b6-l4",
+          "range": [
+            12,
+            14
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        439,
+        443
+      ]
+    },
+    {
+      "id": "o28",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0355-b6-l5",
+          "range": [
+            6,
+            8
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        450,
+        454
+      ]
+    },
+    {
+      "id": "o29",
+      "kind": "circle",
+      "target": "p0355-b7-e2"
+    },
+    {
+      "id": "o30",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0355-b7-l1",
+          "range": [
+            0,
+            2
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        469,
+        473
+      ]
+    },
+    {
+      "id": "o31",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0355-b7-l3",
+          "range": [
+            0,
+            3
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        487,
+        492
+      ]
+    },
+    {
+      "id": "o32",
+      "kind": "book-title",
+      "spans": [
+        {
+          "line": "p0355-b7-l6",
+          "range": [
+            0,
+            3
+          ]
+        }
+      ],
+      "openedHere": true,
+      "closed": true,
+      "src": [
+        510,
+        515
+      ]
+    }
+  ]
+}
