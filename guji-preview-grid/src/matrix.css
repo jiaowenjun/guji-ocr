@@ -86,8 +86,8 @@
 /* 大字：单个 2×2 格（行向用纵向字格高 --guji-unit-v，字号/圆环等按列宽基准不变形） */
 .m-large {
   font-family: "GujiLarge", "康熙傳承版 KangXiZiDian.com", "HanaMinA", serif;
-  font-size: calc(var(--guji-unit) * 1.8);
-  line-height: calc(var(--guji-unit-v, var(--guji-unit)) * 2);
+  font-size: calc(var(--guji-unit) * var(--guji-large-cols, 2) * 0.9);
+  line-height: calc(var(--guji-unit-v, var(--guji-unit)) * var(--guji-large-rows, 2));
   text-align: center;
 }
 
@@ -99,11 +99,11 @@
 .m-ring {
   box-sizing: border-box;
   font-family: "GujiLarge", "康熙傳承版 KangXiZiDian.com", "HanaMinA", serif;
-  height: calc(var(--guji-unit) * 1.7);
-  width: calc(var(--guji-unit) * 1.7);
+  height: calc(var(--guji-unit) * var(--guji-large-cols, 2) * 0.85);
+  width: calc(var(--guji-unit) * var(--guji-large-cols, 2) * 0.85);
   margin: auto;
-  font-size: calc(var(--guji-unit) * 1.5);
-  line-height: calc(var(--guji-unit) * 1.7);
+  font-size: calc(var(--guji-unit) * var(--guji-large-cols, 2) * 0.75);
+  line-height: calc(var(--guji-unit) * var(--guji-large-cols, 2) * 0.85);
   text-align: center;
   border: 1px solid;
   border-radius: 50%;
@@ -193,3 +193,5 @@
   background: rgba(217, 119, 6, 0.5);
   box-shadow: inset 0 0 0 1.5px rgba(217, 119, 6, 0.9);
 }
+
+.m-layout-warning { color: #a16207; }

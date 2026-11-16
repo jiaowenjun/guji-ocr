@@ -22,6 +22,7 @@ import type {
 } from "./types";
 import { GUJI_PROFILE } from "./types";
 import { isBareLargeChar } from "../parser/split-line";
+import { isBlankBand } from "../parser/structure";
 
 const chunkTransform = (s: string) =>
   s
@@ -209,6 +210,12 @@ export function gj2ir(text: string): IRDocument {
     const bandId = `${page.id}-b${page.bands.length}`;
     const band: IRBand = { id: bandId, ord: page.bands.length, src: [c.from, c.to], lines: [] };
 
+    if (isBlankBand(c.text)) {
+      band.lines.push({ id: `${bandId}-l0`, ord: 0, src: c.lineRanges[0], elements: [] });
+      page.bands.push(band);
+      continue;
+    }
+
     const headingM = /^(#+) (.*)$/.exec(c.text.trim());
     if (headingM && !c.text.trim().includes("\n")) {
       // 标题入骨架：逐字大字元素；层级为元数据。
@@ -234,6 +241,7 @@ export function gj2ir(text: string): IRDocument {
     }
 
     const regions = detectRegions(c.text);
+    let regionIndex = 0;
     let seg = 0;
     const nextId = () => `${bandId}-e${seg++}`;
     // 区域 → 各行的码点区间（{line, startCp, text}）；骨架中区域字符并入相邻小字段
@@ -303,7 +311,8 @@ export function gj2ir(text: string): IRDocument {
       let i = 0;
       while (i < lineSource.length) {
         const pos = base + i;
-        const region = regions.find((r) => pos >= r.from && pos < r.to);
+        while (regionIndex < regions.length && regions[regionIndex].to <= pos) regionIndex++;
+        const region = regions[regionIndex]?.from <= pos ? regions[regionIndex] : undefined;
         const ch = lineSource[i];
 
         if (region) {
@@ -311,7 +320,7 @@ export function gj2ir(text: string): IRDocument {
           const cpNow = lineSource.codePointAt(i)!;
           const chu = String.fromCodePoint(cpNow);
           const mapped = chu === "【" || chu === "】" ? null : chu === "*" ? " " : chu;
-          const ri = regions.indexOf(region);
+          const ri = regionIndex;
           let run = runsThisLine.find((r) => r.ri === ri);
           if (!run) {
             run = { ri, startCp: cp, text: "" };
@@ -477,7 +486,7 @@ export function gj2ir(text: string): IRDocument {
       sourceFormat: "gj",
       generatedBy: "guji-ir/3",
       fidelity: "full",
-      profile: GUJI_PROFILE,
+      profile: { stripPunct: [...GUJI_PROFILE.stripPunct], normalize: GUJI_PROFILE.normalize.map(([a, b]) => [a, b]) },
       lineLayout: "fold",
       orientation: "vertical-rtl",
       rangeUnit: "codepoint",

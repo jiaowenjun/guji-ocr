@@ -198,3 +198,32 @@ formatGj 全语料不变量的字符流改为 profile 清洗口径（格式化�
 Python 侧（kangxi_page_tool.py）宿主识别正则 `#(?:圈)*頭` 与剥尾正则同步支持糖
 （`#` 式旧形与旧正则零行为差异）。既有金标零迁移：糖是增量语法，仅在
 格式化或新录入时逐步进入语料。
+
+
+## 9. v3 契约优化（2026-11-16）
+
+持久化仍为 v3；已有 45 页 JSON 无需迁移。用户修复的 318／320／322／325／327
+分段均已同步派生文件，当前合计 360 band、每页 8 band、页宽 16 格、页高 24 格。
+
+- **清洗**：`compileProfile` 编译文档 `meta.profile`，文本导出与布局共用；Python
+  也按规则数组顺序执行（不先转成字典去重）。剔除项限定单码点，归一化不允许空匹配。
+  `rawRanges[k]` 记录第 k 个显示码点对应的原始码点半开区间，`rawOffsets` 保留首偏移兼容。
+  跨元素归一化不执行，与既有逐元素文本导出口径一致。
+- **版式**：可选 `meta.layout = { version: 1, rowCap, expectedBands,
+  smallColumnsPerBand, largeRows, largeCols }`，缺省值为 24／8／2／2／2；
+  `expectedBands: null` 关闭书种特定的页宽／列数检查。整数参数必须为正。
+- **计划与坐标**：`planLayoutBand` 导出可重建的 `BandPlan`，段类型为 `glyph`、
+  `parallel`、`gap`。该计划及 `L3Page.config/diagnostics` 不写入骨架 JSON。
+- **空列**：独占一段的 `@blank` 与旧 `#` 等价，解析到一条无元素的 line，
+  占用一个 band 的宽度，TXT 保留对应空行；不代表一个空词条。
+- **索引与标注**：`L3Band.lineIds` 明确记录成员，`indexLayout` 保存行到位置的索引；
+  `projectBooks` 按 overlay 的全局 span 次序生成页内片段，跨页边界开口，单行多个
+  run 分框。渲染不解析 ID 字符串、不依赖 src；ID 目前仍为序号，未实现持久身份。
+- **联动**：`buildCharIndex` 同时保存每个源码码点的渲染目标，光标查询二分后直接返回，
+  不再每次扫描全文寻找元素。`locateCell` 能区分同一行内被大字隔开的多个 run。
+- **审计**：新鲜度、TXT、骨架独立性、旧 parser 比较和几何诊断各自报告；
+  空列是信息，宽度／重叠／溢出是告警或错误，原图复核不由结构检查代替。
+
+验收见 `test/ir-contracts.spec.ts`；最新机器证据为
+[2026-11-16-gj-layout-optimized.json](../research/evidence/2026-11-16-gj-layout-optimized.json)。
+完整 tokenizer、文档装配、持久锚点及 IVS 字形层仍未实现；本节不改变 §8 的历史词法兼容规则。

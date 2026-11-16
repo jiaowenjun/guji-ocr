@@ -10,6 +10,7 @@
 import { HighlightStyle, StreamLanguage } from "@codemirror/language";
 import { tags as t } from "@lezer/highlight";
 import { scanAllClusters, type HeadClusterMatch } from "../../parser/split-line";
+import { isBlankBand } from "../../parser/structure";
 
 export type GujiTokenName =
   | "comment"
@@ -56,6 +57,7 @@ export function nextGujiToken(
   const atSol = pos === 0;
 
   if (atSol) {
+    if (isBlankBand(rest)) return { next: line.length, tok: "keyword", inBookAfter: inBook };
     // 行注释（至行尾）——书名状态原样穿透（IR locateSpans 全文配对同口径）
     if (/^\s*\/\//.test(rest)) return { next: line.length, tok: "comment", inBookAfter: inBook };
     // 页码声明 ^@\d+$（书名可跨页：状态穿透）

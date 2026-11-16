@@ -18,17 +18,22 @@
 ## 架构
 
 ```
-.gj 文本 → parser（与原插件逐字等价，测试锁定）
-         → layoutPages 布局引擎（src/matrix/layout.ts）
-           · 段流划分复刻 flex 版 Line.tsx 的 parseLineBlocks 分组算法
-           · band（大行）局部坐标：大字/带圈 2×2，小字 1×1
-           · 小行 0 在最右（row-reverse 语义）；小字组在 band 内居中取整
-           · 书名合并：同小行内连续 book 片段 → 单一边框项，open 标记 wrap 开口
-         → MatrixPages 组件
-           · 页 = 显式轨道 grid（repeat N × 1em，轨道数由引擎给出）
-           · band = subgrid 项占满整页高 → border-left 即贯通界栏
-           · band 0 放最右列；触及版框的书名项 margin 共线
+.gj → gj2ir（转写骨架、overlay、源码映射）
+    → 文档 profile 清洗 + BandPlan（glyph / parallel / gap）
+    → layout3（字格坐标、rawRanges、版式诊断）
+    → indexLayout + projectBooks（按全局 span 投影书名）
+    → MatrixPages（按版式配置裁剪、显示诊断、光标联动）
+IR → irToText（同一 profile 的阅读序 TXT）
 ```
+
+`meta.layout` 为可选的版本 1 配置，缺省为本书的 8 大列、每列 2 小格、24 行、
+大字 2×2。已有 v3 JSON 无需迁移。`irPageToText(page, profile)` 必须显式传入
+文档 profile，避免丢失清洗规则；清洗输出同时保留原始码点区间，支持归一化展开／收缩。
+
+版式诊断检查页宽、列数、意外多小列、空列、重叠和溢出；页面出现告警时页码旁显示
+⚠，悬停查看原因。诊断保留原始内容，不自动合并分段。空大列用独占一段的 `@blank`
+显式表达，兼容旧 `#`；空列只记录信息，不视为错误。
+
 
 ## 已知偏差与兼容性
 
@@ -40,10 +45,9 @@
   任何浏览器与服务器部署渲染一致；`local()` 名字链退居其次仅作文件缺失时的 Chrome 兜底。
   Playwright WebKit 像素级验证：url 优先渲染真字形，local 优先渲染回退 serif。
   编辑器 `.cm-scroller` 字体栈同样接入三平面（拉丁/符号仍等宽），扩展 B/C 区字符不再缺字
-- **亚格取整**：flex 版小字组为 auto-margin 精确居中，`W−k` 为奇数时落 0.5em；
-  矩阵版取整。语料中夹注恒为双行（k=2，W=2），实际不触发
-- **续书名并列**：解析器在续书名状态遇换行不产出 br，【字/彙/补】实际渲染为
-  两列（`字` + `彙补` 合并）——矩阵版照实复刻 flex 既有行为
+- **亚格居中**：小字组比 band 窄奇数格时整体偏移半格，复刻居中位置。
+- **跨行／跨页书名**：保持转写行界，书名按全局 span 顺序投影并在页缝开口；
+  行 ID 作为不透明引用使用，不再依赖 `pXXXX-bN-lM` 的拼写。
 - **subgrid**：需 Chrome 117+ / Safari 16+ / Firefox 71+（2023 起 baseline）；
   导出的独立 HTML 同样依赖
 
@@ -52,7 +56,7 @@
 ```sh
 pnpm install
 pnpm dev      # 开发服务器
-pnpm test     # 199 个测试：parser 67（与原插件 fixture 严格比对）+ 格式化 3 组 110 + IR 验收 22
+pnpm test     # 解析、格式化、IR 契约、编辑器与 45 页语料回归
 pnpm build
 ```
 
@@ -113,6 +117,7 @@ python3 tools/eval/prefetch_ocr.py        # 可选：预识别近期页（默认
 | `//`_comment_  |     至行尾     |        行注釋        |
 |    `@`_num_    |     至行尾     |     指定當前頁數     |
 |     `空行`     |                |       大行換行       |
+|   `@blank`    |   獨占一段     | 保留一個空大列（兼容舊 `#`） |
 |     `EOF`      |                |       大行換行       |
 |   `#␣`_text_   |     至行尾     |       一行大字       |
 |  `##␣`_text_   |     至行尾     |   一行大字縮進一格   |
@@ -162,3 +167,18 @@ python3 tools/eval/prefetch_ocr.py        # 可选：预识别近期页（默认
 刻本字体已随仓库入库（`public/fonts/`，url() 优先加载，见「已知偏差」），无需本地安装。
 字体来源：大字 `康熙傳承版 KangXiZiDian.com`（[官網](https://www.chinesecj.com/forum/forum.php?mod=viewthread&tid=195626)）；
 小字 `中華書局宋體00/02/15平面`（[官網](https://www.ancientbooks.cn/helpcore?font)）。
+
+## 审计与优化边界
+
+从仓库根目录运行：
+
+```sh
+node tools/eval/audit_gj_layout.mjs --check --strict-layout
+```
+
+`--check` 验证 45 页源码与已存 JSON/TXT 一致、overlay/source 移除不改变骨架布局；
+`--strict-layout` 额外拒绝几何告警。旧解析器的文本比较独立报告；以上不等于扫描原图终校。
+2026-11-16 的 318／320／322／325／327 分段修复已同步；当前 45 页均为 8 大列、16×24 格。
+
+本轮实现见 [IR 设计 §9](../docs/design/guji-ir.md#9-v3-契约优化2026-11-16)。序号 ID 仍不保证
+跨编辑稳定；完整词法统一、独立单页文档装配和自动重排算法仍待独立设计。

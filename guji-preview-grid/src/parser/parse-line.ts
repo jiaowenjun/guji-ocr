@@ -1,5 +1,6 @@
 // 移植自 vscode-guji-preview/src/parser/parse-line.ts（行为保持一致）
 import { parseInline } from "./parse-inline";
+import { isBlankBand } from "./structure";
 
 export function parseLine(line: string) {
   const matchPage = line.match(/^@(\d+)$/);
@@ -16,7 +17,7 @@ export function parseLine(line: string) {
     };
   }
 
-  if (line.match(/^#$/)) {
+  if (isBlankBand(line)) {
     return {
       st: "empty",
     };

@@ -193,7 +193,7 @@ describe("v3 联动", () => {
     const band = doc.pages[0].bands.find((b) => b.lines.some((l) => (l.cpSrcs ?? []).length > 0))!;
     const target = bandCursorTarget(doc, yibu, doc.pages[0].no, band.ord);
     expect(target).not.toBeNull();
-    const ch = charHighlightAt(doc, buildCharIndex(doc), yibu, target);
+    const ch = charHighlightAt(buildCharIndex(doc), yibu, target);
     expect(ch).not.toBeNull();
     // 命中元素属于被点击的大行（cell 指其行；large 指其元素所在行）
     const lineId = ch!.kind === "cell" ? ch!.lineId : band.lines.find((l) => l.elements.some((e) => e.id === ch!.elId))!.id;
@@ -210,14 +210,14 @@ describe("v3 单字联动（光标前一字符 → 字格）", () => {
   const l1 = doc.pages[0].bands[1].lines[0].id; // #(十一)古文
 
   it("小字：光标在「義」后 → 该行第 5 码点字格", () => {
-    const ch = charHighlightAt(doc, index, sample, at("義"));
+    const ch = charHighlightAt(index, sample, at("義"));
     expect(ch).toEqual({ kind: "cell", lineId: l0, cp: 5 }); // 𠀤甲史記音義 → 義=5
   });
 
   it("清洗字符回退：光标在「。」后 → 定位到「。」（cp 6）；渲染层经 rawOffsets 再回退到「義」", () => {
     // 两层回退：联动层回退到前一产出字符（标点在 canonical 有码点但被清洗不占格），
     // 渲染层（MatrixPages）找不到 rawOffsets 精确条目时取 ≤cp 的最大偏移 = 前一渲染字
-    const ch = charHighlightAt(doc, index, sample, at("。"));
+    const ch = charHighlightAt(index, sample, at("。"));
     expect(ch).toEqual({ kind: "cell", lineId: l0, cp: 6 });
     const run = layout3(doc)[0].bands[0].items.find(
       (i) => i.kind === "run" && i.lineId === l0,
@@ -227,25 +227,25 @@ describe("v3 单字联动（光标前一字符 → 字格）", () => {
   });
 
   it("书名括号回退：光标在「】」后 → 前一渲染字「記」", () => {
-    const ch = charHighlightAt(doc, index, sample, at("】"));
+    const ch = charHighlightAt(index, sample, at("】"));
     expect(ch).toEqual({ kind: "cell", lineId: l0, cp: 3 });
   });
 
   it("扩展 B 区大字（代理对）：光标在「𠀤」后 → 该大字格", () => {
     const els = doc.pages[0].bands[0].lines[0].elements;
-    const ch = charHighlightAt(doc, index, sample, at("𠀤"));
+    const ch = charHighlightAt(index, sample, at("𠀤"));
     expect(ch).toEqual({ kind: "large", elId: els[0].id });
   });
 
   it("token 内部：光标在「#(」与内文之间 → 回退前一行末字「。」；在内文后 → 合字整格", () => {
     const els = doc.pages[0].bands[1].lines[0].elements;
     // 「(」不产出字符 → 回退到上一行末位产出字「。」（canonical cp 6；渲染层再回退「義」）
-    expect(charHighlightAt(doc, index, sample, at("#("))).toEqual({
+    expect(charHighlightAt(index, sample, at("#("))).toEqual({
       kind: "cell",
       lineId: l0,
       cp: 6,
     });
-    expect(charHighlightAt(doc, index, sample, at("十"))).toEqual({
+    expect(charHighlightAt(index, sample, at("十"))).toEqual({
       kind: "large",
       elId: els.find((e) => e.ligature)!.id,
     });
@@ -253,13 +253,13 @@ describe("v3 单字联动（光标前一字符 → 字格）", () => {
 
   it("跨行/跨大行回退：光标在行首或 @页声明行内 → 前一大行末字", () => {
     const atLine2 = sample.indexOf("*續上行");
-    expect(charHighlightAt(doc, index, sample, atLine2)).toEqual({ kind: "cell", lineId: l1, cp: 3 }); // 古文末字「文」
-    expect(charHighlightAt(doc, index, sample, at("@11"))).toEqual({ kind: "cell", lineId: l1, cp: 3 });
+    expect(charHighlightAt(index, sample, atLine2)).toEqual({ kind: "cell", lineId: l1, cp: 3 }); // 古文末字「文」
+    expect(charHighlightAt(index, sample, at("@11"))).toEqual({ kind: "cell", lineId: l1, cp: 3 });
   });
 
   it("文件头与空光标 → null", () => {
-    expect(charHighlightAt(doc, index, sample, 0)).toBeNull();
-    expect(charHighlightAt(doc, index, sample, null)).toBeNull();
+    expect(charHighlightAt(index, sample, 0)).toBeNull();
+    expect(charHighlightAt(index, sample, null)).toBeNull();
   });
 
   it("全语料：每个产出字符后的光标都定位到其所在行", () => {
@@ -268,7 +268,7 @@ describe("v3 单字联动（光标前一字符 → 字格）", () => {
       const idx = buildCharIndex(d);
       for (const e of idx) {
         const len = String.fromCodePoint(text.codePointAt(e.src)!).length;
-        const ch = charHighlightAt(d, idx, text, e.src + len);
+        const ch = charHighlightAt(idx, text, e.src + len);
         expect(ch).not.toBeNull();
         const lineId =
           ch!.kind === "cell"
@@ -335,7 +335,7 @@ describe("v3 字头簇糖", () => {
   // layout 比对口径：剔除 rawOffsets/cpStart（行内码点偏移随源形漂移，非占格事实）
   const laidCells = (d: IRDocument) =>
     JSON.parse(JSON.stringify(layout3(d)), (k, v) =>
-      k === "rawOffsets" || k === "cpStart" ? undefined : v,
+      k === "rawOffsets" || k === "rawRanges" || k === "cpStart" ? undefined : v,
     );
 
   it("糖 ↔ 长式：骨架（清洗口径 + 去 src）相同", () => {

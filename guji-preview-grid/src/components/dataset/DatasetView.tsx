@@ -36,7 +36,7 @@ import { resolvePageHeadwords } from "@/components/dataset/headwords";
 import { MatrixPages } from "@/components/matrix/MatrixPages";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
 import { gj2ir } from "@/ir/gj2ir";
-import { layout3, PAGE_ROW_CAP } from "@/ir/layout3";
+import { layout3 } from "@/ir/layout3";
 import { bandCursorTarget, buildCharIndex, charHighlightAt, highlightAt } from "@/ir/linkage";
 
 interface PageEntry {
@@ -238,7 +238,6 @@ export function DatasetView({
   }, [index, idx]);
 
   const debouncedText = useDebouncedValue(text ?? "", 200);
-  // 渲染管线：.gj → IR（语义）→ PageModel（版面适配）→ 矩阵布局
   // 渲染主路径：骨架 → 字格布局（layout3，无 overlay 参与）→ 渲染期装饰
   const irDoc = useMemo(() => gj2ir(debouncedText), [debouncedText]);
   const laidPages = useMemo(() => layout3(irDoc), [irDoc]);
@@ -253,7 +252,7 @@ export function DatasetView({
   const highlight = useMemo(
     () => ({
       ...highlightAt(irLive, cursor),
-      char: charHighlightAt(irLive, charIndex, text ?? "", cursor),
+      char: charHighlightAt(charIndex, text ?? "", cursor),
     }),
     [irLive, charIndex, text, cursor],
   );
@@ -295,9 +294,9 @@ export function DatasetView({
     : 0;
   const unit = cols > 0 ? (frameWidth - 2) / cols : 25;
   const matrixRows = laidPages.length > 0 ? laidPages[0].rows : 0;
-  // 行高分母封顶（超 PAGE_ROW_CAP 的行渲染层裁剪、不占轨道）：单列超长
+  // 行高分母按版式配置封顶（超高行由渲染层裁剪、不占轨道）：单列超长
   // 不再压扁全页行高，版框纵向比例恒定；溢出小列挂 m-over-mark 红条警示
-  const unitV = matrixRows > 0 ? frameContentH / Math.min(matrixRows, PAGE_ROW_CAP) : unit;
+  const unitV = matrixRows > 0 ? frameContentH / Math.min(matrixRows, laidPages[0].config.rowCap) : unit;
 
   const onChange = useCallback(
     (value: string) => {

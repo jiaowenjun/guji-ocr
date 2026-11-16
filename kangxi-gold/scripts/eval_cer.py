@@ -80,10 +80,14 @@ def ir_reference(path: Path) -> str:
     doc = json.loads(path.read_text(encoding="utf-8"))
     profile = doc.get("meta", {}).get("profile", {})
     strip = set(profile.get("stripPunct", []))
-    norm = {a: b for a, b in profile.get("normalize", [])}
+    norm = profile.get("normalize", [])
+    if any(len(ch) != 1 for ch in strip):
+        raise ValueError("profile.stripPunct entries must be single codepoints")
+    if any(not a for a, _ in norm):
+        raise ValueError("profile.normalize cannot replace an empty string")
 
     def clean(s: str) -> str:
-        for a, b in norm.items():
+        for a, b in norm:
             s = s.replace(a, b)
         return "".join(ch for ch in s if ch not in strip)
 

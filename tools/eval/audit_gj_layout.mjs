@@ -1,5 +1,7 @@
 // Read-only corpus audit. Requires Node >= 22.18 with native TypeScript stripping.
-// node tools/eval/audit_gj_layout.mjs [output.json]
+// node tools/eval/audit_gj_layout.mjs [output.json] [--check] [--strict-layout]
+// --check checks source/derived files and skeleton independence; legacy parity is informational.
+// --strict-layout additionally fails on geometry warnings; it does not certify scan fidelity.
 import { registerHooks } from 'node:module';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -17,7 +19,7 @@ registerHooks({ resolve(specifier, context, nextResolve) {
 } });
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 const { gj2ir } = await import('../../guji-preview-grid/src/ir/gj2ir.ts');
-const { layout3, PAGE_ROW_CAP } = await import('../../guji-preview-grid/src/ir/layout3.ts');
+const { layout3 } = await import('../../guji-preview-grid/src/ir/layout3.ts');
 const { irToText } = await import('../../guji-preview-grid/src/ir/text.ts');
 const { parsePages } = await import('../../guji-preview-grid/src/parser/parse-pages.ts');
 const manifest = JSON.parse(readFileSync(resolve(root, 'kangxi-gold/manifest.json'), 'utf8'));
@@ -41,6 +43,7 @@ for (const entry of [...manifest.pages].sort((a, b) => a.page - b.page)) {
   const elements = lines.flatMap(l => l.elements);
   const books = doc.overlays.filter(o => o.kind === 'book-title');
   const linePositions = new Map();
+  const lineBands = new Map(bands.flatMap(b => b.lines.map(l => [l.id, b.id])));
   let offset = 0;
   for (const line of lines) {
     linePositions.set(line.id, offset);
@@ -55,9 +58,9 @@ for (const entry of [...manifest.pages].sort((a, b) => a.page - b.page)) {
   const stripped = JSON.parse(JSON.stringify({ ...doc, overlays: [] }), (k, v) => k === 'src' || k === 'cpSrcs' ? undefined : v);
   const legacyText = parsePages(source).map(p => p.l.map(l => ('c' in l ? l.c : [l]).map(b => b.t ?? '').join('')).join('\n') + '\n').join('');
   const runs = laid.bands.flatMap(b => b.items.filter(i => i.kind === 'run'));
-  const overflow = laid.bands.filter(b => b.rows > PAGE_ROW_CAP).map(b => ({ id: b.id, rows: b.rows, cols: b.cols,
-    hiddenSmallCells: b.items.filter(i => i.kind === 'run').reduce((n, i) => n + Math.max(0, i.cells.length - Math.max(0, PAGE_ROW_CAP - i.r)), 0),
-    clippedLarge: b.items.filter(i => i.kind === 'large' && i.r + 2 > PAGE_ROW_CAP).map(i => ({ text: i.text, r: i.r })) }));
+  const overflow = laid.bands.filter(b => b.rows > laid.config.rowCap).map(b => ({ id: b.id, rows: b.rows, cols: b.cols,
+    hiddenSmallCells: b.items.filter(i => i.kind === 'run').reduce((n, i) => n + Math.max(0, i.cells.length - Math.max(0, laid.config.rowCap - i.r)), 0),
+    clippedLarge: b.items.filter(i => i.kind === 'large' && i.r + laid.config.largeRows > laid.config.rowCap).map(i => ({ text: i.text, r: i.r })) }));
   let depth = 0, nestedOpeners = 0;
   for (const ch of source) {
     if (ch === '【') { if (depth > 0) nestedOpeners++; depth++; }
@@ -80,13 +83,14 @@ for (const entry of [...manifest.pages].sort((a, b) => a.page - b.page)) {
     txtNonWhitespaceCodepoints: cp(txt.replace(/\s/g, '')),
     bookOverlays: books.length, bookSpans: books.reduce((n,o) => n + o.spans.length, 0),
     multiSpanBooks: books.filter(o => o.spans.length > 1).length,
-    crossBandBooks: books.filter(o => new Set(o.spans.map(s => s.line.replace(/-l\d+$/, ''))).size > 1).length,
+    crossBandBooks: books.filter(o => new Set(o.spans.map(s => lineBands.get(s.line))).size > 1).length,
     openEndBooks: books.filter(o => o.closed === false).map(o => o.id),
     continuationBooks: books.filter(o => o.openedHere === false).map(o => o.id),
     circleOverlays: doc.overlays.filter(o => o.kind === 'circle').length,
     nestedOpeners, bookCrossings: crossings,
     rawLineLengths: lines.map(l => cp(l.elements.map(e => e.text).join(''))),
     runCellLengths: runs.map(i => i.cells.length),
+    layoutDiagnostics: laid.diagnostics,
     layoutRows: laid.rows, totalCols: laid.totalCols, bandWidths: laid.bands.map(b => b.cols), bandHeights: laid.bands.map(b => b.rows),
     emptyBands: bands.filter(b => b.lines.every(l => l.elements.length === 0)).map(b => b.id), overflow });
   texts.push({ page: entry.page, source });
@@ -115,11 +119,14 @@ const summarizeBands = d => d.pages[0].bands.map(b => ({ id: b.id, text: b.lines
 const implementationFiles = [
   'guji-preview-grid/src/ir/types.ts', 'guji-preview-grid/src/ir/gj2ir.ts',
   'guji-preview-grid/src/ir/layout3.ts', 'guji-preview-grid/src/ir/text.ts',
+  'guji-preview-grid/src/ir/profile.ts', 'guji-preview-grid/src/ir/layout-config.ts',
+  'guji-preview-grid/src/ir/layout-diagnostics.ts', 'guji-preview-grid/src/ir/projection.ts',
+  'guji-preview-grid/src/parser/structure.ts',
   'guji-preview-grid/src/parser/split-line.ts', 'guji-preview-grid/src/parser/parse-pages.ts',
   'guji-preview-grid/src/parser/parse-line.ts', 'guji-preview-grid/src/parser/parse-inline.ts',
   'guji-preview-grid/src/components/matrix/MatrixPages.tsx',
 ];
-const result = { schema: 'gj-layout-audit/1', auditedAt: new Date().toISOString(), node: process.version,
+const result = { schema: 'gj-layout-audit/2', auditedAt: new Date().toISOString(), node: process.version,
   scope: 'Current working tree; regenerated in memory; no annotation files written', pageCount: rows.length, statuses: hist(rows.map(r => r.status)), totals,
   implementationSha256: Object.fromEntries(implementationFiles.map(f => [f, sha(readFileSync(resolve(root, f)))])),
   manifestSha256: sha(readFileSync(resolve(root, 'kangxi-gold/manifest.json'))),
@@ -132,11 +139,16 @@ const result = { schema: 'gj-layout-audit/1', auditedAt: new Date().toISOString(
   openEndCount: rows.reduce((n,r)=>n+r.openEndBooks.length,0), continuationCount: rows.reduce((n,r)=>n+r.continuationBooks.length,0),
   crossingBookPairs: rows.reduce((n,r)=>n+r.bookCrossings.length,0),
   overflowingPages: rows.filter(r=>r.overflow.length).map(r=>({page:r.page,bands:r.overflow})),
+  geometry: { warningPages: rows.filter(r => r.layoutDiagnostics.some(d => d.severity !== 'info')).map(r => r.page),
+    diagnostics: rows.flatMap(r => r.layoutDiagnostics), imageReview: 'not performed by this audit' },
   probes: {
     profileInput: '@1\n\n甲，乙\n\n丙丁\n', profileChange: 'meta.profile.stripPunct = []',
     profileHonoredByLayout: !isDeepStrictEqual(layout3(probeBase), layout3(probeProfile)),
     profileHonoredByText: irToText(probeBase) !== irToText(probeProfile),
     positionalIdExample: { before: summarizeBands(probeBase), after: summarizeBands(probeInserted) },
   }, combined, pages: rows };
-if (process.argv[2]) writeFileSync(resolve(process.argv[2]), JSON.stringify(result, null, 2)+'\n');
+const output = process.argv.slice(2).find(arg => !arg.startsWith('--'));
+if (output) writeFileSync(resolve(output), JSON.stringify(result, null, 2)+'\n');
+if (process.argv.includes('--check') && ['jsonFresh', 'txtFresh', 'overlaySourceIndependent'].some(k => result.checks[k].failedPages.length)) process.exitCode = 1;
+if (process.argv.includes('--strict-layout') && result.geometry.warningPages.length) process.exitCode = 1;
 console.log(JSON.stringify({ ...result, pages: undefined, combined: combined.map(g=>({...g,crossPageBooks:g.crossPageBooks.map(o=>({pages:o.pages,closed:o.closed}))})) }, null, 2));

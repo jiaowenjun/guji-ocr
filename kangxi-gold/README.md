@@ -1,15 +1,20 @@
 # kangxi-gold：康熙字典自建精标金标
 
-康熙字典**武英殿版·子集上·一部** 17 页（@312–@328）的整页**文本级金标** v1，
-对应 [docs/research/README.md §11 评测协议](../docs/research/README.md#evaluation)
-阶段 1 的第一个自有开发样本。
+康熙字典**武英殿版** 45 页（@312–@358，不含 329、337）的文本级开发语料。
+最初 17 页（@312–@328）来自一部样例，现已逐页扩充并完成初校；manifest 中均为 `first`，
+不表示已经完成独立终校。评测协议见 [综合调研报告 §11](../docs/research/README.md#evaluation)。
 
 | 项 | 值 |
 | --- | --- |
-| 规模 | 17 页，正文 5,933 字（Unicode 码点，含扩展 B 区） |
-| 图片 | 整页扫描 JPEG（1130px 宽），共 9.04 MB，存于 WD-2T（见下） |
-| 标注来源 | [guji-preview-grid/src/samples/kangxi-yibu.gj](../guji-preview-grid/src/samples/kangxi-yibu.gj) 人工精标（源自 vscode-guji-preview 扩展 example） |
-| 金标版本 | v1（2026-11-12） |
+| 规模 | 45 页，正文 15,266 个非空白 Unicode 码点（含扩展 B 区） |
+| 图片 | 整页扫描 JPEG（1130px 宽），共 22.80 MiB，存于 WD-2T（见下） |
+| 标注来源 | 初始样例加逐页扩充／人工修订；`annotations/*.gj` 为转写源 |
+| 标注格式 | Guji IR v3，JSON/TXT 均与当前 `.gj` 同步 |
+| 当前版式 | 360 band；45 页均为 8 大列、16 格宽、24 格高 |
+
+2026-11-16：用户修复了 318／320／322／325／327 的分段错误，对应 JSON/TXT 已同步，
+去空白后的正文阅读序不变。结构检查无宽度／重叠／溢出告警；8 个空大列按留白保留。
+详见 [排版审计及优化报告](../docs/research/2026-11-16-古籍排版数据结构与算法评估.md)。
 
 ## 目录结构
 
@@ -17,10 +22,10 @@
 kangxi-gold/
   manifest.json            页清单：来源 URL、图片 sha256/尺寸/路径、标注文件、版本证据
   annotations/NNNN.gj      单页 .gj 原文（按 @页码 拆分，逐行原样保留）
-  annotations/NNNN.json    结构化金标（guji-preview-grid 解析器的单页输出，PageModel）
+  annotations/NNNN.json    结构化金标（IR v3 骨架 + overlays）
   annotations/NNNN.txt     阅读序纯文本（CER 参考文本）
   scripts/download_pages.py   下载扫描图（限速、校验、断点续传、维护 manifest）
-  scripts/build_annotations.ts 拆页 + 解析 + 零漂移校验 + 产出三件套
+  scripts/build_annotations.ts 拆页 + IR 派生 + 样例与旧解析器对照
   scripts/verify_dataset.py    数据集一致性校验
   scripts/eval_cer.py          严格 CER 评测（对接 paddleocr-baseline 输出）
 图片不在 git 内：/Volumes/WD-2T/guji-ocr/raw/kangxizidian/pages/NNNN.jpg
@@ -55,8 +60,8 @@ kangxi-gold/
 ## 标注规范
 
 - 语法与语义以 [guji-preview-grid 的 .gj 语法](../guji-preview-grid/README.md) 为准；
-  构建时与 `guji-preview-grid/test/fixtures/kangxi-yibu.expected.json`
-  （原扩展解析器黄金期望）做**零漂移对照**，单页解析 = 整篇解析 = fixture。
+  样例 fixture 检查属于旧解析器兼容性契约；当前 45 页以逐页 `.gj`→IR→TXT 为准。
+  旧解析器比较、新鲜度和几何诊断分别报告，不能以“零漂移”概括全部验证。
 - **识别范围**：字头（大字）、正文、双行夹注（小字）、书名框、带圈标注入金标；
   版心、边框、鱼尾、印章、页脚水印**不在**金标内。
 - **清洗约定**（解析器预处理，金标侧已发生）：剔除 CJK 标点 `。，·":：、《》`，
@@ -84,6 +89,8 @@ npx -y tsx scripts/build_annotations.ts --allow-drift
 
 # 3. 校验数据集一致性
 python3 -I scripts/verify_dataset.py
+# 另在仓库根目录执行派生文件与几何检查（不修改语料）
+# node tools/eval/audit_gj_layout.mjs --check --strict-layout
 
 # 4. 评测：paddleocr-baseline 批量输出目录（每图 <stem>.md）→ 严格 CER
 python3 -I scripts/eval_cer.py --ocr-dir <批量输出目录> [--json 结果.json]
@@ -97,7 +104,7 @@ python3 -I scripts/eval_cer.py --self-test   # S/D/I 对齐自测
 
 ## 已知边界
 
-- 17 页 < 协议建议的 20–30 页开发样本规模；扩页需新的人工转写
+- 当前 45 页来自同一版本，只能作为开发案例；不能替代跨书／跨版式的独立测试集
   （站点无纯文本，页面文字由逐字 SVG 渲染）。
 - 图片版权归 kangxizidian.com / 原书相关方；本数据集仅供内部研究评测。
 - 同书相邻页不可跨开发/测试分组划分（协议 §11.1）。

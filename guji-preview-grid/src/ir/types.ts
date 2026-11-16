@@ -14,9 +14,10 @@
 //   - book-title：书名样式/语义，spans 按（行 id，行内码点半开区间）引用；
 //     跨行/跨页书名为单一 overlay；骨架中不存在书名锚元素
 //
-// 单位约定：行内 range 一律 Unicode 码点半开区间（禁止切开组合字形/代理对）；
+// 单位约定：行内 range 一律 Unicode 码点半开区间（不切开代理对；组合字形／IVS 尚需字形层处理）；
 // 源码 src 偏移一律 UTF-16 码元（仅溯源与编辑器联动，渲染不得依赖）。
 import type { PageModel } from "../components/flex/model";
+import type { IRLayoutConfig } from "./layout-config";
 
 /** 清洗口径：渲染与评测共用（写入 IR meta，eval_cer.py 读同一定义） */
 export interface IRProfile {
@@ -35,8 +36,11 @@ export const GUJI_PROFILE: IRProfile = {
 export interface IRMeta {
   sourceFormat: string;
   generatedBy: string;
+  /** Preserves canonical skeleton text, not a reversible copy of all .gj spelling. */
   fidelity: "full";
   profile: IRProfile;
+  /** Omitted in existing v3 JSON: use the versioned Kangxi defaults. */
+  layout?: IRLayoutConfig;
   /** 小行切分来源：fold = 转写折行（≠ 扫描图检测行，不含坐标） */
   lineLayout: "fold";
   orientation: "vertical-rtl";
@@ -57,7 +61,7 @@ export interface IRElement {
   ligature?: boolean;
 }
 
-/** 小行（物理折行） */
+/** 小行（转写折行；不是带图像坐标的检测行） */
 export interface IRLine {
   id: string; // p0312-b3-l0
   ord: number;
@@ -101,6 +105,7 @@ export interface IRBookSpan {
 export interface IRBookOverlay {
   id: string;
   kind: "book-title";
+  /** Global reading order, including fragments on other pages. IDs are opaque. */
   spans: IRBookSpan[];
   /** 原文区间（UTF-16，含【】）——仅溯源与编辑器联动；无 .gj 源时缺省 */
   src?: [number, number];

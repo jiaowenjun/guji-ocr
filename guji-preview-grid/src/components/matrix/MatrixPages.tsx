@@ -3,88 +3,10 @@
 // 圆环修饰大字格（元素 id 定位）；书名框为覆盖其小字格的跨行矩形（按行+码点
 // 区间定位，跨大行 wrap 的连接边开口，与旧 book-start/middle/end 状态无关）。
 // 不依赖任何 src 偏移（无 .gj 源的 IR 同样可渲染）。
-import type { CSSProperties } from "react";
-import type { IRBookOverlay, IROverlay, RenderHighlight } from "@/ir/types";
+import { useMemo, type CSSProperties } from "react";
+import type { IROverlay, RenderHighlight } from "@/ir/types";
 import type { L3Item, L3Page } from "@/ir/layout3";
-import { PAGE_ROW_CAP } from "@/ir/layout3";
-
-interface BookBox {
-  overlayId: string;
-  bandIdx: number;
-  rowStart: number; // 页级行（cell）
-  rowEnd: number; // 半开
-  col: number; // 页级列
-  openTop: boolean;
-  openBottom: boolean;
-  /** 所属 run 的亚格居中偏移（奇数余量组） */
-  halfShift?: 0.5;
-}
-
-/** 行 id → band 序（行 id 形如 pXXXX-bN-lM，band id 即其去掉 -lM 前缀） */
-function bandIndexOfLine(page: L3Page, lineId: string): number | undefined {
-  const bandId = lineId.replace(/-l\d+$/, "");
-  const idx = page.bands.findIndex((b) => b.id === bandId);
-  return idx >= 0 ? idx : undefined;
-}
-
-/** 书名 overlay → 覆盖矩形（经 run 项的 lineId/rawOffsets 定位；纯骨架坐标）。
- *  每条 span 一个框（span 不跨行）；跨小行/跨大行 wrap 的开口方向按阅读序
- *  （band 序、行序——列自右而左）判定：本框之前还有 span 则 open-top，之后还有则 open-bottom */
-function bookBoxesFor(page: L3Page, overlay: IRBookOverlay): BookBox[] {
-  // 各 span 的阅读序位置（bandIdx, lineOrd）
-  const spanPos = overlay.spans.map((span) => {
-    const bandIdx = bandIndexOfLine(page, span.line);
-    const lineOrd = bandIdx !== undefined ? Number(span.line.replace(/.*-l/, "")) : -1;
-    return { key: bandIdx !== undefined ? bandIdx * 1000 + lineOrd : -1 };
-  });
-
-  return overlay.spans.flatMap((span, si) => {
-    const bandIdx = bandIndexOfLine(page, span.line);
-    if (bandIdx === undefined) return [];
-    const band = page.bands[bandIdx];
-    let rowMin = Infinity;
-    let rowMax = -Infinity;
-    let col = -1;
-    let halfShift: 0.5 | undefined;
-    for (const item of band.items) {
-      if (item.kind !== "run" || item.lineId !== span.line) continue;
-      // span 是行规范文本（未清洗）坐标；cells 是清洗后逐字——经 rawOffsets 对位：
-      // 覆盖 = 原文偏移落在 [range0, range1) 内的清洗字
-      const offs = item.rawOffsets ?? [];
-      let first = -1;
-      let last = -1;
-      offs.forEach((o, k) => {
-        if (o >= span.range[0] && o < span.range[1]) {
-          if (first < 0) first = k;
-          last = k;
-        }
-      });
-      if (first < 0) continue;
-      rowMin = Math.min(rowMin, item.r + first);
-      rowMax = Math.max(rowMax, item.r + last);
-      col = page.colStarts[bandIdx] + item.c;
-      halfShift = item.halfShift;
-    }
-    if (rowMin === Infinity || col < 0) return [];
-    const key = spanPos[si].key;
-    const hasEarlier = spanPos.some((p, j) => j !== si && p.key !== -1 && p.key < key);
-    const hasLater = spanPos.some((p, j) => j !== si && p.key !== -1 && p.key > key);
-    return [
-      {
-        overlayId: overlay.id,
-        bandIdx,
-        rowStart: rowMin,
-        rowEnd: rowMax + 1,
-        col,
-        halfShift,
-        // 开口 = 前/后有延续 span，或语义边界：孤立】延续（!openedHere）开口向上；
-        // 未见】的流出（!closed，如 EOF 未闭合书名）开口向下
-        openTop: hasEarlier || overlay.openedHere === false,
-        openBottom: hasLater || overlay.closed === false,
-      },
-    ];
-  });
-}
+import { indexLayout, projectBooks, locateCell, type BookBox, type LocatedRun } from "@/ir/projection";
 
 export function MatrixPages({
   pages,
@@ -104,7 +26,8 @@ export function MatrixPages({
       .filter((o): o is Extract<IROverlay, { kind: "circle" }> => o.kind === "circle")
       .map((o) => o.target),
   );
-  const books = overlays.filter((o): o is IRBookOverlay => o.kind === "book-title");
+  const index = useMemo(() => indexLayout(pages), [pages]);
+  const boxes = useMemo(() => projectBooks(pages, overlays, index), [pages, overlays, index]);
 
   return (
     <div className="pages">
@@ -114,7 +37,8 @@ export function MatrixPages({
           page={pg}
           rules={rules}
           circled={circled}
-          books={books}
+          boxes={boxes.get(pg) ?? []}
+          index={index}
           highlight={highlight}
           onBandClick={onBandClick}
         />
@@ -127,52 +51,38 @@ function MatrixPageView({
   page,
   rules,
   circled,
-  books,
+  boxes,
+  index,
   highlight,
   onBandClick,
 }: {
   page: L3Page;
   rules: boolean;
   circled: Set<string>;
-  books: IRBookOverlay[];
+  boxes: BookBox[];
+  index: Map<string, LocatedRun[]>;
   highlight?: RenderHighlight;
   onBandClick?: (page: number, index: number) => void;
 }) {
-  const boxes = books.flatMap((ov) => bookBoxesFor(page, ov));
-
-  // 行轨封顶：超 PAGE_ROW_CAP 的行不建轨道（版框恒 24 格高）；条目跨度按可见行
-  // 钳制（run 内多余 .m-cell 靠 overflow 裁、半截大字裁字形），不出网格线范围
-  // → 不触发隐式轨道，容器高度精确 = 封顶行数，无需容器级 overflow hack
-  const rows = Math.min(page.rows, PAGE_ROW_CAP);
-
-  // 单字高亮解析：large 按元素 id 直查；cell 经 run.rawOffsets 对位——
-  // 光标前一字若被清洗（标点）无精确条目，回退到 ≤cp 的最大偏移（前一渲染字）
-  let activeLargeEl: string | null = null;
-  let activeCell: { lineId: string; index: number } | null = null;
+  const { rowCap, largeRows, largeCols } = page.config;
+  const rows = Math.min(page.rows, rowCap);
   const ch = highlight?.char;
-  if (ch?.kind === "large") activeLargeEl = ch.elId;
-  else if (ch) {
-    const bandIdx = bandIndexOfLine(page, ch.lineId);
-    if (bandIdx !== undefined) {
-      for (const item of page.bands[bandIdx].items) {
-        if (item.kind !== "run" || item.lineId !== ch.lineId) continue;
-        const offs = item.rawOffsets ?? [];
-        let k = -1;
-        for (let x = 0; x < offs.length; x++) if (offs[x] <= ch.cp) k = x;
-        if (k >= 0) activeCell = { lineId: ch.lineId, index: k };
-        break;
-      }
-    }
-  }
+  const activeLargeEl = ch?.kind === "large" ? ch.elId : null;
+  const activeCell = ch?.kind === "cell" ? locateCell(index, ch.lineId, ch.cp) : null;
+  const pageWarnings = page.diagnostics.filter((d) => d.severity !== "info");
 
   return (
     <div className="page">
-      <div className="page-title">{page.no}</div>
+      <div className="page-title" title={pageWarnings.map((d) => d.message).join("；") || undefined}>
+        {page.no}{pageWarnings.length > 0 && <span className="m-layout-warning" aria-label="版式需核对"> ⚠</span>}
+      </div>
       <div
         className="lines m-lines"
         data-rules={rules ? "on" : "off"}
         style={
           {
+            "--guji-large-rows": largeRows,
+            "--guji-large-cols": largeCols,
             gridTemplateColumns: `repeat(${page.totalCols}, calc(var(--guji-unit) * 1))`,
             // 行轨用纵向微调后的字格高（版框内容高 ÷ 行数；未注入时回落正方形）
             gridTemplateRows: `repeat(${rows}, calc(var(--guji-unit-v, var(--guji-unit)) * 1))`,
@@ -180,16 +90,16 @@ function MatrixPageView({
         }
       >
         {page.bands.map((band, bi) => {
-          const over = band.rows > PAGE_ROW_CAP;
+          const over = band.rows > rowCap;
           // 溢出定位到小列：内容底边（r+全长）越过封顶线的列挂标记——
-          // 含整段藏在裁剪区内的项（不渲染但列确实溢出）；大字占 c..c+1 两列
+          // 含整段藏在裁剪区内的项（不渲染但列确实溢出）；大字跨度按版式配置
           const overCols = new Set<number>();
           if (over) {
             for (const it of band.items) {
-              const span = it.kind === "large" ? 2 : (it.cells?.length ?? 0);
+              const span = it.kind === "large" ? largeRows : (it.cells?.length ?? 0);
               if (it.r + span <= rows) continue;
               overCols.add(it.c);
-              if (it.kind === "large") overCols.add(it.c + 1);
+              if (it.kind === "large") for (let col = 1; col < largeCols; col++) overCols.add(it.c + col);
             }
           }
           return (
@@ -198,9 +108,7 @@ function MatrixPageView({
               className={`m-band${
                 highlight?.band?.page === page.no && highlight.band.index === bi ? " m-band-active" : ""
               }${bi === page.bands.length - 1 ? " m-band-last" : ""}${over ? " m-band-over" : ""}`}
-              title={over
-                ? `此列 ${band.rows} 格，超出版面 ${PAGE_ROW_CAP} 格，底部 ${band.rows - PAGE_ROW_CAP} 格已隐藏`
-                : undefined}
+              title={page.diagnostics.filter((d) => d.bandId === band.id).map((d) => d.message).join("；") || undefined}
               onClick={onBandClick ? () => onBandClick(page.no, bi) : undefined}
               style={
                 {
@@ -211,7 +119,7 @@ function MatrixPageView({
             >
               {band.items.map((item, ii) => {
                 const cellIdx =
-                  activeCell && item.kind === "run" && item.lineId === activeCell.lineId
+                  activeCell && item === activeCell.item
                     ? activeCell.index
                     : undefined;
                 return (
@@ -222,6 +130,8 @@ function MatrixPageView({
                     activeLarge={item.kind === "large" && item.elId === activeLargeEl}
                     activeCell={cellIdx}
                     rowCap={rows}
+                    largeRows={largeRows}
+                    largeCols={largeCols}
                   />
                 );
               })}
@@ -280,6 +190,8 @@ function ItemView({
   activeLarge,
   activeCell,
   rowCap,
+  largeRows,
+  largeCols,
 }: {
   item: L3Item;
   circled: Set<string>;
@@ -289,18 +201,20 @@ function ItemView({
   activeCell?: number;
   /** 页面可见行数（封顶后）；条目跨度超出部分被裁剪 */
   rowCap: number;
+  largeRows: number;
+  largeCols: number;
 }) {
   // 注意：ItemView 是 .m-band（subgrid 项）的子元素，列号用 band 局部坐标；
   // 页级换算（colStarts）只用于书名框等 .m-lines 直接子元素
   if (item.kind === "large") {
-    const span = Math.min(2, rowCap - item.r);
+    const span = Math.min(largeRows, rowCap - item.r);
     if (span <= 0) return null;
-    const clipped = span < 2;
+    const clipped = span < largeRows;
     const text = item.text ?? "";
     const stacked = item.ligature && [...text].length > 1;
     const gridPos = {
       gridRow: `${item.r + 1} / span ${span}`,
-      gridColumn: `${item.c + 1} / span 2`,
+      gridColumn: `${item.c + 1} / span ${largeCols}`,
     } as CSSProperties;
     const active = activeLarge ? " m-char-active" : "";
     const cut = clipped ? " m-clipped" : "";

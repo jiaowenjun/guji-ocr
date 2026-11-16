@@ -2,7 +2,7 @@
 // 大行定位用 band.src（UTF-16 原文区间，仅联动/溯源）；书名命中用 overlay.src；
 // 单字定位用 line.cpSrcs（行规范文本各码点的原文偏移——语法字符无条目，
 // 光标落在不产出字符的位置时回退到前一产出字符，与 highlightAt 间隙取前行同语义）。
-import type { CharHighlight, IRBand, IRDocument, IRLine } from "./types";
+import type { CharHighlight, IRBand, IRDocument } from "./types";
 
 function bandsOf(doc: IRDocument): IRBand[] {
   return doc.pages.flatMap((p) => p.bands);
@@ -69,6 +69,7 @@ export interface CharIndexEntry {
   lineId: string;
   cp: number;
   src: number;
+  target: CharHighlight;
 }
 export type CharIndex = CharIndexEntry[];
 
@@ -78,18 +79,23 @@ export function buildCharIndex(doc: IRDocument): CharIndex {
     for (const b of p.bands)
       for (const l of b.lines) {
         const srcs = l.cpSrcs ?? [];
-        for (let cp = 0; cp < srcs.length; cp++) entries.push({ lineId: l.id, cp, src: srcs[cp] });
+        let cp = 0;
+        for (const el of l.elements) for (let j = 0, n = [...el.text].length; j < n; j++) {
+          if (srcs[cp] !== undefined) entries.push({
+            lineId: l.id, cp, src: srcs[cp],
+            target: el.class === "large" ? { kind: "large", elId: el.id } : { kind: "cell", lineId: l.id, cp },
+          });
+          cp++;
+        }
       }
   return entries;
 }
 
-const cpLen = (s: string) => [...s].length;
 
 /** 光标前一字符 → 单字定位（large=大字/合字格元素；cell=小字格行+码点）。
  *  前一字符不产出（#、【】、换行、@页声明、注释）或已被清洗（标点）时
  *  回退到前一产出字符——校对时光标任意移动都有「我在哪个字」的反馈 */
 export function charHighlightAt(
-  doc: IRDocument,
   index: CharIndex,
   text: string,
   cursor: number | null,
@@ -111,20 +117,5 @@ export function charHighlightAt(
     } else hi = mid - 1;
   }
   if (hit < 0) return null;
-  const { lineId, cp } = index[hit];
-  const line: IRLine | undefined = doc.pages
-    .flatMap((p) => p.bands)
-    .find((b) => b.lines.some((l) => l.id === lineId))
-    ?.lines.find((l) => l.id === lineId);
-  if (!line) return null;
-  // 行规范码点 → 元素（行内累计码点数；合字命中即整格）
-  let acc = 0;
-  for (const el of line.elements) {
-    const n = cpLen(el.text);
-    if (cp < acc + n) {
-      return el.class === "large" ? { kind: "large", elId: el.id } : { kind: "cell", lineId, cp };
-    }
-    acc += n;
-  }
-  return null;
+  return index[hit].target;
 }

@@ -13,7 +13,7 @@ import { fileURLToPath } from "node:url";
 import { parsePages } from "../../guji-preview-grid/src/parser/parse-pages";
 import type { BlockModel, LineModel, PageModel } from "../../guji-preview-grid/src/components/flex/model";
 import { gj2ir } from "../../guji-preview-grid/src/ir/gj2ir";
-import { irPageToText } from "../../guji-preview-grid/src/ir/text";
+import { irToText } from "../../guji-preview-grid/src/ir/text";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(here, "../..");
@@ -110,6 +110,8 @@ if (!allowDrift) {
   }
 }
 const summary: { page: number; chars: number }[] = [];
+const legacyDifferences: number[] = [];
+const missingSources: number[] = [];
 const manifest = JSON.parse(readFileSync(MANIFEST, "utf-8")) as {
   pages: { page: number; annotations?: Record<string, string> }[];
 };
@@ -137,7 +139,7 @@ chunks.forEach((chunk, i) => {
   if (pageIr.pages.length !== 1 || pageIr.pages[0].no !== chunk.page) {
     fail(`@${chunk.page} IR 解析异常：得到 ${JSON.stringify(pageIr.pages.map((p) => p.no))}`);
   }
-  const text = irPageToText(pageIr.pages[0]);
+  const text = irToText(pageIr);
   if (text !== pageToText(parsed[0])) {
     fail(`@${chunk.page} IR 文本流 ≠ 旧 pageToText 口径——IR 管线漂移`);
   }
@@ -159,6 +161,7 @@ for (const page of extras) {
   const gjPath = join(OUT_DIR, `${stem}.gj`);
   if (!existsSync(gjPath)) {
     console.warn(`⚠ 附加页 @${page} 缺 ${stem}.gj（先经数据集对照页添加），跳过`);
+    missingSources.push(page);
     continue;
   }
   const parsed = parsePages(readFileSync(gjPath, "utf-8"));
@@ -166,9 +169,10 @@ for (const page of extras) {
     fail(`附加页 @${page} 解析异常：得到 ${JSON.stringify(parsed.map((p) => p.p))}`);
   }
   const pageIr = gj2ir(readFileSync(gjPath, "utf-8"));
-  const text = irPageToText(pageIr.pages[0]);
+  const text = irToText(pageIr);
   const legacy = pageToText(parsed[0]);
   if (text !== legacy) {
+    legacyDifferences.push(page);
     // 附加页（草稿）以 v3 语义为准。已知合理分歧：旧解析器对「#(三)」单字带圈
     // 闭合形会把 ')' 漏进小字正文（闭合前瞻只看 i+2/i+3），v3 正确消费——
     // 样例页仍逐字符强断言（fixture 契约），此处降级为逐页提示
@@ -198,10 +202,12 @@ for (const entry of manifest.pages ?? []) {
 }
 manifest["annotations_schema"] = "guji-ir/3"; // NNNN.json 为 Guji IR v3（骨架+overlay 双层；v2 前为段流/PageModel）
 manifest["annotation_source"] =
-  "guji-preview-grid/src/samples/kangxi-yibu.gj（人工精标，源自 vscode-guji-preview/example；零漂移对照通过）";
+  "annotations/*.gj 为逐页转写源；初始 17 页源自 guji-preview-grid/src/samples/kangxi-yibu.gj，后续含人工修订及扩页；JSON/TXT 由 IR v3 派生";
 writeFileSync(MANIFEST, JSON.stringify(manifest, null, 2) + "\n", "utf-8");
 
 const total = summary.reduce((acc, s) => acc + s.chars, 0);
 console.log("页  字数");
 for (const s of summary) console.log(`${String(s.page).padStart(4)}  ${s.chars}`);
-console.log(`共 ${summary.length} 页，正文 ${total} 字；零漂移校验全部通过，manifest 已更新`);
+console.log(`共 ${summary.length} 页，正文 ${total} 字；JSON/TXT 已从各页 .gj 的 IR v3 生成，manifest 已更新`);
+console.log(`旧解析器文本比较：${summary.length - legacyDifferences.length}/${summary.length} 一致；差异页：${legacyDifferences.join(", ") || "无"}`);
+console.log(`未构建的缺源页：${missingSources.join(", ") || "无"}；几何及文件新鲜度请运行 tools/eval/audit_gj_layout.mjs；原图复校未执行`);
