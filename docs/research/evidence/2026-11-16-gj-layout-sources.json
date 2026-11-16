@@ -1,0 +1,142 @@
+{
+  "checkedAt": "2026-11-16T06:58:39.365097+00:00",
+  "scope": "Public web and source-code review; no remote software executed; not an exhaustive literature review",
+  "sources": [
+    {
+      "id": "luatex_readme",
+      "url": "https://raw.githubusercontent.com/open-guji/luatex-cn/main/README.md",
+      "sha256": "df59a67d334c692b2e3c8811b5bdc42685c7388ecdc6010e2af41c3400884a3c",
+      "bytes": 11958,
+      "review": "README 与浏览器项目页已读；支持自动排版和数字化模式；未执行 TeX"
+    },
+    {
+      "id": "luatex_main",
+      "url": "https://raw.githubusercontent.com/open-guji/luatex-cn/main/tex/core/luatex-cn-core-main.lua",
+      "sha256": "1d0e2a48244468d7309b1a382bf5c6d727a72be46aabf1d49b6db1a515ef739b",
+      "bytes": 42834,
+      "review": "读取三阶段流水线及主要调用处"
+    },
+    {
+      "id": "luatex_grid",
+      "url": "https://raw.githubusercontent.com/open-guji/luatex-cn/main/tex/core/luatex-cn-layout-grid.lua",
+      "sha256": "029c5949ebe189e1f9254d66ed59294be6a10575e884f7533cfc4e52840ac84c",
+      "bytes": 146725,
+      "review": "读取架构与关键入口；网格、occupancy、分页；非逐行完整代码审计"
+    },
+    {
+      "id": "luatex_flatten",
+      "url": "https://raw.githubusercontent.com/open-guji/luatex-cn/main/tex/core/luatex-cn-core-flatten-nodes.lua",
+      "sha256": "8a53c370696873b6c361ac038012cdaa4f4749a8ef72f28d9046ff617c938030",
+      "bytes": 16410,
+      "review": "读取树到节点流转换设计与部分实现"
+    },
+    {
+      "id": "luatex_digital_src",
+      "url": "https://raw.githubusercontent.com/open-guji/luatex-cn/main/tex/digital/luatex-cn-digital.sty",
+      "sha256": "eadea69f8cfb6cd05a423ea65a36490240a6efc6c4eeb34b2e171bcc78992022",
+      "bytes": 8854,
+      "review": "读取显式左右小列命令和 auto-balance=false"
+    },
+    {
+      "id": "luatex_layoutmap",
+      "url": "https://raw.githubusercontent.com/open-guji/luatex-cn/main/docs/LAYOUT_MAP.md",
+      "sha256": "3a6dcb20110ab6a4cc05e6610d76b748404ddec998f246c4552d852ae13a9e9d",
+      "bytes": 21575,
+      "review": "已读核心概念／坐标／字段；文首明确是 v2 目标设计，当前代码 v1"
+    },
+    {
+      "id": "luatex_fill",
+      "url": "https://raw.githubusercontent.com/open-guji/luatex-cn/main/docs/FILL-TEXTBOX-FLAT.md",
+      "sha256": "c0432340da05dec388da9942226c72fdaa5d9da9937b14b1ab39fa7df4cf7bcc",
+      "bytes": 1938,
+      "review": "全文阅读；压缩文本框是其他版式约束实例"
+    },
+    {
+      "id": "vrain",
+      "url": "https://raw.githubusercontent.com/shanleiguang/vRain/main/vrain.pl",
+      "sha256": "60a9fa9136e30a51aa75b34fe245b5629454396364a6697837e65f923e4bc28c",
+      "bytes": 63942,
+      "review": "README 浏览器已读，源码定位字位计数器和双列预计算；未运行"
+    },
+    {
+      "id": "clreq",
+      "url": "https://www.w3.org/TR/clreq/",
+      "sha256": "94fca95d8d2dc1415411bd4666226bd86427a97202535dc17ad6db201f4887fb",
+      "bytes": 768965,
+      "review": "获取全文；重点核查古籍范围声明及行间标点相关段落"
+    },
+    {
+      "id": "annotation",
+      "url": "https://www.w3.org/TR/annotation-model/",
+      "sha256": "a7513e022f56c0a6f4e99ac11aec03f3451d1ff1ce14054780b3ccfb38fa7980",
+      "bytes": 284185,
+      "review": "重点核查 TextPositionSelector 的脆弱性与 TextQuoteSelector 定义"
+    },
+    {
+      "id": "page",
+      "url": "https://raw.githubusercontent.com/PRImA-Research-Lab/PAGE-XML/master/README.md",
+      "sha256": "afcf8bbd612448b7207116d4ec11ca6e898e5cd925efe5260c76e37b5ebcf156",
+      "bytes": 1102,
+      "review": "全文阅读；指向官方 schema 和 ICPR 2010 论文"
+    },
+    {
+      "id": "page_schema",
+      "url": "https://www.primaresearch.org/schema/PAGE/gts/pagecontent/2019-07-15/pagecontent.xsd",
+      "sha256": "5d7da5af5f5e06d3b9cd1e78b407ffca1862f78ad9823ed89c302fb6409932d5",
+      "bytes": 85826,
+      "review": "核查 TextLine／Glyph／Coords／ReadingOrder／Relations 定义"
+    },
+    {
+      "id": "knuth",
+      "url": "https://api.crossref.org/works/10.1002/spe.4380111102",
+      "sha256": "e2761ba31b532a80f212c8303cd77605eac8de8368e77bb2250d4023f5ed3536",
+      "bytes": 10373,
+      "review": "仅核查题名、作者、年份与卷页；非论文全文阅读"
+    },
+    {
+      "id": "gjcool-layout",
+      "url": "https://ocr.gj.cool/article/2026-10-16-new-layout-engine",
+      "sha256": "d4cb22c1a04204c5db2efcd725f3a267ba77939d8d6eef2c41ec1449f0c57cb7",
+      "bytes": 26263,
+      "review": "提取并阅读文章全文；产品技术说明，未复现实测"
+    },
+    {
+      "id": "wong2005",
+      "url": "https://tug.org/TUGboat/tb26-2/wong.pdf",
+      "sha256": "b54610403cbf0715f351206040f07f7e2da3296fc76b9f9504be813641905f3b",
+      "bytes": 2032480,
+      "review": "全文文本提取阅读；第 113 页渲染目视核验版面比较。Wai Wong, TUGboat 26(2), 2005, 111–114。背景论文，非新的 IR 算法。"
+    },
+    {
+      "id": "goddag",
+      "url": "https://cmsmcq.com/2000/poddp2000.html",
+      "review": "浏览器读取作者公开版摘要、导论、重叠问题与方法。正式卷出版信息按页面说明为 2004，会议名称 DDEP-PODDP 2000；非宣称本次通读全部论文。",
+      "verifiedExcerpt": "Unlike SGML/XML trees, our graph structure allows children to have multiple parents."
+    },
+    {
+      "id": "openguji-typesetting",
+      "url": "https://www.openguji.com/typesetting",
+      "review": "浏览器阅读全文，需求与方案讨论；当前进展描述与 GitHub 现状存在时序差异，不作成熟度证据。"
+    },
+    {
+      "id": "vrain-readme",
+      "url": "https://github.com/shanleiguang/vRain",
+      "review": "浏览器读取标记系统、夹批、核心排版机制、MIT 许可。"
+    }
+  ],
+  "limitations": [
+    "TEI NH official chapter timed out; not counted as verified current full text",
+    "PAGE ICPR 2010 publication URL returned no usable article text; paper not counted as read",
+    "LuaTeX-CN GitHub API tree returned rate limit; source files inspected through public HTML and raw URLs",
+    "Remote main branches can change; downloaded content hashes identify this snapshot, no verified commit revision",
+    "No exhaustive CNKI, Wanfang or thesis-database search; absence of an exact matching paper is not a novelty proof"
+  ],
+  "searchQueries": [
+    "古籍 排版 luatex-cn 开源",
+    "古籍 竖排 排版 算法 论文",
+    "Chinese ancient books typesetting TeX paper",
+    "GODDAG A Data Structure for Overlapping Hierarchies",
+    "VRain GitHub 古籍",
+    "\"古籍\" \"排版\" \"论文\" 双行"
+  ]
+}

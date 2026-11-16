@@ -7,6 +7,7 @@
 | 需求 | 文档 |
 | --- | --- |
 | 完整了解调研结论、资源、技术路线与评测方案 | [中文竖排古籍 OCR 综合调研报告](research/README.md) |
+| 查 45 页 .gj／IR 全量核查、排版数据结构、相关工作及论文可行性 | [古籍排版数据结构与算法评估](research/2026-11-16-古籍排版数据结构与算法评估.md) |
 | 查论文题名、原始链接、阅读深度或用户提供的文章 | [参考文献与来源](research/references.md) |
 | 按任务、许可、资源 ID 继续筛选或编写脚本 | [机器可读资源索引](research/resources.json) |
 | 检查 AncientDoc、Chronicles 和 11 页样本的具体核查依据 | [证据目录说明](research/evidence/README.md) |
