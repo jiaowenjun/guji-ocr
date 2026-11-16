@@ -35,6 +35,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import kangxi_log  # noqa: E402
 import kangxi_store  # noqa: E402
 import paths  # noqa: E402
+import kangxi_page_tool as kpt  # noqa: E402
 from kangxi_page_tool import ocr_service_up, page_ocr  # noqa: E402
 from prefetch_ocr import cache_valid  # noqa: E402
 
@@ -84,9 +85,15 @@ def main() -> int:
 
     done = fails = idle_rounds = 0
     consecutive = 0
+    dry_passes = 0  # 连续「整遍零成功」计数——上游故障判定（2026-11-16 空转事故）
     print(f"[{stamp()}] OCR 跟随任务启动：事件 {events}，空闲重扫 {args.idle_seconds:.0f}s", flush=True)
     try:
         while True:
+            # 每遍重扫先清 page_tool 的进程级负缓存：_ocr_markdown 会把失败页
+            # 记 ""（交互式短进程的设计），长驻 worker 不清则瞬断永久毒化、
+            # 上游恢复后也不再重试（2026-11-16 实测 3.4 万次空转）
+            kpt._OCR_CACHE.clear()
+            pass_done = 0
             todo = pending_pages(store)
             if not todo:
                 if args.once:
@@ -124,6 +131,7 @@ def main() -> int:
                 else:
                     consecutive = 0
                     done += 1
+                    pass_done += 1
                     secs = round(time.monotonic() - t0, 1)
                     note = "无文本哨兵" if md == "" else f"{len(md)} 字符"
                     kangxi_log.emit("ocr_done", page=page, chars=len(md), seconds=secs,
@@ -134,6 +142,20 @@ def main() -> int:
                         print(f"[{stamp()}] 达到 --max-pages {args.max_pages}，退出。", flush=True)
                         return 0
                 time.sleep(1.2)  # 与 prefetch_ocr 同口径的页间限速
+            # 整遍零成功 = 上游故障（本地 health 正常但 aistudio 报错/残缺）；
+            # 连续两遍即退出，避免清缓存后仍无限热空转
+            if len(todo) > 20 and pass_done == 0:
+                dry_passes += 1
+                kangxi_log.emit("dry_pass", dry_passes=dry_passes, todo=len(todo))
+                print(f"[{stamp()}] ⚠ 整遍零成功（待办 {len(todo)}），连续 {dry_passes}/2", flush=True)
+                if dry_passes >= 2:
+                    kangxi_log.emit("worker_exit", reason="upstream_degraded", done=done, fails=fails)
+                    print(f"[{stamp()}] ✗ 连续 {dry_passes} 遍零成功：上游 OCR 降级（本地服务在线），"
+                          f"退出待人工核查 aistudio 上游。", file=sys.stderr, flush=True)
+                    return 3
+                time.sleep(300)  # 干等 5 分钟再试一遍
+            else:
+                dry_passes = 0
             if args.once:
                 kangxi_log.emit("worker_exit", reason="once_done", done=done, fails=fails)
                 print(f"[{stamp()}] --once：本批完成 {done} 页、失败 {fails} 页，退出。", flush=True)
