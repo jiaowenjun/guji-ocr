@@ -87,6 +87,38 @@ describe("vim 开启：模态协议", () => {
     expect(doc(view)).toBe("一行二行三行");
   });
 
+  it("normal 模态吞掉原生 emacs 泄漏键（Ctrl-K 等），insert 模态与 vim 关闭时放行", () => {
+    // 泄漏键（引擎未绑定、WKWebView 有原生编辑行为）：Ctrl-G/H/J/K/L/S/T——
+    // normal/visual 模态须 preventDefault 吞掉（防原生 ^K 杀行尾、^T 交换等
+    // 破坏文档），insert 模态与 vim 关闭时返回 false 原生照常。
+    const leaks = ["g", "h", "j", "k", "l", "s", "t"];
+    const dispatch = (view: EditorView, k: string) => {
+      const ev = new KeyboardEvent("keydown", { key: k, ctrlKey: true, bubbles: true, cancelable: true });
+      view.contentDOM.dispatchEvent(ev);
+      return ev.defaultPrevented;
+    };
+
+    const view = track(makeView([vim(), gujiKeymap]));
+    for (const k of leaks) {
+      expect(dispatch(view, k), `normal 模态 Ctrl-${k} 应被吞掉`).toBe(true);
+      expect(doc(view), `normal 模态 Ctrl-${k} 不应改动文档`).toBe("一行字\n二行字\n");
+    }
+    key(view, "i");
+    // insert 放行集不含引擎有 insert 绑定的键：Ctrl-T/D/U/W/J 分别是 vim 的
+    // i_CTRL-T 缩进/去缩进/删行/删词等（Ctrl-J 则是本应用并行动作）——vim
+    // insert 语义，吞键逻辑不干预
+    for (const k of ["g", "h", "k", "l", "s"]) {
+      expect(dispatch(view, k), `insert 模态 Ctrl-${k} 应放行给原生`).toBe(false);
+    }
+    // Ctrl-J 在 insert 模态是本应用自己的并行动作（非原生），照常消费
+    expect(dispatch(view, "j"), "insert 模态 Ctrl-J 由并行动作消费").toBe(true);
+    const plain = track(makeView([gujiKeymap]));
+    // vim 关闭时吞键恒 false；Ctrl-J 同理是本应用命令（与非 vim 现状一致）
+    for (const k of ["g", "h", "k", "l", "s", "t"]) {
+      expect(dispatch(plain, k), `vim 关闭时 Ctrl-${k} 应放行给原生`).toBe(false);
+    }
+  });
+
   it("normal 模态 I 落行首：高代理位光标不再被修正器掰偏（I→^i 映射）", () => {
     // 上游缺陷：#𠃕 的 𠃕 是 Ext-B 代理对，光标盖在高代理位（head=1）按 I，
     // firstNonBlank 的 {0,0} 会被 updateSelectionForSurrogateCharacters 误 +1

@@ -8,7 +8,9 @@
 //   （列不变，随本行下移）。
 // Ctrl-U 删光标到行首；已在行首时删前一换行（对称语义，同 CM deleteToLineStart；
 //   macOS 文本系统无 ^U 原生绑定——那是 readline 键位——故须自实现）。
-// Ctrl-K/A/E/F/B/N/P/D/H/T/V/W 等 emacs 键位经 WKWebView 原生生效，无需绑定。
+// Ctrl-K/A/E/F/B/N/P/D/H/T/V/W 等 emacs 键位经 WKWebView 原生生效，无需绑定
+//   （vim 开启后其中引擎未绑定的泄漏键在 normal/visual 模态被吞掉，见
+//   swallowVimNormal——防止原生 ^K 杀行尾等在 normal 模态破坏文档）。
 // Alt/Option-Z 插入 #(增)，Alt/Option-X 插入 □，Alt/Option-数字插入 #(数字)
 //   （如 Alt-1 → #(1)）；原生布局字符（≈/Ω/¡…）经 beforeinput 兜底吞掉。
 // \s 含 U+3000 全角空格，无需另列。
@@ -42,6 +44,18 @@ const vimNormalMode = (view: EditorView): boolean => {
 // 包装为「仅 insert 模态（或未开 vim）」执行；其余返回 false 放行给 vim
 const insertOnly = (cmd: Command): Command => (view) =>
   vimNormalMode(view) ? false : cmd(view);
+
+// 吞键（返回 true 即 preventDefault）：vim normal/visual 模态下 WKWebView 原生
+// emacs 编辑行为的泄漏键。浏览器实测（合成 cancelable keydown 看 defaultPrevented）：
+// Ctrl-D/E/F/N/O/P/U 等引擎已绑定会自行 preventDefault 压掉原生；泄漏集 =
+// Ctrl-G/H/J/K/L/S/T（引擎未绑定，放行即触发原生 ^H 退格、^J 换行、^K 杀行尾、
+// ^T 交换等破坏性编辑；visual 模态同样未绑定）。insert 模态返回 false——原生
+// emacs 方案（Ctrl-K 等）照常。vim 未开启时恒 false，行为与从前一致。
+const swallowVimNormal: Command = (view) => vimNormalMode(view);
+
+// 「insert 执行、normal/visual 吞掉」——键位引擎未绑定但有 insert 命令（Ctrl-J）
+const insertOrSwallow = (cmd: Command): Command => (view) =>
+  vimNormalMode(view) ? true : cmd(view);
 
 const joinNextLine: Command = (view) => {
   const { state } = view;
@@ -136,10 +150,18 @@ const killToLineStart: Command = (view) => {
 export const gujiKeymap = [
   Prec.highest(
     keymap.of([
-      { key: "Ctrl-j", run: insertOnly(joinNextLine) },
+      { key: "Ctrl-j", run: insertOrSwallow(joinNextLine) },
+      // vim 绑 <C-o>（跳转列表）/<C-u>（半屏滚动），normal 模态让位（insertOnly）
       { key: "Ctrl-o", run: insertOnly(openLineBelow) },
       { key: "Ctrl-Alt-o", run: insertOnly(insertLineAboveKeepCursor) },
       { key: "Ctrl-u", run: insertOnly(killToLineStart) },
+      // 原生 emacs 泄漏键：normal/visual 吞掉，insert 模态原生照常
+      { key: "Ctrl-g", run: swallowVimNormal },
+      { key: "Ctrl-h", run: swallowVimNormal },
+      { key: "Ctrl-k", run: swallowVimNormal },
+      { key: "Ctrl-l", run: swallowVimNormal },
+      { key: "Ctrl-s", run: swallowVimNormal },
+      { key: "Ctrl-t", run: swallowVimNormal },
     ]),
   ),
   altInsertHandler,
