@@ -56,6 +56,8 @@ def implementation_fingerprint():
     files = sorted((root/'guji-preview-grid/src/ir').glob('*.ts'))
     files += sorted((root/'guji-preview-grid/src/parser').glob('*.ts'))
     files += sorted((root/'guji-preview-grid/src/semantics').glob('*'))
+    files += sorted((root/'guji-preview-grid/src/datasets').glob('*.ts'))
+    files += [root/'kangxi-gold/dataset-config.json']
     files += [HERE/'kangxi_semantics.py']
     files += [HERE/name for name in ('build_ocr_dataset.py', 'export_ocr_layout.mjs', 'ocr_render.py', 'ocr_scan.py')]
     files += [root/'tools/eval/kangxi_column_seg.py', root/'guji-preview-grid/src/pua-registry.json']
@@ -79,7 +81,9 @@ def page_inputs(manifest_path, entry, images_dir, shared_hash, review_dir):
     review = read_json(review_path) if review_path.exists() else None
     if review and (review.get('source_sha256') != source_hash or review.get('image_sha256') != image_hash):
         raise ValueError('Scan review is stale; rebase/review against the changed source or image')
-    inputs = {'source_sha256': source_hash, 'image_sha256': image_hash,
+    config_path = manifest_path.parent/'dataset-config.json'
+    config_hash = digest(config_path) if config_path.exists() else None
+    inputs = {'dataset_config_sha256': config_hash, 'source_sha256': source_hash, 'image_sha256': image_hash,
               'proofread_status': entry['status'], 'page': entry['page'],
               'width': entry['width'], 'height': entry['height'], 'url': entry.get('url'),
               'implementation_sha256': shared_hash, 'scan_review': review}

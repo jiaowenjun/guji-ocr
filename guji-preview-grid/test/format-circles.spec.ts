@@ -7,7 +7,7 @@ import { readFileSync, readdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { formatCircles } from "../src/components/dataset/format-circles";
-import { gj2ir } from "../src/ir/gj2ir";
+import { parseKangxiDocument as gj2ir } from "../src/datasets/kangxi";
 import { layout3 } from "../src/ir/layout3";
 import { irToText } from "../src/ir/text";
 import yibu from "../src/samples/kangxi-yibu.gj?raw";

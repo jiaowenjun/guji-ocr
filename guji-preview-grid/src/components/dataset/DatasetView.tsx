@@ -37,6 +37,9 @@ import { MatrixPages } from "@/components/matrix/MatrixPages";
 import { getPageFrame } from "@/ir/page-frame";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
 import { gj2ir } from "@/ir/gj2ir";
+import { applyBookLayout } from "@/ir/document-layout";
+import { resolvePageScan, type DatasetConfig } from "@/datasets/config";
+import { resolveDatasetIndexConfig } from "@/datasets/kangxi";
 import { layout3 } from "@/ir/layout3";
 import { bandCursorTarget, buildCharIndex, charHighlightAt, highlightAt } from "@/ir/linkage";
 
@@ -60,14 +63,6 @@ const stem = (page: number) => String(page).padStart(4, "0");
 
 /** 保存快捷键：Mac ⌘S，Win/Linux Ctrl+S（按钮 title 提示用） */
 const SAVE_SHORTCUT_HINT = /Mac|iPod|iPhone|iPad/.test(navigator.platform) ? "⌘S" : "Ctrl+S";
-
-/** 武英殿版扫描的版框（印刷内容框）到纸边距离，自然像素、页宽 1130。
- *  纵向为 0312 像素实测框线中心（行暗像素占比定位贯穿横线：上线 160.5、
- *  下线 1679-1572=107）——旧中位数值 150/97 每边偏差 ~10px，致渲染框高
- *  比实测版框大 20.5 自然像素；横向沿用旧值（0312 左线被裁切不可测）。 */
-const SCAN_FRAME_MARGIN = { left: 124, right: 104, top: 160.5, bottom: 107 };
-/** 扫描纸面色（0312 纸边取样平均） */
-const PAPER_BG = "#dcb68a";
 
 /** 量取元素内容宽高（跟随面板拖动/窗口缩放）；回调 ref 模式：
  *  元素挂到 state 后才建立 ResizeObserver，规避挂载时序与节点重建问题 */
@@ -103,6 +98,7 @@ function useContentSize<T extends HTMLElement>() {
 
 /** 页清单（public/dataset/index.json） */
 function useDatasetIndex() {
+  const [config, setConfig] = useState<DatasetConfig | null>(null);
   const [index, setIndex] = useState<PageEntry[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [reloadKey, setReloadKey] = useState(0);
@@ -110,7 +106,14 @@ function useDatasetIndex() {
     let alive = true;
     fetch("/dataset/index.json")
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
-      .then((data: { pages: PageEntry[] }) => alive && setIndex(data.pages))
+      .then((data: { source?: string; config?: unknown; pages: PageEntry[] }) => {
+        const selected = resolveDatasetIndexConfig(data.config, data.source);
+        if (alive) {
+          setConfig(selected);
+          setIndex(data.pages);
+          setError(null);
+        }
+      })
       .catch((e: unknown) =>
         alive && setError(e instanceof Error ? e.message : String(e)),
       );
@@ -119,7 +122,7 @@ function useDatasetIndex() {
     };
   }, [reloadKey]);
   const reload = useCallback(() => setReloadKey((k) => k + 1), []);
-  return { index, error, reload };
+  return { index, config, error, reload };
 }
 
 /** 各页 .gj 原文缓存；ensure() 缺失即取（含预取），失败页可重试 */
@@ -166,7 +169,7 @@ export function DatasetView({
   /** 编辑器 vim 模式（顶栏开关，默认关） */
   vimMode?: boolean;
 }) {
-  const { index, error, reload } = useDatasetIndex();
+  const { index, config, error, reload } = useDatasetIndex();
   const [idx, setIdx] = useState(0);
   const [edits, setEdits] = useState<Record<number, string>>({});
   const { texts, ensure, put } = useDatasetText();
@@ -241,8 +244,11 @@ export function DatasetView({
 
   const debouncedText = useDebouncedValue(text ?? "", 200);
   // 渲染主路径：骨架 → 字格布局（layout3，无 overlay 参与）→ 渲染期装饰
-  const irDoc = useMemo(() => gj2ir(debouncedText), [debouncedText]);
-  const laidPages = useMemo(() => layout3(irDoc), [irDoc]);
+  const irDoc = useMemo(() => {
+    const parsed = gj2ir(debouncedText);
+    return config ? applyBookLayout(parsed, config.layout) : parsed;
+  }, [debouncedText, config]);
+  const laidPages = useMemo(() => config ? layout3(irDoc) : [], [irDoc, config]);
   const frame = laidPages[0] ? getPageFrame(laidPages[0]) : null;
   const cols = frame?.cols ?? 0;
 
@@ -277,12 +283,14 @@ export function DatasetView({
       : Math.max(200, scanWidth)
     : Math.max(200, Math.round((scanWidth * zoom) / 100));
   // 等比纸边：渲染列包一层与扫描同尺寸的"纸"，内容区对齐版框
+  const scan = config ? resolvePageScan(config, page ?? 0) : null;
+  const scanMargin = scan?.margin ?? { left: 0, right: 0, top: 0, bottom: 0 };
   const scanScale = entry ? displayWidth / entry.width : 0;
   const paperPad = {
-    left: SCAN_FRAME_MARGIN.left * scanScale,
-    right: SCAN_FRAME_MARGIN.right * scanScale,
-    top: SCAN_FRAME_MARGIN.top * scanScale,
-    bottom: SCAN_FRAME_MARGIN.bottom * scanScale,
+    left: scanMargin.left * scanScale,
+    right: scanMargin.right * scanScale,
+    top: scanMargin.top * scanScale,
+    bottom: scanMargin.bottom * scanScale,
   };
   const frameWidth = displayWidth - paperPad.left - paperPad.right;
 
@@ -293,7 +301,7 @@ export function DatasetView({
   // 列宽不变，左右版框对齐不受影响
   const { ref: scrollVPRef, height: scrollVPH } = useContentSize<HTMLDivElement>();
   const frameContentH = entry
-    ? (entry.height - SCAN_FRAME_MARGIN.top - SCAN_FRAME_MARGIN.bottom) * scanScale
+    ? (entry.height - scanMargin.top - scanMargin.bottom) * scanScale
     : 0;
   const unit = cols > 0 ? (frameWidth - 2) / cols : 25;
   const matrixRows = frame?.rows ?? 0;
@@ -489,7 +497,7 @@ export function DatasetView({
             <Button variant="outline" size="sm">{entry ? `第 ${idx + 1}/${index.length} 页 · @${page}` : "页码"}</Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start">
-            <DropdownMenuLabel>kangxi-gold 页清单</DropdownMenuLabel>
+            <DropdownMenuLabel>{config?.title ?? "数据集"} 页清单</DropdownMenuLabel>
             <DropdownMenuSeparator />
                   {index.map((p, i) => (
                     <DropdownMenuItem key={p.page} onClick={() => setIdx(i)}>
@@ -680,7 +688,7 @@ export function DatasetView({
         <ResizablePanel defaultSize={28.5} minSize={20}>
           <div className="flex h-full flex-col">
             <ColumnHeader>
-              矩阵 · {cols / (laidPages[0]?.config.smallColumnsPerBand ?? 2)} 大列 × {(frame?.rows ?? 0) / (laidPages[0]?.config.largeRows ?? 2)} 大字格 · 字格 {unit.toFixed(1)}px · 与原图版框对齐
+              矩阵 · {cols / (laidPages[0]?.config.smallColumnsPerBand ?? 1)} 大列 × {(frame?.rows ?? 0) / (laidPages[0]?.config.largeRows ?? 1)} 大字格 · 字格 {unit.toFixed(1)}px · 与原图版框对齐
             </ColumnHeader>
             <ScrollArea className="min-h-0 flex-1" ref={scrollVPRef}>
               <div className="flex justify-center p-2">
@@ -694,7 +702,7 @@ export function DatasetView({
                       paddingTop: paperPad.top,
                       paddingRight: paperPad.right,
                       paddingLeft: paperPad.left,
-                      background: PAPER_BG,
+                      background: scan?.background,
                     }}
                   >
                     <div

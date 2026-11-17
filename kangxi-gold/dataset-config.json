@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "kangxi-gold",
+  "title": "康熙字典（武英殿版）",
+  "layout": {
+    "default": {
+      "id": "kangxi-wuyingdian",
+      "revision": 1,
+      "spec": {
+        "schemaVersion": 1,
+        "bandsPerPage": 8,
+        "largeCellsPerBand": 12,
+        "smallRowsPerLargeCell": 2
+      }
+    }
+  },
+  "scan": {
+    "margin": { "left": 124, "top": 160.5, "right": 104, "bottom": 107 },
+    "background": "#dcb68a"
+  }
+}

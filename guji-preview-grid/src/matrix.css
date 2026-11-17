@@ -85,7 +85,7 @@
 /* 最左 band 的左缘与版框重合，不画界栏（避免相邻双线）。m-band-last 由
    渲染层挂——books 渲染在 bands 之后且同为 div，:last-child 永不匹配 */
 
-/* 整页字格：默认 16×24 小格，即 8 大列×12 大字格，每大格内 2×2 小格。
+/* 整页字格：格数和大字跨度来自当前页版式；康熙预设为 16×24 小格。
    网格覆盖固定版框，与字符和 band 无关，空列/短列/空页都画满。
    大格边线 1px 实线、小格分隔 1px 虚线，外缘复用版框。
    每条线的 containing block 是正文的实际 Grid 区域，left/top:0 锚定轨道线，
@@ -115,7 +115,7 @@
   border-style: dashed;
 }
 
-/* 超 PAGE_ROW_CAP（24 格）的溢出警示：不整条大列染色——标记（.m-over-mark，
+/* 超当前版式 rowCap 的溢出警示：不整条大列染色——标记（.m-over-mark，
    渲染层挂在 band 内）只落在实际溢出的小列（含大字列），方便定位哪一小列超长。
    占该列最后一格轨道、贴底 2px 即裁剪边（版框下线内侧）；
    标记叠在文字高亮之上，不占字格内容高度。 */
@@ -151,20 +151,20 @@
   overflow: hidden;
 }
 
-/* 大字：单个 2×2 格（行向用纵向字格高 --guji-unit-v，字号/圆环等按列宽基准不变形） */
+/* 大字：单个大字格，跨度由当前页版式决定（行向用纵向字格高 --guji-unit-v，字号/圆环等按列宽基准不变形） */
 .m-large {
   font-family: "GujiLarge", "康熙傳承版 KangXiZiDian.com", "HanaMinA", serif;
   font-size: calc(var(--guji-unit) * var(--guji-large-cols, 2) * 0.9);
-  line-height: calc(var(--guji-unit-v, var(--guji-unit)) * var(--guji-large-rows, 2));
+  line-height: calc(var(--guji-unit-v, var(--guji-default-unit-v)) * var(--guji-large-rows, 2));
   text-align: center;
 }
 
-/* 带圈大字：2×2 格内居中的圆环（参数与 guji-preview flex.css 的 .large-circle 系列一致） */
+/* 带圈大字：大字格内居中的圆环（参数与 guji-preview flex.css 的 .large-circle 系列一致） */
 .m-circle {
   box-sizing: border-box;
   display: flex;
   /* 末尾只剩半格时仍按完整大字格居中，再由版框裁切。 */
-  height: calc(var(--guji-unit-v, var(--guji-unit)) * var(--guji-large-rows, 2));
+  height: calc(var(--guji-unit-v, var(--guji-default-unit-v)) * var(--guji-large-rows, 2));
 }
 .m-ring {
   box-sizing: border-box;
@@ -194,8 +194,8 @@
   font-size: calc(var(--guji-unit) * 0.8);
 }
 .m-cell {
-  height: var(--guji-unit-v, var(--guji-unit));
-  line-height: var(--guji-unit-v, var(--guji-unit));
+  height: var(--guji-unit-v, var(--guji-default-unit-v));
+  line-height: var(--guji-unit-v, var(--guji-default-unit-v));
   text-align: center;
 }
 

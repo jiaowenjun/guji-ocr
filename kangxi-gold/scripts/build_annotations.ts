@@ -12,7 +12,7 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parsePages } from "../../guji-preview-grid/src/parser/parse-pages";
 import type { BlockModel, LineModel, PageModel } from "../../guji-preview-grid/src/components/flex/model";
-import { gj2ir } from "../../guji-preview-grid/src/ir/gj2ir";
+import { parseKangxiDocument as gj2ir } from "../../guji-preview-grid/src/datasets/kangxi";
 import { irToText } from "../../guji-preview-grid/src/ir/text";
 
 const here = dirname(fileURLToPath(import.meta.url));

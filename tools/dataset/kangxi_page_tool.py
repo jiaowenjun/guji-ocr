@@ -1753,8 +1753,10 @@ def _index_from_manifest(manifest: dict) -> dict:
 
 def write_index(manifest: dict) -> None:
     INDEX_JSON.parent.mkdir(parents=True, exist_ok=True)
+    config = json.loads((REPO / "kangxi-gold/dataset-config.json").read_text(encoding="utf-8"))
+    index = {**_index_from_manifest(manifest), "config": config}
     INDEX_JSON.write_text(
-        json.dumps(_index_from_manifest(manifest), ensure_ascii=False, indent=2) + "\n",
+        json.dumps(index, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )
 

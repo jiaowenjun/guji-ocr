@@ -2,7 +2,7 @@
 // Neither planning nor placement depends on overlays or source offsets.
 import type { IRBand, IRDocument, IRProfile } from "./types";
 import { compileProfile } from "./profile";
-import { KANGXI_LAYOUT, resolveLayoutConfig, type IRLayoutConfig } from "./layout-config";
+import { resolveLayoutConfig, type IRLayoutConfig } from "./layout-config";
 import { diagnoseLayout, type LayoutDiagnostic } from "./layout-diagnostics";
 
 export interface L3Item {
@@ -30,9 +30,6 @@ export interface L3Band {
   rows: number;
   items: L3Item[];
 }
-
-/** Compatibility export; consumers of a laid-out page use page.config.rowCap. */
-export const PAGE_ROW_CAP = KANGXI_LAYOUT.rowCap;
 
 export interface L3Page {
   no: number;
@@ -64,7 +61,7 @@ export interface BandPlan {
   segments: LayoutSegment[];
 }
 
-function planBand(band: IRBand, clean: ReturnType<typeof compileProfile>, _config: IRLayoutConfig): BandPlan {
+function planBand(band: IRBand, clean: ReturnType<typeof compileProfile>): BandPlan {
   const segments: LayoutSegment[] = [];
   const lineIds = band.lines.map((line) => line.id);
   let fragment: PlannedRun | null = null;
@@ -100,8 +97,9 @@ function planBand(band: IRBand, clean: ReturnType<typeof compileProfile>, _confi
   return { id: band.id, lineIds, segments };
 }
 
-export function planLayoutBand(band: IRBand, profile: IRProfile, config: IRLayoutConfig = KANGXI_LAYOUT): BandPlan {
-  return planBand(band, compileProfile(profile), resolveLayoutConfig(config));
+export function planLayoutBand(band: IRBand, profile: IRProfile, config?: IRLayoutConfig): BandPlan {
+  if (config !== undefined) resolveLayoutConfig(config);
+  return planBand(band, compileProfile(profile));
 }
 
 function placeBand(plan: BandPlan, config: IRLayoutConfig): L3Band {
@@ -130,10 +128,10 @@ function placeBand(plan: BandPlan, config: IRLayoutConfig): L3Band {
 }
 
 export function layout3(doc: IRDocument): L3Page[] {
-  const config = resolveLayoutConfig(doc.meta.layout);
   const clean = compileProfile(doc.meta.profile);
   return doc.pages.map((page) => {
-    const bands = page.bands.map((band) => placeBand(planBand(band, clean, config), config));
+    const config = resolveLayoutConfig(page.layout === undefined ? doc.meta.layout : page.layout);
+    const bands = page.bands.map((band) => placeBand(planBand(band, clean), config));
     const rows = Math.max(config.largeRows, ...bands.map((b) => b.rows));
     const colStarts: number[] = [];
     let acc = 0;

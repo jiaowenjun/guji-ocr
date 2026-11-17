@@ -12,7 +12,7 @@ from fontTools.ttLib import TTFont
 from PIL import Image, ImageDraw, ImageFont
 
 FONT_NAMES = ('guji-large.ttf', 'guji-plane0.ttf', 'guji-plane2.ttf', 'guji-planef.ttf')
-STYLE = {'version': 1, 'margin': [124, 160.5, 104, 107], 'background': '#dcb68a',
+STYLE = {'version': 2,
          'ink': '#1c1c1c', 'small_scale': .8, 'large_scale': 1.8, 'circle_scale': 1.5,
          'supersample': 2, 'rules': False}
 
@@ -46,6 +46,8 @@ def pixel_annotation(layout, width, height, domain, mapper):
                       bbox_type='layout-cell', reading_order=[r['id'] for r in layout['regions']],
                       glyph_reading_order=[g['id'] for g in layout['glyphs']],
                       profile=layout['ir']['meta']['profile'],
+                      layout=layout['config'],
+                      layout_preset=layout['ir']['pages'][0].get('layoutPreset', layout['ir']['meta'].get('layoutPreset')),
                       overlays=layout['ir']['overlays'])
     for group in ('bands', 'regions', 'glyphs', 'gaps', 'decorations'):
         for obj in annotation[group]:
@@ -61,14 +63,18 @@ def pixel_annotation(layout, width, height, domain, mapper):
 
 
 def render(layout, width, height, fonts: Fonts, destination: Path):
-    left, top, right, bottom = STYLE['margin']
+    scan = layout['scan']
+    left, top, right, bottom = (scan['margin'][k] for k in ('left', 'top', 'right', 'bottom'))
+    style = {**STYLE, 'margin': [left, top, right, bottom], 'background': scan['background']}
+    if left + right >= width or top + bottom >= height:
+        raise ValueError('Scan margins leave no content area')
     ux = (width-left-right)/layout['cols']; uy = (height-top-bottom)/layout['rows']
     mapper = lambda _band, b: [left+b[0]*ux, top+b[1]*uy, left+b[2]*ux, top+b[3]*uy]
     annotation = pixel_annotation(layout, width, height, 'synthetic', mapper)
-    annotation.update(geometry_status='generated', renderer='guji-grid-pillow/1', style=STYLE,
+    annotation.update(geometry_status='generated', renderer='guji-grid-pillow/1', style=style,
                       content_bbox=[left, top, width-right, height-bottom])
     s = STYLE['supersample']
-    canvas = Image.new('RGB', (width*s, height*s), STYLE['background'])
+    canvas = Image.new('RGB', (width*s, height*s), style['background'])
     draw = ImageDraw.Draw(canvas)
     ink = STYLE['ink']
     draw.rectangle(tuple(v*s for v in annotation['content_bbox']), outline=ink, width=s)

@@ -14,14 +14,14 @@ from PIL import Image
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT/'tools/dataset'))
 import build_ocr_dataset as builder
-from ocr_render import pixel_annotation
+from ocr_render import pixel_annotation, render, Fonts
 from ocr_scan import validate_box
 
 
-def layout(source, page):
-    script = "import {exportLayout} from './tools/dataset/export_ocr_layout.mjs'; import fs from 'node:fs'; const x=JSON.parse(fs.readFileSync(0,'utf8')); console.log(JSON.stringify(exportLayout(x.source,x.page)));"
+def layout(source, page, config=None):
+    script = "import {exportLayout} from './tools/dataset/export_ocr_layout.mjs'; import fs from 'node:fs'; const x=JSON.parse(fs.readFileSync(0,'utf8')); console.log(JSON.stringify(exportLayout(x.source,x.page,x.config)));"
     result = subprocess.run(['node', '--input-type=module', '-e', script], cwd=ROOT,
-                            input=json.dumps({'source': source, 'page': page}), text=True, capture_output=True, check=True)
+                            input=json.dumps({'source': source, 'page': page, 'config': config or json.loads((ROOT/'kangxi-gold/dataset-config.json').read_text())}), text=True, capture_output=True, check=True)
     return json.loads(result.stdout)
 
 
@@ -71,9 +71,33 @@ class LayoutContracts(unittest.TestCase):
             self.assertEqual(out[key], [])
 
 
+    def test_equal_height_and_page_override_share_export_geometry(self):
+        config = json.loads((ROOT/'kangxi-gold/dataset-config.json').read_text())
+        equal = copy.deepcopy(config['layout']['default'])
+        equal.update(id='test-equal-height', revision=1)
+        equal['spec']['smallRowsPerLargeCell'] = 1
+        config['layout']['pages'] = {'2': equal}
+        config['scanPages'] = {'2': {'margin': dict(left=10, top=15, right=10, bottom=15), 'background': '#ffffff'}}
+        out = layout('@2\n\n#甲\n【乙丙】\n丁戊\n', 2, config)
+        self.assertEqual((out['cols'], out['rows']), (16, 12))
+        self.assertEqual(out['glyphs'][0]['grid_bbox'], [14, 0, 16, 1])
+        self.assertEqual(out['decorations'][0]['grid_bbox'], [15, 1, 16, 3])
+        self.assertEqual(out['ir']['pages'][0]['layoutPreset']['id'], 'test-equal-height')
+        self.assertEqual(out['scan'], config['scanPages']['2'])
+        with tempfile.TemporaryDirectory() as d:
+            image = Path(d)/'page.png'
+            ann = render(out, 420, 630, Fonts(ROOT/'guji-preview-grid/public/fonts'), image)
+            self.assertEqual(ann['content_bbox'], [10, 15, 410, 615])
+            self.assertEqual(ann['layout']['largeRows'], 1)
+            self.assertEqual(ann['layout_preset']['id'], 'test-equal-height')
+            self.assertEqual(ann['glyphs'][0]['bbox'], [360, 15, 410, 65])
+            self.assertEqual(Image.open(image).getpixel((0, 0)), (255, 255, 255))
+
+
 class IncrementalContracts(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory(); self.root = Path(self.temp.name)
+        shutil.copyfile(ROOT/'kangxi-gold/dataset-config.json', self.root/'dataset-config.json')
         (self.root/'annotations').mkdir(); (self.root/'images').mkdir(); self.reviews = self.root/'reviews'
         original = builder.read_json(ROOT/'kangxi-gold/manifest.json')
         self.entry = copy.deepcopy(next(e for e in original['pages'] if e['page'] == 312))
@@ -101,6 +125,14 @@ class IncrementalContracts(unittest.TestCase):
         self.assertNotEqual(self.inputs()[1], original)
         source.write_text(source.read_text()+'\n')
         with self.assertRaisesRegex(ValueError,'stale'): self.inputs()
+
+    def test_book_layout_change_invalidates_cached_export(self):
+        before = self.inputs()[1]
+        path = self.root/'dataset-config.json'
+        config = builder.read_json(path)
+        config['layout']['default']['spec']['smallRowsPerLargeCell'] = 1
+        builder.write_json(path, config)
+        self.assertNotEqual(self.inputs()[1], before)
 
     def test_artifact_damage_is_not_skipped(self):
         p = self.root/'artifact'; p.mkdir(); (p/'a.txt').write_text('abc')

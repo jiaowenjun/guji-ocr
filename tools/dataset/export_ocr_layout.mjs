@@ -1,7 +1,7 @@
 // Canonical OCR geometry in grid units. Uses the production parser and layout.
 // stdin: {manifest: absolutePath, pages: [312, ...]}; stdout: JSON array.
 import { registerHooks } from 'node:module';
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { createHash } from 'node:crypto';
 import { pathToFileURL } from 'node:url';
@@ -12,6 +12,9 @@ registerHooks({ resolve(s, c, next) {
     throw error;
   }
 } });
+const { applyBookLayout } = await import('../../guji-preview-grid/src/ir/document-layout.ts');
+const { resolveDatasetConfig, resolvePageScan } = await import('../../guji-preview-grid/src/datasets/config.ts');
+const { resolveDatasetIndexConfig } = await import('../../guji-preview-grid/src/datasets/kangxi.ts');
 const { gj2ir } = await import('../../guji-preview-grid/src/ir/gj2ir.ts');
 const { layout3, planLayoutBand } = await import('../../guji-preview-grid/src/ir/layout3.ts');
 const { getPageFrame } = await import('../../guji-preview-grid/src/ir/page-frame.ts');
@@ -20,8 +23,9 @@ const { kangxiBandHeading } = await import('../../guji-preview-grid/src/semantic
 const { irToText } = await import('../../guji-preview-grid/src/ir/text.ts');
 const compact = s => s.replace(/\s/gu, '');
 
-export function exportLayout(source, pageNo) {
-  const ir = gj2ir(source);
+export function exportLayout(source, pageNo, datasetConfig) {
+  const dataset = resolveDatasetConfig(datasetConfig);
+  const ir = applyBookLayout(gj2ir(source), dataset.layout);
   if (ir.pages.length !== 1 || ir.pages[0].no !== pageNo) throw Error(`Page marker mismatch: ${pageNo}`);
   const page = ir.pages[0], laid = layout3(ir)[0];
   const { cols, rows, colOffset } = getPageFrame(laid);
@@ -30,14 +34,14 @@ export function exportLayout(source, pageNo) {
   const circles = new Map(ir.overlays.filter(o => o.kind === 'circle').map(o => [o.target, o.id]));
   const result = {
     page: pageNo, source, source_sha256: createHash('sha256').update(source).digest('hex'),
-    ir, config: laid.config, cols, rows,
+    ir, config: laid.config, scan: resolvePageScan(dataset, pageNo), cols, rows,
     transcription: irToText(ir), text: compact(irToText(ir)),
     bands: [], regions: [], glyphs: [], gaps: [], decorations: [],
   };
   let offset = 0;
   page.bands.forEach((band, bi) => {
     const placed = laid.bands[bi], left = laid.colStarts[bi] + colOffset;
-    const meta = { id: band.id, order: bi, level: kangxiBandHeading(band, ir)?.level ?? null,
+    const meta = { id: band.id, order: bi, level: dataset.id === 'kangxi-gold' ? kangxiBandHeading(band, ir)?.level ?? null : null,
       grid_bbox: [left, 0, left + placed.cols, laid.config.rowCap], region_ids: [] };
     const plan = planLayoutBand(band, ir.meta.profile, laid.config);
     const elLine = new Map(band.lines.flatMap(l => l.elements.map(e => [e.id, l.id])));
@@ -103,11 +107,14 @@ if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1]
   const request = JSON.parse(readFileSync(0, 'utf8'));
   const manifest = JSON.parse(readFileSync(request.manifest, 'utf8'));
   const root = dirname(request.manifest);
+  const configPath = resolve(root, 'dataset-config.json');
+  const dataset = resolveDatasetIndexConfig(existsSync(configPath)
+    ? JSON.parse(readFileSync(configPath, 'utf8')) : undefined, manifest.dataset);
   const records = request.pages.map(no => {
     const entry = manifest.pages.find(p => p.page === no);
     if (!entry) throw Error(`Page not in manifest: ${no}`);
     const file = resolve(root, 'annotations', entry.annotations.gj);
-    return exportLayout(readFileSync(file, 'utf8'), no);
+    return exportLayout(readFileSync(file, 'utf8'), no, dataset);
   });
   process.stdout.write(JSON.stringify(records));
 }

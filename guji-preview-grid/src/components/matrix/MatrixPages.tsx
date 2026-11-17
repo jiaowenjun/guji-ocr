@@ -97,9 +97,10 @@ function MatrixPageView({
           {
             "--guji-large-rows": largeRows,
             "--guji-large-cols": largeCols,
+            "--guji-default-unit-v": `calc(var(--guji-unit) * ${largeCols} / ${largeRows})`,
             gridTemplateColumns: `repeat(${cols}, calc(var(--guji-unit) * 1))`,
-            // 行轨用纵向微调后的字格高（版框内容高 ÷ 行数；未注入时回落正方形）
-            gridTemplateRows: `repeat(${rows}, calc(var(--guji-unit-v, var(--guji-unit)) * 1))`,
+            // 行轨用纵向微调后的字格高（版框内容高 ÷ 行数；未注入时按大字格等宽高推导）
+            gridTemplateRows: `repeat(${rows}, calc(var(--guji-unit-v, var(--guji-default-unit-v)) * 1))`,
           } as CSSProperties
         }
       >

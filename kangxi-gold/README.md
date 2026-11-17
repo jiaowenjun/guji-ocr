@@ -20,6 +20,7 @@
 
 ```
 kangxi-gold/
+  dataset-config.json      武英殿版式预设（8／12／2）、扫描边距与纸色
   manifest.json            页清单：来源 URL、图片 sha256/尺寸/路径、标注文件、版本证据
   annotations/NNNN.gj      单页 .gj 原文（按 @页码 拆分，逐行原样保留）
   annotations/NNNN.json    结构化金标（IR v3 骨架 + overlays）

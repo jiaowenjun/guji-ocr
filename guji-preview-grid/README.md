@@ -20,18 +20,29 @@
 ```
 .gj → gj2ir（转写骨架、overlay、源码映射）
     → 文档 profile 清洗 + BandPlan（glyph / parallel / gap）
+    → applyBookLayout（数据集选择书籍版式，写入几何快照）
     → layout3（字格坐标、rawRanges、版式诊断）
     → indexLayout + projectBooks（按全局 span 投影书名）
     → MatrixPages（按版式配置裁剪、显示诊断、光标联动）
 IR → irToText（同一 profile 的阅读序 TXT）
 ```
 
-`meta.layout` 为可选的版本 1 配置，缺省为本书的 8 大列、每列 2 小格、24 行、
-大字 2×2。`.gj/2` 的缩进空位直接写入骨架；旧 JSON 需从迁移后的 `.gj` 重新生成。`irPageToText(page, profile)` 必须显式传入
+通用结构固定每大列两小列。书籍版式的三个参数为 `bandsPerPage`、
+`largeCellsPerBand`、`smallRowsPerLargeCell`；武英殿版参数及扫描边距统一保存在
+[`kangxi-gold/dataset-config.json`](../kangxi-gold/dataset-config.json)。高度比 1:2 派生
+2×2 小格，高度比 1:1 派生 2×1 小格；小格不要求是正方形。
+
+`gj2ir` 只解析文本；布局前显式调用 `applyBookLayout(doc, config.layout)`。
+结果保存 `meta.layout` v1 数值快照和 `meta.layoutPreset` 标识/修订号；特殊页配置
+`layout.pages[页码]`，解析为页级快照。`layout3` 不猜书籍、不查询预设注册表。
+旧康熙 JSON 用 `importLegacyKangxiDocument` 显式补齐，已有自定义几何保持原样；
+未知数据集缺配置时报错。完整契约与扩展示例见 [版式分层](../docs/design/guji-ir.md#10-书籍版式与通用结构分层2026-11-17)。
+
+`.gj/2` 的缩进空位直接写入骨架；旧语法 JSON 需从迁移后的 `.gj` 重新生成。`irPageToText(page, profile)` 必须显式传入
 文档 profile，避免丢失清洗规则；清洗输出同时保留原始码点区间，支持归一化展开／收缩。
 
 版式诊断检查页宽、列数、意外多小列、空列、重叠和溢出；页面出现告警时页码旁显示
-⚠，悬停查看原因。诊断保留原始内容，不自动合并分段。每页固定显示 8 大列 × 12 大格，
+⚠，悬停查看原因。诊断保留原始内容，不自动合并分段。当前武英殿版每页固定显示 8 大列 × 12 大格，
 正文不足时左侧和底部自动留白，无需填充空列；少于 8 列不告警。超出 24 小格的文字
 向下隐藏，超出 8 大列版框的内容向左隐藏；底部红线和左边缘红色箭头提示溢出，悬停可查看原因。
 正文、书名框和高亮始终使用相同的固定字格，校对改动不会因超宽而挤窄字格。
@@ -70,7 +81,8 @@ pnpm build
   overlay（`src/ir/linkage.ts`）；骨架独立性契约见 ir.spec（v3 验收套件）
 - 打开即**数据集对照**视图（原「编辑」双栏模式、Flex 对照视图均已移除）：
   kangxi-gold 金标三列可视化与校对（见下节），含界栏开关
-- **字格开关**：整页显示 8 大列 × 12 大字格，每个大字格为 2×2 小字格；
+- **字格开关**：按当前页版式画满整页；武英殿版为 8 大列 × 12 大字格，
+  每大格内 2×2 小格。高度比 1:1 时为 2×1，内部只有竖向虚线；
   大格边线 1px 实线、小格分隔 1px 虚线，空列和短列的空白处也画满。版框尺寸与开关无关，
   内容不足时靠右、靠上排列；格线在所有文字、装饰与高亮之下，不占布局空间。
   格线直接锚定正文 Grid 轨道，避免 Safari 对背景平铺尺寸取整造成累计偏移。

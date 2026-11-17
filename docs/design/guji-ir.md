@@ -212,11 +212,11 @@ Python 侧（kangxi_page_tool.py）宿主识别正则 `#(?:圈)*頭` 与剥尾�
   `rawRanges[k]` 记录第 k 个显示码点对应的原始码点半开区间，`rawOffsets` 保留首偏移兼容。
   跨元素归一化不执行，与既有逐元素文本导出口径一致。
 - **版式**：可选 `meta.layout = { version: 1, rowCap, expectedBands,
-  smallColumnsPerBand, largeRows, largeCols }`，缺省值为 24／8／2／2／2；
+  smallColumnsPerBand, largeRows, largeCols }`，旧入口缺省值为 24／8／2／2／2（已由下文 §10 的显式书籍入口取代）；
   `expectedBands: null` 关闭书种特定的页宽／列数检查。整数参数必须为正。
 - **计划与坐标**：`planLayoutBand` 导出可重建的 `BandPlan`，段类型为 `glyph`、
   `parallel`、`gap`。该计划及 `L3Page.config/diagnostics` 不写入骨架 JSON。
-- **自动留白（2026-11-17 更新）**：每页固定显示 8 大列 × 12 大格，短页左侧、
+- **自动留白（2026-11-17 更新）**：武英殿版每页固定显示 8 大列 × 12 大格，短页左侧、
   短列底部自动留白。已移除显式空大列指令及旧 `#` 到该指令的格式化转换；
   自动留白不生成 IR band 或 TXT 空行。预览和 OCR 导出共用 `getPageFrame`，
   少于版框列数不告警，超宽、超列仍诊断。预览版框不随内容扩张：超高向下裁切，
@@ -261,3 +261,66 @@ Python 侧（kangxi_page_tool.py）宿主识别正则 `#(?:圈)*頭` 与剥尾�
   个文件（45 页标注、2 个样例）的可见字位置／字号／圈注／书名框与去空白文本。
   `kangxi-semantics.json` 对前后端运行相同用例，并比较整批迁移语料的宿主序列。
   新规则另有字号、空位、书名框、源码联动、格式化幂等和 OCR 折行保护测试。
+
+
+## 10. 书籍版式与通用结构分层（2026-11-17）
+
+当前双列古籍模型的通用结构为每大列两小列、大字横跨整个大列，定义于
+`GUJI_STRUCTURE`。每页大列数、每列大格数、小/大格高度比属于书籍的具体版本，
+不能作为通用引擎的缺省参数。颜色、1px 实线/虚线和开关属于显示设置；扫描
+边距及纸色属于数据集图像元数据，不参与骨架占格。
+
+书籍预设只保存三个独立参数，派生几何不能重复填写：
+
+```ts
+const bookLayout: BookLayout = {
+  default: {
+    id: "example-edition",
+    revision: 1,
+    spec: {
+      schemaVersion: 1,
+      bandsPerPage: 10,
+      largeCellsPerBand: 15,
+      smallRowsPerLargeCell: 1,
+    },
+  },
+};
+const doc = applyBookLayout(gj2ir(source), bookLayout);
+const pages = layout3(doc);
+```
+
+`smallRowsPerLargeCell = n` 表示小格:大格高度为 1:n，当前接口支持正整数 n。
+`compileBookLayout` 派生 `expectedBands = bandsPerPage`、
+`rowCap = largeCellsPerBand * n`、`largeRows = n`、
+`smallColumnsPerBand = largeCols = 2`，校验输入及乘积为正的安全整数。
+康熙武英殿版为 8／12／2；同样的列数和大格数改为 n=1 后，页轨道从
+16×24 变为 16×12，每大格从 2×2 小格变为 2×1 小格。
+
+`resolvePageLayout(book, pageNo)` 选择 `book.pages[pageNo]` 或 `book.default`。
+页级选择必须是完整预设，不使用容易产生残缺组合的字段级合并。
+`applyBookLayout` 把默认几何写入 `meta.layout`、特殊页写入 `page.layout`，
+并分别记录 `layoutPreset: { id, revision }`。没有页快照时继承文档快照。
+持久化仍是 IR v3、几何仍是 v1；布局与 OCR 投影只消费数值快照，预设修订
+不会自动改变已有 IR。显式重新调用 `applyBookLayout` 才会切换版式。
+
+通用 `gj2ir` 不附带书籍默认值；`layout3` 遇到无几何配置的页面报错。
+`planLayoutBand` 的文本分组不依赖几何，不再使用康熙默认参数。
+历史康熙 JSON 通过 `importLegacyKangxiDocument` 按固定的武英殿版 revision 1
+补齐缺失配置（不随当前数据集预设变化），已有 v1
+自定义宽度（包括三小列）、`expectedBands:null` 和页级快照验证后保留。
+错误版本不会回退。该兼容入口只用于已确认身份的康熙数据；新书籍必须显式声明。
+
+数据集配置放在 manifest 同目录的 `dataset-config.json`：`layout` 保存上述书籍
+预设，`scan` 保存自然像素的 `margin` 与 `background`；`scanPages[pageNo]` 可
+替换某页完整扫描配置。当前康熙边距来自 0312 扫描测量：左124、上160.5、右104、
+下107，自然页宽1130，纸色 #dcb68a。另一分辨率的扫描需提供对应自然像素边距。
+前端 index 生成、预览、标注生成与 OCR 导出共享同一文件；旧康熙 index 仅在
+source 明确为 kangxi-gold 时允许适配。OCR 增量指纹包含配置内容，版式改变会重建。
+OCR 几何支持新书籍；字头语义及扫描自动检测仍有康熙专用逻辑，接入新书时需另配。
+
+格线继续使用绝对定位的实际 Grid 轨道，z-index:-1，不影响布局；不恢复背景
+平铺，避免 Safari 小数步长累计漂移。横向和纵向单位独立；有扫描时纵向单位由
+版框高度/行数决定，无扫描时按大格等宽高派生小格高度。
+
+回归覆盖两种高度比、空页和短页、同书不同页、跨页书名投影、旧自定义配置、
+预设变更后的快照复现，以及预览和 OCR 的一致几何。

@@ -18,7 +18,7 @@ registerHooks({ resolve(specifier, context, nextResolve) {
   }
 } });
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
-const { gj2ir } = await import('../../guji-preview-grid/src/ir/gj2ir.ts');
+const { parseKangxiDocument: gj2ir, importLegacyKangxiDocument } = await import('../../guji-preview-grid/src/datasets/kangxi.ts');
 const { layout3 } = await import('../../guji-preview-grid/src/ir/layout3.ts');
 const { kangxiBandHeading } = await import('../../guji-preview-grid/src/semantics/kangxi.ts');
 const { irToText } = await import('../../guji-preview-grid/src/ir/text.ts');
@@ -74,7 +74,7 @@ for (const entry of [...entries].sort((a, b) => a.page - b.page)) {
   }
   const activeLines = source.split(/\r?\n/).filter(l => l.trim() && !l.trim().startsWith('//'));
   rows.push({ page: entry.page, status: entry.status, sourceSha256: sha(source),
-    jsonFresh: isDeepStrictEqual(doc, stored), txtFresh: irToText(doc) === txt,
+    jsonFresh: isDeepStrictEqual(doc, importLegacyKangxiDocument(stored)), txtFresh: irToText(doc) === txt,
     legacyTextEqual: irToText(doc) === legacyText, overlaySourceIndependent: isDeepStrictEqual(layout3(doc), layout3(stripped)),
     pageMarkers: activeLines.filter(l => /^@\d+$/.test(l.trim())).length,
     activeSourceLines: activeLines.length, headSourceLines: activeLines.filter(l => /^#[^#\s]/u.test(l)).length,
@@ -123,11 +123,13 @@ probeProfile.meta.profile.stripPunct = [];
 const probeInserted = gj2ir('@1\n\n新\n\n甲，乙\n\n丙丁\n');
 const summarizeBands = d => d.pages[0].bands.map(b => ({ id: b.id, text: b.lines.flatMap(l => l.elements.map(e => e.text)).join('') }));
 const implementationFiles = [
+  'kangxi-gold/dataset-config.json', 'guji-preview-grid/src/datasets/config.ts',
+  'guji-preview-grid/src/datasets/kangxi.ts', 'guji-preview-grid/src/ir/document-layout.ts',
   'guji-preview-grid/src/ir/types.ts', 'guji-preview-grid/src/ir/gj2ir.ts',
   'guji-preview-grid/src/ir/layout3.ts', 'guji-preview-grid/src/ir/text.ts',
   'guji-preview-grid/src/ir/profile.ts', 'guji-preview-grid/src/ir/layout-config.ts',
   'guji-preview-grid/src/ir/layout-diagnostics.ts', 'guji-preview-grid/src/ir/projection.ts',
-  'guji-preview-grid/src/parser/structure.ts', 'guji-preview-grid/src/parser/inline-tokens.ts',
+  'guji-preview-grid/src/ir/page-frame.ts', 'guji-preview-grid/src/parser/inline-tokens.ts',
   'guji-preview-grid/src/semantics/kangxi.ts', 'guji-preview-grid/src/semantics/kangxi-rules.json',
   'guji-preview-grid/src/parser/split-line.ts', 'guji-preview-grid/src/parser/parse-pages.ts',
   'guji-preview-grid/src/parser/parse-line.ts', 'guji-preview-grid/src/parser/parse-inline.ts',

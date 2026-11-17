@@ -4,7 +4,7 @@
 //   去掉全部 overlay 后，页面仍具有相同的阅读顺序、字格占用与行边界。
 //
 // 骨架（排版版式）：页 → 大行 → 小行 → 元素
-//   - 大字元素：恰好占一个大字格（2×2）；合字 ligature:true 时 n 个文本字符合占
+//   - 大字元素：恰好占一个大字格（宽度两小列，高度由书籍版式决定）；合字 ligature:true 时 n 个文本字符合占
 //     一个大字格（如 #(十一)）——合字是骨架事实，与圆圈样式无关
 //   - 小字元素：每字符占一个小字格（1×1）
 //   - 小行 = .gj 内一条物理折行（换行是一等结构；meta.lineLayout 声明来源）
@@ -17,7 +17,7 @@
 // 单位约定：行内 range 一律 Unicode 码点半开区间（不切开代理对；组合字形／IVS 尚需字形层处理）；
 // 源码 src 偏移一律 UTF-16 码元（仅溯源与编辑器联动，渲染不得依赖）。
 import type { PageModel } from "../components/flex/model";
-import type { IRLayoutConfig } from "./layout-config";
+import type { IRLayoutConfig, LayoutPresetRef } from "./layout-config";
 
 /** 清洗口径：渲染与评测共用（写入 IR meta，eval_cer.py 读同一定义） */
 export interface IRProfile {
@@ -39,8 +39,10 @@ export interface IRMeta {
   /** Preserves canonical skeleton text, not a reversible copy of all .gj spelling. */
   fidelity: "full";
   profile: IRProfile;
-  /** Omitted in existing v3 JSON: use the versioned Kangxi defaults. */
+  /** 解析纯文本时可省略；布局前必须明确选用版式或导入旧数据。 */
   layout?: IRLayoutConfig;
+  /** 溯源标识；渲染以 layout 数值快照为准。 */
+  layoutPreset?: LayoutPresetRef;
   /** 小行切分来源：fold = 转写折行（≠ 扫描图检测行，不含坐标） */
   lineLayout: "fold";
   orientation: "vertical-rtl";
@@ -52,7 +54,7 @@ export interface IRMeta {
 
 export type SizeClass = "large" | "small";
 
-/** 骨架元素：占格事实。大字恰好一个 2×2 格（合字 n 字合占一格）；小字每字 1×1 */
+/** 骨架元素：占格事实。大字恰好一个大字格（尺寸由版式定义）（合字 n 字合占一格）；小字每字 1×1 */
 export interface IRElement {
   id: string;
   class: SizeClass;
@@ -80,6 +82,9 @@ export interface IRBand {
 }
 
 export interface IRPage {
+  /** 特殊页面的完整几何快照；缺省继承 meta.layout。 */
+  layout?: IRLayoutConfig;
+  layoutPreset?: LayoutPresetRef;
   id: string;
   no: number;
   src?: [number, number];

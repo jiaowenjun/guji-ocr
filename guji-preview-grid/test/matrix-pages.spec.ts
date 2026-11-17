@@ -3,10 +3,11 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { MatrixPages } from "../src/components/matrix/MatrixPages";
-import { gj2ir } from "../src/ir/gj2ir";
+import { parseKangxiDocument as gj2ir } from "../src/datasets/kangxi";
 import { layout3 } from "../src/ir/layout3";
 import { getPageFrame } from "../src/ir/page-frame";
-import { KANGXI_LAYOUT, type IRLayoutConfig } from "../src/ir/layout-config";
+import { KANGXI_LAYOUT } from "../src/datasets/kangxi";
+import type { IRLayoutConfig } from "../src/ir/layout-config";
 
 function render(source: string, cells = true, config?: IRLayoutConfig) {
   const doc = gj2ir(source);
@@ -21,7 +22,7 @@ function render(source: string, cells = true, config?: IRLayoutConfig) {
 function expectFullPage(root: HTMLElement) {
   const grid = root.querySelector<HTMLElement>(".m-lines")!;
   expect(grid.style.gridTemplateColumns).toBe("repeat(16, calc(var(--guji-unit) * 1))");
-  expect(grid.style.gridTemplateRows).toBe("repeat(24, calc(var(--guji-unit-v, var(--guji-unit)) * 1))");
+  expect(grid.style.gridTemplateRows).toBe("repeat(24, calc(var(--guji-unit-v, var(--guji-default-unit-v)) * 1))");
 }
 
 describe("整页字格版框", () => {

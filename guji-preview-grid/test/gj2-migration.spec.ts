@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import baseline from "./fixtures/gj2-migration-baseline.json";
 import cases from "./fixtures/kangxi-semantics.json";
-import { gj2ir } from "../src/ir/gj2ir";
+import { parseKangxiDocument as gj2ir } from "../src/datasets/kangxi";
 import { layout3 } from "../src/ir/layout3";
 import { projectBooks } from "../src/ir/projection";
 import { irToText } from "../src/ir/text";

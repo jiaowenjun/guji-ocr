@@ -18,6 +18,7 @@ mkdir -p "$DEST"
 
 IMAGES_DIR="$(python3 - "$MANIFEST" "$DEST/index.json" <<'PY'
 import json, sys
+from pathlib import Path
 
 manifest = json.load(open(sys.argv[1], encoding="utf-8"))
 pages = [
@@ -31,7 +32,8 @@ pages = [
     }
     for p in manifest["pages"]
 ]
-out = {"source": "kangxi-gold", "images_dir": manifest["images_dir"], "pages": pages}
+config = json.loads((Path(sys.argv[1]).parent / "dataset-config.json").read_text(encoding="utf-8"))
+out = {"config": config, "source": "kangxi-gold", "images_dir": manifest["images_dir"], "pages": pages}
 with open(sys.argv[2], "w", encoding="utf-8") as f:
     f.write(json.dumps(out, ensure_ascii=False, indent=2) + "\n")
 print(f"index.json：{len(pages)} 页（{pages[0]['page']}–{pages[-1]['page']}）", file=sys.stderr)

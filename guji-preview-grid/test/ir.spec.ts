@@ -5,7 +5,7 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { parsePages } from "../src/parser/parse-pages";
-import { gj2ir } from "../src/ir/gj2ir";
+import { parseKangxiDocument as gj2ir } from "../src/datasets/kangxi";
 import { layout3 } from "../src/ir/layout3";
 import { irToText } from "../src/ir/text";
 import { highlightAt, bandCursorTarget, buildCharIndex, charHighlightAt } from "../src/ir/linkage";

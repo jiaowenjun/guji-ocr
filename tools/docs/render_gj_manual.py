@@ -87,26 +87,27 @@ js = """
 import {readFileSync} from 'node:fs';
 import {exportLayout} from './tools/dataset/export_ocr_layout.mjs';
 const req=JSON.parse(readFileSync(0,'utf8'));
-const pages=req.pages.map(n=>exportLayout(readFileSync(`kangxi-gold/annotations/${String(n).padStart(4,'0')}.gj`,'utf8'),n));
-const demos=req.demos.map((s,i)=>exportLayout(`@${9000+i}\\n\\n${s}\\n`,9000+i));
+const config=JSON.parse(readFileSync('kangxi-gold/dataset-config.json','utf8'));
+config.scan={margin:{left:20,top:20,right:20,bottom:20},background:req.paper};
+const pages=req.pages.map(n=>exportLayout(readFileSync(`kangxi-gold/annotations/${String(n).padStart(4,'0')}.gj`,'utf8'),n,config));
+const demos=req.demos.map((s,i)=>exportLayout(`@${9000+i}\\n\\n${s}\\n`,9000+i,config));
 process.stdout.write(JSON.stringify([...pages,...demos]));
 """
 result = subprocess.run(['node', '--input-type=module', '-e', js], cwd=ROOT,
-                        input=json.dumps({'pages': PAGE_NUMBERS, 'demos': DEMOS}),
+                        input=json.dumps({'pages': PAGE_NUMBERS, 'demos': DEMOS, 'paper': PAPER}),
                         capture_output=True, text=True, check=True)
 layouts = {p['page']: p for p in json.loads(result.stdout)}
-ocr_render.STYLE.update(margin=[20, 20, 20, 20], background=PAPER)
 fonts = ocr_render.Fonts(FONTS)
 images = {}
 for page, layout in layouts.items():
     output = CACHE / f'{page:04}.png'
-    ocr_render.render(layout, layout['cols']*UNIT+40, 24*UNIT+40, fonts, output)
+    ocr_render.render(layout, layout['cols']*UNIT+40, layout['rows']*UNIT+40, fonts, output)
     images[page] = Image.open(output).convert('RGB')
 
 evidence = {
     'grammar': 'gj/2', 'renderer': 'production gj2ir + layout3 + projectBooks; ocr_render.py',
     'note': 'Teaching crops of rendered transcription, not scans or browser pixel screenshots. Blue labels/rules are explanatory.',
-    'style': dict(ocr_render.STYLE),
+    'style': {**ocr_render.STYLE, 'scan': next(iter(layouts.values()))['scan']},
     'pages': [{'page': p, 'status': records[p]['status'],
                'path': f'kangxi-gold/annotations/{p:04}.gj',
                'sha256': layouts[p]['source_sha256']} for p in PAGE_NUMBERS],
