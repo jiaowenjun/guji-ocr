@@ -11,6 +11,7 @@ import {
   type CSSProperties,
   type ReactNode,
 } from "react";
+import { createPortal } from "react-dom";
 import { ChevronLeft, ChevronRight, Database, Minus, Plus, Save, ScanText, Wand2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -35,6 +36,7 @@ import { resolvePageHeadwords } from "@/components/dataset/headwords";
 import { MatrixPages } from "@/components/matrix/MatrixPages";
 import { getPageFrame } from "@/ir/page-frame";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
+import { useToolbarSlot } from "@/hooks/use-toolbar-slot";
 import { gj2ir } from "@/ir/gj2ir";
 import { applyBookLayout } from "@/ir/document-layout";
 import { resolvePageScan, type DatasetConfig } from "@/datasets/config";
@@ -181,6 +183,7 @@ export function DatasetView({
   const [pageInput, setPageInput] = useState("");
   const [addBusy, setAddBusy] = useState(false); // 添加新页进行中
   const [jumpTo, setJumpTo] = useState<number | null>(null); // 添加成功后跳转
+  const toolbarSlot = useToolbarSlot(); // 工具栏注入壳层插槽（见 JSX 内 portal）
 
   // 清单刷新后跳到新添加的页
   useEffect(() => {
@@ -470,7 +473,10 @@ export function DatasetView({
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <div className="flex flex-wrap items-center gap-2 border-b px-3 py-1.5">
+      {/* 工具栏经 portal 注入 App 壳层单行工具栏左侧插槽，与其合并为一行 */}
+      {toolbarSlot &&
+        createPortal(
+          <>
         <div className="flex items-center gap-1">
           <Button variant="outline" size="icon-sm" aria-label="上一页" title="上一页（← 或 Ctrl-P）" disabled={idx === 0} onClick={() => setIdx(idx - 1)}>
             <ChevronLeft />
@@ -618,7 +624,9 @@ export function DatasetView({
             显示OCR结果
           </Button>
         </div>
-      </div>
+          </>,
+          toolbarSlot,
+        )}
 
       <HeadwordStrip resolved={headwords} page={page} text={text} texts={texts} />
 

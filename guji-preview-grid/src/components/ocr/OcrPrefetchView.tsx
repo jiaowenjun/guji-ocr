@@ -4,6 +4,7 @@
 //   prefetch-run 手动执行链路（同步等待）/ prefetch-log 日志时间线（10s 轮询）。
 // 与校对视图（DatasetView）共用状态配色；本视图只读展示 + 手动预取，不写 .gj。
 import { useCallback, useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import {
   CheckCircle2,
   CircleDashed,
@@ -19,6 +20,7 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
+import { useToolbarSlot } from "@/hooks/use-toolbar-slot";
 
 /** 与 DatasetView 的 STATUS_META 同口径（页标签三态展示色） */
 const STATUS_META: Record<string, { label: string; dot: string }> = {
@@ -89,6 +91,7 @@ function StepBadge({ label, step }: { label: string; step: StepInfo }) {
 }
 
 export function OcrPrefetchView() {
+  const toolbarSlot = useToolbarSlot(); // 工具栏注入壳层插槽（见 JSX 内 portal）
   const [pages, setPages] = useState<PageRow[] | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [reloadKey, setReloadKey] = useState(0);
@@ -246,8 +249,10 @@ export function OcrPrefetchView() {
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      {/* 工具栏：过滤 / 汇总 / 手动预取任意页 */}
-      <div className="flex flex-wrap items-center gap-2 border-b px-3 py-1.5">
+      {/* 工具栏（过滤 / 汇总 / 手动预取任意页）经 portal 注入 App 壳层单行工具栏左侧插槽 */}
+      {toolbarSlot &&
+        createPortal(
+          <>
         <div className="flex items-center gap-1 rounded-lg border p-0.5">
           {FILTERS.map((f) => (
             <Button
@@ -277,7 +282,9 @@ export function OcrPrefetchView() {
         <Button size="sm" disabled={runBusy} title="对任意页执行预取链路（未爬页会联网爬取）" onClick={runFromInput}>
           {runBusy ? <RefreshCw className="animate-spin" /> : <Play />} 手动预取
         </Button>
-      </div>
+          </>,
+          toolbarSlot,
+        )}
 
       {msg ? (
         <div
