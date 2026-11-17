@@ -170,6 +170,7 @@ export function DatasetView({
   const [edits, setEdits] = useState<Record<number, string>>({});
   const { texts, ensure, put } = useDatasetText();
   const [rules, setRules] = useState(false); // 界栏默认关
+  const [cells, setCells] = useState(false); // 大字字格默认关
   const [zoom, setZoom] = useState<number | "fit">("fit"); // 默认按原图高度适配视口
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState<{ ok: boolean; msg: string } | null>(null);
@@ -582,6 +583,10 @@ export function DatasetView({
           界栏{rules ? "开" : "关"}
         </Button>
 
+        <Button size="sm" variant="outline" aria-pressed={cells} onClick={() => setCells((v) => !v)}>
+          字格{cells ? "开" : "关"}
+        </Button>
+
         <Separator orientation="vertical" className="h-5" />
 
         <div className="flex items-center gap-2">
@@ -703,6 +708,7 @@ export function DatasetView({
                         pages={laidPages}
                         overlays={irDoc.overlays}
                         rules={rules}
+                        cells={cells}
                         highlight={highlight}
                         onBandClick={onBandClick}
                       />

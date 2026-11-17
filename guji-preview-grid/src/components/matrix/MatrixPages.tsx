@@ -12,12 +12,15 @@ export function MatrixPages({
   pages,
   overlays = [],
   rules = true,
+  cells = false,
   highlight,
   onBandClick,
 }: {
   pages: L3Page[];
   overlays?: IROverlay[];
   rules?: boolean;
+  /** 大字字格（纯视觉叠加，不占布局空间） */
+  cells?: boolean;
   highlight?: RenderHighlight;
   onBandClick?: (page: number, index: number) => void;
 }) {
@@ -36,6 +39,7 @@ export function MatrixPages({
           key={i}
           page={pg}
           rules={rules}
+          cells={cells}
           circled={circled}
           boxes={boxes.get(pg) ?? []}
           index={index}
@@ -50,6 +54,7 @@ export function MatrixPages({
 function MatrixPageView({
   page,
   rules,
+  cells,
   circled,
   boxes,
   index,
@@ -58,6 +63,7 @@ function MatrixPageView({
 }: {
   page: L3Page;
   rules: boolean;
+  cells: boolean;
   circled: Set<string>;
   boxes: BookBox[];
   index: Map<string, LocatedRun[]>;
@@ -79,6 +85,7 @@ function MatrixPageView({
       <div
         className="lines m-lines"
         data-rules={rules ? "on" : "off"}
+        data-cells={cells ? "on" : "off"}
         style={
           {
             "--guji-large-rows": largeRows,

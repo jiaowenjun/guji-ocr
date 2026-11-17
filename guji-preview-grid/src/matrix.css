@@ -68,6 +68,37 @@
 /* 最左 band 的左缘与版框重合，不画界栏（避免相邻双线）。m-band-last 由
    渲染层挂——books 渲染在 bands 之后且同为 div，:last-child 永不匹配 */
 
+/* 大字字格：大字（含带圈）占据区内按 1×1 字格平铺网格线，与界栏同款
+   纯视觉叠加——不用 border（占盒模型空间，会挤压固定轨道），
+   ::after z-index:-1 压到 band 层叠上下文最底层：墨字/圆环在其上，
+   band 高亮（半透明橙）罩着透出。平铺层画各格左、上边线，
+   整域层补最右列右、最底行下的合口边线（否则外缘缺两条）。 */
+.m-lines[data-cells="on"] .m-large,
+.m-lines[data-cells="on"] .m-circle {
+  position: relative;
+}
+.m-lines[data-cells="on"] .m-large::after,
+.m-lines[data-cells="on"] .m-circle::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  /* 与界栏同色：字格是参考线不是版面元素 */
+  background-image:
+    linear-gradient(to right, #8a8a8a 1px, transparent 1px),
+    linear-gradient(to bottom, #8a8a8a 1px, transparent 1px),
+    linear-gradient(to left, #8a8a8a 1px, transparent 1px),
+    linear-gradient(to top, #8a8a8a 1px, transparent 1px);
+  background-size:
+    calc(var(--guji-unit) * 1) calc(var(--guji-unit-v, var(--guji-unit)) * 1),
+    calc(var(--guji-unit) * 1) calc(var(--guji-unit-v, var(--guji-unit)) * 1),
+    100% 100%,
+    100% 100%;
+  z-index: -1;
+}
+
 /* 超 PAGE_ROW_CAP（24 格）的溢出警示：不整条大列染色——标记（.m-over-mark，
    渲染层挂在 band 内）只落在实际溢出的小列（含大字列），方便定位哪一小列超长。
    占该列最后一格轨道、贴底 2px 即裁剪边（版框下线内侧）；
