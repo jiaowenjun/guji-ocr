@@ -1,4 +1,4 @@
-// 应用外壳：单行工具栏（左侧插槽=当前视图工具栏 portal 注入，右侧=视图切换 + 字体说明）+ 当前视图。
+// 应用外壳：单行工具栏（左侧插槽=当前视图工具栏 portal 注入，右侧=视图切换）+ 当前视图。
 // 校对 = 数据集对照工作流（扫描原图 | 刻本渲染 | .gj 编辑器 三列）；
 // OCR 预取 = 调试视图（各页 OCR 结果对照 + prefetch_next_page 链路可视化）；
 // 流程演示 = 添加新页管线逐步骤重放（初校页样例集 + 金标对照找错）。
@@ -6,7 +6,6 @@
 import { useState } from "react";
 import {
   BookOpenText,
-  Info,
   ScanText,
   SquareTerminal,
   Workflow,
@@ -113,21 +112,6 @@ export default function App() {
               </TooltipContent>
             </Tooltip>
 
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button variant="ghost" size="icon-sm" aria-label="字体说明">
-                  <Info />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="bottom" className="max-w-72">
-                <p>刻本渲染需本地安装两款字体：</p>
-                <p>大字：康熙傳承版 KangXiZiDian.com</p>
-                <p>小字：中華書局宋體 00/02/15 平面</p>
-                <p className="text-muted-foreground">
-                  下载方式见项目 README；未安装时以 serif 回退显示。
-                </p>
-              </TooltipContent>
-            </Tooltip>
           </div>
         </header>
 
