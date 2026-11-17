@@ -1,0 +1,227 @@
+{
+  "grammar": "gj/2",
+  "renderer": "production gj2ir + layout3 + projectBooks; ocr_render.py",
+  "note": "Teaching crops of rendered transcription, not scans or browser pixel screenshots. Blue labels/rules are explanatory.",
+  "style": {
+    "version": 1,
+    "margin": [
+      20,
+      20,
+      20,
+      20
+    ],
+    "background": "#fcf7ec",
+    "ink": "#1c1c1c",
+    "small_scale": 0.8,
+    "large_scale": 1.8,
+    "circle_scale": 1.5,
+    "supersample": 2,
+    "rules": false
+  },
+  "pages": [
+    {
+      "page": 312,
+      "status": "first",
+      "path": "kangxi-gold/annotations/0312.gj",
+      "sha256": "545cbc1669e17d10c51747f4ec5184265f2ee8d5b427f22b51f2594fd7d8da5c"
+    },
+    {
+      "page": 328,
+      "status": "first",
+      "path": "kangxi-gold/annotations/0328.gj",
+      "sha256": "641f82ea334a854c9228623266f8601cf1a83716b3e4293af91a88f4bf22acde"
+    },
+    {
+      "page": 336,
+      "status": "first",
+      "path": "kangxi-gold/annotations/0336.gj",
+      "sha256": "22c1e5b8d2c2257dbdc1e87e60bd58ea314ffd0ccd045ffa11662f736a20eae2"
+    },
+    {
+      "page": 339,
+      "status": "first",
+      "path": "kangxi-gold/annotations/0339.gj",
+      "sha256": "93d1a56bc4a87a4475dd918f201c380672fc4728086dec15feb08929076cf398"
+    },
+    {
+      "page": 340,
+      "status": "first",
+      "path": "kangxi-gold/annotations/0340.gj",
+      "sha256": "f0be8242183259e9d3247418188669fe5285cf4feb949075228921dbea579ad2"
+    }
+  ],
+  "synthetic_examples": [
+    "甲乙\n丙丁",
+    "甲乙\n\n丙丁",
+    "#甲乙\n丙丁",
+    "甲乙#丙\n丁戊",
+    "#*甲\n乙*丙"
+  ],
+  "figures": [
+    {
+      "file": "01-page-and-columns.png",
+      "sources": [
+        {
+          "page": 312,
+          "bands": [
+            1,
+            8
+          ]
+        }
+      ],
+      "size": [
+        760,
+        1160
+      ]
+    },
+    {
+      "file": "02-large-spaces.png",
+      "sources": [
+        {
+          "page": 312,
+          "lines": [
+            3,
+            7
+          ],
+          "bands": [
+            1,
+            3
+          ]
+        }
+      ],
+      "size": [
+        900,
+        740
+      ]
+    },
+    {
+      "file": "03-mixed-sizes.png",
+      "sources": [
+        {
+          "page": 312,
+          "lines": [
+            9,
+            13
+          ],
+          "band": 4
+        }
+      ],
+      "size": [
+        800,
+        1155
+      ]
+    },
+    {
+      "file": "04-line-breaks.png",
+      "sources": [
+        {
+          "synthetic": [
+            "甲乙\n丙丁",
+            "甲乙\n\n丙丁",
+            "#甲乙\n丙丁",
+            "甲乙#丙\n丁戊"
+          ]
+        }
+      ],
+      "size": [
+        1120,
+        640
+      ]
+    },
+    {
+      "file": "05-circled-type.png",
+      "sources": [
+        {
+          "page": 328,
+          "lines": [
+            14,
+            17
+          ]
+        },
+        {
+          "page": 336,
+          "line": 18
+        }
+      ],
+      "size": [
+        900,
+        740
+      ]
+    },
+    {
+      "file": "06-book-continuation.png",
+      "sources": [
+        {
+          "page": 312,
+          "lines": [
+            16,
+            18
+          ],
+          "bands": [
+            5,
+            6
+          ]
+        }
+      ],
+      "size": [
+        900,
+        530
+      ]
+    },
+    {
+      "file": "07-space-sizes.png",
+      "sources": [
+        {
+          "synthetic": "#*甲\n乙*丙"
+        }
+      ],
+      "size": [
+        790,
+        600
+      ]
+    },
+    {
+      "file": "08-blank-columns.png",
+      "sources": [
+        {
+          "page": 336,
+          "lines": [
+            25,
+            31
+          ],
+          "bands": [
+            5,
+            8
+          ]
+        }
+      ],
+      "size": [
+        760,
+        1160
+      ]
+    },
+    {
+      "file": "09-page-continuation.png",
+      "sources": [
+        {
+          "page": 339,
+          "line": 32
+        },
+        {
+          "page": 340,
+          "line": 3
+        }
+      ],
+      "size": [
+        900,
+        540
+      ]
+    }
+  ],
+  "fonts": {
+    "guji-large.ttf": "99be6a77b93afa746b2d29e37d6014cab9f9c21471f685a2392426760a17dabf",
+    "guji-plane0.ttf": "b4433eb2cb5218d3e507dd1757398813ac105d6c384dbbf8a841a60107b53c0f",
+    "guji-plane2.ttf": "80df094a2e63091b222706696a8b244c9dba45219af866226a097d0fbb2bf28d",
+    "guji-planef.ttf": "cfeb8527cfc75fe244b1c773056ed8e8896e67918f368999d12f6bd86dee323b"
+  }
+}

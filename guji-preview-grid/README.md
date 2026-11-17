@@ -110,6 +110,8 @@ python3 tools/eval/prefetch_ocr.py        # 可选：预识别近期页（默认
 
 ## Guji 語法（.gj/2）
 
+新用户可先读 **[.gj 语法学习手册：像排活字一样排古籍](../docs/gj-syntax-guide.md)**：用康熙字典初校页的真实排版图讲解分列、字号、空位、圈注、书名框，并附罕见与边缘案例。
+
 本项目为语法定义之唯一来源。通用词法位于 `src/parser/inline-tokens.ts`。
 
 | 特殊符號 | 作用範圍 | 含義 |
