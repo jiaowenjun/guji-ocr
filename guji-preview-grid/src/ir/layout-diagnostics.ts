@@ -15,8 +15,8 @@ export function diagnoseLayout(page: L3Page): LayoutDiagnostic[] {
   const add = (code: LayoutDiagnostic["code"], message: string, bandId?: string, severity: LayoutDiagnostic["severity"] = "warning") =>
     out.push({ code, severity, page: page.no, bandId, message });
   if (expectedBands !== null) {
-    if (page.bands.length !== expectedBands) add("band-count", `大列数 ${page.bands.length}，预期 ${expectedBands}`);
-    if (page.totalCols !== expectedBands * smallColumnsPerBand)
+    if (page.bands.length > expectedBands) add("band-count", `大列数 ${page.bands.length}，超出版面 ${expectedBands}`);
+    if (page.totalCols > expectedBands * smallColumnsPerBand)
       add("page-width", `页宽 ${page.totalCols} 格，预期 ${expectedBands * smallColumnsPerBand} 格`);
   }
   for (const band of page.bands) {

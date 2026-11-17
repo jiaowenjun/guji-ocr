@@ -7,7 +7,7 @@ import { useMemo, type CSSProperties } from "react";
 import type { IROverlay, RenderHighlight } from "@/ir/types";
 import type { L3Item, L3Page } from "@/ir/layout3";
 import { indexLayout, projectBooks, locateCell, type BookBox, type LocatedRun } from "@/ir/projection";
-import { getPageFrame } from "./page-frame";
+import { getPageFrame } from "@/ir/page-frame";
 
 export function MatrixPages({
   pages,

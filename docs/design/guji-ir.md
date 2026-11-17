@@ -216,8 +216,10 @@ Python 侧（kangxi_page_tool.py）宿主识别正则 `#(?:圈)*頭` 与剥尾�
   `expectedBands: null` 关闭书种特定的页宽／列数检查。整数参数必须为正。
 - **计划与坐标**：`planLayoutBand` 导出可重建的 `BandPlan`，段类型为 `glyph`、
   `parallel`、`gap`。该计划及 `L3Page.config/diagnostics` 不写入骨架 JSON。
-- **空列**：独占一段的 `@blank` 与旧 `#` 等价，解析到一条无元素的 line，
-  占用一个 band 的宽度，TXT 保留对应空行；不代表一个空词条。
+- **自动留白（2026-11-17 更新）**：每页固定显示 8 大列 × 12 大格，短页左侧、
+  短列底部自动留白。已移除显式空大列指令及旧 `#` 到该指令的格式化转换；
+  自动留白不生成 IR band 或 TXT 空行。预览和 OCR 导出共用 `getPageFrame`，
+  少于版框列数不告警，超宽、超列仍诊断。
 - **索引与标注**：`L3Band.lineIds` 明确记录成员，`indexLayout` 保存行到位置的索引；
   `projectBooks` 按 overlay 的全局 span 次序生成页内片段，跨页边界开口，单行多个
   run 分框。渲染不解析 ID 字符串、不依赖 src；ID 目前仍为序号，未实现持久身份。

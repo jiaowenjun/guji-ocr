@@ -14,6 +14,7 @@ registerHooks({ resolve(s, c, next) {
 } });
 const { gj2ir } = await import('../../guji-preview-grid/src/ir/gj2ir.ts');
 const { layout3, planLayoutBand } = await import('../../guji-preview-grid/src/ir/layout3.ts');
+const { getPageFrame } = await import('../../guji-preview-grid/src/ir/page-frame.ts');
 const { projectBooks } = await import('../../guji-preview-grid/src/ir/projection.ts');
 const { kangxiBandHeading } = await import('../../guji-preview-grid/src/semantics/kangxi.ts');
 const { irToText } = await import('../../guji-preview-grid/src/ir/text.ts');
@@ -23,18 +24,19 @@ export function exportLayout(source, pageNo) {
   const ir = gj2ir(source);
   if (ir.pages.length !== 1 || ir.pages[0].no !== pageNo) throw Error(`Page marker mismatch: ${pageNo}`);
   const page = ir.pages[0], laid = layout3(ir)[0];
+  const { cols, rows, colOffset } = getPageFrame(laid);
   const warnings = laid.diagnostics.filter(d => d.severity !== 'info');
   if (warnings.length) throw Error(`Layout ${pageNo}: ${warnings.map(d => d.message).join('; ')}`);
   const circles = new Map(ir.overlays.filter(o => o.kind === 'circle').map(o => [o.target, o.id]));
   const result = {
     page: pageNo, source, source_sha256: createHash('sha256').update(source).digest('hex'),
-    ir, config: laid.config, cols: laid.totalCols, rows: laid.config.rowCap,
+    ir, config: laid.config, cols, rows,
     transcription: irToText(ir), text: compact(irToText(ir)),
     bands: [], regions: [], glyphs: [], gaps: [], decorations: [],
   };
   let offset = 0;
   page.bands.forEach((band, bi) => {
-    const placed = laid.bands[bi], left = laid.colStarts[bi];
+    const placed = laid.bands[bi], left = laid.colStarts[bi] + colOffset;
     const meta = { id: band.id, order: bi, level: kangxiBandHeading(band, ir)?.level ?? null,
       grid_bbox: [left, 0, left + placed.cols, laid.config.rowCap], region_ids: [] };
     const plan = planLayoutBand(band, ir.meta.profile, laid.config);
@@ -88,7 +90,7 @@ export function exportLayout(source, pageNo) {
   books.forEach((b, i) => result.decorations.push({
     id: `${b.overlayId}-fragment-${i}`, overlay_id: b.overlayId, kind: 'book_title',
     band_id: laid.bands[b.bandIdx].id,
-    grid_bbox: [b.col + (b.halfShift ?? 0), b.rowStart, b.col + (b.halfShift ?? 0) + (b.cols ?? 1), b.rowEnd],
+    grid_bbox: [b.col + colOffset + (b.halfShift ?? 0), b.rowStart, b.col + colOffset + (b.halfShift ?? 0) + (b.cols ?? 1), b.rowEnd],
     open_top: b.openTop, open_bottom: b.openBottom,
   }));
   if (result.glyphs.map(g => g.text).join('') !== result.text ||

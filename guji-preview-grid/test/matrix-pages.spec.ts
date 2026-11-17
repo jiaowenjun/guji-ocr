@@ -22,16 +22,18 @@ function expectFullPage(root: HTMLElement) {
 }
 
 describe("整页字格版框", () => {
-  it.each(["@1\n", "@1\n\n@blank\n"])("空页也保留 8×12 大字格：%j", (source) => {
+  it.each(["@1\n", "@1\n\n\n", "@1\n\n// 空页\n"])("空页也保留 8×12 大字格：%j", (source) => {
     const root = render(source);
     expectFullPage(root);
     expect(root.querySelectorAll(".m-large, .m-cell")).toHaveLength(0);
+    expect(root.querySelector(".m-layout-warning")).toBeNull();
   });
 
   it("短页保持字格大小，正文与书名框一起靠右，缺列留在左侧", () => {
     const root = render("@1\n\n#甲\n【乙丙】\n丁戊\n\n#己\n");
     expectFullPage(root);
     const bands = [...root.querySelectorAll<HTMLElement>(".m-band")];
+    expect(root.querySelector(".m-layout-warning")).toBeNull();
     expect(bands.map((band) => band.style.gridColumn)).toEqual(["15 / span 2", "13 / span 2"]);
     expect(bands[0].querySelector<HTMLElement>(".m-large")!.style.gridRow).toBe("1 / span 2");
     const book = root.querySelector<HTMLElement>(".m-book")!;

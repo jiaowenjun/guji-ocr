@@ -34,7 +34,7 @@ import { formatDocument } from "@/components/dataset/format-document";
 import { HeadwordStrip } from "@/components/dataset/HeadwordStrip";
 import { resolvePageHeadwords } from "@/components/dataset/headwords";
 import { MatrixPages } from "@/components/matrix/MatrixPages";
-import { getPageFrame } from "@/components/matrix/page-frame";
+import { getPageFrame } from "@/ir/page-frame";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
 import { gj2ir } from "@/ir/gj2ir";
 import { layout3 } from "@/ir/layout3";

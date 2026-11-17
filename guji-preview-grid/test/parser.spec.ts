@@ -36,9 +36,10 @@ describe("split", () => {
 });
 
 describe("generic line-scoped large text", () => {
-  it("page markers and explicit empty bands", () => {
+  it("only numeric page markers are structural", () => {
     expect(parseLine("@312")).toEqual({ page: 312 });
-    expect(parseLine("@blank")).toEqual({ st: "empty" });
+    expect(parseLine("@blank")).toEqual({ c: [{ t: "@blank" }] });
+    expect(parseLine("#")).toEqual({ c: [] });
   });
   it("all following content is large, including 古文, ASCII and extended Han", () => {
     expect(parseInline("前#甲古文Ab𠀀")).toEqual([
@@ -84,8 +85,8 @@ describe("formatGj", () => {
     expect(formatGj("古文：㘳")).toBe("古文：㘳\n");
     expect(formatGj("小字#甲【書】乙 // #注")).toBe("小字#甲【書】乙 // #注\n");
   });
-  it("canonicalizes empty columns and trims only document padding", () => {
-    expect(formatGj("\n// header\n@1\n\n#\n\n甲\n// tail\n")).toBe("@1\n\n@blank\n\n甲\n");
+  it("trims only document padding without rewriting size markers", () => {
+    expect(formatGj("\n// header\n@1\n\n#\n\n甲\n// tail\n")).toBe("@1\n\n#\n\n甲\n");
     const once = formatGj("#甲#乙\n古文：\n#(z)#丁");
     expect(formatGj(once)).toBe(once);
   });

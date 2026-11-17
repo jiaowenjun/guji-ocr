@@ -1,5 +1,4 @@
 import { scanInline } from "./inline-tokens";
-import { isBlankBand } from "./structure";
 
 /** Keep a leading comma with the preceding large glyph, before its newline/comment. */
 export function attachLeadingCommas(text: string): string {
@@ -37,7 +36,6 @@ export function normalizeInput(text: string): string {
 /** Formatting preserves physical newlines: they terminate the # size scope. */
 export function formatGj(text: string): string {
   const lines = attachLeadingCommas(normalizeInput(text)).split("\n").map((line) => {
-    if (isBlankBand(line)) return line.replace(/^[ \t]*#(?=[ \t]*(?:\/\/|$))/, "@blank");
     let seen = false, out = "", last = 0;
     for (const t of scanInline(line).tokens) if (t.kind === "size") {
       if (seen) { out += line.slice(last, t.from); last = t.to; }

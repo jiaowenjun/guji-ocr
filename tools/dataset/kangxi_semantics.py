@@ -66,7 +66,7 @@ def find_host_marks(raw_text: str) -> list[tuple[str, int]]:
         if re.fullmatch(r'@\d+|=+', line.strip()) or section_heading(line):
             marker, variants = '', False
             has_current = False
-        elif line.strip() and not line.lstrip().startswith('//') and line.strip() not in ('@blank', '#'):
+        elif line.strip() and not line.lstrip().startswith('//'):
             tokens = list(_line_tokens(line))
             small = _content(''.join(t[0] for t in tokens if not t[1]))
             if small:

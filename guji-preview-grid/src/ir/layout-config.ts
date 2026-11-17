@@ -2,7 +2,7 @@
 export interface IRLayoutConfig {
   version: 1;
   rowCap: number;
-  /** null disables the book-specific expected page width/count checks. */
+  /** Full page width in bands; fewer bands leave whitespace. null disables this frame and its excess checks. */
   expectedBands: number | null;
   smallColumnsPerBand: number;
   largeRows: number;

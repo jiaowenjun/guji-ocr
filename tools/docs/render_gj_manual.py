@@ -88,10 +88,7 @@ import {readFileSync} from 'node:fs';
 import {exportLayout} from './tools/dataset/export_ocr_layout.mjs';
 const req=JSON.parse(readFileSync(0,'utf8'));
 const pages=req.pages.map(n=>exportLayout(readFileSync(`kangxi-gold/annotations/${String(n).padStart(4,'0')}.gj`,'utf8'),n));
-const demos=req.demos.map((s,i)=> {
- const count=s.split(/\\n\\n/).length;
- return exportLayout(`@${9000+i}\\n\\n${s}\\n\\n`+Array(8-count).fill('@blank').join('\\n\\n')+'\\n',9000+i);
-});
+const demos=req.demos.map((s,i)=>exportLayout(`@${9000+i}\\n\\n${s}\\n`,9000+i));
 process.stdout.write(JSON.stringify([...pages,...demos]));
 """
 result = subprocess.run(['node', '--input-type=module', '-e', js], cwd=ROOT,
@@ -204,8 +201,8 @@ note(im, 32, 160, '# 后的 *', '大字空位：宽 2 小格、高 2 小格。')
 note(im, 32, 350, '换行后的 *', '小字空位：宽 1 小格、高 1 小格。')
 save(im, '07-space-sizes', [{'synthetic': DEMOS[4]}])
 
-# A genuine page with four explicit blank bands; reduced to stay compact.
-im = card('整列留白，也是一条有位置的排字槽', '@336 · 第 5、6、7、8 大列各写一个独占段落的 @blank。', 760, 1160)
+# A genuine short page: the full frame automatically leaves four columns blank.
+im = card('正文不足八大列，左侧自动留白', '@336 · 只写四列正文，第 5、6、7、8 大列自动留空。', 760, 1160)
 paste(im, box(336, [0, 0, 16, 24]), (60, 164))
 d = ImageDraw.Draw(im)
 for i in range(8):
@@ -214,7 +211,7 @@ for i in range(8):
     d.rectangle((x, 164, x+80, 1124), outline='#c4cfcc', width=1)
     if i >= 4:
         label(im, (x+25, 590), '留\n白', 25, MUTED)
-save(im, '08-blank-columns', [{'page': 336, 'lines': [25, 31], 'bands': [5, 8]}])
+save(im, '08-blank-columns', [{'page': 336, 'bands': [1, 4], 'automatic_blank_columns': [5, 8]}])
 
 im = card('书名可以跨页：前页开口，后页续框', '@339 → @340 · 【崔豹古今註】在页缝两侧延续。右图先读。', 900, 540)
 label(im, (540, 132), '@339 页末', 25, ACCENT)

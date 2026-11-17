@@ -58,7 +58,7 @@ export function kangxiEntries(gj: string): KangxiEntry[] {
   };
   for (const [li, raw] of lines.entries()) {
     const line = raw.trim();
-    if (!line || line.startsWith("//") || line === "@blank" || line === "#") continue;
+    if (!line || line.startsWith("//")) continue;
     if (/^@\d+$|^=+$/.test(line) || kangxiHeading(raw)) {
       current = undefined; marker = ""; variants = false; prefixLine = undefined; continue;
     }

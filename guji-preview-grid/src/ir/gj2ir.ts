@@ -10,7 +10,6 @@ import type {
 } from "./types";
 import { GUJI_PROFILE } from "./types";
 import { scanInline } from "../parser/inline-tokens";
-import { isBlankBand } from "../parser/structure";
 
 const chunkTransform = (s: string) =>
   s
@@ -179,12 +178,6 @@ export function gj2ir(text: string): IRDocument {
     const page = pages[pages.length - 1];
     const bandId = `${page.id}-b${page.bands.length}`;
     const band: IRBand = { id: bandId, ord: page.bands.length, src: [c.from, c.to], lines: [] };
-
-    if (isBlankBand(c.text)) {
-      band.lines.push({ id: `${bandId}-l0`, ord: 0, src: c.lineRanges[0], elements: [] });
-      page.bands.push(band);
-      continue;
-    }
 
     const regions = detectRegions(c.text);
     let regionIndex = 0;

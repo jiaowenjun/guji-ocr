@@ -97,8 +97,8 @@
   },
   {
     "file": "kangxi-gold/annotations/0328.gj",
-    "sourceSha256": "2515fb1523484e1aa44f51a8952376334834962b617cd78834110e965bb7bf24",
-    "geometrySha256": "d8542b5e639ae779ad587a7e1f07a682608423e71e02761097cb04531347e2cb",
+    "sourceSha256": "cc9377aa16cf77b13204712de96382ffab5fcff93e9e2cfb1969dec86fbb1248",
+    "geometrySha256": "651592311a91e90e0eee34d41ec8b77e729d817b7fecc1ea20cb6ba931c2f6ac",
     "textSha256": "f294ab23ec29b0b0b57a17da07d0f0582a1ef87cfdf0306082af0d3e1f4bfb89"
   },
   {
@@ -139,8 +139,8 @@
   },
   {
     "file": "kangxi-gold/annotations/0336.gj",
-    "sourceSha256": "428558ced929e16e548f0b1da18e5f7443238593352ca81a7a6f3fb44f081254",
-    "geometrySha256": "dd9faebd98e395cdc5b6f2703c2e69cf03320a535c8db45947eef0aa9e2959e0",
+    "sourceSha256": "700d6fcf7e4b60cddefab3a8b8add1ca1fc8bf58a20a1ee16a5aa45b4a1d93f5",
+    "geometrySha256": "afae175997636495b11c62bd77f7a50db13bbbcc2674c8bb271ccd49b19e3825",
     "textSha256": "d40d64ed1500635daa062d37c6d8378b3378b5959544401d45fad0440f38847d"
   },
   {
@@ -163,8 +163,8 @@
   },
   {
     "file": "kangxi-gold/annotations/0341.gj",
-    "sourceSha256": "178cf1918e292240f5384232051ef8326dcddea3f9e0e2b4ab5858a70b9fe5a0",
-    "geometrySha256": "d00e62065106f8f125355df253935db8edbd6f291b717e363c3e03fb196ab68d",
+    "sourceSha256": "41a6459bdd3632836db261c864dd16788dcb6ee3ee272c2c539baac294b170a4",
+    "geometrySha256": "0df685eff0e0914f2ea21586a13bbeddfc17a6adcad5586c97b3985ef799cb2a",
     "textSha256": "bfff8b402b80fa9f59944325a659d62ce1451142014c5f97bd8942384c3d7ff1"
   },
   {
@@ -223,8 +223,8 @@
   },
   {
     "file": "kangxi-gold/annotations/0351.gj",
-    "sourceSha256": "8d3a93773a125d366faeb48f674b968c6185bac29ab6b8beca2452365602e33c",
-    "geometrySha256": "3459433b739fd4763adfdd19b7cba4d7d736825e1d8ec4bb638c65a7f9de6315",
+    "sourceSha256": "a4884f5a68cd041cd4852f1d0225a530ad15681b00cdf629b62e6fa18b9e5949",
+    "geometrySha256": "4f9b1e3bfe9b47685c90a1c1c25a521ebc6cb7911391d4d943ab2381f1449fb1",
     "textSha256": "4ff378b3c8082fb4ddaf23b82a5a105ae9cc6c9d2562b354c016854ac6a710db"
   },
   {
@@ -277,8 +277,8 @@
   },
   {
     "file": "guji-preview-grid/src/samples/kangxi-yibu.gj",
-    "sourceSha256": "720885b3103838c6acf1c9b1cecc9317fe73d4c7f10d2d3e65cce5c8868a7758",
-    "geometrySha256": "5411a7a87b7d7d37c8bb8115275af2587eb7a2005fa4d52b14e38084dcbf9bdf",
+    "sourceSha256": "01324dbb3c01ed8a80df84108feee32168026133c823f09739f7ce33105ea38d",
+    "geometrySha256": "b45cb8a34fb1b652946cf02c5e9591950248029696c7ccabc589a0213d27783a",
     "textSha256": "00f4896d9f1b159a4d45134caf4b9c5a27e013900c4a2b5d0ff255cc6e532ae1"
   }
 ]

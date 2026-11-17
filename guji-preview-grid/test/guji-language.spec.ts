@@ -28,8 +28,10 @@ describe("line-scoped large highlighting", () => {
     expect(segments("#甲乙")).toEqual([["#甲乙", "strong"]]);
     expect(segments("#**一部// 注")).toEqual([["#**一部", "heading"], ["// 注", "comment"]]);
   });
-  it("keeps page markers, blank columns, separators and comments structural", () => {
-    for (const line of ["@341", "@blank"]) expect(segments(line)).toEqual([[line, "keyword"]]);
+  it("keeps page markers, separators and comments structural", () => {
+    expect(segments("@341")).toEqual([["@341", "keyword"]]);
+    expect(segments("@blank")).toEqual([..."@blank"].map((ch) => [ch, "plain"]));
+    expect(segments("#")).toEqual([["#", "strong"]]);
     expect(segments("===")).toEqual([["===", "meta"]]);
     expect(segments("// #甲")).toEqual([["// #甲", "comment"]]);
   });

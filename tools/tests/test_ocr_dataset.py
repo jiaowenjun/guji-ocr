@@ -28,7 +28,7 @@ def layout(source, page):
 class LayoutContracts(unittest.TestCase):
     def test_mixed_order_supplementary_pua_and_ligature(self):
         # Distinct text exposes the renderer's large-first item order bug.
-        source = '@1\n\n#甲\n乙𠀤\n丁\n#(十一)\n\ue701\n庚\n'+'\n@blank\n'*7
+        source = '@1\n\n#甲\n乙𠀤\n丁\n#(十一)\n\ue701\n庚\n'
         out = layout(source, 1)
         self.assertEqual(out['text'], '甲乙𠀤丁十一\ue701庚')
         self.assertEqual(''.join(r['text'] for r in out['regions']), out['text'])
@@ -39,19 +39,36 @@ class LayoutContracts(unittest.TestCase):
         self.assertEqual(len(out['decorations']), 1)
 
     def test_blank_run_is_gap_not_detection_target(self):
-        source = '@1\n\n甲\n*\n'+'\n@blank\n'*7
+        source = '@1\n\n甲\n*\n'
         out = layout(source, 1)
         self.assertEqual(out['text'], '甲')
         self.assertEqual(len(out['gaps']), 1)
         self.assertEqual(len(out['regions']), 1)
-        self.assertEqual(sum(b['empty'] for b in out['bands']), 7)
+        self.assertEqual(len(out['bands']), 1)
+        self.assertEqual((out['cols'], out['rows']), (16, 24))
+        self.assertEqual(out['bands'][0]['grid_bbox'], [14, 0, 16, 24])
 
     def test_scaled_coordinates_and_bounds(self):
-        out = layout('@1\n\n#甲\n乙\n丙\n'+'\n@blank\n'*7, 1)
+        out = layout('@1\n\n#甲\n乙\n丙\n', 1)
         ann = pixel_annotation(out, 400, 600, 'synthetic', lambda _, b: [b[0]*20+10,b[1]*20+10,b[2]*20+10,b[3]*20+10])
         builder.validate_annotation(ann)
         self.assertEqual(ann['glyphs'][0]['bbox'], [290,10,330,50])
         with self.assertRaises(ValueError): validate_box([0, 0, 450, 20], 400, 600)
+
+    def test_short_page_aligns_text_and_book_frames_to_the_right(self):
+        out = layout('@1\n\n#甲\n【乙丙】\n丁戊\n\n#己\n', 1)
+        self.assertEqual((out['cols'], out['rows']), (16, 24))
+        self.assertEqual([b['grid_bbox'] for b in out['bands']], [[14, 0, 16, 24], [12, 0, 14, 24]])
+        self.assertEqual(out['glyphs'][0]['grid_bbox'], [14, 0, 16, 2])
+        self.assertEqual(out['glyphs'][1]['grid_bbox'], [15, 2, 16, 3])
+        self.assertEqual(out['decorations'][0]['grid_bbox'], [15, 2, 16, 4])
+
+    def test_empty_page_keeps_full_frame_without_annotation_targets(self):
+        out = layout('@1\n', 1)
+        self.assertEqual((out['cols'], out['rows']), (16, 24))
+        self.assertEqual(out['text'], '')
+        for key in ('bands', 'regions', 'glyphs', 'gaps', 'decorations'):
+            self.assertEqual(out[key], [])
 
 
 class IncrementalContracts(unittest.TestCase):

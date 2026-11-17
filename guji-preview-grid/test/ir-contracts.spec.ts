@@ -13,6 +13,7 @@ import { indexLayout, projectBooks, locateCell } from "../src/ir/projection";
 import { compileProfile } from "../src/ir/profile";
 import { parsePages } from "../src/parser/parse-pages";
 import { formatDocument } from "../src/components/dataset/format-document";
+import { getPageFrame } from "../src/ir/page-frame";
 import { nextGujiToken } from "../src/components/editor/guji-language";
 import { MatrixPages } from "../src/components/matrix/MatrixPages";
 import type { IRBookOverlay } from "../src/ir/types";
@@ -82,21 +83,30 @@ describe("layout plan and configuration", () => {
   it("diagnoses a three-column group without changing its contents", () => {
     const doc = gj2ir("@1\n\n甲\n乙\n丙\n");
     const page = layout3(doc)[0];
-    expect(page.diagnostics.map((d) => d.code)).toEqual(["band-count", "page-width", "band-width"]);
+    expect(page.diagnostics.map((d) => d.code)).toEqual(["band-width"]);
     expect(page.totalCols).toBe(3);
     expect(irToText(doc)).toBe("甲乙丙\n");
   });
-  it("keeps explicit empty columns through parsing, formatting and highlighting", () => {
+  it("treats the removed blank directive as ordinary text", () => {
     const source = "@1\n\n@blank\n\n甲乙\n";
-    const a = gj2ir(source);
-    const b = gj2ir(source.replace("@blank", "#"));
-    expect(layout3(a)).toEqual(layout3(b));
-    expect(irToText(a)).toBe("\n甲乙\n");
-    expect(parsePages(source)).toEqual(parsePages(source.replace("@blank", "#")));
+    const doc = gj2ir(source);
+    expect(irToText(doc)).toBe("@blank\n甲乙\n");
+    expect(parsePages(source)[0].l[0]).toEqual({ c: [{ t: "@blank" }] });
     expect(formatDocument(source).text).toBe(source);
-    expect(nextGujiToken("@blank", 0, true)).toMatchObject({ tok: "keyword", inBookAfter: true });
-    expect(layout3(a)[0].diagnostics.filter((d) => d.code === "empty-band")).toHaveLength(1);
+    expect(nextGujiToken("@blank", 0)).toMatchObject({ tok: null });
+    expect(nextGujiToken("@blank", 0, true)).toMatchObject({ tok: "link", inBookAfter: true });
+    expect(layout3(doc)[0].diagnostics).toEqual([]);
     expect(irToText(gj2ir("@1\n\n正文@blank\n"))).toContain("正文@blank");
+  });
+  it("allows automatic page padding but still diagnoses excess columns", () => {
+    for (const count of [0, 1, 4, 8]) {
+      const page = layout3(gj2ir(`@1\n\n${Array(count).fill("#甲").join("\n\n")}\n`))[0];
+      expect(page.bands).toHaveLength(count);
+      expect(getPageFrame(page)).toMatchObject({ cols: 16, rows: 24 });
+      expect(page.diagnostics).toEqual([]);
+    }
+    const source = `@1\n\n${Array(9).fill("#甲").join("\n\n")}\n`;
+    expect(layout3(gj2ir(source))[0].diagnostics.map((d) => d.code)).toEqual(["band-count", "page-width"]);
   });
 });
 
@@ -140,7 +150,7 @@ describe("overlay projection", () => {
   });
 });
 
-it("preserves the 45 migrated IR/TXT exports and their eight-band layouts", () => {
+it("preserves the 45 migrated IR/TXT exports within the full page frame", () => {
   const manifest = JSON.parse(read("kangxi-gold/manifest.json"));
   const widthCandidates: number[] = [];
   // New pages may be undergoing correction and have no saved exports yet.
@@ -156,8 +166,8 @@ it("preserves the 45 migrated IR/TXT exports and their eight-band layouts", () =
     expect(doc, `IR @${entry.page}`).toEqual(JSON.parse(read(`${base}.json`)));
     expect(irToText(doc), `TXT @${entry.page}`).toBe(read(`${base}.txt`));
     const page = layout3(doc)[0];
-    expect(page.bands).toHaveLength(8);
-    expect(page.totalCols).toBe(16);
+    expect(page.bands.length).toBeLessThanOrEqual(8);
+    expect(getPageFrame(page)).toMatchObject({ cols: 16, rows: 24 });
     if ([318, 320, 322, 325, 327].includes(entry.page))
       expect(page.bands.map((band) => band.rows)).toEqual(Array(8).fill(24));
     if (page.diagnostics.some((d) => d.code === "page-width")) widthCandidates.push(entry.page);

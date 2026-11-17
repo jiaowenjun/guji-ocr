@@ -29,13 +29,13 @@
       "page": 328,
       "status": "first",
       "path": "kangxi-gold/annotations/0328.gj",
-      "sha256": "641f82ea334a854c9228623266f8601cf1a83716b3e4293af91a88f4bf22acde"
+      "sha256": "cc9377aa16cf77b13204712de96382ffab5fcff93e9e2cfb1969dec86fbb1248"
     },
     {
       "page": 336,
       "status": "first",
       "path": "kangxi-gold/annotations/0336.gj",
-      "sha256": "22c1e5b8d2c2257dbdc1e87e60bd58ea314ffd0ccd045ffa11662f736a20eae2"
+      "sha256": "700d6fcf7e4b60cddefab3a8b8add1ca1fc8bf58a20a1ee16a5aa45b4a1d93f5"
     },
     {
       "page": 339,
@@ -185,11 +185,11 @@
       "sources": [
         {
           "page": 336,
-          "lines": [
-            25,
-            31
-          ],
           "bands": [
+            1,
+            4
+          ],
+          "automatic_blank_columns": [
             5,
             8
           ]

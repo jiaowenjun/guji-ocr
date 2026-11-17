@@ -2,7 +2,6 @@
 import { HighlightStyle, StreamLanguage } from "@codemirror/language";
 import { tags as t } from "@lezer/highlight";
 import { scanInline, type InlineToken } from "../../parser/inline-tokens";
-import { isBlankBand } from "../../parser/structure";
 import { kangxiHeading } from "../../semantics/kangxi";
 
 export type GujiTokenName = "comment" | "keyword" | "meta" | "heading" | "link" | "strong" | "escape";
@@ -17,7 +16,7 @@ export function nextGujiToken(line: string, pos: number, inBook = false): {
   next: number; tok: GujiTokenName | null; inBookAfter: boolean;
 } {
   if (pos === 0) {
-    if (isBlankBand(line) || /^\s*@\d+\s*$/.test(line))
+    if (/^\s*@\d+\s*$/.test(line))
       return { next: line.length, tok: "keyword", inBookAfter: inBook };
     if (/^\s*=+\s*$/.test(line)) return { next: line.length, tok: "meta", inBookAfter: inBook };
     if (/^\s*\/\//.test(line)) return { next: line.length, tok: "comment", inBookAfter: inBook };

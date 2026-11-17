@@ -14,6 +14,7 @@ const root = fileURLToPath(new URL("../../", import.meta.url));
 const sha = (s: string) => createHash("sha256").update(s).digest("hex");
 
 // Expected hashes came from the OLD parser before migration, including existing user edits.
+// Removing trailing padding bands refreshes their hashes after verifying unchanged framed glyphs/books.
 // Source IDs and line indices can change; visible cells and decoration geometry must not.
 function geometry(source: string) {
   const doc = gj2ir(source), laid = layout3(doc), books = projectBooks(laid, doc.overlays);
