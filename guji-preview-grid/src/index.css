@@ -56,6 +56,11 @@
     height: 22px;
     object-fit: contain;
 }
+/* 站点字头 SVG（head-svg/unencoded-svg）纯黑填充透明底：暗主题反色为白，
+   否则与深背景同色不可辨 */
+.dark .hw-char img {
+    filter: invert(1);
+}
 /* 字头详情弹窗大样（HeadwordStrip 点击字头组） */
 .hw-char-lg {
     width: 64px;

@@ -32,7 +32,6 @@ import { Separator } from "@/components/ui/separator";
 import { GujiEditor } from "@/components/editor/GujiEditor";
 import { formatDocument } from "@/components/dataset/format-document";
 import { HeadwordStrip } from "@/components/dataset/HeadwordStrip";
-import { resolvePageHeadwords } from "@/components/dataset/headwords";
 import { MatrixPages } from "@/components/matrix/MatrixPages";
 import { getPageFrame } from "@/ir/page-frame";
 import { useToolbarSlot } from "@/hooks/use-toolbar-slot";
@@ -215,16 +214,6 @@ export function DatasetView({
       (p): p is number => p !== undefined,
     ));
   }, [index, idx, ensure]);
-
-  // ---- 字头弹窗数据：字头条只显爬取段，.gj 簇经点击合并进弹窗（纯延续页按清单序回溯宿主，当前页用编辑缓冲） ----
-  const headwords = useMemo(() => {
-    if (!index || page === undefined) return { state: "loading" } as const;
-    return resolvePageHeadwords(text, page, index.map((p) => p.page), texts);
-  }, [index, page, text, texts]);
-  // 宿主候选页文本缺失 → 补取后 texts 更新自动重算
-  useEffect(() => {
-    if (headwords.state === "pending") ensure(headwords.needPages);
-  }, [headwords, ensure]);
 
   // ←/→、Ctrl-N/P 翻页（编辑器/表单聚焦时不劫持——Ctrl-N/P 是 CodeMirror 行移动）
   useEffect(() => {
@@ -590,7 +579,7 @@ export function DatasetView({
 
         {/* 字头段并入工具栏（原为工具栏下方独立窄条）：多页字头时随 flex-wrap 换行 */}
         <Separator orientation="vertical" className="h-5" />
-        <HeadwordStrip resolved={headwords} page={page} text={text} texts={texts} />
+        <HeadwordStrip page={page} />
 
         <div className="ml-auto flex flex-wrap items-center gap-2">
           {addBusy ? (

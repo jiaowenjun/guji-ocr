@@ -56,6 +56,16 @@ if [ -d "$UNENC/svg" ]; then
 else
   echo "⚠ 缺 $UNENC/svg——字头条缺字格退化为系统字体" >&2
 fi
+
+# 未编码字头格（page-heads.svg 字段直用）：WD-2T 随爬 SVG 缓存，目录布局
+# = page_chars.svg 相对路径（0000s/… 千位桶），前端直拼即得，零映射。
+# 路径事实源 tools/paths.py；未挂载只告警——未编码格破图回退 □。
+HEADSVG="$(python3 -c "import sys; sys.path.insert(0, '$ROOT/tools'); import paths; print(paths.RAW_KANGXI_SVG)")"
+if [ -d "$HEADSVG" ]; then
+  ln -sfn "$HEADSVG" "$DEST/head-svg"
+else
+  echo "⚠ 缺 $HEADSVG（外置盘未挂载？）——未编码字头格破图回退 □" >&2
+fi
 python3 - "$UNENC" "$DEST/headword-svg.json" <<'PY'
 import json, os, sys
 
