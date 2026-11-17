@@ -19,6 +19,8 @@ GOLD = '/Users/jwj/workspace/guji-ocr/kangxi-gold/annotations/%04d.txt'
 CROP_ROOT = '/Users/jwj/workspace/guji-ocr/var/datasets/kangxi-ocr/'
 DB = '/Users/jwj/workspace/guji-ocr/paddleocr-baseline/data/ocr/ocr.sqlite3'
 OUT = '/Users/jwj/workspace/guji-ocr/var/scratch/pagecmp.html'
+FONTS_SRC = '/Users/jwj/workspace/guji-ocr/guji-preview-grid/public/fonts'
+FONTS_DIR = '/Users/jwj/workspace/guji-ocr/var/scratch/fonts'
 DISPLAY_W = 760
 
 
@@ -41,6 +43,22 @@ def b64img(path, width=None, quality=82):
     buf = io.BytesIO()
     im.convert('RGB').save(buf, 'JPEG' if width else 'PNG', quality=quality)
     return base64.b64encode(buf.getvalue()).decode(), im.width, im.height
+
+
+def band_text(grp, text_of):
+    """Band 内行结构：切段单换行；连续大字格合并同一行（书名列整体一行）。"""
+    out = ''
+    prev = None
+    for x in grp:
+        t = text_of(x)
+        if not out:
+            out = t
+        elif x['kind'] == 'large' and prev == 'large':
+            out += t
+        else:
+            out += NL + t
+        prev = x['kind']
+    return out
 
 
 def assemble(crops):
@@ -79,6 +97,11 @@ def lev(a, b):
 
 
 def main():
+    import shutil
+    fonts_out = __import__('pathlib').Path(FONTS_DIR)
+    fonts_out.mkdir(exist_ok=True)
+    for name in ('guji-plane0.ttf', 'guji-plane2.ttf', 'guji-planef.ttf'):
+        shutil.copyfile(f'{FONTS_SRC}/{name}', fonts_out / name)
     onnx = {r['id']: r for r in json.load(open('/Users/jwj/workspace/guji-ocr/var/scratch/receval_onnx.json'))['rows']}
     sample = json.load(open('/Users/jwj/workspace/guji-ocr/var/scratch/receval_sample.json'))
     pagemetrics = {r['page']: r for r in json.load(open('/Users/jwj/workspace/guji-ocr/var/scratch/pageeval_report.json'))}
@@ -88,9 +111,17 @@ def main():
     pages = []
     for page in PAGES:
         crops = assemble([c for c in sample if c['source_page'] == page and c['kind'] in ('text_run', 'large')])
-        gold = normD(open(GOLD % page).read().replace('\r', ''))
+        # 金标换行按版式结构：band（大列）之间空行，band 内切段（小列/大字格）单换行；
+        # 去除换行后与金标 txt 逐字一致（沿用拼装校验不变式）
+        band_groups = []
+        for c in crops:
+            b = c['id'].split('-')[1]
+            if not band_groups or band_groups[-1][0] != b:
+                band_groups.append((b, []))
+            band_groups[-1][1].append(c)
+        gold = (NL + NL).join(band_text(grp, lambda x: normD(x['text'])) for _, grp in band_groups)
+        assert ''.join(gold.split(NL)) == norm(open(GOLD % page).read()), f'structured gold mismatch @{page}'
         rows = []
-        local_parts = []
         for i, c in enumerate(crops):
             o = onnx[c['id']]
             g, p = norm(c['text']), norm(o['pred'])
@@ -100,21 +131,19 @@ def main():
                          'gold': c['text'], 'pred': o['pred'], 'conf': o['conf'], 'ms': o['ms'],
                          'cer': round(cer, 3), 'cls': 'em' if cer == 0 else ('ok' if cer <= .3 else 'bad'),
                          'thumb': thumb})
-            local_parts.append(normD(o['pred']))
-        local = NL.join(local_parts)
+        # 本机原样：每切段识别结果原样一行（含 CTC 空格），不做 band 分组等重排
+        local = NL.join(onnx[x['id']]['pred'] for x in crops)
 
         h = hashlib.sha256(open(SCAN % page, 'rb').read()).hexdigest()
         rj = json.loads(db.execute('select result_json from images where sha256=?', (h,)).fetchone()[0])
-        blocks, online_parts = [], []
+        blocks = []
         for pg in rj['result']['layoutParsingResults']:
             for blk in pg['prunedResult']['parsing_res_list']:
                 blocks.append({'label': blk.get('block_label'), 'order': blk.get('block_order'),
                                'bbox': blk.get('block_bbox'), 'poly': blk.get('block_polygon_points'),
                                'content': blk.get('block_content') or ''})
-                part = normD(blocks[-1]['content'])
-                if part:
-                    online_parts.append(part)
-        online = NL.join(online_parts)
+        # 线上原样：block_content 逐字保留（每个 \n 一一对应显示换行），空内容块跳过，块间单换行
+        online = NL.join(b['content'].replace('\r', '').replace('\n', NL) for b in blocks if b['content'])
 
         img, iw, ih = b64img(SCAN % page, DISPLAY_W)
         pages.append({
@@ -143,6 +172,14 @@ TEMPLATE = r'''<!doctype html>
 <title>整页识别对比：本机 ONNX PP-OCRv6 vs 线上 PaddleOCR-VL</title>
 <style>
 :root { --em:#1a7f37; --ok:#b08514; --bad:#cf222e; --ink:#1c1c1c; --mut:#6e7781; --bg:#f6f6f4; --card:#fff; }
+/* 与 guji-preview-grid 同款裸 @font-face（无 unicode-range）：WebKit 对多家族栈 +
+   unicode-range 的按需解析不可靠，Safari 下会不触发下载而渲染豆腐块 */
+@font-face { font-family:'GujiPlane0'; src:url('fonts/guji-plane0.ttf?v=1') format('truetype'),
+  local('FZSONG_ZHSJ_SIP--GB1-5'), local('中华书局宋体00平面'); font-display:swap; }
+@font-face { font-family:'GujiPlane2'; src:url('fonts/guji-plane2.ttf?v=1') format('truetype'),
+  local('FZSONG_ZHSJ_02--GB1-5'), local('中华书局宋体02平面'); font-display:swap; }
+@font-face { font-family:'GujiPlanef'; src:url('fonts/guji-planef.ttf?v=1') format('truetype'),
+  local('FZSONG_ZHSJ_0F--GB1-5'), local('中华书局宋体15平面'); font-display:swap; }
 * { box-sizing: border-box; }
 body { margin:0; background:var(--bg); color:var(--ink);
   font-family:-apple-system,"PingFang SC","Hiragino Sans GB",sans-serif; }
@@ -170,8 +207,9 @@ main { padding:0 24px 40px; }
 .diffcard { background:var(--card); border:1px solid #e4e4e1; border-radius:8px; padding:12px 14px; }
 .diffcard h3 { margin:0 0 8px; font-size:13px; }
 .diffcard h3 .tag { font-weight:400; color:var(--mut); font-size:11px; }
-.goldline, .predline { font-family:"Songti SC","Noto Serif SC",serif; font-size:15.5px;
-  line-height:1.9; letter-spacing:.5px; word-break:break-all; margin:4px 0 10px; }
+.goldline, .predline { font-family:"GujiPlane0","GujiPlane2","GujiPlanef","Songti SC","Noto Serif SC",serif;
+  font-size:15.5px; line-height:1.9; letter-spacing:.5px; word-break:break-all; white-space:pre-wrap;
+  margin:4px 0 10px; }
 .lab { font-size:11px; color:var(--mut); margin-top:6px; }
 span.eq {}
 span.del { background:#ffdce0; border-radius:2px; }
@@ -180,7 +218,7 @@ table { border-collapse:collapse; width:100%; background:var(--card); border:1px
   border-radius:8px; overflow:hidden; }
 th, td { padding:6px 8px; border-bottom:1px solid #efefec; font-size:12.5px; text-align:left; vertical-align:top; }
 th { background:#fafaf8; font-weight:600; color:var(--mut); font-size:11px; }
-td.t { font-family:"Songti SC","Noto Serif SC",serif; font-size:14px; }
+td.t { font-family:"GujiPlane0","GujiPlane2","GujiPlanef","Songti SC","Noto Serif SC",serif; font-size:14px; }
 td.num { font-variant-numeric:tabular-nums; white-space:nowrap; }
 tr.em td.t { color:var(--em); } tr.ok td.t { color:var(--ok); } tr.bad td.t { color:var(--bad); }
 img.thumb { display:block; border:1px solid #e4e4e1; border-radius:4px; max-height:64px; }
@@ -201,7 +239,7 @@ canvas { position:absolute; left:10px; top:10px; cursor:crosshair; }
   <h1>整页识别对比：本机 ONNX PP-OCRv6（网格切段） vs 线上 PaddleOCR-VL-1.6</h1>
   <div class="sub">康熙字典 @312/318/328/342/349/358 · 金标=kangxi-gold 初校转写 · CER 按去空白编辑距离/金标字数 ·
     本机均值 CER <b id="sum-local"></b>，线上均值 CER <b id="sum-online"></b>（2026-11-16 评估）·
-    文本对比按原文换行直接呈现并参与对齐（金标=行界，本机=切段边界，线上=块界/块内换行），指标卡 CER 仍按去空白口径</div>
+    文本对比换行口径：金标按版式结构（大列空行、小列单换行、连续大字同行）；本机/线上输出按 OCR 结果原样（换行与空格逐字保留），指标卡 CER 仍按去空白口径</div>
 </header>
 <div class="tabs" id="tabs"></div>
 <main>
@@ -215,11 +253,11 @@ canvas { position:absolute; left:10px; top:10px; cursor:crosshair; }
   <div class="pane on" id="pane-text">
     <div class="diffcols">
       <div class="diffcard"><h3>本机 ONNX PP-OCRv6 <span class="tag" id="tag-local"></span></h3>
-        <div class="lab">金标（红=缺失/被替换；按金标行界换行）</div><div class="goldline" id="g-local"></div>
-        <div class="lab">本机输出（黄=多出/替换；按切段边界换行）</div><div class="predline" id="p-local"></div></div>
+        <div class="lab">金标（红=缺失/被替换；大列空行分隔，小列单换行，连续大字同行）</div><div class="goldline" id="g-local"></div>
+        <div class="lab">本机输出（黄=多出/替换；每切段识别结果原样一行，含空格）</div><div class="predline" id="p-local"></div></div>
       <div class="diffcard"><h3>线上 PaddleOCR-VL-1.6 <span class="tag" id="tag-online"></span></h3>
-        <div class="lab">金标（红=缺失/被替换；按金标行界换行）</div><div class="goldline" id="g-online"></div>
-        <div class="lab">线上输出（黄=多出/替换；按块界/块内换行）</div><div class="predline" id="p-online"></div></div>
+        <div class="lab">金标（红=缺失/被替换；大列空行分隔，小列单换行，连续大字同行）</div><div class="goldline" id="g-online"></div>
+        <div class="lab">线上输出（黄=多出/替换；OCR 原文换行/空格原样保留）</div><div class="predline" id="p-online"></div></div>
     </div>
   </div>
   <div class="pane" id="pane-crops"><table id="croptable"></table></div>
@@ -328,6 +366,8 @@ function show(i){
 
 $('#tabs').innerHTML = DATA.pages.map((p,i) =>
   `<div class="tab" onclick="show(${i})">@${p.page}</div>`).join('');
+['GujiPlane0','GujiPlane2','GujiPlanef'].forEach(f =>
+  document.fonts.load(`15.5px ${f}`, '康\u{20064}\uE815').catch(() => {}));
 $('#sum-local').textContent = fmtPct(DATA.summary.local_mean_cer);
 $('#sum-online').textContent = fmtPct(DATA.summary.online_mean_cer);
 document.querySelectorAll('.mode').forEach(mo => mo.onclick = () => {
