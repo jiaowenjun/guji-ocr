@@ -176,7 +176,6 @@ main { padding:0 24px 40px; }
 span.eq {}
 span.del { background:#ffdce0; border-radius:2px; }
 span.ins { background:#fff3cd; border-radius:2px; }
-span.nl { color:#8b949e; font-size:.8em; padding:0 1px; }
 table { border-collapse:collapse; width:100%; background:var(--card); border:1px solid #e4e4e1;
   border-radius:8px; overflow:hidden; }
 th, td { padding:6px 8px; border-bottom:1px solid #efefec; font-size:12.5px; text-align:left; vertical-align:top; }
@@ -202,7 +201,7 @@ canvas { position:absolute; left:10px; top:10px; cursor:crosshair; }
   <h1>整页识别对比：本机 ONNX PP-OCRv6（网格切段） vs 线上 PaddleOCR-VL-1.6</h1>
   <div class="sub">康熙字典 @312/318/328/342/349/358 · 金标=kangxi-gold 初校转写 · CER 按去空白编辑距离/金标字数 ·
     本机均值 CER <b id="sum-local"></b>，线上均值 CER <b id="sum-online"></b>（2026-11-16 评估）·
-    文本对比含 ⏎ 换行标记参与对齐（金标=行界，本机=切段边界，线上=块界/块内换行），指标卡 CER 仍按去空白口径</div>
+    文本对比按原文换行直接呈现并参与对齐（金标=行界，本机=切段边界，线上=块界/块内换行），指标卡 CER 仍按去空白口径</div>
 </header>
 <div class="tabs" id="tabs"></div>
 <main>
@@ -216,11 +215,11 @@ canvas { position:absolute; left:10px; top:10px; cursor:crosshair; }
   <div class="pane on" id="pane-text">
     <div class="diffcols">
       <div class="diffcard"><h3>本机 ONNX PP-OCRv6 <span class="tag" id="tag-local"></span></h3>
-        <div class="lab">金标（红=缺失/被替换；⏎=金标行界）</div><div class="goldline" id="g-local"></div>
-        <div class="lab">本机输出（黄=多出/替换；⏎=切段边界）</div><div class="predline" id="p-local"></div></div>
+        <div class="lab">金标（红=缺失/被替换；按金标行界换行）</div><div class="goldline" id="g-local"></div>
+        <div class="lab">本机输出（黄=多出/替换；按切段边界换行）</div><div class="predline" id="p-local"></div></div>
       <div class="diffcard"><h3>线上 PaddleOCR-VL-1.6 <span class="tag" id="tag-online"></span></h3>
-        <div class="lab">金标（红=缺失/被替换；⏎=金标行界）</div><div class="goldline" id="g-online"></div>
-        <div class="lab">线上输出（黄=多出/替换；⏎=块内换行/块界）</div><div class="predline" id="p-online"></div></div>
+        <div class="lab">金标（红=缺失/被替换；按金标行界换行）</div><div class="goldline" id="g-online"></div>
+        <div class="lab">线上输出（黄=多出/替换；按块界/块内换行）</div><div class="predline" id="p-online"></div></div>
     </div>
   </div>
   <div class="pane" id="pane-crops"><table id="croptable"></table></div>
@@ -241,12 +240,12 @@ const $ = s => document.querySelector(s);
 
 function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
 function renderDiff(ops, gold, pred, gEl, pEl){
-  const markNl = s => s.replace(/⏎/g, '<span class="nl">⏎</span>');
+  const br = s => s.replace(/⏎/g, '<br>');
   let g = '', p = '';
   for (const [t,g0,g1,p0,p1] of ops){
-    if (t === 'equal'){ g += markNl(esc(gold.slice(g0,g1))); p += markNl(esc(pred.slice(p0,p1))); }
-    else { g += '<span class="del">'+esc(gold.slice(g0,g1))+'</span>';
-           p += '<span class="ins">'+esc(pred.slice(p0,p1))+'</span>'; }
+    if (t === 'equal'){ g += br(esc(gold.slice(g0,g1))); p += br(esc(pred.slice(p0,p1))); }
+    else { g += '<span class="del">'+br(esc(gold.slice(g0,g1)))+'</span>';
+           p += '<span class="ins">'+br(esc(pred.slice(p0,p1)))+'</span>'; }
   }
   gEl.innerHTML = g || '（空）'; pEl.innerHTML = p || '（空）';
 }
