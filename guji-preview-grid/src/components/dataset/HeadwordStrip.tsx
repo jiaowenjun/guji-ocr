@@ -2,11 +2,14 @@
 // 原始字头序（page-heads.json，site page_chars 口径，含未编码 K 码字形）。
 // 点击弹窗也只显爬取侧（字形大样、码位、词条全文——entries.json 同源
 // 爬取库，与爬取演示页字段一致），不带任何 .gj 侧内容。
+// 段首另显 .gj 侧页首跨页归属徽标（continuation）：本页开头几行是
+// 哪一页字头词条的延续，点击宿主字头弹爬取详情。
 // 字形用 GujiLarge（字头大字体）；缺字时依次回退：站点扫描 SVG
 // （/dataset/unencoded-svg/）→ 系统字体 + 缺字描边。
 import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cpKey, useCrawlEntries, useCrawlPageHeads, type CrawlEdition, type CrawlEntries, type CrawlEntryRecord, type CrawlPageHead } from "@/components/dataset/crawl-entries";
+import { type PageContinuation } from "@/components/dataset/headwords";
 
 const EMPTY_SET = new Set<string>();
 const EMPTY_HEADS: CrawlPageHead[] = [];
@@ -66,6 +69,13 @@ function useSvgMap(needed: boolean): Record<string, string> | null {
 
 const codepoint = (ch: string) =>
   "U+" + (ch.codePointAt(0) ?? 0).toString(16).toUpperCase().padStart(4, "0");
+
+/** 延续段行号（0 基）→ 1 基展示（第 2 行 / 第 2–4 行） */
+const lineRange = (lines: number[]) => {
+  const a = lines[0] + 1;
+  const b = lines[lines.length - 1] + 1;
+  return a === b ? `第 ${a} 行` : `第 ${a}–${b} 行`;
+};
 
 /** 单个字头字符格：GujiLarge → 站点 SVG → 系统字体 + 缺字描边（条内小格 / 弹窗大样） */
 function HeadwordChar({
@@ -238,7 +248,7 @@ function HeadwordDetailDialog({
   );
 }
 
-export function HeadwordStrip({ page }: { page?: number }) {
+export function HeadwordStrip({ page, continuation }: { page?: number; continuation?: PageContinuation | null }) {
   /** 爬取库当前页原始字头（site page_chars 口径；null=fixture 不可用，undefined=加载中） */
   const crawlHeads = useCrawlPageHeads(page !== undefined);
   const crawled = useMemo(
@@ -247,7 +257,12 @@ export function HeadwordStrip({ page }: { page?: number }) {
   );
   /** 条内渲染用（未就绪分支各自显提示，此值仅在就绪分支使用） */
   const heads = crawled ?? EMPTY_HEADS;
-  const allChars = useMemo(() => heads.map((h) => h.char ?? "").filter(Boolean), [heads]);
+  /** 宿主字头一并探测缺字（延续徽标与字头格同套 GujiLarge/SVG 兜底） */
+  const allChars = useMemo(() => {
+    const chars = heads.map((h) => h.char ?? "").filter(Boolean);
+    if (continuation?.state === "host") chars.push(continuation.cluster.head);
+    return chars;
+  }, [heads, continuation]);
   const uncovered = useUncovered(allChars);
   const svgMap = useSvgMap(uncovered.size > 0);
   const [detail, setDetail] = useState<HeadwordDetail | null>(null);
@@ -259,10 +274,55 @@ export function HeadwordStrip({ page }: { page?: number }) {
     setDetail({ page, head: ch, uncovered, svgMap });
   };
 
+  /** 延续徽标点击：弹宿主字头的爬取详情（词条全文与页界无关，天然含本页延续段） */
+  const openHost = () => {
+    if (continuation?.state !== "host") return;
+    const { fromPage, cluster } = continuation;
+    setDetail({ page: fromPage, head: cluster.head, uncovered, svgMap });
+  };
+
+  /** host 徽标悬浮详情：延续行数 + 行号范围 + 宿主词条（含古文变体） */
+  const host = continuation?.state === "host" ? continuation : undefined;
+  const hostTitle = host
+    ? `本页开头 ${host.lines.length} 行（${lineRange(host.lines)}）是 @${host.fromPage}「${host.cluster.head}」词条的延续` +
+      (host.cluster.chars.length > 1
+        ? `（含古文 ${host.cluster.chars.filter((c) => c !== host.cluster.head).join("")}）`
+        : "")
+    : undefined;
+
   return (
     <>
       {/* 无边框内联段：作为工具栏 flex 行的一个子项，字头多时自行换行 */}
       <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-xs">
+        {/* .gj 侧页首跨页归属（不依赖爬取 fixture）：宿主字头可点击弹爬取详情 */}
+        {host ? (
+          <button
+            type="button"
+            title={hostTitle}
+            onClick={openHost}
+            className="bg-background flex shrink-0 cursor-pointer items-center gap-1 rounded-md border px-1 py-0.5 transition-colors hover:border-ring"
+          >
+            <span className="text-muted-foreground shrink-0">@{host.fromPage} ↩</span>
+            <HeadwordChar
+              ch={host.cluster.head}
+              missing={uncovered.has(host.cluster.head)}
+              svg={uncovered.has(host.cluster.head) ? svgMap?.[host.cluster.head] : undefined}
+            />
+            <span className="text-muted-foreground shrink-0">{host.lines.length} 行</span>
+          </button>
+        ) : continuation ? (
+          <span
+            className="text-muted-foreground shrink-0"
+            title={
+              continuation.state === "pending"
+                ? "宿主候选页文本未就绪，补取后自动判定（不跳过未知页，防选错宿主）"
+                : `本页开头 ${continuation.lines.length} 行（${lineRange(continuation.lines)}）延续，但清单内更早页均无字头——宿主可能不在已标注页内`
+            }
+          >
+            ↩ {continuation.lines.length} 行延续
+            {continuation.state === "pending" ? " · 前页取文中…" : " · 宿主不在清单"}
+          </span>
+        ) : null}
         {page === undefined ? null : crawlHeads === undefined ? (
           <span className="text-muted-foreground">字头加载中…</span>
         ) : crawlHeads === null ? (

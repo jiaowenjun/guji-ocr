@@ -5,6 +5,7 @@
 import {
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -22,6 +23,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { formatDocument } from "@/components/dataset/format-document";
 import { HeadwordStrip } from "@/components/dataset/HeadwordStrip";
+import { resolvePageContinuation } from "@/components/dataset/headwords";
 import { DatasetWorkspace } from "./DatasetWorkspace";
 import { useToolbarSlot } from "@/hooks/use-toolbar-slot";
 import type { DatasetConfig } from "@/datasets/config";
@@ -155,6 +157,18 @@ export function DatasetView({
       (p): p is number => p !== undefined,
     ));
   }, [index, idx, ensure]);
+
+  // 页首跨页归属：当前页用编辑缓冲实时判定；回溯读已取文本（含各页未保存编辑）
+  const indexPages = useMemo(() => (index ? index.map((p) => p.page) : []), [index]);
+  const knownTexts = useMemo(() => ({ ...texts, ...edits }), [texts, edits]);
+  const continuation = useMemo(
+    () => (page !== undefined ? resolvePageContinuation(text, page, indexPages, knownTexts) : null),
+    [text, page, indexPages, knownTexts],
+  );
+  // 宿主候选页缺文本：补取后重算（挂起而非跳过，防选错宿主）
+  useEffect(() => {
+    if (continuation?.state === "pending") ensure(continuation.needPages);
+  }, [continuation, ensure]);
 
   // ←/→、Ctrl-N/P 翻页（编辑器/表单聚焦时不劫持——Ctrl-N/P 是 CodeMirror 行移动）
   useEffect(() => {
@@ -456,7 +470,7 @@ export function DatasetView({
 
         {/* 字头段并入工具栏（原为工具栏下方独立窄条）：多页字头时随 flex-wrap 换行 */}
         <Separator orientation="vertical" className="h-5" />
-        <HeadwordStrip page={page} />
+        <HeadwordStrip page={page} continuation={continuation} />
 
         <div className="ml-auto flex flex-wrap items-center gap-2">
           {addBusy ? (
