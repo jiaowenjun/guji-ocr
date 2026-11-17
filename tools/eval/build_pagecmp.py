@@ -29,6 +29,15 @@ def norm(s):
 
 
 NL = '⏎'
+FOOTER_LINE = __import__('re').compile(
+    r'^(?:https?://www\.kangxizidian\.com/?|康熙字典網上版|03\d{2})+$', __import__('re').I)
+
+
+def strip_footer(text):
+    """剔除固定页脚行（URL/康熙字典網上版/页码 03xx，含同行组合），保留其余原文换行。"""
+    kept = [ln for ln in text.split('\n')
+            if not FOOTER_LINE.fullmatch(''.join(ln.split()))]
+    return '\n'.join(kept).strip('\n')
 
 
 def normD(s):
@@ -142,15 +151,21 @@ def main():
                 blocks.append({'label': blk.get('block_label'), 'order': blk.get('block_order'),
                                'bbox': blk.get('block_bbox'), 'poly': blk.get('block_polygon_points'),
                                'content': blk.get('block_content') or ''})
-        # 线上原样：block_content 逐字保留（每个 \n 一一对应显示换行），空内容块跳过，块间单换行
-        online = NL.join(b['content'].replace('\r', '').replace('\n', NL) for b in blocks if b['content'])
+        # 线上原样（剔除固定页脚行后）：block_content 逐字保留（每个 \n 一一对应显示换行）
+        parts = [c.replace('\n', NL) for b in blocks if (c := strip_footer(b['content'].replace('\r', '')))]
+        online = NL.join(parts)
+        # 线上 CER/长度比按剔页脚口径重算（与官方口径一致：去空白且不计换行标记）
+        gold_flat = ''.join(gold.split(NL))
+        online_flat = norm(online).replace(NL, '')
+        online_f = {'cer': round(lev(gold_flat, online_flat) / len(gold_flat), 4),
+                    'len_ratio': round(len(online_flat) / len(gold_flat), 3)}
 
         img, iw, ih = b64img(SCAN % page, DISPLAY_W)
         pages.append({
             'page': page, 'img': img, 'iw': iw, 'ih': ih,
             'gold': gold, 'local': local, 'online': online,
             'ops_local': opcodes(gold, local), 'ops_online': opcodes(gold, online),
-            'crops': rows, 'oblocks': blocks,
+            'crops': rows, 'oblocks': blocks, 'online_f': online_f,
             'metrics': pagemetrics[page],
         })
         print(page, 'crops', len(rows), 'gold', len(gold), 'local', len(local), 'online', len(online))
@@ -239,7 +254,7 @@ canvas { position:absolute; left:10px; top:10px; cursor:crosshair; }
   <h1>整页识别对比：本机 ONNX PP-OCRv6（网格切段） vs 线上 PaddleOCR-VL-1.6</h1>
   <div class="sub">康熙字典 @312/318/328/342/349/358 · 金标=kangxi-gold 初校转写 · CER 按去空白编辑距离/金标字数 ·
     本机均值 CER <b id="sum-local"></b>，线上均值 CER <b id="sum-online"></b>（2026-11-16 评估）·
-    文本对比换行口径：金标按版式结构（大列空行、小列单换行、连续大字同行）；本机/线上输出按 OCR 结果原样（换行与空格逐字保留），指标卡 CER 仍按去空白口径</div>
+    文本对比换行口径：金标按版式结构（大列空行、小列单换行、连续大字同行）；本机输出按 OCR 结果原样；线上输出原样但已剔除固定页脚（URL/康熙字典網上版/页码）并按此口径重算 CER</div>
 </header>
 <div class="tabs" id="tabs"></div>
 <main>
@@ -257,7 +272,7 @@ canvas { position:absolute; left:10px; top:10px; cursor:crosshair; }
         <div class="lab">本机输出（黄=多出/替换；每切段识别结果原样一行，含空格）</div><div class="predline" id="p-local"></div></div>
       <div class="diffcard"><h3>线上 PaddleOCR-VL-1.6 <span class="tag" id="tag-online"></span></h3>
         <div class="lab">金标（红=缺失/被替换；大列空行分隔，小列单换行，连续大字同行）</div><div class="goldline" id="g-online"></div>
-        <div class="lab">线上输出（黄=多出/替换；OCR 原文换行/空格原样保留）</div><div class="predline" id="p-online"></div></div>
+        <div class="lab">线上输出（黄=多出/替换；OCR 原文换行/空格原样保留，已剔除固定页脚 URL/網上版/页码）</div><div class="predline" id="p-online"></div></div>
     </div>
   </div>
   <div class="pane" id="pane-crops"><table id="croptable"></table></div>
@@ -330,9 +345,9 @@ function show(i){
   document.querySelectorAll('.tab').forEach((t,j) => t.classList.toggle('on', j===i));
   const cards = [
     ['本机 CER', fmtPct(m.local.cer), 'em-v'],
-    ['线上 CER', fmtPct(m.online.cer), m.online.cer > .15 ? 'bad-v' : ''],
+    ['线上 CER（剔页脚）', fmtPct(pg.online_f.cer), pg.online_f.cer > .15 ? 'bad-v' : ''],
     ['本机长度比', m.local.len_ratio.toFixed(3), ''],
-    ['线上长度比', m.online.len_ratio.toFixed(3), m.online.len_ratio < .5 ? 'bad-v' : ''],
+    ['线上长度比（剔页脚）', pg.online_f.len_ratio.toFixed(3), pg.online_f.len_ratio < .5 ? 'bad-v' : ''],
     ['本机识别耗时', m.local.recognize_ms/1000 + 's', ''],
     ['线上耗时(缓存实测)', m.online.measured_s + 's', ''],
     ['切段数', m.crops, ''],
@@ -344,7 +359,7 @@ function show(i){
     (pg.page===358 ? ' · 线上灾难失败：整页仅返回单字「寧」+页脚' : '') +
     (pg.page===342 ? ' · 线上版面分类混乱（doc_title=人部、表头杂质并入正文列）' : '');
   $('#tag-local').textContent = 'CER ' + fmtPct(m.local.cer);
-  $('#tag-online').textContent = 'CER ' + fmtPct(m.online.cer);
+  $('#tag-online').textContent = 'CER ' + fmtPct(pg.online_f.cer) + '（剔页脚）';
   renderDiff(pg.ops_local, pg.gold, pg.local, $('#g-local'), $('#p-local'));
   renderDiff(pg.ops_online, pg.gold, pg.online, $('#g-online'), $('#p-online'));
 
