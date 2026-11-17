@@ -216,7 +216,7 @@ export function DatasetView({
     ));
   }, [index, idx, ensure]);
 
-  // ---- 页面字头条：本页字头；纯延续页按清单序回溯宿主（当前页用编辑缓冲，实时反映增删） ----
+  // ---- 字头弹窗数据：字头条只显爬取段，.gj 簇经点击合并进弹窗（纯延续页按清单序回溯宿主，当前页用编辑缓冲） ----
   const headwords = useMemo(() => {
     if (!index || page === undefined) return { state: "loading" } as const;
     return resolvePageHeadwords(text, page, index.map((p) => p.page), texts);

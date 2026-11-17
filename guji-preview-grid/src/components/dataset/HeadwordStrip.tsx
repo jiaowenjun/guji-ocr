@@ -1,17 +1,18 @@
-// 字头段（并入工具栏单行，嵌在界栏/字格开关之后）：两段口径并列——
-//   .gj 段：当前页 .gj 字头一览（own 态实时取编辑缓冲，纯延续页显示回溯宿主）；
-//   爬取段：爬取库该页原始字头序（page-heads.json，site page_chars 口径，
-//           含未编码 K 码字形）——与 .gj 段并排即暴露转写缺字头（如 @351 丢 𠂿）。
+// 字头段（并入工具栏单行，嵌在界栏/字格开关之后）：只显爬取库该页
+// 原始字头序（page-heads.json，site page_chars 口径，含未编码 K 码字形）；
+// .gj 侧不再上条，仅并入点击弹窗——.gj 有同字簇则显簇原文对照
+// （无簇即暴露转写缺字头，如 @351 丢 𠂿）。
 // 字形用 GujiLarge（字头大字体）；缺字时依次回退：站点扫描 SVG
-// （/dataset/unencoded-svg/）→ 系统字体 + 缺字描边。点击弹窗展示详情
+// （/dataset/unencoded-svg/）→ 系统字体 + 缺字描边。弹窗展示详情
 // （字形大样、码位、.gj 原文、爬取词条全文——entries.json 同源爬取库，
 // 与爬取演示页字段一致；仅爬取字头（.gj 无对应簇）只显爬取侧）。
 import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { cpKey, useCrawlEntries, useCrawlPageHeads, type CrawlEdition, type CrawlEntries, type CrawlEntryRecord } from "@/components/dataset/crawl-entries";
+import { cpKey, useCrawlEntries, useCrawlPageHeads, type CrawlEdition, type CrawlEntries, type CrawlEntryRecord, type CrawlPageHead } from "@/components/dataset/crawl-entries";
 import { headwordEntry, type HeadwordCluster, type PageHeadwords } from "@/components/dataset/headwords";
 
 const EMPTY_SET = new Set<string>();
+const EMPTY_HEADS: CrawlPageHead[] = [];
 
 /** GujiLarge 加载后逐字 check 出的缺字集合；加载失败不判缺字（避免误切 SVG）。
  *  结果带 key 快照存回——字符集变化即回到「未探测」，不在 effect 里同步重置 */
@@ -111,31 +112,6 @@ function CrawlHeadCells({
       className="bg-background flex shrink-0 cursor-pointer items-center rounded-md border border-dashed px-0.5 py-0.5 transition-colors hover:border-ring"
     >
       <HeadwordChar ch={ch} missing={missing} svg={missing ? svg : undefined} />
-    </button>
-  );
-}
-
-function ClusterCells({
-  cluster,
-  uncovered,
-  svgMap,
-  onOpen,
-}: {
-  cluster: HeadwordCluster;
-  uncovered: Set<string>;
-  svgMap: Record<string, string> | null;
-  onOpen: (cluster: HeadwordCluster) => void;
-}) {
-  return (
-    <button
-      type="button"
-      title={`字头详情：${cluster.raw}`}
-      onClick={() => onOpen(cluster)}
-      className="bg-background flex shrink-0 cursor-pointer items-center rounded-md border px-0.5 py-0.5 transition-colors hover:border-ring"
-    >
-      {cluster.chars.map((ch) => (
-        <HeadwordChar key={ch + codepoint(ch)} ch={ch} missing={uncovered.has(ch)} svg={uncovered.has(ch) ? svgMap?.[ch] : undefined} />
-      ))}
     </button>
   );
 }
@@ -315,6 +291,8 @@ export function HeadwordStrip({
     () => (page !== undefined && crawlHeads ? crawlHeads[String(page)] ?? [] : undefined),
     [page, crawlHeads],
   );
+  /** 条内渲染用（未就绪分支各自显提示，此值仅在就绪分支使用） */
+  const heads = crawled ?? EMPTY_HEADS;
   const allChars = useMemo(
     () => [...clusters.flatMap((c) => c.chars), ...(crawled ?? []).map((h) => h.char ?? "")].filter(Boolean),
     [clusters, crawled],
@@ -333,7 +311,7 @@ export function HeadwordStrip({
     setDetail({ page: from, cluster, head: null, entry: headwordEntry(src, cluster), uncovered, svgMap });
   };
 
-  /** 爬取段字头格：.gj 有同字簇则并入簇弹窗（含 .gj 侧），否则仅爬取侧 */
+  /** 字头格点击：.gj 有同字簇则并入簇弹窗（含 .gj 侧），否则仅爬取侧 */
   const openCrawlHead = (ch: string) => {
     const hit = clusters.find((c) => c.chars.includes(ch));
     if (hit) {
@@ -346,40 +324,22 @@ export function HeadwordStrip({
 
   return (
     <>
-      {/* 无边框内联段：作为工具栏 flex 行的一个子项，字头多时自行换行 */}
+      {/* 无边框内联段：作为工具栏 flex 行的一个子项，字头多时自行换行。
+          只显爬取段；.gj 侧不上条，点击时经 clusters 合并进弹窗对照 */}
       <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-xs">
-        <span className="text-muted-foreground shrink-0">字头</span>
-        {resolved.state === "loading" ? (
-          <span className="text-muted-foreground">加载中…</span>
-        ) : resolved.state === "pending" ? (
-          <span className="text-muted-foreground">
-            回溯宿主（取 {resolved.needPages.map((p) => `@${p}`).join(" ")}）…
-          </span>
-        ) : resolved.state === "none" ? (
-          <span className="text-muted-foreground">无字头，宿主不在已标注页内</span>
+        {page === undefined ? null : crawlHeads === undefined ? (
+          <span className="text-muted-foreground">字头加载中…</span>
+        ) : crawlHeads === null ? (
+          <span className="text-muted-foreground">page-heads.json 不可用（未生成或加载失败）</span>
         ) : (
           <>
-            {resolved.state === "continuation" ? (
-              <span className="shrink-0 text-amber-600" title="本页无字头，内容续入自该页的字头词条">
-                续 @{resolved.fromPage} · 宿主
-              </span>
-            ) : null}
-            {clusters.map((c, i) => (
-              <ClusterCells key={`${i}-${c.raw}`} cluster={c} uncovered={uncovered} svgMap={svgMap} onOpen={openDetail} />
-            ))}
-          </>
-        )}
-        {/* 爬取段：site page_chars 原始字头序（与 .gj 段并排暴露转写缺字头） */}
-        {crawled && crawled.length > 0 ? (
-          <>
-            <span className="text-muted-foreground/50 shrink-0 select-none">│</span>
             <span
               className="text-muted-foreground shrink-0"
-              title={`爬取库该页原始字头 ${crawled.length} 个（site page_chars 口径，含未编码 K 码字形）`}
+              title={`爬取库该页原始字头 ${heads.length} 个（site page_chars 口径，含未编码 K 码字形）`}
             >
-              爬取 {crawled.length}
+              爬取 {heads.length}
             </span>
-            {crawled.map((h) =>
+            {heads.map((h) =>
               h.char ? (
                 <CrawlHeadCells
                   key={`${h.cp}-${h.char}`}
@@ -413,7 +373,7 @@ export function HeadwordStrip({
               ),
             )}
           </>
-        ) : null}
+        )}
       </div>
       {detail ? <HeadwordDetailDialog detail={detail} crawl={crawl} onClose={() => setDetail(null)} /> : null}
     </>
