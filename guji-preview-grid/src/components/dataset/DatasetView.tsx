@@ -590,6 +590,10 @@ export function DatasetView({
           字格{cells ? "开" : "关"}
         </Button>
 
+        {/* 字头段并入工具栏（原为工具栏下方独立窄条）：多页字头时随 flex-wrap 换行 */}
+        <Separator orientation="vertical" className="h-5" />
+        <HeadwordStrip resolved={headwords} page={page} text={text} texts={texts} />
+
         <div className="ml-auto flex flex-wrap items-center gap-2">
           {addBusy ? (
             <span className="text-amber-600 text-xs">
@@ -610,14 +614,6 @@ export function DatasetView({
               </Button>
             </span>
           ) : null}
-          {dirty ? <span className="text-xs text-amber-600">● 未保存</span> : null}
-          <Button size="sm" disabled={!dirty || busy} onClick={() => void save()} title={SAVE_SHORTCUT_HINT}>
-            <Save data-icon="inline-start" />
-            保存回数据集
-          </Button>
-          <Button size="sm" variant="outline" disabled={!dirty} onClick={reset}>
-            重置
-          </Button>
           <Button size="sm" variant="outline" disabled={page === undefined} onClick={ocrShow}
             title="弹窗显示该页的 PaddleOCR 识别文本">
             <ScanText data-icon="inline-start" />
@@ -627,8 +623,6 @@ export function DatasetView({
           </>,
           toolbarSlot,
         )}
-
-      <HeadwordStrip resolved={headwords} page={page} text={text} texts={texts} />
 
       <ResizablePanelGroup orientation="horizontal" className="min-h-0 flex-1">
         {/* 三栏默认宽度 2:2:3（原图:渲染:编辑器），可拖动调整 */}
@@ -711,7 +705,7 @@ export function DatasetView({
             <ColumnHeader>
               .gj 编辑器 · @{page} · {dirty ? "未保存" : original !== undefined ? "与数据集一致" : "加载中…"}
             </ColumnHeader>
-            {/* 编辑器工具栏：作用于 .gj 源码的快捷操作（格式化即保存） */}
+            {/* 编辑器工具栏：作用于 .gj 源码的快捷操作（格式化即保存；保存/重置针对未保存缓冲） */}
             <div className="flex flex-wrap items-center gap-2 border-b px-2 py-1">
               <Button
                 size="sm"
@@ -722,6 +716,18 @@ export function DatasetView({
               >
                 <Wand2 data-icon="inline-start" />
                 格式化
+              </Button>
+              <Button
+                size="sm"
+                disabled={!dirty || busy}
+                onClick={() => void save()}
+                title={SAVE_SHORTCUT_HINT}
+              >
+                <Save data-icon="inline-start" />
+                保存
+              </Button>
+              <Button size="sm" variant="outline" disabled={!dirty} onClick={reset}>
+                重置
               </Button>
             </div>
             <div className="min-h-0 flex-1 overflow-hidden">

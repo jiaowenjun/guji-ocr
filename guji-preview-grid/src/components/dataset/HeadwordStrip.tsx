@@ -1,4 +1,4 @@
-// 字头条（工具栏下方窄条）：两段口径并列——
+// 字头段（并入工具栏单行，嵌在界栏/字格开关之后）：两段口径并列——
 //   .gj 段：当前页 .gj 字头一览（own 态实时取编辑缓冲，纯延续页显示回溯宿主）；
 //   爬取段：爬取库该页原始字头序（page-heads.json，site page_chars 口径，
 //           含未编码 K 码字形）——与 .gj 段并排即暴露转写缺字头（如 @351 丢 𠂿）。
@@ -346,7 +346,8 @@ export function HeadwordStrip({
 
   return (
     <>
-      <div className="flex flex-wrap items-center gap-x-2 gap-y-1 border-b px-3 py-1 text-xs">
+      {/* 无边框内联段：作为工具栏 flex 行的一个子项，字头多时自行换行 */}
+      <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-xs">
         <span className="text-muted-foreground shrink-0">字头</span>
         {resolved.state === "loading" ? (
           <span className="text-muted-foreground">加载中…</span>
