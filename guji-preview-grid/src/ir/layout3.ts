@@ -5,22 +5,30 @@ import { compileProfile } from "./profile";
 import { resolveLayoutConfig, type IRLayoutConfig } from "./layout-config";
 import { diagnoseLayout, type LayoutDiagnostic } from "./layout-diagnostics";
 
-export interface L3Item {
-  kind: "large" | "run";
+interface L3Placement {
   r: number;
   c: number;
-  text?: string;
+  lineId: string;
+  cpStart: number;
+}
+
+export interface L3LargeItem extends L3Placement {
+  kind: "large";
+  text: string;
   ligature?: boolean;
-  elId?: string;
-  cells?: string[];
-  rawOffsets?: number[];
-  /** Full source range for contractions/expansions in the profile. */
-  rawRanges?: Array<[number, number]>;
-  lineId?: string;
-  cpStart?: number;
-  cpEnd?: number;
+  elId: string;
+  cpEnd: number;
+}
+
+export interface L3RunItem extends L3Placement {
+  kind: "run";
+  cells: string[];
+  /** 每个显示字格对应的行内原始码点区间；保留清洗的展开／收缩映射。 */
+  rawRanges: Array<[number, number]>;
   halfShift?: 0.5;
 }
+
+export type L3Item = L3LargeItem | L3RunItem;
 
 export interface L3Band {
   id: string;
@@ -106,8 +114,8 @@ function placeBand(plan: BandPlan, config: IRLayoutConfig): L3Band {
   const cols = Math.max(config.smallColumnsPerBand,
     ...plan.segments.map((s) => s.kind === "parallel" ? s.runs.length : s.kind === "glyph" ? config.largeCols : 0));
   // Preserve the established item order (large glyphs, then small runs).
-  const glyphs: L3Item[] = [];
-  const small: L3Item[] = [];
+  const glyphs: L3LargeItem[] = [];
+  const small: L3RunItem[] = [];
   let r = 0;
   for (const segment of plan.segments) {
     if (segment.kind === "gap") r += segment.rows;
@@ -118,7 +126,7 @@ function placeBand(plan: BandPlan, config: IRLayoutConfig): L3Band {
       const slack = cols - segment.runs.length;
       segment.runs.forEach((run, j) => small.push({
         kind: "run", r, c: Math.floor(slack / 2) + segment.runs.length - 1 - j,
-        cells: run.cells, rawOffsets: run.ranges.map(([a]) => a), rawRanges: run.ranges,
+        cells: run.cells, rawRanges: run.ranges,
         lineId: run.lineId, cpStart: run.cpStart, halfShift: slack % 2 ? 0.5 : undefined,
       }));
       r += Math.max(...segment.runs.map((run) => run.cells.length));

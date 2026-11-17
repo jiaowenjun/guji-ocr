@@ -136,7 +136,7 @@ export function lineText(line: { elements: IRElement[] }): string {
 // ---- 渲染联动接口（v3：书名高亮按 overlay id，由渲染器点亮其全部覆盖矩形） ----
 
 /** 单字定位：large=大字/合字格（元素 id——合字 n 字共享一格）；cell=小字格
- *  （行 + 行规范文本码点，渲染层经 run.rawOffsets 对位，清洗字符回退前一渲染字） */
+ *  （行 + 行规范文本码点，渲染层经 run.rawRanges 起点对位，清洗字符回退前一渲染字） */
 export type CharHighlight =
   | { kind: "large"; elId: string }
   | { kind: "cell"; lineId: string; cp: number };

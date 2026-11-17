@@ -18,6 +18,7 @@ const { resolveDatasetIndexConfig } = await import('../../guji-preview-grid/src/
 const { gj2ir } = await import('../../guji-preview-grid/src/ir/gj2ir.ts');
 const { layout3, planLayoutBand } = await import('../../guji-preview-grid/src/ir/layout3.ts');
 const { getPageFrame } = await import('../../guji-preview-grid/src/ir/page-frame.ts');
+const { getItemBounds } = await import('../../guji-preview-grid/src/ir/layout-geometry.ts');
 const { projectBooks } = await import('../../guji-preview-grid/src/ir/projection.ts');
 const { kangxiBandHeading } = await import('../../guji-preview-grid/src/semantics/kangxi.ts');
 const { irToText } = await import('../../guji-preview-grid/src/ir/text.ts');
@@ -54,9 +55,9 @@ export function exportLayout(source, pageNo, datasetConfig) {
       for (const item of items) {
         if (!item) throw Error(`Missing placement in ${band.id}`);
         const large = item.kind === 'large';
-        const x = left + item.c + (item.halfShift ?? 0), y = item.r;
-        const width = large ? laid.config.largeCols : 1;
-        const height = large ? laid.config.largeRows : item.cells.length;
+        const bounds = getItemBounds(item, laid.config);
+        const { y, width, height } = bounds;
+        const x = left + bounds.x;
         const id = large ? item.elId : `${item.lineId}-run-${item.cpStart}`;
         const region = { id, band_id: band.id, kind: large ? 'large' : 'text_run',
           size_class: large ? 'large' : 'small', line_id: large ? elLine.get(item.elId) : item.lineId,

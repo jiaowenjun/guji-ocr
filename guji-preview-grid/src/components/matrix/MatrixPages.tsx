@@ -8,6 +8,7 @@ import type { IROverlay, RenderHighlight } from "@/ir/types";
 import type { L3Item, L3Page } from "@/ir/layout3";
 import { indexLayout, projectBooks, locateCell, type BookBox, type LocatedRun } from "@/ir/projection";
 import { getPageFrame } from "@/ir/page-frame";
+import { getItemBounds } from "@/ir/layout-geometry";
 
 export function MatrixPages({
   pages,
@@ -116,10 +117,9 @@ function MatrixPageView({
             const overCols = new Set<number>();
             if (over) {
               for (const it of band.items) {
-                const span = it.kind === "large" ? largeRows : (it.cells?.length ?? 0);
-                if (it.r + span <= rows) continue;
-                overCols.add(it.c + (it.halfShift ?? 0));
-                if (it.kind === "large") for (let col = 1; col < largeCols; col++) overCols.add(it.c + col);
+                const { x, y, width, height } = getItemBounds(it, page.config);
+                if (y + height <= rows) continue;
+                for (let col = 0; col < width; col++) overCols.add(x + col);
               }
             }
             return (
@@ -127,7 +127,7 @@ function MatrixPageView({
                 key={bi}
                 className={`m-band${
                   highlight?.band?.page === page.no && highlight.band.index === bi ? " m-band-active" : ""
-                }${page.colStarts[bi] + colOffset === 0 ? " m-band-last" : ""}${over ? " m-band-over" : ""}`}
+                }${page.colStarts[bi] + colOffset === 0 ? " m-band-last" : ""}`}
                 title={page.diagnostics.filter((d) => d.bandId === band.id).map((d) => d.message).join("；") || undefined}
                 onClick={onBandClick ? () => onBandClick(page.no, bi) : undefined}
                 style={
@@ -274,7 +274,7 @@ function ItemView({
     const span = Math.min(largeRows, rowCap - item.r);
     if (span <= 0) return null;
     const clipped = span < largeRows;
-    const text = item.text ?? "";
+    const text = item.text;
     const stacked = item.ligature && [...text].length > 1;
     const gridPos = {
       gridRow: `${item.r + 1} / span ${span}`,
@@ -282,7 +282,7 @@ function ItemView({
     } as CSSProperties;
     const active = activeLarge ? " m-char-active" : "";
     const cut = clipped ? " m-clipped" : "";
-    if (circled.has(item.elId ?? "")) {
+    if (circled.has(item.elId)) {
       return (
         <div className={`m-circle${active}${cut}`} style={gridPos}>
           <div className="m-ring">{stacked ? <span className="stack">{text}</span> : text}</div>
@@ -295,7 +295,7 @@ function ItemView({
       </div>
     );
   }
-  const full = item.cells?.length ?? 0;
+  const full = item.cells.length;
   const span = Math.min(full, rowCap - item.r);
   if (span <= 0) return null;
   return (
@@ -312,7 +312,7 @@ function ItemView({
         } as CSSProperties
       }
     >
-      {item.cells?.map((ch, i) => (
+      {item.cells.map((ch, i) => (
         <div key={i} className={i === activeCell ? "m-cell m-char-active" : "m-cell"}>
           {ch}
         </div>

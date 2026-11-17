@@ -186,9 +186,8 @@
   line-height: calc(var(--guji-unit) * 1.3);
 }
 
-/* 小字列：run 与 book 共用 1×1 字格 */
-.m-run,
-.m-book {
+/* 小字列：每字占 1×1 小格；书名框单独覆盖，不承载文字。 */
+.m-run {
   font-family: "GujiPlane0", "GujiPlane2", "GujiPlaneF", "中华书局宋体00平面",
     "中华书局宋体02平面", "中华书局宋体15平面", "HanaMinA", serif;
   font-size: calc(var(--guji-unit) * 0.8);
@@ -201,21 +200,16 @@
 
 /*
  * 书名框：跨行矩形项，单一边框 + 定向负边距共线（见下）。
- * 边框占位 2px，用 flex 均分字格高度消化（亚像素级压缩，视觉无差）。
- * open-* 只出现在跨小行 wrap 的连接边。
+ * 纯装饰覆盖层，不承载文字，也不拦截下方 band 的点击定位。
+ * open-* 表示跨行／跨页延续的连接边。
  */
 .m-book {
   box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
+  pointer-events: none;
   border: 1px solid;
   border-radius: calc(var(--guji-unit) * 0.3);
   /* 高于 band（z:0）/界栏（z:-1）：共线处框线着色，界栏只作底衬 */
   z-index: 1;
-}
-.m-book .m-cell {
-  height: auto;
-  flex: 1 1 0;
 }
 .m-book.open-bottom {
   border-bottom: 0;

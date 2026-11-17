@@ -9,7 +9,7 @@
 |---|---|---|
 | 布局模型 | 流式：`row-reverse` flex，行对齐由内容"涌现" | 严格矩阵：布局引擎推导 1em 字格坐标，显式 grid 轨道 |
 | 跨行书名 | `book-start/middle/end` 三态 + 负边距阶梯 + `:has()` 按边删 border 拼接 | 同列连续片段合并为**单个跨行矩形项**（单一边框）；仅 wrap 连接边开口 |
-| 行线贯通 | 无（仅外框） | 大行之间界栏全页高（`border-left` + subgrid 占满行，可开关） |
+| 行线贯通 | 无（仅外框） | 大行之间界栏全页高（1px 伪元素 + subgrid 占满行，可开关） |
 | 渲染管线 | `parsePages → React 组件`（旧版，项目已删除） | 主路径 `gj2ir → layout3（骨架布局）→ overlay 装饰 → 矩阵组件`（[Guji IR v3](../docs/design/guji-ir.md) 双层结构；原 Flex 对照视图已于 2026-11-14 移除） |
 
 解析器与 CodeMirror 编辑器共用 `.gj/2` 行内词法；旧 PageModel 接口由 IR 适配。应用外壳自
@@ -19,13 +19,17 @@
 
 ```
 .gj → gj2ir（转写骨架、overlay、源码映射）
-    → 文档 profile 清洗 + BandPlan（glyph / parallel / gap）
     → applyBookLayout（数据集选择书籍版式，写入几何快照）
-    → layout3（字格坐标、rawRanges、版式诊断）
+    → layout3（profile 清洗 → BandPlan → 字格坐标、rawRanges、版式诊断）
     → indexLayout + projectBooks（按全局 span 投影书名）
     → MatrixPages（按版式配置裁剪、显示诊断、光标联动）
 IR → irToText（同一 profile 的阅读序 TXT）
 ```
+
+单页编辑时每次文本更新只解析一次，布局、书名框及光标／点击联动共用当前 IR，
+不再使用实时高亮与防抖布局两份快照。字符映射统一为 `rawRanges`，保留清洗的
+展开／收缩区间；预览溢出定位、重叠诊断和 OCR 导出共用 `getItemBounds` 占格几何。
+书名框只作装饰覆盖，鼠标点击穿透到下方大列。
 
 通用结构固定每大列两小列。书籍版式的三个参数为 `bandsPerPage`、
 `largeCellsPerBand`、`smallRowsPerLargeCell`；武英殿版参数及扫描边距统一保存在

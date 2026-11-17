@@ -25,7 +25,7 @@ describe("document profile and provenance", () => {
   it("shares ordered normalization with layout, TXT and Python, including repeated patterns", () => {
     const doc = gj2ir("@1\n\n𠀀甲，乙甲\n");
     doc.meta.profile = { stripPunct: ["，"], normalize: [["𠀀甲", "丁"], ["乙", "甲"], ["甲", "戊己"], ["戊己", "庚"]] };
-    const run = layout3(doc)[0].bands[0].items[0];
+    const run = layout3(doc)[0].bands[0].items.find((item) => item.kind === "run")!;
     expect(run.cells).toEqual(["丁", "庚", "庚"]);
     expect(run.rawRanges).toEqual([[0, 2], [3, 4], [4, 5]]);
     expect(irToText(doc)).toBe("丁庚庚\n");
@@ -38,7 +38,7 @@ describe("document profile and provenance", () => {
   it("normalizes displayed large glyphs and headings, preserving skeleton text", () => {
     const doc = gj2ir("@1\n\n#〇\n\n#〇\n");
     const before = JSON.stringify(doc.pages);
-    expect(layout3(doc).flatMap((p) => p.bands.flatMap((b) => b.items.map((i) => i.text)))).toEqual(["○", "○"]);
+    expect(layout3(doc).flatMap((p) => p.bands.flatMap((b) => b.items.flatMap((i) => i.kind === "large" ? [i.text] : [])))).toEqual(["○", "○"]);
     expect(JSON.stringify(doc.pages)).toBe(before);
     expect(irToText(doc)).toBe("○\n○\n");
   });
@@ -111,6 +111,28 @@ describe("layout plan and configuration", () => {
 });
 
 describe("overlay projection", () => {
+  it("locates contracted, expanded and stripped codepoints from the same ranges used by book frames", () => {
+    const doc = gj2ir("@1\n\n【甲乙，丙丁】戊\n");
+    doc.meta.profile = { stripPunct: ["，"], normalize: [["甲乙", "合"], ["丙", "左右"], ["丁", ""]] };
+    const pages = layout3(doc);
+    const index = indexLayout(pages);
+    const lineId = doc.pages[0].bands[0].lines[0].id;
+    const cell = (cp: number) => {
+      const hit = locateCell(index, lineId, cp);
+      return hit ? { text: hit.item.cells[hit.index], index: hit.index } : null;
+    };
+    expect(cell(-1)).toBeNull();
+    expect(cell(0)).toEqual({ text: "合", index: 0 });
+    expect(cell(1)).toEqual({ text: "合", index: 0 }); // 收缩范围内部
+    expect(cell(2)).toEqual({ text: "合", index: 0 }); // 标点回退
+    expect(cell(3)).toEqual({ text: "右", index: 2 }); // 展开时取最后一个同起点字格
+    expect(cell(4)).toEqual({ text: "右", index: 2 }); // 被删除的字符回退
+    expect(cell(5)).toEqual({ text: "戊", index: 3 });
+    expect(projectBooks(pages, doc.overlays, index).get(pages[0])).toMatchObject([
+      { rowStart: 0, rowEnd: 3, openTop: false, openBottom: false },
+    ]);
+  });
+
   it("opens cross-page seams with opaque IDs and partial page rendering", () => {
     const doc = gj2ir("@1\n\n【史\n\n@2\n\n記】文\n");
     const book = doc.overlays.find((o): o is IRBookOverlay => o.kind === "book-title")!;

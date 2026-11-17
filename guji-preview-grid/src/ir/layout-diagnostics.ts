@@ -1,4 +1,5 @@
 import type { L3Page } from "./layout3";
+import { getItemBounds } from "./layout-geometry";
 
 export interface LayoutDiagnostic {
   code: "band-count" | "page-width" | "band-width" | "empty-band" | "overflow" | "overlap";
@@ -11,7 +12,7 @@ export interface LayoutDiagnostic {
 /** Inspect geometry without correcting transcription or discarding clipped cells. */
 export function diagnoseLayout(page: L3Page): LayoutDiagnostic[] {
   const out: LayoutDiagnostic[] = [];
-  const { rowCap, expectedBands, smallColumnsPerBand, largeRows, largeCols } = page.config;
+  const { rowCap, expectedBands, smallColumnsPerBand } = page.config;
   const add = (code: LayoutDiagnostic["code"], message: string, bandId?: string, severity: LayoutDiagnostic["severity"] = "warning") =>
     out.push({ code, severity, page: page.no, bandId, message });
   if (expectedBands !== null) {
@@ -27,10 +28,9 @@ export function diagnoseLayout(page: L3Page): LayoutDiagnostic[] {
     let overlap = false;
     // Half-cell columns account for centered one-column runs (halfShift).
     for (const item of band.items) {
-      const height = item.kind === "large" ? largeRows : item.cells?.length ?? 0;
-      const width = item.kind === "large" ? largeCols : 1;
-      const left = 2 * (item.c + (item.halfShift ?? 0));
-      for (let row = item.r; row < item.r + height; row++) for (let col = left; col < left + 2 * width; col++) {
+      const { x, y, width, height } = getItemBounds(item, page.config);
+      const left = 2 * x;
+      for (let row = y; row < y + height; row++) for (let col = left; col < left + 2 * width; col++) {
         const key = `${row}:${col}`;
         if (occupied.has(key)) overlap = true;
         occupied.add(key);

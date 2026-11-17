@@ -1,6 +1,6 @@
 // Overlay geometry is a projection over placements, never part of the skeleton.
 import type { IROverlay } from "./types";
-import type { L3Item, L3Page } from "./layout3";
+import type { L3Item, L3Page, L3RunItem } from "./layout3";
 
 export interface BookBox {
   overlayId: string;
@@ -25,13 +25,12 @@ export function indexLayout(pages: L3Page[]): Map<string, LocatedRun[]> {
   for (const page of pages) page.bands.forEach((band, bandIdx) => {
     for (const id of band.lineIds) if (!byLine.has(id)) byLine.set(id, []);
     for (const item of band.items) {
-      if (item.lineId === undefined) continue;
       const runs = byLine.get(item.lineId) ?? [];
       runs.push({ page, bandIdx, item });
       byLine.set(item.lineId, runs);
     }
   });
-  for (const runs of byLine.values()) runs.sort((a, b) => (a.item.cpStart ?? 0) - (b.item.cpStart ?? 0));
+  for (const runs of byLine.values()) runs.sort((a, b) => a.item.cpStart - b.item.cpStart);
   return byLine;
 }
 
@@ -46,7 +45,7 @@ export function projectBooks(pages: L3Page[], overlays: IROverlay[], index = ind
     overlay.spans.forEach((span, spanIndex) => {
       for (const { page, bandIdx, item } of index.get(span.line) ?? []) {
         if (item.kind === "large") {
-          if ((item.cpStart ?? 0) < span.range[1] && (item.cpEnd ?? 0) > span.range[0]) {
+          if (item.cpStart < span.range[1] && item.cpEnd > span.range[0]) {
             const col = page.colStarts[bandIdx] + item.c;
             const prev = fragments.at(-1);
             if (prev?.page === page && prev.spanIndex === spanIndex && prev.box.bandIdx === bandIdx &&
@@ -59,10 +58,9 @@ export function projectBooks(pages: L3Page[], overlays: IROverlay[], index = ind
           }
           continue;
         }
-        const ranges = item.rawRanges ?? (item.rawOffsets ?? []).map((cp): [number, number] => [cp, cp + 1]);
         let first = -1;
         let last = -1;
-        ranges.forEach(([a, b], k) => {
+        item.rawRanges.forEach(([a, b], k) => {
           if (a < span.range[1] && b > span.range[0]) {
             if (first < 0) first = k;
             last = k;
@@ -91,12 +89,12 @@ export function projectBooks(pages: L3Page[], overlays: IROverlay[], index = ind
 }
 
 /** A line can contain multiple runs separated by large glyphs. Select one item. */
-export function locateCell(index: Map<string, LocatedRun[]>, lineId: string, cp: number): { item: L3Item; index: number } | null {
-  let hit: { item: L3Item; index: number } | null = null;
+export function locateCell(index: Map<string, LocatedRun[]>, lineId: string, cp: number): { item: L3RunItem; index: number } | null {
+  let hit: { item: L3RunItem; index: number } | null = null;
   let best = -1;
   for (const { item } of index.get(lineId) ?? []) {
     if (item.kind !== "run") continue;
-    for (const [i, offset] of (item.rawOffsets ?? []).entries()) {
+    for (const [i, [offset]] of item.rawRanges.entries()) {
       if (offset <= cp && offset >= best) {
         hit = { item, index: i };
         best = offset;

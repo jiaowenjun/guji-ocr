@@ -35,7 +35,6 @@ import { HeadwordStrip } from "@/components/dataset/HeadwordStrip";
 import { resolvePageHeadwords } from "@/components/dataset/headwords";
 import { MatrixPages } from "@/components/matrix/MatrixPages";
 import { getPageFrame } from "@/ir/page-frame";
-import { useDebouncedValue } from "@/hooks/use-debounced-value";
 import { useToolbarSlot } from "@/hooks/use-toolbar-slot";
 import { gj2ir } from "@/ir/gj2ir";
 import { applyBookLayout } from "@/ir/document-layout";
@@ -243,35 +242,34 @@ export function DatasetView({
     return () => window.removeEventListener("keydown", onKey);
   }, [index, idx]);
 
-  const debouncedText = useDebouncedValue(text ?? "", 200);
-  // 渲染主路径：骨架 → 字格布局（layout3，无 overlay 参与）→ 渲染期装饰
+  // 每次文本更新只解析一次；布局、overlay 与联动共享同一份 IR。
+  // ID 按结构位置生成，不能把新文本的高亮套到延迟更新的旧布局上。
   const irDoc = useMemo(() => {
-    const parsed = gj2ir(debouncedText);
+    const parsed = gj2ir(text ?? "");
     return config ? applyBookLayout(parsed, config.layout) : parsed;
-  }, [debouncedText, config]);
+  }, [text, config]);
   const laidPages = useMemo(() => config ? layout3(irDoc) : [], [irDoc, config]);
   const frame = laidPages[0] ? getPageFrame(laidPages[0]) : null;
   const cols = frame?.cols ?? 0;
 
-  // ---- 编辑器 ↔ 渲染列联动（IR src 偏移；实时文本，防抖期 200ms 内自愈） ----
+  // ---- 编辑器 ↔ 渲染列联动（当前 IR 的 src 偏移） ----
   const [cursor, setCursor] = useState<number | null>(null);
   const [requestCursor, setRequestCursor] = useState<number | null>(null);
-  const irLive = useMemo(() => gj2ir(text ?? ""), [text]);
   // 单字联动：charIndex 随文本重建（词法产物），光标移动只做二分定位
-  const charIndex = useMemo(() => buildCharIndex(irLive), [irLive]);
+  const charIndex = useMemo(() => buildCharIndex(irDoc), [irDoc]);
   const highlight = useMemo(
     () => ({
-      ...highlightAt(irLive, cursor),
+      ...highlightAt(irDoc, cursor),
       char: charHighlightAt(charIndex, text ?? "", cursor),
     }),
-    [irLive, charIndex, text, cursor],
+    [irDoc, charIndex, text, cursor],
   );
   const onBandClick = useCallback(
     (p: number, i: number) => {
-      const target = bandCursorTarget(irLive, text ?? "", p, i);
+      const target = bandCursorTarget(irDoc, text ?? "", p, i);
       if (target !== null) setRequestCursor(target);
     },
-    [irLive, text],
+    [irDoc, text],
   );
   // 渲染 unit 对齐版框内容宽（而非整图宽），矩阵视图下渲染页宽 = frameWidth
 

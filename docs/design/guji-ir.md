@@ -209,7 +209,9 @@ Python 侧（kangxi_page_tool.py）宿主识别正则 `#(?:圈)*頭` 与剥尾�
 
 - **清洗**：`compileProfile` 编译文档 `meta.profile`，文本导出与布局共用；Python
   也按规则数组顺序执行（不先转成字典去重）。剔除项限定单码点，归一化不允许空匹配。
-  `rawRanges[k]` 记录第 k 个显示码点对应的原始码点半开区间，`rawOffsets` 保留首偏移兼容。
+  `rawRanges[k]` 记录第 k 个显示码点对应的行内原始码点半开区间；定位取区间起点，
+  不再另存重复的 `rawOffsets`（2026-11-17 简化）。布局条目按 large／run 分型，
+  各自字段必填；布局产物不持久化，此调整不改变 IR v3 JSON。
   跨元素归一化不执行，与既有逐元素文本导出口径一致。
 - **版式**：可选 `meta.layout = { version: 1, rowCap, expectedBands,
   smallColumnsPerBand, largeRows, largeCols }`，旧入口缺省值为 24／8／2／2／2（已由下文 §10 的显式书籍入口取代）；
