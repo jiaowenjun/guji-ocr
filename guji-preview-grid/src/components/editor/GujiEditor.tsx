@@ -7,12 +7,13 @@ import { vim } from "@replit/codemirror-vim";
 import { gujiHighlight, gujiLanguage } from "./guji-language";
 import { gujiKeymap } from "./keymap";
 import { gujiLargeCharDecoration } from "./large-char-decoration";
+import { vimInputGuard } from "./vim-input";
 
 const BASIC_SETUP = { highlightActiveLine: true, foldGutter: false } as const;
 // 模块级常量：vim() 的返回各段（插件 spec/主题/面板）皆为包内模块级常量，
 // 调用只是组装——@uiw 每渲染对 extensions 整树 reconfigure 时，CM6 按 spec
 // 身份 diff 保活 ViewPlugin 实例，vim 模态/寄存器等状态不会被打回 normal。
-const VIM = vim({ status: true });
+const VIM = [vim({ status: true }), vimInputGuard];
 
 export function GujiEditor({
   value,

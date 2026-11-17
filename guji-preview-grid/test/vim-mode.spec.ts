@@ -6,8 +6,11 @@
 import { afterEach, describe, expect, it } from "vitest";
 import { EditorView } from "@codemirror/view";
 import { StateEffect, type Extension } from "@codemirror/state";
-import { vim, getCM } from "@replit/codemirror-vim";
+import { vim as codemirrorVim, getCM } from "@replit/codemirror-vim";
 import { gujiKeymap } from "@/components/editor/keymap";
+import { vimInputGuard } from "@/components/editor/vim-input";
+
+const vim = () => [codemirrorVim(), vimInputGuard];
 
 function makeView(extensions: Extension[]): EditorView {
   return new EditorView({
