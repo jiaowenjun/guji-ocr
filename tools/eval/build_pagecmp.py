@@ -218,10 +218,12 @@ main { padding:0 24px 40px; }
   background:var(--card); cursor:pointer; }
 .mode.on { background:#0969da; color:#fff; border-color:#0969da; }
 .pane { display:none; } .pane.on { display:block; }
-.diffcols { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.diffcols { display:grid; grid-template-columns:1fr; gap:12px; }
 .diffcard { background:var(--card); border:1px solid #e4e4e1; border-radius:8px; padding:12px 14px; }
 .diffcard h3 { margin:0 0 8px; font-size:13px; }
 .diffcard h3 .tag { font-weight:400; color:var(--mut); font-size:11px; }
+.diffpair { display:grid; grid-template-columns:1fr 1fr; gap:0 16px; }
+.diffpair > div + div { border-left:1px solid #efefec; padding-left:16px; }
 .goldline, .predline { font-family:"GujiPlane0","GujiPlane2","GujiPlanef","Songti SC","Noto Serif SC",serif;
   font-size:15.5px; line-height:1.9; letter-spacing:.5px; word-break:break-all; white-space:pre-wrap;
   margin:4px 0 10px; }
@@ -268,11 +270,15 @@ canvas { position:absolute; left:10px; top:10px; cursor:crosshair; }
   <div class="pane on" id="pane-text">
     <div class="diffcols">
       <div class="diffcard"><h3>本机 ONNX PP-OCRv6 <span class="tag" id="tag-local"></span></h3>
-        <div class="lab">金标（红=缺失/被替换；大列空行分隔，小列单换行，连续大字同行）</div><div class="goldline" id="g-local"></div>
-        <div class="lab">本机输出（黄=多出/替换；每切段识别结果原样一行，含空格）</div><div class="predline" id="p-local"></div></div>
+        <div class="diffpair">
+          <div><div class="lab">金标（红=缺失/被替换；大列空行分隔，小列单换行，连续大字同行）</div><div class="goldline" id="g-local"></div></div>
+          <div><div class="lab">本机输出（黄=多出/替换；每切段识别结果原样一行，含空格）</div><div class="predline" id="p-local"></div></div>
+        </div></div>
       <div class="diffcard"><h3>线上 PaddleOCR-VL-1.6 <span class="tag" id="tag-online"></span></h3>
-        <div class="lab">金标（红=缺失/被替换；大列空行分隔，小列单换行，连续大字同行）</div><div class="goldline" id="g-online"></div>
-        <div class="lab">线上输出（黄=多出/替换；OCR 原文换行/空格原样保留，已剔除固定页脚 URL/網上版/页码）</div><div class="predline" id="p-online"></div></div>
+        <div class="diffpair">
+          <div><div class="lab">金标（红=缺失/被替换；大列空行分隔，小列单换行，连续大字同行）</div><div class="goldline" id="g-online"></div></div>
+          <div><div class="lab">线上输出（黄=多出/替换；OCR 原文换行/空格原样保留，已剔除固定页脚 URL/網上版/页码）</div><div class="predline" id="p-online"></div></div>
+        </div></div>
     </div>
   </div>
   <div class="pane" id="pane-crops"><table id="croptable"></table></div>
