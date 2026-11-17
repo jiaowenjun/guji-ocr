@@ -766,6 +766,142 @@
         "txt": "0358.txt"
       },
       "origin": "kangxizidian.com 爬取草稿（kangxi_page_tool.py add）"
+    },
+    {
+      "page": 359,
+      "image": "0359.jpg",
+      "url": "https://p.kangxizidian.com/kangxi2/0359.jpg",
+      "size_bytes": 490271,
+      "sha256": "36331b2323fed20527539c7a493d756eea70870b57a135e2c93bf33dceaaf95a",
+      "width": 1130,
+      "height": 1665,
+      "downloaded_at": "2026-11-17",
+      "status": "first",
+      "annotations": {
+        "gj": "0359.gj",
+        "json": "0359.json",
+        "txt": "0359.txt"
+      },
+      "origin": "kangxizidian.com 爬取草稿（kangxi_page_tool.py add）"
+    },
+    {
+      "page": 360,
+      "image": "0360.jpg",
+      "url": "https://p.kangxizidian.com/kangxi2/0360.jpg",
+      "size_bytes": 483904,
+      "sha256": "63b69b80b3dfaabfd0c9ee85ca4b8529d0f19d5c8637edf6952a1cc34c1ce420",
+      "width": 1130,
+      "height": 1665,
+      "downloaded_at": "2026-11-17",
+      "status": "first",
+      "annotations": {
+        "gj": "0360.gj",
+        "json": "0360.json",
+        "txt": "0360.txt"
+      },
+      "origin": "kangxizidian.com 爬取草稿（kangxi_page_tool.py add）"
+    },
+    {
+      "page": 361,
+      "image": "0361.jpg",
+      "url": "https://p.kangxizidian.com/kangxi2/0361.jpg",
+      "size_bytes": 516571,
+      "sha256": "0da7dd5f3e6ec6205b4c59bf2aeb3398729e9cbf12daff38fc40557896eac6cb",
+      "width": 1130,
+      "height": 1666,
+      "downloaded_at": "2026-11-17",
+      "status": "first",
+      "annotations": {
+        "gj": "0361.gj",
+        "json": "0361.json",
+        "txt": "0361.txt"
+      },
+      "origin": "kangxizidian.com 爬取草稿（kangxi_page_tool.py add）"
+    },
+    {
+      "page": 362,
+      "image": "0362.jpg",
+      "url": "https://p.kangxizidian.com/kangxi2/0362.jpg",
+      "size_bytes": 498567,
+      "sha256": "07ee032e597eedc4453f7bb6e1f5501278802429dfa5f2a9f179bdfe6ed0023a",
+      "width": 1130,
+      "height": 1666,
+      "downloaded_at": "2026-11-17",
+      "status": "first",
+      "annotations": {
+        "gj": "0362.gj",
+        "json": "0362.json",
+        "txt": "0362.txt"
+      },
+      "origin": "kangxizidian.com 爬取草稿（kangxi_page_tool.py add）"
+    },
+    {
+      "page": 363,
+      "image": "0363.jpg",
+      "url": "https://p.kangxizidian.com/kangxi2/0363.jpg",
+      "size_bytes": 365220,
+      "sha256": "e2b4098d1d2c7d9cb6ba70c9fe9f3fcef81f86930772b3bed0bf8dc2b15cc5a5",
+      "width": 1130,
+      "height": 1667,
+      "downloaded_at": "2026-11-17",
+      "status": "first",
+      "annotations": {
+        "gj": "0363.gj",
+        "json": "0363.json",
+        "txt": "0363.txt"
+      },
+      "origin": "kangxizidian.com 爬取草稿（kangxi_page_tool.py add）"
+    },
+    {
+      "page": 364,
+      "image": "0364.jpg",
+      "url": "https://p.kangxizidian.com/kangxi2/0364.jpg",
+      "size_bytes": 499408,
+      "sha256": "83b00641dc62859795439032f61cd5f1208db94823e797749c32bea6a126149b",
+      "width": 1130,
+      "height": 1667,
+      "downloaded_at": "2026-11-17",
+      "status": "first",
+      "annotations": {
+        "gj": "0364.gj",
+        "json": "0364.json",
+        "txt": "0364.txt"
+      },
+      "origin": "kangxizidian.com 爬取草稿（kangxi_page_tool.py add）"
+    },
+    {
+      "page": 365,
+      "image": "0365.jpg",
+      "url": "https://p.kangxizidian.com/kangxi2/0365.jpg",
+      "size_bytes": 524512,
+      "sha256": "3bc0a6086676b435758ffc1befd1edeaf027af353cb5140e20a15e81c599b0f2",
+      "width": 1130,
+      "height": 1667,
+      "downloaded_at": "2026-11-17",
+      "status": "first",
+      "annotations": {
+        "gj": "0365.gj",
+        "json": "0365.json",
+        "txt": "0365.txt"
+      },
+      "origin": "kangxizidian.com 爬取草稿（kangxi_page_tool.py add）"
+    },
+    {
+      "page": 366,
+      "image": "0366.jpg",
+      "url": "https://p.kangxizidian.com/kangxi2/0366.jpg",
+      "size_bytes": 508713,
+      "sha256": "b7184e4739623c8d7b86e3777964692c123e48ac05b65119e664d1a784e993b0",
+      "width": 1130,
+      "height": 1667,
+      "downloaded_at": "2026-11-17",
+      "status": "first",
+      "annotations": {
+        "gj": "0366.gj",
+        "json": "0366.json",
+        "txt": "0366.txt"
+      },
+      "origin": "kangxizidian.com 爬取草稿（kangxi_page_tool.py add）"
     }
   ],
   "annotation_source": "annotations/*.gj 为逐页转写源；初始 17 页源自 guji-preview-grid/src/samples/kangxi-yibu.gj，后续含人工修订及扩页；JSON/TXT 由 IR v3 派生",
