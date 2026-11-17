@@ -11,7 +11,7 @@ import {
   type CSSProperties,
   type ReactNode,
 } from "react";
-import { ChevronLeft, ChevronRight, Database, Download, Minus, Plus, RotateCcw, Save, ScanText, Wand2, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, Database, Minus, Plus, Save, ScanText, Wand2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -28,7 +28,6 @@ import {
 } from "@/components/ui/resizable";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { Slider } from "@/components/ui/slider";
 import { GujiEditor } from "@/components/editor/GujiEditor";
 import { formatDocument } from "@/components/dataset/format-document";
 import { HeadwordStrip } from "@/components/dataset/HeadwordStrip";
@@ -175,7 +174,6 @@ export function DatasetView({
   const { texts, ensure, put } = useDatasetText();
   const [rules, setRules] = useState(false); // 界栏默认关
   const [cells, setCells] = useState(false); // 整页字格默认关
-  const [zoom, setZoom] = useState<number | "fit">("fit"); // 默认按原图高度适配视口
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState<{ ok: boolean; msg: string } | null>(null);
   const [ocrView, setOcrView] = useState<string | null>(null); // OCR 结果弹窗内容
@@ -276,12 +274,11 @@ export function DatasetView({
 
   // 原图列内容宽高 → 显示宽 → 渲染 unit（同宽联动）
   const { ref: scanRef, width: scanWidth, height: scanHeight } = useContentSize<HTMLDivElement>();
-  const fitHeight = zoom === "fit";
-  const displayWidth = fitHeight
-    ? entry && scanHeight > 0
+  // 始终按原图高度适配视口
+  const displayWidth =
+    entry && scanHeight > 0
       ? Math.floor((scanHeight * entry.width) / entry.height) // 向下取整，避免 1px 溢出触发滚动条
-      : Math.max(200, scanWidth)
-    : Math.max(200, Math.round((scanWidth * zoom) / 100));
+      : Math.max(200, scanWidth);
   // 等比纸边：渲染列包一层与扫描同尺寸的"纸"，内容区对齐版框
   const scan = config ? resolvePageScan(config, page ?? 0) : null;
   const scanMargin = scan?.margin ?? { left: 0, right: 0, top: 0, bottom: 0 };
@@ -456,16 +453,6 @@ export function DatasetView({
     }
   };
 
-  const download = () => {
-    if (text === undefined || page === undefined) return;
-    const url = URL.createObjectURL(new Blob([text], { type: "text/plain;charset=utf-8" }));
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `${stem(page)}.gj`;
-    a.click();
-    URL.revokeObjectURL(url);
-  };
-
   if (error || !index) {
     return (
       <div className="text-muted-foreground flex flex-1 flex-col items-center justify-center gap-2 p-8 text-sm">
@@ -597,28 +584,6 @@ export function DatasetView({
           字格{cells ? "开" : "关"}
         </Button>
 
-        <Separator orientation="vertical" className="h-5" />
-
-        <div className="flex items-center gap-2">
-          <span className="text-muted-foreground text-xs">原图缩放</span>
-          <Slider
-            value={[fitHeight ? 100 : zoom]}
-            onValueChange={([v]) => setZoom(v)}
-            min={30}
-            max={160}
-            step={5}
-            className="w-24"
-          />
-          <span className="text-muted-foreground w-12 text-xs">
-            {fitHeight ? "高度适配" : `${zoom}%`}
-          </span>
-          {!fitHeight ? (
-            <Button variant="ghost" size="icon-sm" aria-label="恢复高度适配" onClick={() => setZoom("fit")}>
-              <RotateCcw />
-            </Button>
-          ) : null}
-        </div>
-
         <div className="ml-auto flex flex-wrap items-center gap-2">
           {addBusy ? (
             <span className="text-amber-600 text-xs">
@@ -646,10 +611,6 @@ export function DatasetView({
           </Button>
           <Button size="sm" variant="outline" disabled={!dirty} onClick={reset}>
             重置
-          </Button>
-          <Button size="sm" variant="outline" disabled={text === undefined} onClick={download}>
-            <Download data-icon="inline-start" />
-            下载 .gj
           </Button>
           <Button size="sm" variant="outline" disabled={page === undefined} onClick={ocrShow}
             title="弹窗显示该页的 PaddleOCR 识别文本">
