@@ -34,6 +34,7 @@ import { formatDocument } from "@/components/dataset/format-document";
 import { HeadwordStrip } from "@/components/dataset/HeadwordStrip";
 import { resolvePageHeadwords } from "@/components/dataset/headwords";
 import { MatrixPages } from "@/components/matrix/MatrixPages";
+import { getPageFrame } from "@/components/matrix/page-frame";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
 import { gj2ir } from "@/ir/gj2ir";
 import { layout3 } from "@/ir/layout3";
@@ -170,7 +171,7 @@ export function DatasetView({
   const [edits, setEdits] = useState<Record<number, string>>({});
   const { texts, ensure, put } = useDatasetText();
   const [rules, setRules] = useState(false); // 界栏默认关
-  const [cells, setCells] = useState(false); // 大字字格默认关
+  const [cells, setCells] = useState(false); // 整页字格默认关
   const [zoom, setZoom] = useState<number | "fit">("fit"); // 默认按原图高度适配视口
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState<{ ok: boolean; msg: string } | null>(null);
@@ -242,7 +243,8 @@ export function DatasetView({
   // 渲染主路径：骨架 → 字格布局（layout3，无 overlay 参与）→ 渲染期装饰
   const irDoc = useMemo(() => gj2ir(debouncedText), [debouncedText]);
   const laidPages = useMemo(() => layout3(irDoc), [irDoc]);
-  const cols = laidPages[0]?.totalCols ?? 0;
+  const frame = laidPages[0] ? getPageFrame(laidPages[0]) : null;
+  const cols = frame?.cols ?? 0;
 
   // ---- 编辑器 ↔ 渲染列联动（IR src 偏移；实时文本，防抖期 200ms 内自愈） ----
   const [cursor, setCursor] = useState<number | null>(null);
@@ -294,10 +296,9 @@ export function DatasetView({
     ? (entry.height - SCAN_FRAME_MARGIN.top - SCAN_FRAME_MARGIN.bottom) * scanScale
     : 0;
   const unit = cols > 0 ? (frameWidth - 2) / cols : 25;
-  const matrixRows = laidPages.length > 0 ? laidPages[0].rows : 0;
-  // 行高分母按版式配置封顶（超高行由渲染层裁剪、不占轨道）：单列超长
-  // 不再压扁全页行高，版框纵向比例恒定；溢出小列挂 m-over-mark 红条警示
-  const unitV = matrixRows > 0 ? frameContentH / Math.min(matrixRows, laidPages[0].config.rowCap) : unit;
+  const matrixRows = frame?.rows ?? 0;
+  // 固定整页行轨：短列不会被拉高；超高列仍裁剪并挂 m-over-mark 红条警示。
+  const unitV = matrixRows > 0 ? frameContentH / matrixRows : unit;
 
   const onChange = useCallback(
     (value: string) => {

@@ -37,6 +37,9 @@
 
 .m-lines {
   display: grid;
+  position: relative;
+  /* 将负层级字格留在纸面之上、所有内容及其高亮之下。 */
+  isolation: isolate;
 }
 
 /* band（大行）：subgrid 占满整页高；界栏 = 左缘 1px 伪元素（纯视觉叠加）。
@@ -68,52 +71,34 @@
 /* 最左 band 的左缘与版框重合，不画界栏（避免相邻双线）。m-band-last 由
    渲染层挂——books 渲染在 bands 之后且同为 div，:last-child 永不匹配 */
 
-/* 大字字格：大字（含带圈）占据区画字格线，与界栏同款纯视觉叠加——
-   不用 border（占盒模型空间，会挤压固定轨道），::after z-index:-1 压到
-   band 层叠上下文最底层：墨字/圆环在其上，band 高亮（半透明橙）罩着透出。
-   外框四边 2px 加粗（整域层，压过平铺层的 1px 首线成并集），
-   内部十字分隔仍 1px（平铺层画各格左、上边线）。 */
-.m-lines[data-cells="on"] .m-large,
-.m-lines[data-cells="on"] .m-circle {
-  position: relative;
-}
-.m-lines[data-cells="on"] .m-large::after,
-.m-lines[data-cells="on"] .m-circle::after {
-  content: "";
+/* 整页字格：默认 16×24 小格，即 8 大列×12 大字格，每大格内 2×2 小格。
+   网格覆盖固定版框，与字符和 band 无关，空列/短列/空页都画满。
+   大格边线 1px 实线、小格分隔 1px 虚线，外缘复用版框。
+   每条线的 containing block 是正文的实际 Grid 区域，left/top:0 锚定轨道线，
+   避免 Safari 背景平铺对小数 tile 取整后向右/向上逐格累积偏移。
+   border 仅用于绝对定位的空线条，不占正文轨道；负层级在所有内容之下。 */
+.m-cell-rule {
+  display: none;
   position: absolute;
   left: 0;
   top: 0;
-  right: 0;
-  bottom: 0;
-  /* 与界栏同色：字格是参考线不是版面元素 */
-  background-image:
-    linear-gradient(to right, #8a8a8a 1px, transparent 1px),
-    linear-gradient(to bottom, #8a8a8a 1px, transparent 1px),
-    linear-gradient(to left, #8a8a8a 2px, transparent 2px),
-    linear-gradient(to top, #8a8a8a 2px, transparent 2px),
-    linear-gradient(to right, #8a8a8a 2px, transparent 2px),
-    linear-gradient(to bottom, #8a8a8a 2px, transparent 2px);
-  background-size:
-    calc(var(--guji-unit) * 1) calc(var(--guji-unit-v, var(--guji-unit)) * 1),
-    calc(var(--guji-unit) * 1) calc(var(--guji-unit-v, var(--guji-unit)) * 1),
-    100% 100%,
-    100% 100%,
-    100% 100%,
-    100% 100%;
+  pointer-events: none;
+  border: 0 solid #8a8a8a;
   z-index: -1;
 }
-
-/* 小字字格：逐 .m-cell 四边自描（run 与书名框共用同一格类）——书名框内
-   格高是 flex 均分，与平铺周期有 1-2px 漂移，逐格自描天然对齐。
-   background 不占布局空间，墨字仍在其上；相邻格边线落同一像素行，
-   同色并集无重影。m-char-active 的 background 简写重置掉格线，
-   高亮格由橙色底透出。 */
-.m-lines[data-cells="on"] .m-cell {
-  background-image:
-    linear-gradient(to right, #8a8a8a 1px, transparent 1px),
-    linear-gradient(to bottom, #8a8a8a 1px, transparent 1px),
-    linear-gradient(to left, #8a8a8a 1px, transparent 1px),
-    linear-gradient(to top, #8a8a8a 1px, transparent 1px);
+.m-lines[data-cells="on"] > .m-cell-rule {
+  display: block;
+}
+.m-cell-rule-v {
+  bottom: 0;
+  border-left-width: 1px;
+}
+.m-cell-rule-h {
+  right: 0;
+  border-top-width: 1px;
+}
+.m-cell-rule-minor {
+  border-style: dashed;
 }
 
 /* 超 PAGE_ROW_CAP（24 格）的溢出警示：不整条大列染色——标记（.m-over-mark，
@@ -216,7 +201,7 @@
  * 方向必须单一：若两边都让，两条线错开成相邻双线（与 flex 三边 -1px 的差异）。
  * - open-bottom 无边可吸，下缘不让（防高亮底色溢出 1px）；
  * - 界栏开时 band 左缘列的框改与界栏共线（margin-left 归 0，at-band-left
- *   由渲染层挂）——最右 band 不含界栏（其左缘是版框，仍走 -1px 合并）；
+ *   由渲染层挂）——贴版框左缘的 band 不含界栏，仍走 -1px 合并；
  * - 最右列（读序第一列）由渲染层挂 m-flush-r，右边线叠上版框。
  */
 .m-lines > .m-book {

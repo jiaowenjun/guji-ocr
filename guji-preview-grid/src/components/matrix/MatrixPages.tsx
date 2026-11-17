@@ -7,6 +7,7 @@ import { useMemo, type CSSProperties } from "react";
 import type { IROverlay, RenderHighlight } from "@/ir/types";
 import type { L3Item, L3Page } from "@/ir/layout3";
 import { indexLayout, projectBooks, locateCell, type BookBox, type LocatedRun } from "@/ir/projection";
+import { getPageFrame } from "./page-frame";
 
 export function MatrixPages({
   pages,
@@ -19,7 +20,7 @@ export function MatrixPages({
   pages: L3Page[];
   overlays?: IROverlay[];
   rules?: boolean;
-  /** 大字字格（纯视觉叠加，不占布局空间） */
+  /** 整页字格（含空白区域，纯视觉叠加，不占布局空间） */
   cells?: boolean;
   highlight?: RenderHighlight;
   onBandClick?: (page: number, index: number) => void;
@@ -71,7 +72,7 @@ function MatrixPageView({
   onBandClick?: (page: number, index: number) => void;
 }) {
   const { rowCap, largeRows, largeCols } = page.config;
-  const rows = Math.min(page.rows, rowCap);
+  const { cols, rows, colOffset } = getPageFrame(page);
   const ch = highlight?.char;
   const activeLargeEl = ch?.kind === "large" ? ch.elId : null;
   const activeCell = ch?.kind === "cell" ? locateCell(index, ch.lineId, ch.cp) : null;
@@ -90,12 +91,13 @@ function MatrixPageView({
           {
             "--guji-large-rows": largeRows,
             "--guji-large-cols": largeCols,
-            gridTemplateColumns: `repeat(${page.totalCols}, calc(var(--guji-unit) * 1))`,
+            gridTemplateColumns: `repeat(${cols}, calc(var(--guji-unit) * 1))`,
             // 行轨用纵向微调后的字格高（版框内容高 ÷ 行数；未注入时回落正方形）
             gridTemplateRows: `repeat(${rows}, calc(var(--guji-unit-v, var(--guji-unit)) * 1))`,
           } as CSSProperties
         }
       >
+        <CellRules cols={cols} rows={rows} largeCols={largeCols} largeRows={largeRows} />
         {page.bands.map((band, bi) => {
           const over = band.rows > rowCap;
           // 溢出定位到小列：内容底边（r+全长）越过封顶线的列挂标记——
@@ -114,12 +116,12 @@ function MatrixPageView({
               key={bi}
               className={`m-band${
                 highlight?.band?.page === page.no && highlight.band.index === bi ? " m-band-active" : ""
-              }${bi === page.bands.length - 1 ? " m-band-last" : ""}${over ? " m-band-over" : ""}`}
+              }${page.colStarts[bi] + colOffset === 0 ? " m-band-last" : ""}${over ? " m-band-over" : ""}`}
               title={page.diagnostics.filter((d) => d.bandId === band.id).map((d) => d.message).join("；") || undefined}
               onClick={onBandClick ? () => onBandClick(page.no, bi) : undefined}
               style={
                 {
-                  gridColumn: `${page.colStarts[bi] + 1} / span ${band.cols}`,
+                  gridColumn: `${page.colStarts[bi] + colOffset + 1} / span ${band.cols}`,
                   gridRow: "1 / -1",
                 } as CSSProperties
               }
@@ -166,9 +168,9 @@ function MatrixPageView({
               box.openBottom && "open-bottom",
               // 最右列（读序第一列）：右边线叠上版框（matrix.css 共线避让）
               box.col + (box.cols ?? 1) === page.totalCols && "m-flush-r",
-              // band 左缘列（最右 band 除外——其左缘是版框）：界栏开时与界栏共线
+              // band 左缘列（版框最左边除外）：界栏开时与界栏共线
               box.col === page.colStarts[box.bandIdx] &&
-                box.bandIdx < page.bands.length - 1 &&
+                box.col + colOffset > 0 &&
                 "at-band-left",
               highlight?.book === box.overlayId && "m-book-active",
             ]
@@ -177,7 +179,7 @@ function MatrixPageView({
             style={
               {
                 gridRow: `${box.rowStart + 1} / span ${span}`,
-                gridColumn: `${box.col + 1} / span ${box.cols ?? 1}`,
+                gridColumn: `${box.col + colOffset + 1} / span ${box.cols ?? 1}`,
                 ...(box.halfShift
                   ? { transform: `translateX(calc(var(--guji-unit) * ${box.halfShift}))` }
                   : {}),
@@ -188,6 +190,37 @@ function MatrixPageView({
         })}
       </div>
     </div>
+  );
+}
+
+/** 每条线直接定位到正文的 Grid 轨道；绝对定位不参与轨道尺寸计算。
+ *  不用 background 平铺：Safari 对小数 tile 取整会造成整页累计偏移。
+ *  只画内部分隔，四周复用版框的 1px 实线，避免边缘叠成双线。 */
+function CellRules({ cols, rows, largeCols, largeRows }: {
+  cols: number;
+  rows: number;
+  largeCols: number;
+  largeRows: number;
+}) {
+  return (
+    <>
+      {Array.from({ length: cols - 1 }, (_, i) => (
+        <span
+          key={`v${i}`}
+          aria-hidden="true"
+          className={`m-cell-rule m-cell-rule-v${(i + 1) % largeCols ? " m-cell-rule-minor" : ""}`}
+          style={{ gridColumn: `${i + 2} / ${i + 3}`, gridRow: "1 / -1" }}
+        />
+      ))}
+      {Array.from({ length: rows - 1 }, (_, i) => (
+        <span
+          key={`h${i}`}
+          aria-hidden="true"
+          className={`m-cell-rule m-cell-rule-h${(i + 1) % largeRows ? " m-cell-rule-minor" : ""}`}
+          style={{ gridRow: `${i + 2} / ${i + 3}`, gridColumn: "1 / -1" }}
+        />
+      ))}
+    </>
   );
 }
 
