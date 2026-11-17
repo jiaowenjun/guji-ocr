@@ -54,11 +54,12 @@ export const cpKey = (ch: string) =>
 const entriesCacheBox: { v: CrawlEntries | null | undefined } = { v: undefined };
 const pageHeadsCacheBox: { v: CrawlPageHeads | null | undefined } = { v: undefined };
 
-/** 懒加载 JSON fixture（useSvgMap 同款模块缓存语义；url/box 均模块级稳定） */
-function useLazyJson<T>(url: string, needed: boolean, box: { v: T | null | undefined }): T | null | undefined {
+/** 懒加载 JSON fixture（useSvgMap 同款模块缓存语义；url/box 均模块级稳定）。
+ *  epoch>0 表示数据源已被后端重写（加页随写 fixture），须重取覆盖模块缓存 */
+function useLazyJson<T>(url: string, needed: boolean, box: { v: T | null | undefined }, epoch = 0): T | null | undefined {
   const [snap, setSnap] = useState<T | null>(() => box.v ?? null);
   useEffect(() => {
-    if (!needed || box.v !== undefined) return;
+    if (!needed || (box.v !== undefined && epoch === 0)) return;
     let alive = true;
     fetch(url)
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
@@ -73,16 +74,16 @@ function useLazyJson<T>(url: string, needed: boolean, box: { v: T | null | undef
     return () => {
       alive = false;
     };
-  }, [needed]); // eslint-disable-line react-hooks/exhaustive-deps -- url/box 模块级常量
+  }, [needed, epoch]); // eslint-disable-line react-hooks/exhaustive-deps -- url/box 模块级常量
   return box.v !== undefined ? box.v : snap;
 }
 
 /** 爬取词条表（弹窗「爬取全文」区块，首次打开弹窗时拉取） */
-export function useCrawlEntries(needed: boolean): CrawlEntries | null | undefined {
-  return useLazyJson("/dataset/entries.json", needed, entriesCacheBox);
+export function useCrawlEntries(needed: boolean, epoch = 0): CrawlEntries | null | undefined {
+  return useLazyJson("/dataset/entries.json", needed, entriesCacheBox, epoch);
 }
 
 /** 逐页爬取原始字头表（字头栏「爬取」段，进页即拉取） */
-export function useCrawlPageHeads(needed: boolean): CrawlPageHeads | null | undefined {
-  return useLazyJson("/dataset/page-heads.json", needed, pageHeadsCacheBox);
+export function useCrawlPageHeads(needed: boolean, epoch = 0): CrawlPageHeads | null | undefined {
+  return useLazyJson("/dataset/page-heads.json", needed, pageHeadsCacheBox, epoch);
 }

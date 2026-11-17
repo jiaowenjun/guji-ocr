@@ -104,63 +104,11 @@ print(f"headword-svg.json：{len(mapping)} 字符 → SVG", file=sys.stderr)
 PY
 
 # 字头详情弹窗与字头栏「爬取」段数据源：爬取库（tools/crawl SQLite，与爬取
-# 演示页同源），复用 kangxi_page_tool 七件套查询 API（page_heads/entry_detail，
-# 自带 sys.path 修正——消费者只 insert tools/dataset）：
-#   entries.json    有码位者取词条 record，按码位键出全文子集
-#                   （未编码 k_code 无详情端点，不在表内——前端回退并注明）
-#   page-heads.json 逐页原始字头索引（含未编码 K 码项），键为页码字符串
-# 库不可用（外置盘未挂载等）写空表并告警，不阻断其余生成步骤——先判
-# DEFAULT_DB 存在再调用（KangxiStore 构造即建库，只读导出不留副作用）。
-python3 - "$ROOT" "$DEST/entries.json" "$DEST/page-heads.json" <<'PY'
-import json, sys
-from pathlib import Path
-
-root, out_records, out_heads = sys.argv[1], sys.argv[2], sys.argv[3]
-manifest = json.load(open(Path(root) / "kangxi-gold/manifest.json", encoding="utf-8"))
-pages = [p["page"] for p in manifest["pages"]]
-
-KEEP = ("head", "guwen", "juan", "unicode", "radical", "radical_strokes",
-        "extra_strokes", "total_strokes", "pinyin", "zhuyin", "cangjie",
-        "unihan", "tongwen_edition", "wuying_edition", "text_paragraphs",
-        "pua_other")
-
-records: dict[str, dict] = {}
-heads_by_page: dict[str, list[dict]] = {}
-db = None
-
-def head_item(it: dict) -> dict:
-    cp = it.get("codepoint")
-    return {"ord": it.get("ord"), "char": it.get("char"),
-            "cp": f"{cp:X}" if cp else None, "k_code": it.get("k_code"),
-            "svg": it.get("svg"), "entry_no": it.get("entry_no")}
-
-try:
-    sys.path.insert(0, str(Path(root) / "tools/dataset"))
-    import kangxi_page_tool as kpt  # 查询 API 门面（b6868ff：消费者 import 即用）
-
-    if Path(kpt.kangxi_store.DEFAULT_DB).is_file():
-        db = kpt.kangxi_store.DEFAULT_DB
-        for page in pages:
-            items = kpt.page_heads(page)
-            heads_by_page[str(page)] = [head_item(it) for it in items]
-            for it in items:
-                cp = it.get("codepoint")
-                if not cp:
-                    continue  # 未编码 k_code：无详情端点
-                rec = kpt.entry_detail(cp)
-                if rec:
-                    records[f"{cp:X}"] = {k: rec.get(k) for k in KEEP}
-except Exception as e:  # noqa: BLE001
-    print(f"⚠ 爬取库不可用（{type(e).__name__}: {e}）——entries/page-heads 写空表，前端回退 .gj", file=sys.stderr)
-
-with open(out_records, "w", encoding="utf-8") as f:
-    f.write(json.dumps(records, ensure_ascii=False, indent=2, sort_keys=True) + "\n")
-with open(out_heads, "w", encoding="utf-8") as f:
-    f.write(json.dumps(heads_by_page, ensure_ascii=False, indent=2, sort_keys=True) + "\n")
-src = f"爬取库 {db}" if db else "无库（空表）"
-n_heads = sum(len(v) for v in heads_by_page.values())
-print(f"entries.json：{len(records)} 条词条；page-heads.json：{n_heads} 字头/{len(heads_by_page)} 页（{src}）", file=sys.stderr)
-PY
+# 演示页同源）全量导出 entries.json（有码位词条全文子集）+ page-heads.json
+# （逐页原始字头索引，含未编码 K 码项，键为页码字符串）。口径与 kangxi_page_tool
+# 加页随写共用同一脚本（export_crawl_fixtures.py，防两处漂移）；库不可用写空表
+# 并告警，不阻断其余生成步骤。
+python3 "$ROOT/tools/dataset/export_crawl_fixtures.py" "$ROOT" "$DEST/entries.json" "$DEST/page-heads.json"
 
 echo "✓ $DEST"
 echo "  annotations -> $ROOT/kangxi-gold/annotations"

@@ -1965,6 +1965,22 @@ def cmd_add(page: int) -> dict:
     write_index(manifest)
     _log_ts(f"草稿+manifest+index 写盘完成（{gj_path.name}）")
 
+    # 爬取侧 fixture 随写：字头栏/字头弹窗读的静态 json（entries/page-heads）
+    # 同步到库最新——否则加页后字头栏显「爬取 0」直到手动重跑 link-dataset.sh。
+    # 失败降级为一句话，不杀 add 流程（同 svg 回补的挂钩韧性）
+    try:
+        import export_crawl_fixtures
+
+        stat = export_crawl_fixtures.export(
+            export_crawl_fixtures.ENTRIES_JSON,
+            export_crawl_fixtures.PAGE_HEADS_JSON,
+            announce=False,
+        )
+        note = f"fixture：词条 {stat['records']} 条，字头 {stat['heads']}/{stat['pages']} 页"
+        summaries.append(note + "（⚠ 空表——爬取库不可用）" if stat["db"] is None else note)
+    except Exception as e:  # noqa: BLE001
+        summaries.append(f"爬取 fixture 同步失败已跳过（{type(e).__name__}）")
+
     # 后台预取 n+1：独立进程，不阻塞本进程退出（HTTP 响应 ~1s 内返回）
     prefetch_next_page(page)
 

@@ -248,9 +248,18 @@ function HeadwordDetailDialog({
   );
 }
 
-export function HeadwordStrip({ page, continuation }: { page?: number; continuation?: PageContinuation | null }) {
+export function HeadwordStrip({
+  page,
+  continuation,
+  crawlEpoch = 0,
+}: {
+  page?: number;
+  continuation?: PageContinuation | null;
+  /** 加页后 +1：add 已随写 fixture，重取覆盖模块缓存（不动编辑缓冲） */
+  crawlEpoch?: number;
+}) {
   /** 爬取库当前页原始字头（site page_chars 口径；null=fixture 不可用，undefined=加载中） */
-  const crawlHeads = useCrawlPageHeads(page !== undefined);
+  const crawlHeads = useCrawlPageHeads(page !== undefined, crawlEpoch);
   const crawled = useMemo(
     () => (page !== undefined && crawlHeads ? crawlHeads[String(page)] ?? [] : undefined),
     [page, crawlHeads],
@@ -266,7 +275,7 @@ export function HeadwordStrip({ page, continuation }: { page?: number; continuat
   const uncovered = useUncovered(allChars);
   const svgMap = useSvgMap(uncovered.size > 0);
   const [detail, setDetail] = useState<HeadwordDetail | null>(null);
-  const crawl = useCrawlEntries(detail !== null);
+  const crawl = useCrawlEntries(detail !== null, crawlEpoch);
 
   /** 字头格点击：弹爬取侧详情（字形大样 + 词条全文） */
   const openHead = (ch: string) => {
