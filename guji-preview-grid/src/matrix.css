@@ -68,11 +68,11 @@
 /* 最左 band 的左缘与版框重合，不画界栏（避免相邻双线）。m-band-last 由
    渲染层挂——books 渲染在 bands 之后且同为 div，:last-child 永不匹配 */
 
-/* 大字字格：大字（含带圈）占据区内按 1×1 字格平铺网格线，与界栏同款
-   纯视觉叠加——不用 border（占盒模型空间，会挤压固定轨道），
-   ::after z-index:-1 压到 band 层叠上下文最底层：墨字/圆环在其上，
-   band 高亮（半透明橙）罩着透出。平铺层画各格左、上边线，
-   整域层补最右列右、最底行下的合口边线（否则外缘缺两条）。 */
+/* 大字字格：大字（含带圈）占据区画字格线，与界栏同款纯视觉叠加——
+   不用 border（占盒模型空间，会挤压固定轨道），::after z-index:-1 压到
+   band 层叠上下文最底层：墨字/圆环在其上，band 高亮（半透明橙）罩着透出。
+   外框四边 2px 加粗（整域层，压过平铺层的 1px 首线成并集），
+   内部十字分隔仍 1px（平铺层画各格左、上边线）。 */
 .m-lines[data-cells="on"] .m-large,
 .m-lines[data-cells="on"] .m-circle {
   position: relative;
@@ -89,14 +89,31 @@
   background-image:
     linear-gradient(to right, #8a8a8a 1px, transparent 1px),
     linear-gradient(to bottom, #8a8a8a 1px, transparent 1px),
-    linear-gradient(to left, #8a8a8a 1px, transparent 1px),
-    linear-gradient(to top, #8a8a8a 1px, transparent 1px);
+    linear-gradient(to left, #8a8a8a 2px, transparent 2px),
+    linear-gradient(to top, #8a8a8a 2px, transparent 2px),
+    linear-gradient(to right, #8a8a8a 2px, transparent 2px),
+    linear-gradient(to bottom, #8a8a8a 2px, transparent 2px);
   background-size:
     calc(var(--guji-unit) * 1) calc(var(--guji-unit-v, var(--guji-unit)) * 1),
     calc(var(--guji-unit) * 1) calc(var(--guji-unit-v, var(--guji-unit)) * 1),
     100% 100%,
+    100% 100%,
+    100% 100%,
     100% 100%;
   z-index: -1;
+}
+
+/* 小字字格：逐 .m-cell 四边自描（run 与书名框共用同一格类）——书名框内
+   格高是 flex 均分，与平铺周期有 1-2px 漂移，逐格自描天然对齐。
+   background 不占布局空间，墨字仍在其上；相邻格边线落同一像素行，
+   同色并集无重影。m-char-active 的 background 简写重置掉格线，
+   高亮格由橙色底透出。 */
+.m-lines[data-cells="on"] .m-cell {
+  background-image:
+    linear-gradient(to right, #8a8a8a 1px, transparent 1px),
+    linear-gradient(to bottom, #8a8a8a 1px, transparent 1px),
+    linear-gradient(to left, #8a8a8a 1px, transparent 1px),
+    linear-gradient(to top, #8a8a8a 1px, transparent 1px);
 }
 
 /* 超 PAGE_ROW_CAP（24 格）的溢出警示：不整条大列染色——标记（.m-over-mark，
