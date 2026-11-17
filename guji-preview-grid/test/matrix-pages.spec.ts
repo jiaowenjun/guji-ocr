@@ -26,6 +26,25 @@ function expectFullPage(root: HTMLElement) {
 }
 
 describe("整页字格版框", () => {
+  it("每页纸张各自拥有页码和外观，矩阵内不再放置页码", () => {
+    const doc = gj2ir("@1\n\n#甲\n\n@2\n\n#乙\n");
+    const root = document.createElement("div");
+    root.innerHTML = renderToStaticMarkup(createElement(MatrixPages, {
+      pages: layout3(doc),
+      paper: { width: 400, minHeight: 600, padding: { top: 50, left: 40, right: 30 }, background: "#dcb68a", unit: 20, unitV: 22 },
+    }));
+    const papers = [...root.querySelectorAll<HTMLElement>("[data-paper]")];
+    expect(papers).toHaveLength(2);
+    expect(papers.map((p) => p.querySelector(".page-title")?.textContent)).toEqual(["1", "2"]);
+    for (const paper of papers) {
+      expect(paper.style.width).toBe("400px");
+      expect(paper.style.minHeight).toBe("600px");
+      expect(paper.style.paddingTop).toBe("50px");
+      expect(paper.style.getPropertyValue("--guji-unit")).toBe("20px");
+      expect(paper.querySelector(".m-lines .page-title")).toBeNull();
+    }
+  });
+
   it.each(["@1\n", "@1\n\n\n", "@1\n\n// 空页\n"])("空页也保留 8×12 大字格：%j", (source) => {
     const root = render(source);
     expectFullPage(root);

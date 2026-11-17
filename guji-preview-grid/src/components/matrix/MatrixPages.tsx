@@ -3,12 +3,14 @@
 // 圆环修饰大字格（元素 id 定位）；书名框为覆盖其小字格的跨行矩形（按行+码点
 // 区间定位，跨大行 wrap 的连接边开口，与旧 book-start/middle/end 状态无关）。
 // 不依赖任何 src 偏移（无 .gj 源的 IR 同样可渲染）。
-import { useMemo, type CSSProperties } from "react";
+import { memo, useMemo, type CSSProperties } from "react";
 import type { IROverlay, RenderHighlight } from "@/ir/types";
-import type { L3Item, L3Page } from "@/ir/layout3";
-import { indexLayout, projectBooks, locateCell, type BookBox, type LocatedRun } from "@/ir/projection";
+import type { L3Band, L3Item, L3Page } from "@/ir/layout3";
+import { indexLayout, projectBooks, locateCell, type BookBox } from "@/ir/projection";
 import { getPageFrame } from "@/ir/page-frame";
+import type { IRLayoutConfig } from "@/ir/layout-config";
 import { getItemBounds } from "@/ir/layout-geometry";
+import { PagePaper, type PagePaperLayout } from "./PagePaper";
 
 export function MatrixPages({
   pages,
@@ -17,6 +19,7 @@ export function MatrixPages({
   cells = false,
   highlight,
   onBandClick,
+  paper,
 }: {
   pages: L3Page[];
   overlays?: IROverlay[];
@@ -25,6 +28,7 @@ export function MatrixPages({
   cells?: boolean;
   highlight?: RenderHighlight;
   onBandClick?: (page: number, index: number) => void;
+  paper?: PagePaperLayout;
 }) {
   const circled = new Set(
     overlays
@@ -33,21 +37,25 @@ export function MatrixPages({
   );
   const index = useMemo(() => indexLayout(pages), [pages]);
   const boxes = useMemo(() => projectBooks(pages, overlays, index), [pages, overlays, index]);
+  const ch = highlight?.char;
+  // 全部页面共用布局索引，只定位一次；每列再筛选属于自己的命中项。
+  const activeCell = ch?.kind === "cell" ? locateCell(index, ch.lineId, ch.cp) : null;
 
   return (
-    <div className="pages">
+    <div className="pages" style={paper ? { gap: paper.unit * 1.5 } : undefined}>
       {pages.map((pg, i) => (
-        <MatrixPageView
-          key={i}
-          page={pg}
-          rules={rules}
-          cells={cells}
-          circled={circled}
-          boxes={boxes.get(pg) ?? []}
-          index={index}
-          highlight={highlight}
-          onBandClick={onBandClick}
-        />
+        <PagePaper key={i} pageNo={pg.no} diagnostics={pg.diagnostics} layout={paper}>
+          <MatrixPageView
+            page={pg}
+            rules={rules}
+            cells={cells}
+            circled={circled}
+            boxes={boxes.get(pg) ?? []}
+            activeCell={activeCell}
+            highlight={highlight}
+            onBandClick={onBandClick}
+          />
+        </PagePaper>
       ))}
     </div>
   );
@@ -59,7 +67,7 @@ function MatrixPageView({
   cells,
   circled,
   boxes,
-  index,
+  activeCell,
   highlight,
   onBandClick,
 }: {
@@ -68,11 +76,11 @@ function MatrixPageView({
   cells: boolean;
   circled: Set<string>;
   boxes: BookBox[];
-  index: Map<string, LocatedRun[]>;
+  activeCell: ReturnType<typeof locateCell>;
   highlight?: RenderHighlight;
   onBandClick?: (page: number, index: number) => void;
 }) {
-  const { rowCap, largeRows, largeCols } = page.config;
+  const { largeRows, largeCols } = page.config;
   const { cols, rows, colOffset } = getPageFrame(page);
   // 正文保留完整轨道并靠右，超出版框的轨道从左侧裁掉。
   // 不把负偏移写入 gridColumn：CSS 的负行号是从末端倒数，会造成重排。
@@ -82,102 +90,55 @@ function MatrixPageView({
   const leftOverflowLabel = `向左溢出：超出版框的 ${hiddenCols} 个小列已隐藏，请校对分列`;
   const ch = highlight?.char;
   const activeLargeEl = ch?.kind === "large" ? ch.elId : null;
-  const activeCell = ch?.kind === "cell" ? locateCell(index, ch.lineId, ch.cp) : null;
-  const pageWarnings = page.diagnostics.filter((d) => d.severity !== "info");
 
   return (
-    <div className="page">
-      <div className="page-title" title={pageWarnings.map((d) => d.message).join("；") || undefined}>
-        {page.no}{pageWarnings.length > 0 && <span className="m-layout-warning" aria-label="版式需核对"> ⚠</span>}
-      </div>
+    <div
+      className="lines m-lines"
+      data-rules={rules ? "on" : "off"}
+      data-cells={cells ? "on" : "off"}
+      style={
+        {
+          "--guji-large-rows": largeRows,
+          "--guji-large-cols": largeCols,
+          "--guji-default-unit-v": `calc(var(--guji-unit) * ${largeCols} / ${largeRows})`,
+          gridTemplateColumns: `repeat(${cols}, calc(var(--guji-unit) * 1))`,
+          // 行轨用纵向微调后的字格高（版框内容高 ÷ 行数；未注入时按大字格等宽高推导）
+          gridTemplateRows: `repeat(${rows}, calc(var(--guji-unit-v, var(--guji-default-unit-v)) * 1))`,
+        } as CSSProperties
+      }
+    >
+      <CellRules cols={cols} rows={rows} largeCols={largeCols} largeRows={largeRows} />
       <div
-        className="lines m-lines"
-        data-rules={rules ? "on" : "off"}
-        data-cells={cells ? "on" : "off"}
-        style={
-          {
-            "--guji-large-rows": largeRows,
-            "--guji-large-cols": largeCols,
-            "--guji-default-unit-v": `calc(var(--guji-unit) * ${largeCols} / ${largeRows})`,
-            gridTemplateColumns: `repeat(${cols}, calc(var(--guji-unit) * 1))`,
-            // 行轨用纵向微调后的字格高（版框内容高 ÷ 行数；未注入时按大字格等宽高推导）
-            gridTemplateRows: `repeat(${rows}, calc(var(--guji-unit-v, var(--guji-default-unit-v)) * 1))`,
-          } as CSSProperties
-        }
+        className="m-content"
+        style={{ gridTemplateColumns: `repeat(${contentCols}, calc(var(--guji-unit) * 1))` }}
       >
-        <CellRules cols={cols} rows={rows} largeCols={largeCols} largeRows={largeRows} />
-        <div
-          className="m-content"
-          style={{ gridTemplateColumns: `repeat(${contentCols}, calc(var(--guji-unit) * 1))` }}
-        >
-          {page.bands.map((band, bi) => {
-            const over = band.rows > rowCap;
-            // 溢出定位到小列：内容底边（r+全长）越过封顶线的列挂标记——
-            // 含整段藏在裁剪区内的项（不渲染但列确实溢出）；大字跨度按版式配置
-            const overCols = new Set<number>();
-            if (over) {
-              for (const it of band.items) {
-                const { x, y, width, height } = getItemBounds(it, page.config);
-                if (y + height <= rows) continue;
-                for (let col = 0; col < width; col++) overCols.add(x + col);
-              }
-            }
-            return (
-              <div
-                key={bi}
-                className={`m-band${
-                  highlight?.band?.page === page.no && highlight.band.index === bi ? " m-band-active" : ""
-                }${page.colStarts[bi] + colOffset === 0 ? " m-band-last" : ""}`}
-                title={page.diagnostics.filter((d) => d.bandId === band.id).map((d) => d.message).join("；") || undefined}
-                onClick={onBandClick ? () => onBandClick(page.no, bi) : undefined}
-                style={
-                  {
-                    gridColumn: `${page.colStarts[bi] + contentOffset + 1} / span ${band.cols}`,
-                    gridRow: "1 / -1",
-                  } as CSSProperties
-                }
-              >
-                {band.items.map((item, ii) => {
-                  const cellIdx =
-                    activeCell && item === activeCell.item
-                      ? activeCell.index
-                      : undefined;
-                  return (
-                    <ItemView
-                      key={ii}
-                      item={item}
-                      circled={circled}
-                      activeLarge={item.kind === "large" && item.elId === activeLargeEl}
-                      activeCell={cellIdx}
-                      rowCap={rows}
-                      largeRows={largeRows}
-                      largeCols={largeCols}
-                    />
-                  );
-                })}
-                {[...overCols].map((c) => (
-                  // 溢出小列警示：占该列最后一格轨道，贴底 2px 即裁剪边
-                  <div
-                    key={`ov${c}`}
-                    className="m-over-mark"
-                    role="img"
-                    aria-label={`第 ${bi + 1} 大列向下溢出，超出 ${rows} 小格的文字已隐藏`}
-                    title={`第 ${bi + 1} 大列向下溢出，超出 ${rows} 小格的文字已隐藏`}
-                    style={{
-                      gridRow: rows,
-                      gridColumn: Math.floor(c) + 1,
-                      ...(c % 1 ? { transform: `translateX(calc(var(--guji-unit) * ${c % 1}))` } : {}),
-                    } as CSSProperties}
-                  />
-                ))}
-              </div>
-            );
-          })}
-          {boxes.map((box, i) => {
-            // 封顶同款钳制：框底不越版面下线；整框在裁剪区则不渲染
-            const span = Math.min(box.rowEnd, rows) - box.rowStart;
-            if (span <= 0) return null;
-            return (
+        {page.bands.map((band, bi) => {
+          const activeItem = band.items.find((item) =>
+            item.kind === "large" ? item.elId === activeLargeEl : item === activeCell?.item,
+          ) ?? null;
+          return (
+            <MatrixBand
+              key={bi}
+              band={band}
+              config={page.config}
+              pageNo={page.no}
+              bandIndex={bi}
+              colStart={page.colStarts[bi] + contentOffset}
+              atLeftEdge={page.colStarts[bi] + colOffset === 0}
+              warning={page.diagnostics.filter((d) => d.bandId === band.id).map((d) => d.message).join("；")}
+              circled={circled}
+              active={highlight?.band?.page === page.no && highlight.band.index === bi}
+              activeItem={activeItem}
+              activeCell={activeItem?.kind === "run" ? activeCell?.index : undefined}
+              onBandClick={onBandClick}
+            />
+          );
+        })}
+        {boxes.map((box, i) => {
+          // 封顶同款钳制：框底不越版面下线；整框在裁剪区则不渲染
+          const span = Math.min(box.rowEnd, rows) - box.rowStart;
+          if (span <= 0) return null;
+          return (
             <div
               key={`bk${i}`}
               className={[
@@ -204,18 +165,82 @@ function MatrixPageView({
                 } as CSSProperties
               }
             />
-            );
-          })}
-        </div>
-        {hiddenCols > 0 && (
-          <div className="m-over-left" role="img" aria-label={leftOverflowLabel} title={leftOverflowLabel}>
-            <span aria-hidden="true">←</span>
-          </div>
-        )}
+          );
+        })}
       </div>
+      {hiddenCols > 0 && (
+        <div className="m-over-left" role="img" aria-label={leftOverflowLabel} title={leftOverflowLabel}>
+          <span aria-hidden="true">←</span>
+        </div>
+      )}
     </div>
   );
 }
+
+/** 每列仅接收自己的高亮；memo 跳过 map 中高亮未变的列。 */
+const MatrixBand = memo(function MatrixBand({
+  band, config, pageNo, bandIndex, colStart, atLeftEdge, warning,
+  circled, active, activeItem, activeCell, onBandClick,
+}: {
+  band: L3Band;
+  config: IRLayoutConfig;
+  pageNo: number;
+  bandIndex: number;
+  colStart: number;
+  atLeftEdge: boolean;
+  warning: string;
+  circled: Set<string>;
+  active: boolean;
+  activeItem: L3Item | null;
+  activeCell?: number;
+  onBandClick?: (page: number, index: number) => void;
+}) {
+  const overCols = new Set<number>();
+  if (band.rows > config.rowCap) {
+    // 包含完全位于裁剪区的项；红条定位到实际溢出的小列。
+    for (const item of band.items) {
+      const { x, y, width, height } = getItemBounds(item, config);
+      if (y + height <= config.rowCap) continue;
+      for (let col = 0; col < width; col++) overCols.add(x + col);
+    }
+  }
+  const overflowLabel = `第 ${bandIndex + 1} 大列向下溢出，超出 ${config.rowCap} 小格的文字已隐藏`;
+  return (
+    <div
+      className={`m-band${active ? " m-band-active" : ""}${atLeftEdge ? " m-band-last" : ""}`}
+      title={warning || undefined}
+      onClick={onBandClick ? () => onBandClick(pageNo, bandIndex) : undefined}
+      style={{ gridColumn: `${colStart + 1} / span ${band.cols}`, gridRow: "1 / -1" }}
+    >
+      {band.items.map((item, i) => (
+        <ItemView
+          key={i}
+          item={item}
+          circled={circled}
+          activeLarge={item.kind === "large" && item === activeItem}
+          activeCell={item === activeItem ? activeCell : undefined}
+          rowCap={config.rowCap}
+          largeRows={config.largeRows}
+          largeCols={config.largeCols}
+        />
+      ))}
+      {[...overCols].map((c) => (
+        <div
+          key={`ov${c}`}
+          className="m-over-mark"
+          role="img"
+          aria-label={overflowLabel}
+          title={overflowLabel}
+          style={{
+            gridRow: config.rowCap,
+            gridColumn: Math.floor(c) + 1,
+            ...(c % 1 ? { transform: `translateX(calc(var(--guji-unit) * ${c % 1}))` } : {}),
+          }}
+        />
+      ))}
+    </div>
+  );
+});
 
 /** 每条线直接定位到正文的 Grid 轨道；绝对定位不参与轨道尺寸计算。
  *  不用 background 平铺：Safari 对小数 tile 取整会造成整页累计偏移。

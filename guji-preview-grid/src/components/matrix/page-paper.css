@@ -1,0 +1,22 @@
+.page-paper {
+  --guji-unit: var(--guji-scale, 25px);
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  color: #1c1c1c;
+}
+
+/* 每张纸独立定位页码，不占正文高度；沿用扫描水印的右下角位置。 */
+.page-title {
+  position: absolute;
+  right: calc(var(--guji-unit) * 0.6);
+  bottom: calc(var(--guji-unit) * 0.35);
+  font-size: calc(var(--guji-unit) * 0.55);
+  color: #8a8a8a;
+  font-variant-numeric: tabular-nums;
+}
+
+.m-layout-warning { color: #a16207; }

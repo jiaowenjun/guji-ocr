@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { act, createElement, type ComponentProps, type ReactNode } from "react";
+import { act, createElement, useImperativeHandle, type ComponentProps, type ReactNode } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { DatasetView } from "../src/components/dataset/DatasetView";
@@ -8,13 +8,19 @@ import { KANGXI_DATASET } from "../src/datasets/kangxi";
 
 // 真实 DatasetView → IR → MatrixPages；只替换编辑器输入和无布局能力的外壳。
 let editor: ComponentProps<typeof GujiEditor>;
+const revealPosition = vi.fn();
+let headwordRenders = 0;
 vi.mock("../src/components/editor/GujiEditor", () => ({
   GujiEditor: (props: ComponentProps<typeof GujiEditor>) => {
     editor = props;
+    useImperativeHandle(props.ref, () => ({ revealPosition }), []);
     return null;
   },
 }));
-vi.mock("../src/components/dataset/HeadwordStrip", () => ({ HeadwordStrip: () => null }));
+vi.mock("../src/components/dataset/HeadwordStrip", () => ({ HeadwordStrip: () => {
+  headwordRenders++;
+  return null;
+} }));
 vi.mock("../src/components/ui/resizable", () => {
   const panel = ({ children }: { children: ReactNode }) => createElement("div", null, children);
   return { ResizablePanelGroup: panel, ResizablePanel: panel, ResizableHandle: () => null };
@@ -25,6 +31,8 @@ let root: Root;
 let container: HTMLDivElement;
 
 beforeEach(async () => {
+  revealPosition.mockReset().mockImplementation((position: number) => editor.onCursor?.(position));
+  headwordRenders = 0;
   vi.stubGlobal("IS_REACT_ACT_ENVIRONMENT", true);
   vi.stubGlobal("ResizeObserver", class {
     observe() {}
@@ -81,7 +89,23 @@ describe("数据集预览使用当前文档快照", () => {
     expect(container.querySelector(".m-band-active")?.textContent).toBe("丙甲乙");
     expect(activeText()).toBe("甲");
     await act(async () => container.querySelector<HTMLElement>(".m-band")!.click());
-    expect(editor.requestCursor).toBe(restructured.indexOf("𠀤") + "𠀤".length);
+    expect(revealPosition).toHaveBeenLastCalledWith(restructured.indexOf("𠀤") + "𠀤".length);
+  });
+
+  it("移动光标后重复点击同一列仍执行定位；光标更新不重渲染数据集工具栏", async () => {
+    const toolbarRenders = headwordRenders;
+    const band = container.querySelector<HTMLElement>(".m-band")!;
+    await act(async () => band.click());
+    expect(activeText()).toBe("甲");
+    for (let i = 0; i < 10; i++) {
+      await act(async () => editor.onCursor!(sources[1].indexOf(i % 2 ? "甲" : "乙") + 1));
+    }
+    await act(async () => editor.onCursor!(sources[1].indexOf("乙") + 1));
+    expect(activeText()).toBe("乙");
+    await act(async () => band.click());
+    expect(activeText()).toBe("甲");
+    expect(revealPosition.mock.calls).toEqual([[sources[1].indexOf("甲") + 1], [sources[1].indexOf("甲") + 1]]);
+    expect(headwordRenders).toBe(toolbarRenders);
   });
 
   it("切换已预取页时，预览与编辑器同时换页；返回时保留编辑缓冲", async () => {
