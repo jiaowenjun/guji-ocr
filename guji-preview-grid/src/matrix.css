@@ -38,8 +38,22 @@
 .m-lines {
   display: grid;
   position: relative;
+  overflow: hidden;
   /* 将负层级字格留在纸面之上、所有内容及其高亮之下。 */
   isolation: isolate;
+}
+
+/* 独立正文轨道靠右对齐固定版框。超宽内容保持原字格宽度向左延伸，
+   不创建负号 Grid 轨道、不挤压可见字格；正文与书名框共用这一坐标系。 */
+.m-content {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-row: 1 / -1;
+  grid-template-rows: subgrid;
+  width: max-content;
+  justify-self: end;
+  min-width: 0;
+  min-height: 0;
 }
 
 /* band（大行）：subgrid 占满整页高；界栏 = 左缘 1px 伪元素（纯视觉叠加）。
@@ -104,11 +118,32 @@
 /* 超 PAGE_ROW_CAP（24 格）的溢出警示：不整条大列染色——标记（.m-over-mark，
    渲染层挂在 band 内）只落在实际溢出的小列（含大字列），方便定位哪一小列超长。
    占该列最后一格轨道、贴底 2px 即裁剪边（版框下线内侧）；
-   在 band 层叠上下文（z:0）内：书名框（z:1）跨过处盖住标记，可接受 */
+   标记叠在文字高亮之上，不占字格内容高度。 */
 .m-over-mark {
   align-self: end;
   height: 2px;
   background: #dc2626;
+  z-index: 2;
+}
+
+/* 左侧溢出提示固定在可见版框边缘，不能跟随正文一起被裁走。 */
+.m-over-left {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: #dc2626;
+  z-index: 3;
+}
+.m-over-left > span {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 2px;
+  border-radius: 0 3px 3px 0;
+  background: #dc2626;
+  color: white;
+  font: bold 14px/1 sans-serif;
 }
 
 /* 行轨封顶被压短跨度的条目：裁掉溢出内容（run 内多余 .m-cell / 半截大字字形） */
@@ -128,6 +163,8 @@
 .m-circle {
   box-sizing: border-box;
   display: flex;
+  /* 末尾只剩半格时仍按完整大字格居中，再由版框裁切。 */
+  height: calc(var(--guji-unit-v, var(--guji-unit)) * var(--guji-large-rows, 2));
 }
 .m-ring {
   box-sizing: border-box;
@@ -140,6 +177,7 @@
   text-align: center;
   border: 1px solid;
   border-radius: 50%;
+  flex-shrink: 0;
 }
 .m-ring .stack {
   display: block;
@@ -204,10 +242,10 @@
  *   由渲染层挂）——贴版框左缘的 band 不含界栏，仍走 -1px 合并；
  * - 最右列（读序第一列）由渲染层挂 m-flush-r，右边线叠上版框。
  */
-.m-lines > .m-book {
+.m-content > .m-book {
   margin-left: -1px;
 }
-.m-lines > .m-book:not(.open-bottom) {
+.m-content > .m-book:not(.open-bottom) {
   margin-bottom: -1px;
 }
 .m-lines[data-rules="on"] .m-book.at-band-left {

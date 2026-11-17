@@ -406,8 +406,9 @@ export function DatasetView({
     return () => window.removeEventListener("keydown", onKey);
   }, [save, dirty, busy]);
 
-  /** 格式化（一键）：行内空格→*、◎→〇、全角括号/速记归一、#(X 补右括号、
-   *  同行重复 # 合并、行首逗号回贴前行大字、保留正文的换行和大小字边界、首尾空行/注释行删除。
+  /** 格式化（一键）：行内空格→*、行尾空格清除（不再转 *）、◎→〇、全角括号/速记归一、
+   *  #(X 补右括号、同行重复 # 合并、行首逗号回贴前行大字、保留正文的换行和大小字边界、
+   *  首尾空行/注释行删除。
    *  格式化即保存（2026-11-15）：缓冲与磁盘同形，省去手动「保存回数据集」；
    *  保存失败时缓冲保持未保存态，可 ⌘S 重试 */
   const formatText = () => {
@@ -422,7 +423,7 @@ export function DatasetView({
       spaces > 0 ? `行内空格→* ${spaces} 处` : "",
       circles > 0 ? `◎→〇 ${circles} 处` : "",
       dots > 0 ? `•→· ${dots} 处` : "",
-      "括号归一/补全、字头独占一行",
+      "括号归一/补全、字头独占一行、行尾空格清除",
     ]
       .filter(Boolean)
       .join("；");
@@ -679,7 +680,7 @@ export function DatasetView({
         <ResizablePanel defaultSize={28.5} minSize={20}>
           <div className="flex h-full flex-col">
             <ColumnHeader>
-              矩阵 · {cols} 列 · 字格 {unit.toFixed(1)}px · 与原图版框对齐（含等比纸边）
+              矩阵 · {cols / (laidPages[0]?.config.smallColumnsPerBand ?? 2)} 大列 × {(frame?.rows ?? 0) / (laidPages[0]?.config.largeRows ?? 2)} 大字格 · 字格 {unit.toFixed(1)}px · 与原图版框对齐
             </ColumnHeader>
             <ScrollArea className="min-h-0 flex-1" ref={scrollVPRef}>
               <div className="flex justify-center p-2">

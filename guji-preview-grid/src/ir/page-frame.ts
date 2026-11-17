@@ -1,9 +1,9 @@
 import type { L3Page } from "./layout3";
 
-/** 显示版框与内容包围盒分开：缺列留在左侧，短列留满版高。
- *  异常超宽页仍完整展示并沿用版式诊断，不裁掉待校对的内容。 */
+/** 版框固定，正文靠右：缺列留白，超宽列向左溢出（负偏移）。
+ *  只限制可见版框，不改动原始内容与布局坐标。 */
 export function getPageFrame(page: L3Page) {
   const { expectedBands, smallColumnsPerBand, rowCap } = page.config;
-  const cols = Math.max(page.totalCols, (expectedBands ?? 0) * smallColumnsPerBand);
+  const cols = expectedBands === null ? page.totalCols : expectedBands * smallColumnsPerBand;
   return { cols, rows: rowCap, colOffset: cols - page.totalCols };
 }

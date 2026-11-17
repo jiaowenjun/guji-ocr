@@ -73,6 +73,12 @@ function MatrixPageView({
 }) {
   const { rowCap, largeRows, largeCols } = page.config;
   const { cols, rows, colOffset } = getPageFrame(page);
+  // 正文保留完整轨道并靠右，超出版框的轨道从左侧裁掉。
+  // 不把负偏移写入 gridColumn：CSS 的负行号是从末端倒数，会造成重排。
+  const contentCols = Math.max(cols, page.totalCols);
+  const contentOffset = Math.max(0, colOffset);
+  const hiddenCols = Math.max(0, -colOffset);
+  const leftOverflowLabel = `向左溢出：超出版框的 ${hiddenCols} 个小列已隐藏，请校对分列`;
   const ch = highlight?.char;
   const activeLargeEl = ch?.kind === "large" ? ch.elId : null;
   const activeCell = ch?.kind === "cell" ? locateCell(index, ch.lineId, ch.cp) : null;
@@ -98,96 +104,113 @@ function MatrixPageView({
         }
       >
         <CellRules cols={cols} rows={rows} largeCols={largeCols} largeRows={largeRows} />
-        {page.bands.map((band, bi) => {
-          const over = band.rows > rowCap;
-          // 溢出定位到小列：内容底边（r+全长）越过封顶线的列挂标记——
-          // 含整段藏在裁剪区内的项（不渲染但列确实溢出）；大字跨度按版式配置
-          const overCols = new Set<number>();
-          if (over) {
-            for (const it of band.items) {
-              const span = it.kind === "large" ? largeRows : (it.cells?.length ?? 0);
-              if (it.r + span <= rows) continue;
-              overCols.add(it.c);
-              if (it.kind === "large") for (let col = 1; col < largeCols; col++) overCols.add(it.c + col);
+        <div
+          className="m-content"
+          style={{ gridTemplateColumns: `repeat(${contentCols}, calc(var(--guji-unit) * 1))` }}
+        >
+          {page.bands.map((band, bi) => {
+            const over = band.rows > rowCap;
+            // 溢出定位到小列：内容底边（r+全长）越过封顶线的列挂标记——
+            // 含整段藏在裁剪区内的项（不渲染但列确实溢出）；大字跨度按版式配置
+            const overCols = new Set<number>();
+            if (over) {
+              for (const it of band.items) {
+                const span = it.kind === "large" ? largeRows : (it.cells?.length ?? 0);
+                if (it.r + span <= rows) continue;
+                overCols.add(it.c + (it.halfShift ?? 0));
+                if (it.kind === "large") for (let col = 1; col < largeCols; col++) overCols.add(it.c + col);
+              }
             }
-          }
-          return (
+            return (
+              <div
+                key={bi}
+                className={`m-band${
+                  highlight?.band?.page === page.no && highlight.band.index === bi ? " m-band-active" : ""
+                }${page.colStarts[bi] + colOffset === 0 ? " m-band-last" : ""}${over ? " m-band-over" : ""}`}
+                title={page.diagnostics.filter((d) => d.bandId === band.id).map((d) => d.message).join("；") || undefined}
+                onClick={onBandClick ? () => onBandClick(page.no, bi) : undefined}
+                style={
+                  {
+                    gridColumn: `${page.colStarts[bi] + contentOffset + 1} / span ${band.cols}`,
+                    gridRow: "1 / -1",
+                  } as CSSProperties
+                }
+              >
+                {band.items.map((item, ii) => {
+                  const cellIdx =
+                    activeCell && item === activeCell.item
+                      ? activeCell.index
+                      : undefined;
+                  return (
+                    <ItemView
+                      key={ii}
+                      item={item}
+                      circled={circled}
+                      activeLarge={item.kind === "large" && item.elId === activeLargeEl}
+                      activeCell={cellIdx}
+                      rowCap={rows}
+                      largeRows={largeRows}
+                      largeCols={largeCols}
+                    />
+                  );
+                })}
+                {[...overCols].map((c) => (
+                  // 溢出小列警示：占该列最后一格轨道，贴底 2px 即裁剪边
+                  <div
+                    key={`ov${c}`}
+                    className="m-over-mark"
+                    role="img"
+                    aria-label={`第 ${bi + 1} 大列向下溢出，超出 ${rows} 小格的文字已隐藏`}
+                    title={`第 ${bi + 1} 大列向下溢出，超出 ${rows} 小格的文字已隐藏`}
+                    style={{
+                      gridRow: rows,
+                      gridColumn: Math.floor(c) + 1,
+                      ...(c % 1 ? { transform: `translateX(calc(var(--guji-unit) * ${c % 1}))` } : {}),
+                    } as CSSProperties}
+                  />
+                ))}
+              </div>
+            );
+          })}
+          {boxes.map((box, i) => {
+            // 封顶同款钳制：框底不越版面下线；整框在裁剪区则不渲染
+            const span = Math.min(box.rowEnd, rows) - box.rowStart;
+            if (span <= 0) return null;
+            return (
             <div
-              key={bi}
-              className={`m-band${
-                highlight?.band?.page === page.no && highlight.band.index === bi ? " m-band-active" : ""
-              }${page.colStarts[bi] + colOffset === 0 ? " m-band-last" : ""}${over ? " m-band-over" : ""}`}
-              title={page.diagnostics.filter((d) => d.bandId === band.id).map((d) => d.message).join("；") || undefined}
-              onClick={onBandClick ? () => onBandClick(page.no, bi) : undefined}
+              key={`bk${i}`}
+              className={[
+                "m-book",
+                box.openTop && "open-top",
+                box.openBottom && "open-bottom",
+                // 最右列（读序第一列）：右边线叠上版框（matrix.css 共线避让）
+                box.col + (box.cols ?? 1) === page.totalCols && "m-flush-r",
+                // band 左缘列（版框最左边除外）：界栏开时与界栏共线
+                box.col === page.colStarts[box.bandIdx] &&
+                  box.col + colOffset > 0 &&
+                  "at-band-left",
+                highlight?.book === box.overlayId && "m-book-active",
+              ]
+                .filter(Boolean)
+                .join(" ")}
               style={
                 {
-                  gridColumn: `${page.colStarts[bi] + colOffset + 1} / span ${band.cols}`,
-                  gridRow: "1 / -1",
+                  gridRow: `${box.rowStart + 1} / span ${span}`,
+                  gridColumn: `${box.col + contentOffset + 1} / span ${box.cols ?? 1}`,
+                  ...(box.halfShift
+                    ? { transform: `translateX(calc(var(--guji-unit) * ${box.halfShift}))` }
+                    : {}),
                 } as CSSProperties
               }
-            >
-              {band.items.map((item, ii) => {
-                const cellIdx =
-                  activeCell && item === activeCell.item
-                    ? activeCell.index
-                    : undefined;
-                return (
-                  <ItemView
-                    key={ii}
-                    item={item}
-                    circled={circled}
-                    activeLarge={item.kind === "large" && item.elId === activeLargeEl}
-                    activeCell={cellIdx}
-                    rowCap={rows}
-                    largeRows={largeRows}
-                    largeCols={largeCols}
-                  />
-                );
-              })}
-              {[...overCols].map((c) => (
-                // 溢出小列警示：占该列最后一格轨道，贴底 2px 即裁剪边
-                <div
-                  key={`ov${c}`}
-                  className="m-over-mark"
-                  style={{ gridRow: rows, gridColumn: c + 1 } as CSSProperties}
-                />
-              ))}
-            </div>
-          );
-        })}
-        {boxes.map((box, i) => {
-          // 封顶同款钳制：框底不越版面下线；整框在裁剪区则不渲染
-          const span = Math.min(box.rowEnd, rows) - box.rowStart;
-          if (span <= 0) return null;
-          return (
-          <div
-            key={`bk${i}`}
-            className={[
-              "m-book",
-              box.openTop && "open-top",
-              box.openBottom && "open-bottom",
-              // 最右列（读序第一列）：右边线叠上版框（matrix.css 共线避让）
-              box.col + (box.cols ?? 1) === page.totalCols && "m-flush-r",
-              // band 左缘列（版框最左边除外）：界栏开时与界栏共线
-              box.col === page.colStarts[box.bandIdx] &&
-                box.col + colOffset > 0 &&
-                "at-band-left",
-              highlight?.book === box.overlayId && "m-book-active",
-            ]
-              .filter(Boolean)
-              .join(" ")}
-            style={
-              {
-                gridRow: `${box.rowStart + 1} / span ${span}`,
-                gridColumn: `${box.col + colOffset + 1} / span ${box.cols ?? 1}`,
-                ...(box.halfShift
-                  ? { transform: `translateX(calc(var(--guji-unit) * ${box.halfShift}))` }
-                  : {}),
-              } as CSSProperties
-            }
-          />
-          );
-        })}
+            />
+            );
+          })}
+        </div>
+        {hiddenCols > 0 && (
+          <div className="m-over-left" role="img" aria-label={leftOverflowLabel} title={leftOverflowLabel}>
+            <span aria-hidden="true">←</span>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -245,7 +268,7 @@ function ItemView({
   largeCols: number;
 }) {
   // 注意：ItemView 是 .m-band（subgrid 项）的子元素，列号用 band 局部坐标；
-  // 页级换算（colStarts）只用于书名框等 .m-lines 直接子元素
+  // 页级换算（colStarts）只用于书名框等 .m-content 直接子元素
   if (item.kind === "large") {
     const span = Math.min(largeRows, rowCap - item.r);
     if (span <= 0) return null;

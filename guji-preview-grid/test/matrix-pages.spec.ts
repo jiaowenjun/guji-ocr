@@ -5,9 +5,12 @@ import { describe, expect, it } from "vitest";
 import { MatrixPages } from "../src/components/matrix/MatrixPages";
 import { gj2ir } from "../src/ir/gj2ir";
 import { layout3 } from "../src/ir/layout3";
+import { getPageFrame } from "../src/ir/page-frame";
+import { KANGXI_LAYOUT, type IRLayoutConfig } from "../src/ir/layout-config";
 
-function render(source: string, cells = true) {
+function render(source: string, cells = true, config?: IRLayoutConfig) {
   const doc = gj2ir(source);
+  if (config) doc.meta.layout = config;
   const root = document.createElement("div");
   root.innerHTML = renderToStaticMarkup(createElement(MatrixPages, {
     pages: layout3(doc), overlays: doc.overlays, cells,
@@ -87,5 +90,68 @@ describe("整页字格版框", () => {
     expect(run.style.gridRow).toBe("1 / span 24");
     expect(run.classList.contains("m-clipped")).toBe(true);
     expect(root.querySelector<HTMLElement>(".m-over-mark")!.style.gridRow).toBe("24");
+    // 单条小字居中半格时，底部提示也跟随实际字格。
+    expect(root.querySelector<HTMLElement>(".m-over-mark")!.style.transform).toContain("0.5");
+  });
+
+  it("第九大列向左溢出，正文和书名框不挤进固定版框", () => {
+    const source = `@1\n\n${Array(9).fill("#甲\n【乙丙】\n丁戊").join("\n\n")}\n`;
+    const page = layout3(gj2ir(source))[0];
+    expect(getPageFrame(page)).toEqual({ cols: 16, rows: 24, colOffset: -2 });
+    const root = render(source);
+    expectFullPage(root);
+    expect(root.querySelector<HTMLElement>(".m-content")!.style.gridTemplateColumns)
+      .toBe("repeat(18, calc(var(--guji-unit) * 1))");
+    const bands = [...root.querySelectorAll<HTMLElement>(".m-band")];
+    expect(bands).toHaveLength(9);
+    expect(bands[0].style.gridColumn).toBe("17 / span 2");
+    expect(bands[7].classList.contains("m-band-last")).toBe(true);
+    expect(bands[8].style.gridColumn).toBe("1 / span 2");
+    expect(root.querySelector<HTMLElement>(".m-book")!.style.gridColumn).toBe("18 / span 1");
+    expect(root.querySelector(".m-over-left")!.getAttribute("aria-label")).toContain("2 个小列已隐藏");
+    expect(root.querySelector(".m-over-mark")).toBeNull();
+  });
+
+  it("异常三小列导致半个大列越界时仍保留完整轨道与书名框", () => {
+    const source = `@1\n\n${Array(7).fill("#甲").join("\n\n")}\n\n【乙丙】\n丁戊\n己庚\n`;
+    const page = layout3(gj2ir(source))[0];
+    expect(getPageFrame(page)).toEqual({ cols: 16, rows: 24, colOffset: -1 });
+    const root = render(source);
+    expectFullPage(root);
+    expect(root.querySelector<HTMLElement>(".m-content")!.style.gridTemplateColumns)
+      .toBe("repeat(17, calc(var(--guji-unit) * 1))");
+    expect(root.querySelector<HTMLElement>(".m-book")!.style.gridColumn).toBe("3 / span 1");
+    expect(root.querySelector(".m-over-left")!.getAttribute("aria-label")).toContain("1 个小列已隐藏");
+  });
+
+  it("左右与上下溢出同时出现，修正后提示一起消失", () => {
+    const source = `@1\n\n【${"甲".repeat(25)}】\n${"乙".repeat(24)}\n\n${Array(8).fill("#丙").join("\n\n")}\n`;
+    const root = render(source);
+    expectFullPage(root);
+    expect(root.querySelector(".m-over-left")).not.toBeNull();
+    expect(root.querySelectorAll(".m-over-mark")).toHaveLength(1);
+    expect(root.querySelector<HTMLElement>(".m-book")!.style.gridRow).toBe("1 / span 24");
+    const fixed = render(source.replace("甲".repeat(25), "甲".repeat(24)).replace(/\n\n#丙\n$/, "\n"));
+    expectFullPage(fixed);
+    expect(fixed.querySelector(".m-over-left, .m-over-mark, .m-layout-warning")).toBeNull();
+  });
+
+  it("整项在下边界外时隐藏，大字跨边界时只显示剩余半格", () => {
+    const root = render(`@1\n\n${"甲".repeat(23)}\n#乙丙\n`);
+    expectFullPage(root);
+    const glyphs = root.querySelectorAll<HTMLElement>(".m-large");
+    expect(glyphs).toHaveLength(1);
+    expect(glyphs[0].textContent).toBe("乙");
+    expect(glyphs[0].style.gridRow).toBe("24 / span 1");
+    expect(glyphs[0].classList.contains("m-clipped")).toBe(true);
+    expect(root.querySelectorAll(".m-over-mark")).toHaveLength(2);
+  });
+
+  it("显式关闭固定页宽时仍按配置显示所有列", () => {
+    const source = `@1\n\n${Array(9).fill("#甲").join("\n\n")}\n`;
+    const root = render(source, true, { ...KANGXI_LAYOUT, expectedBands: null });
+    expect(root.querySelector<HTMLElement>(".m-lines")!.style.gridTemplateColumns)
+      .toBe("repeat(18, calc(var(--guji-unit) * 1))");
+    expect(root.querySelector(".m-over-left, .m-layout-warning")).toBeNull();
   });
 });

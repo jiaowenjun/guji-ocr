@@ -17,7 +17,7 @@ export function diagnoseLayout(page: L3Page): LayoutDiagnostic[] {
   if (expectedBands !== null) {
     if (page.bands.length > expectedBands) add("band-count", `大列数 ${page.bands.length}，超出版面 ${expectedBands}`);
     if (page.totalCols > expectedBands * smallColumnsPerBand)
-      add("page-width", `页宽 ${page.totalCols} 格，预期 ${expectedBands * smallColumnsPerBand} 格`);
+      add("page-width", `页宽 ${page.totalCols} 格，版框 ${expectedBands * smallColumnsPerBand} 格，左侧 ${page.totalCols - expectedBands * smallColumnsPerBand} 小列已隐藏`);
   }
   for (const band of page.bands) {
     if (band.cols !== smallColumnsPerBand) add("band-width", `此大列宽 ${band.cols} 格，预期 ${smallColumnsPerBand} 格`, band.id);
