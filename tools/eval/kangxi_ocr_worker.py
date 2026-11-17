@@ -156,6 +156,12 @@ def main() -> int:
                 time.sleep(300)  # 干等 5 分钟再试一遍
             else:
                 dry_passes = 0
+                # 低产遍退避：上游半死（成功率 <20%）时遍间歇 10 分钟，
+                # 避免每遍全量重提交浪费上游调用（2026-11-17 实测 97% 失败率仍 ~20min/遍连磨）
+                if len(todo) > 20 and pass_done < len(todo) * 0.2:
+                    kangxi_log.emit("thin_pass", done=pass_done, todo=len(todo))
+                    print(f"[{stamp()}] ⚠ 低产遍（{pass_done}/{len(todo)}），10 分钟后再扫", flush=True)
+                    time.sleep(600)
             if args.once:
                 kangxi_log.emit("worker_exit", reason="once_done", done=done, fails=fails)
                 print(f"[{stamp()}] --once：本批完成 {done} 页、失败 {fails} 页，退出。", flush=True)
