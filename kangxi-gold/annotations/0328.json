@@ -1,8 +1,8 @@
 {
   "version": 3,
   "meta": {
-    "sourceFormat": "gj",
-    "generatedBy": "guji-ir/3",
+    "sourceFormat": "gj/2",
+    "generatedBy": "guji-ir/3-gj2",
     "fidelity": "full",
     "profile": {
       "stripPunct": [
@@ -514,7 +514,7 @@
                 },
                 {
                   "id": "p0328-b3-e1",
-                  "class": "small",
+                  "class": "large",
                   "text": ":"
                 }
               ],
@@ -814,7 +814,7 @@
                 },
                 {
                   "id": "p0328-b4-e11",
-                  "class": "small",
+                  "class": "large",
                   "text": ":"
                 }
               ],
@@ -1000,7 +1000,7 @@
                 },
                 {
                   "id": "p0328-b6-e4",
-                  "class": "small",
+                  "class": "large",
                   "text": ":"
                 }
               ],
@@ -1072,7 +1072,7 @@
           "ord": 7,
           "src": [
             440,
-            441
+            446
           ],
           "lines": [
             {
@@ -1080,7 +1080,7 @@
               "ord": 0,
               "src": [
                 440,
-                441
+                446
               ],
               "elements": []
             }

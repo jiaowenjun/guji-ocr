@@ -8,7 +8,7 @@
 //     一个大字格（如 #(十一)）——合字是骨架事实，与圆圈样式无关
 //   - 小字元素：每字符占一个小字格（1×1）
 //   - 小行 = .gj 内一条物理折行（换行是一等结构；meta.lineLayout 声明来源）
-//   - 标题文字同样物化进骨架（逐字大字元素），层级 level 仅为元数据
+//   - 大字与空位显式入骨架；标题/字头身份由书籍专用语义层解释
 // overlay（文档级，单向引用骨架）：
 //   - circle：圆圈样式，target 指向元素 id（修饰该元素的字格）
 //   - book-title：书名样式/语义，spans 按（行 id，行内码点半开区间）引用；
@@ -75,8 +75,6 @@ export interface IRLine {
 export interface IRBand {
   id: string; // p0312-b3
   ord: number;
-  /** 标题大行层级 1/2/3（#/##/###）——元数据；标题文字已物化进 lines（逐字大字） */
-  level?: 1 | 2 | 3;
   src?: [number, number];
   lines: IRLine[];
 }

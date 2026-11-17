@@ -1,0 +1,284 @@
+[
+  {
+    "file": "kangxi-gold/annotations/0312.gj",
+    "sourceSha256": "f9c861595bb385e0ac51bf16a6b070b81e75ca1c5f87f011c1dc16a724c25835",
+    "geometrySha256": "c6a9b6bab0fa56b305b554c32638539d70a284c2d740b05d02e35ce3ebcfc5d0",
+    "textSha256": "9096f4a0a03ce0b790d3a5c62ac89bba73fd89b1e8796c2d535111cff5568ad4"
+  },
+  {
+    "file": "kangxi-gold/annotations/0313.gj",
+    "sourceSha256": "89943a1232acaadbc50822e0975fb3a79d1ec50ad2367e5b7b38db7fcdc84824",
+    "geometrySha256": "125d905e483efa5c57dba7ee3625fde9901906706f014258f8f79930c369b1e4",
+    "textSha256": "cf99774acd2b3527e4689c27bbf611378a6fd6de8252177b3d21c4928f16b06e"
+  },
+  {
+    "file": "kangxi-gold/annotations/0314.gj",
+    "sourceSha256": "62c443a238892c0a7493ddc9196e2722aff398ca902e7d29dad2d6f0ae072325",
+    "geometrySha256": "a82d2c28040c17cdb4205ab18636f9cdde6eb32fd92acf29c196c633eff4e713",
+    "textSha256": "ae8b5b79131e0747d2732c9a4c0ea7ba5daf04d851356a4eaff82b4944e7f129"
+  },
+  {
+    "file": "kangxi-gold/annotations/0315.gj",
+    "sourceSha256": "5503d49d743e29f9bf1d82bc0554b2ee403a4d97dfaec9a54fabca4c11729a0f",
+    "geometrySha256": "380d2ea3689ee54d58b9577e72b5a1d380ce1d5a7b37ec2b068db15942b41339",
+    "textSha256": "4a03dbe8315016a6f2e5428287ff12c51dcd2261f688060593ba1e1718334e38"
+  },
+  {
+    "file": "kangxi-gold/annotations/0316.gj",
+    "sourceSha256": "27ed73660d3e396b7825212dcef1c4c4e2ccf3d422b21d43a01cc23ca1bf4b08",
+    "geometrySha256": "241d1c41a6396b33ab14175d1daeaac225b43d74b5e7fff335f9b496de8f0c5e",
+    "textSha256": "ba1bcd86ce028e57d97cd2c16149073469e3b3707ab090d2844154cefeca387f"
+  },
+  {
+    "file": "kangxi-gold/annotations/0317.gj",
+    "sourceSha256": "3b7ea1369b82d1fe7c63f5f8c5165ba24038b383dc3fedd8ee1833fbfacf98cd",
+    "geometrySha256": "56d0bf43bdc34c5718cac2974956105b563db69c4c816f4e4812e22854bd8101",
+    "textSha256": "900698a7103c0155504c82c6d0a55959f819333e52230282ada2397f14ec5cf1"
+  },
+  {
+    "file": "kangxi-gold/annotations/0318.gj",
+    "sourceSha256": "56f0af666e0fe6b41d349089075cfb5cde68d76e03870e44e1e32ac8e9765552",
+    "geometrySha256": "df3d671fd8f6bb90cb614022e62b58fe285b2a913ca2b0f8779b03297401b40e",
+    "textSha256": "d7ef590cb3386700c8293d28a0f3b7df514112a647674ca6327f47af678c3420"
+  },
+  {
+    "file": "kangxi-gold/annotations/0319.gj",
+    "sourceSha256": "db0cd6526abab9a0ff8d2d2b2166c9638ecf5a43b308fdc7d3fc8cd91ca1f028",
+    "geometrySha256": "717b89f4df9356762980384e625293a1c3352520592b0ab9c1110ed066c3be74",
+    "textSha256": "e466e32ec08362614b6ad92c12800f36748016b0fcfd603d26f79a19d88096e8"
+  },
+  {
+    "file": "kangxi-gold/annotations/0320.gj",
+    "sourceSha256": "a4b40a222fb911ef20c7a72e949d26ca279f3888d0ce018576522f6ea7090214",
+    "geometrySha256": "44acf1ec228d06da57ef8484161f4ae59faf27389702f69eefa582657c47e500",
+    "textSha256": "c27f8b64ef087eb0aa54d6170409bbf954bb2162bbead4056b24e25a606fab98"
+  },
+  {
+    "file": "kangxi-gold/annotations/0321.gj",
+    "sourceSha256": "d888d8949289a1f166f6e9dfe21f3b977d820afcf84521d5151a268729b35e0f",
+    "geometrySha256": "8c2563943af258133f7693a09dce209eb260de0f9b7fc45bc370e9e26d505d44",
+    "textSha256": "a02dd5939cef50fef88143b572ce79cfc2db49728dfe18466148f119dc18a213"
+  },
+  {
+    "file": "kangxi-gold/annotations/0322.gj",
+    "sourceSha256": "b31c6ecf95c1f9a66e824d25afa1462a37940e39ee969bb2105a140ff4c5b9b1",
+    "geometrySha256": "e0b2cb275b7e1002f283e3a990153b37e15109041216faf4627af1faedb1d976",
+    "textSha256": "6892fc47452e64dd75ddada2f35c36f7e2c7788592787e80042d506c7942a1b9"
+  },
+  {
+    "file": "kangxi-gold/annotations/0323.gj",
+    "sourceSha256": "ed5c906e0450a8fa3c392b29f4744acc2cbf95ea442a093d7e28d51daa035f80",
+    "geometrySha256": "9ab22554f8139728bbe4f368fc69cb640ecd82f68864d23028cafeebdebb4a8f",
+    "textSha256": "cee0ec449cb5f96ac9b372e667bfba6f5d4995d38932e29d4bfb993f0a8e0fc8"
+  },
+  {
+    "file": "kangxi-gold/annotations/0324.gj",
+    "sourceSha256": "2e1ae2c19eb6caa45d9edb9594c25475cbd19282a09951f957ae78cf44a893e8",
+    "geometrySha256": "0919c05330b61635f68b78ff345b4ae0f69c9799b8a0d9c9b32ee48dcba1f70a",
+    "textSha256": "d8bf12abec3cbd7424318b5592774f9031cb22af9507075aebbcdbc00e295648"
+  },
+  {
+    "file": "kangxi-gold/annotations/0325.gj",
+    "sourceSha256": "0fcbbcb8cc83bceb46159afbb41d98f9b7ca4a16d552fc7980019422eaf2abcf",
+    "geometrySha256": "dc7168b9b905553ba1a7efbaf005a845795eef26ee799c0f10ec5054212d68f8",
+    "textSha256": "d66b7e3b27af63cabb2ca8cc761cc48f375db6e26c73d8270e5c597a061a32fe"
+  },
+  {
+    "file": "kangxi-gold/annotations/0326.gj",
+    "sourceSha256": "e14aa34ba6201ebbb3a1a2243e57276f5c66e808c6a8361d34e54bff1f1a0306",
+    "geometrySha256": "617646bb2fcbad0ecd7d1090381608dd975cf895e702d4b672871b14eb6d61c7",
+    "textSha256": "90d40efbf0d6ba12f9d874244b2df304a753ec00a238819302eef24216a01318"
+  },
+  {
+    "file": "kangxi-gold/annotations/0327.gj",
+    "sourceSha256": "9d35969ad509482e5306036005cb7e0a78a6db9355d6f56a75376b7de01ee2de",
+    "geometrySha256": "ab0121818375115a4b86c531ade5eb9130380718f082549d776c5dd1943ab38f",
+    "textSha256": "86034eb4f06dbdbfbb8a2ac9dc370f3e2d53ed7023e861db2132de030251a508"
+  },
+  {
+    "file": "kangxi-gold/annotations/0328.gj",
+    "sourceSha256": "2515fb1523484e1aa44f51a8952376334834962b617cd78834110e965bb7bf24",
+    "geometrySha256": "d8542b5e639ae779ad587a7e1f07a682608423e71e02761097cb04531347e2cb",
+    "textSha256": "f294ab23ec29b0b0b57a17da07d0f0582a1ef87cfdf0306082af0d3e1f4bfb89"
+  },
+  {
+    "file": "kangxi-gold/annotations/0330.gj",
+    "sourceSha256": "50101a065fde8dcf7020e31920a4afab8f784005958bc90a5fe8aa83c161e1b9",
+    "geometrySha256": "17bc4e9b791e1ca1cc662e79859222ccc87dbf7d937f424c051c5e0b3083df3e",
+    "textSha256": "783ac32a22c3e4581145054d839b71c2181ed9ead397c13ee703c16645f192df"
+  },
+  {
+    "file": "kangxi-gold/annotations/0331.gj",
+    "sourceSha256": "170f36b18340af6b67ecdfde72960d01781803444aab28e97b4911ba16ef69b3",
+    "geometrySha256": "440c73b62490dc0d34b43f3b41774e94db0a6508a8e916feb84e16a4af5b74a9",
+    "textSha256": "651f48e9c62db3d837c932436286fd6358cc8bff381051ecf8636033f1e8f619"
+  },
+  {
+    "file": "kangxi-gold/annotations/0332.gj",
+    "sourceSha256": "19f362b36ec133254b2a1b94bb3ad8219324f7e2f76ca17c56090fe2b696c6b2",
+    "geometrySha256": "5826119eec11ecedfa8d6b64e026a7d47ce8c3dad8ee6befa21d1946aa83968c",
+    "textSha256": "1ea007d1ac892ed6ed17fb5743aab48aff2d1230c0c930da12c06c03f90dd7b4"
+  },
+  {
+    "file": "kangxi-gold/annotations/0333.gj",
+    "sourceSha256": "b374a6eb7f41d4dd41f04766ea2df5ea53a66c1ed5e61dae8ce7e0ca1714c84b",
+    "geometrySha256": "0eb2d21f4cb61f3d8d0da8ce48e6e5a183bd243679e4d450c535d19c63e756d5",
+    "textSha256": "7732357e62d707e56dbcb2ac872e1161f72e1c76d4c7f3b447e87135d8e9f764"
+  },
+  {
+    "file": "kangxi-gold/annotations/0334.gj",
+    "sourceSha256": "41e749112b2bc74ea7aaa45e236b1139db17f54863c294b31aae02824784d89d",
+    "geometrySha256": "cbc09fe0735f96920936287eb240e545e080a991dcfe00606f77441f7796a3a2",
+    "textSha256": "2ea2d1610d7c835e9c8af072774f91804d776ee8e2380011007473707785208b"
+  },
+  {
+    "file": "kangxi-gold/annotations/0335.gj",
+    "sourceSha256": "124fa6faac719f57d1884502f04e1b96b92ef32faf7abbcae374204611870a08",
+    "geometrySha256": "c013b04dc61ee6bd81adf4148a8a5e03645669c393dfdd6843b4fec3a3dc333c",
+    "textSha256": "ab5f143b8df0827e4a59565282d5343fea35744d62c34b882cfe19ea440224e8"
+  },
+  {
+    "file": "kangxi-gold/annotations/0336.gj",
+    "sourceSha256": "428558ced929e16e548f0b1da18e5f7443238593352ca81a7a6f3fb44f081254",
+    "geometrySha256": "dd9faebd98e395cdc5b6f2703c2e69cf03320a535c8db45947eef0aa9e2959e0",
+    "textSha256": "d40d64ed1500635daa062d37c6d8378b3378b5959544401d45fad0440f38847d"
+  },
+  {
+    "file": "kangxi-gold/annotations/0338.gj",
+    "sourceSha256": "ce3914ec66181322ac18ca094931d12de2fbf63884b8d19d799ef1a7ce1163bb",
+    "geometrySha256": "043bd80737073ae5512da16c61699f4dd207167521eb9cb203b7b9d9027a773d",
+    "textSha256": "36f8f8f523425048bdcfc1d4b4940be353f3f00f24f5b10e9eb35cdc45009111"
+  },
+  {
+    "file": "kangxi-gold/annotations/0339.gj",
+    "sourceSha256": "b0fe9d552dc0071453442f374c8a576e72a9ed0541606ae0dcc7a1c50c723c09",
+    "geometrySha256": "178c5e32b9b27cb3ce9740dd953ba5b53b97873ed600e62c05dbd7c6bb271e49",
+    "textSha256": "786fec9434c2793e1a26c22ba1eadbcbe9d132d9ae8b7fd78981d3871d8f7786"
+  },
+  {
+    "file": "kangxi-gold/annotations/0340.gj",
+    "sourceSha256": "f0be8242183259e9d3247418188669fe5285cf4feb949075228921dbea579ad2",
+    "geometrySha256": "82bee164fec7b2a5242c26e46cc1d8cd56356c41b5a9e4b19a049cd9bf42dd5a",
+    "textSha256": "7ed0738a054f6995a10d44d9128ce9359b346bffb5ebbc21375f5308fc95f847"
+  },
+  {
+    "file": "kangxi-gold/annotations/0341.gj",
+    "sourceSha256": "178cf1918e292240f5384232051ef8326dcddea3f9e0e2b4ab5858a70b9fe5a0",
+    "geometrySha256": "d00e62065106f8f125355df253935db8edbd6f291b717e363c3e03fb196ab68d",
+    "textSha256": "bfff8b402b80fa9f59944325a659d62ce1451142014c5f97bd8942384c3d7ff1"
+  },
+  {
+    "file": "kangxi-gold/annotations/0342.gj",
+    "sourceSha256": "4a75f876f1f8687a1c615f27c53df4e5ee4cbed569df2cf48417fd07ec7d42b2",
+    "geometrySha256": "066109771be1b9cdaeca8dec2e441b96afffda887b65505d67353ba16f6617e7",
+    "textSha256": "af2e3346ac549f2ad7aff8559524a74abd2b4346120f41b0b39e23ee09daec5a"
+  },
+  {
+    "file": "kangxi-gold/annotations/0343.gj",
+    "sourceSha256": "e4b24a521501b740cf90ab131da8b18713a83cbc4da2b3db2d8993cc7bbf2f06",
+    "geometrySha256": "ca2189426011f191879a57eda65cb0d065b3a64b70fb07a9dd53d35573eb3bc9",
+    "textSha256": "7a7c093795401ce5a08c2113f6961e28a34405b5296d600945678194fbdbf913"
+  },
+  {
+    "file": "kangxi-gold/annotations/0344.gj",
+    "sourceSha256": "9dcae4d325f845df3046b37923265de97cc5d58dad9f65f4aae4721bec490579",
+    "geometrySha256": "fac2d1e4eec446c557ab2899c3deb4af3fe0d1d3a7840406ef875762037e7f7c",
+    "textSha256": "98643fe158506748836b8a9e7db9bbbb31666362f45ca250b531a557df5f7ca7"
+  },
+  {
+    "file": "kangxi-gold/annotations/0345.gj",
+    "sourceSha256": "793e59d7711efba0e56a4ffc8c874414de2fcd3d114dbce47e4effad424db5b2",
+    "geometrySha256": "3226350f124a2f6f7f6abffef04dd9788c4a50301fac79639eea7c0046bea778",
+    "textSha256": "de4cb9685e1437e5b9d29754784df283884a7b2b99d73856ecc0df04763a3ba1"
+  },
+  {
+    "file": "kangxi-gold/annotations/0346.gj",
+    "sourceSha256": "2df70e51e2023433f6723f1e6d8c335360546679e93014faa91d5217b040fe0c",
+    "geometrySha256": "5a21ffe22062ac2a8cd9ff2c4ea994422dd3aa8480790df6699f7da94fa2e722",
+    "textSha256": "49af2a9402036b5d52dff48eb54e36a41aa994a9e17dd2a2043d266c965d7adc"
+  },
+  {
+    "file": "kangxi-gold/annotations/0347.gj",
+    "sourceSha256": "6d2b9fbd53db98ac982481ea0a36767ffdc086b49c6f55acf283d467b4592d78",
+    "geometrySha256": "725fcf884be421961a748ac57a08d48173c27944d22de2b536e6953c98b4ad04",
+    "textSha256": "a3d55af6c99eeb834ef61dc26972e3b4bffb4b6397a557dcd045d7ecc36cc12f"
+  },
+  {
+    "file": "kangxi-gold/annotations/0348.gj",
+    "sourceSha256": "cc6e3b882e8d3d8eb3957a71dcb69aed4f9ee352d89f45a3bdec80120f65e7c2",
+    "geometrySha256": "800a1d0051fc5010522a01a53a2b0a364bddadfc30ba527c303db45093c50666",
+    "textSha256": "53c901398102cec3c45d583f12b0fc722001c9464f956a3b9fa651b50c09a690"
+  },
+  {
+    "file": "kangxi-gold/annotations/0349.gj",
+    "sourceSha256": "7541d97ce42835e0768b1e349a9cce80b49b512e37a0f3ae4559561a5d6e28ea",
+    "geometrySha256": "f6fbfc5a981ee3d7cde889cd158d5c05ecc17c97abab15ab69a9e3912f4d6ff0",
+    "textSha256": "6d5464a69c93d12b4e2154ffc2983b9f3c4a02afb8737a566da1827c80f45926"
+  },
+  {
+    "file": "kangxi-gold/annotations/0350.gj",
+    "sourceSha256": "4d84340accc753653570c100b30c1b282a69424d823ec5c418bf65b2da9d408d",
+    "geometrySha256": "084b2488ee8af736c27d07e21637b579b4e713a13fd111696904365b0324651c",
+    "textSha256": "4a41cf80a3528bf559a5fc82d72c8ee0fee3a62f838edd2f2f466a01e7b9b87f"
+  },
+  {
+    "file": "kangxi-gold/annotations/0351.gj",
+    "sourceSha256": "8d3a93773a125d366faeb48f674b968c6185bac29ab6b8beca2452365602e33c",
+    "geometrySha256": "3459433b739fd4763adfdd19b7cba4d7d736825e1d8ec4bb638c65a7f9de6315",
+    "textSha256": "4ff378b3c8082fb4ddaf23b82a5a105ae9cc6c9d2562b354c016854ac6a710db"
+  },
+  {
+    "file": "kangxi-gold/annotations/0352.gj",
+    "sourceSha256": "973d30a167ed7dd84543b3cf9e1c8b5de95f4404f85ce2f0f07d951f7f21877d",
+    "geometrySha256": "ddd28bdaba5bee354382b7c2d291bd51b4a4574d016df85c7bafc925922851c5",
+    "textSha256": "d2254da4358161b384cceaba7db7a7b7eb19299918623b7dc63e189977a726fb"
+  },
+  {
+    "file": "kangxi-gold/annotations/0353.gj",
+    "sourceSha256": "cd979577ac385593f9aad63ff3f6360f054f96b3ac7f973e3279ae2a0c8391bd",
+    "geometrySha256": "754a6af9eb09f15d6bddea8328c0d7f6c13ece28ea55036b07f37c88185bc88d",
+    "textSha256": "b5437147584d2eb05bc3c2250632f8fba23fe8fe0dec422bb8a05f083f3ce24e"
+  },
+  {
+    "file": "kangxi-gold/annotations/0354.gj",
+    "sourceSha256": "939b3dddc1d555c4da7027a2bb387cea7803fd2a4029ea09269e188f107fd2cb",
+    "geometrySha256": "4f208b90b1375239740c5114243571b205a34bdf8aeafec7f5531cc2659240d8",
+    "textSha256": "3ad6213abcd604525db09e600720e433a2d7c0dd1e2f073ae55f56084f179172"
+  },
+  {
+    "file": "kangxi-gold/annotations/0355.gj",
+    "sourceSha256": "0ea3733e25df4545f5726516e0927c27288c6795c1b9f3682f410f00a4a9ae6d",
+    "geometrySha256": "c12a8896214551e40c32f6b118b063be01aa7f7943c52ec4348028cc42e8f453",
+    "textSha256": "223fe29c28d6f8453acaeeaed0c97097272ef93ee0972d21cdf522e3f4f3433a"
+  },
+  {
+    "file": "kangxi-gold/annotations/0356.gj",
+    "sourceSha256": "352c6de4dc98b639ff6528da13289eaca397d0dc713839ee291294f19b988dcf",
+    "geometrySha256": "6f48ff0a6400014a07bc0bc41dbba101d61b45d170261528491c10c4db14e14f",
+    "textSha256": "03e98895ca41835c17baac885b34585a20689007df6b45e22bb647df3b6e68ef"
+  },
+  {
+    "file": "kangxi-gold/annotations/0357.gj",
+    "sourceSha256": "35ff8ba907509b64f6385e687556956cdf802927fd8697f13d2a71ddfb76c687",
+    "geometrySha256": "a19c623fbd913fe83f7df51b9ca9285dc3446f645c59f4586beff1616fa0fbcb",
+    "textSha256": "4b3aed186708f47f69e8383024b898faa491df136750510f9571d046f569ef5c"
+  },
+  {
+    "file": "kangxi-gold/annotations/0358.gj",
+    "sourceSha256": "b581733f7212a567fc6a65da93e728e396c9205551743f9490bd0b83766d1f9f",
+    "geometrySha256": "f38b0de646c831d2395dde2a3935be15faa8cbcbf23357b4e0b0df14347dd257",
+    "textSha256": "33459ea79b20da063c66bbdf518cc88099e0558adcdf6ad70b51212029462c51"
+  },
+  {
+    "file": "guji-preview-grid/src/samples/kangxi-0312.gj",
+    "sourceSha256": "bac3e78a9e886e04982b8340e89b5228c1d5bb63651df6dab6db00eec327d907",
+    "geometrySha256": "c6a9b6bab0fa56b305b554c32638539d70a284c2d740b05d02e35ce3ebcfc5d0",
+    "textSha256": "9096f4a0a03ce0b790d3a5c62ac89bba73fd89b1e8796c2d535111cff5568ad4"
+  },
+  {
+    "file": "guji-preview-grid/src/samples/kangxi-yibu.gj",
+    "sourceSha256": "720885b3103838c6acf1c9b1cecc9317fe73d4c7f10d2d3e65cce5c8868a7758",
+    "geometrySha256": "5411a7a87b7d7d37c8bb8115275af2587eb7a2005fa4d52b14e38084dcbf9bdf",
+    "textSha256": "00f4896d9f1b159a4d45134caf4b9c5a27e013900c4a2b5d0ff255cc6e532ae1"
+  }
+]

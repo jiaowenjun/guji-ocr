@@ -55,6 +55,8 @@ def implementation_fingerprint():
     root = paths.REPO_ROOT
     files = sorted((root/'guji-preview-grid/src/ir').glob('*.ts'))
     files += sorted((root/'guji-preview-grid/src/parser').glob('*.ts'))
+    files += sorted((root/'guji-preview-grid/src/semantics').glob('*'))
+    files += [HERE/'kangxi_semantics.py']
     files += [HERE/name for name in ('build_ocr_dataset.py', 'export_ocr_layout.mjs', 'ocr_render.py', 'ocr_scan.py')]
     files += [root/'tools/eval/kangxi_column_seg.py', root/'guji-preview-grid/src/pua-registry.json']
     files += [root/'guji-preview-grid/public/fonts'/name for name in FONT_NAMES]

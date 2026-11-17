@@ -9,7 +9,7 @@
   add --page N          补数据 → 生成 kangxi-gold/annotations/NNNN.gj 草稿
                         （字头行 + 释义段落带；未编码字形按全库实测语义归并：
                         K 码＝前字头古文变体——guwen 数量精确匹配时并入字头行
-                        「#头古文#A#B」，不匹配时 #□ 占位紧跟主字头；2 段名伴随
+                        「#头 / 古文 / #AB」，不匹配时 #□ 占位紧跟主字头；2 段名伴随
                         字形只留注释；OCR 标尺把溢出到下页的尾段裁掉，下页添加
                         时自动续入）→ 回补本页未编码字形 svg 缓存 →
                         manifest.json 追加该页（status=draft）→ 重写
@@ -69,6 +69,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "crawl"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import kangxi_store  # noqa: E402
 import paths  # noqa: E402
+from kangxi_semantics import find_host_marks, strip_guwen_prefix, section_heading  # noqa: E402
 
 HERE = Path(__file__).resolve().parent          # tools/dataset
 CRAWL = HERE.parent / "crawl"
@@ -131,65 +132,6 @@ PUNCT_STRIP = "。，·\"：:、；《》【】*　 \t\n\r"
 def _norm(text: str) -> str:
     """清洗为匹配口径：去标点/空白/书名括号（与 .gj 词法的剔除集一致）。"""
     return "".join(ch for ch in text if ch not in PUNCT_STRIP)
-
-
-def find_host_marks(raw_text: str) -> list[tuple[str, int]]:
-    """文本 → 主字头标记序列 [(主字头, 尾部起点)]，纯解析（宿主判定由调用方查库）。
-
-    字头行的两种实存格式都要认（@313–336 实测混用）：
-      行内式 #(注)#頭古文#變1#變2（如 @331「#(三)#中古文#𠁧#𠁩」）
-      独占式 #頭古文 一行、变体各自成 #行（如 @313 丁/𠆤）
-    糖写法（2026-11-14 语法扩展）同样要认：簇内 token 的 # 可省——
-      #(三)丹，古文：𠁿㣋 / #(五)(增)𠂂。圈注前缀随字头一并匹配
-      （#(?:圈)*頭）；裸字头连写（#丶宔 ≡ #丶#宔）头部串延伸、宿主取
-      串末字；裸字变体不产生 # 标记，天然不是宿主候选。
-    古文变体不是宿主候选（@331 #𠁩 自带详情曾被误选为宿主致锚定失败）：
-    上一标记到本标记之间只有「古文」或空白（变体链）即判变体；紧贴本
-    字头的 #(注) 前缀（(增)/(二)/(三)…）先剥掉再判。
-    """
-    _circ = r"\([^)#\n]{1,2}\)?"
-    # 糖裸字头连写（#丶宔 ≡ #丶#宔）：头部串延伸到首个非内容字符，宿主取
-    # 串末字。「古」截断——是「古文」标记首字/跨行半个标记（#下古↵文#丅）
-    _bare = r"[^\s#【】()（）、。，：；！？·,.!?;\"'《》*◎〇○古a-zA-Z0-9]"
-    marks = list(re.finditer(rf"#(?:{_circ})*([^#()\s【□])", raw_text))
-    heads: list[tuple[str, int]] = []  # (主字头, 尾部起点)
-    guwen_open = False  # 上一主字头带「古文」，紧随的 # 段是变体链
-    for i, m in enumerate(marks):
-        seg = raw_text[marks[i - 1].end() if i else 0: m.start()]
-        seg = re.sub(r"\s*#\([^)]*\)\s*$", "", seg)  # 剥紧贴的 #(注)
-        seg_cmp = re.sub(r"\s+", "", seg)  # 竖排会把「古文」拆成两行（@320 不）
-        if guwen_open and re.fullmatch(r"[、，,]*", seg_cmp):
-            continue  # 变体链上的 #段（#𠁧#𠁩 / #𠀚、#𠙐 / 独占式 #𠆤 行）
-        if re.fullmatch(r"古文[：:]?", seg_cmp):
-            guwen_open = True
-            continue  # 「#頭古文(：)」后的首个变体
-        head, end = m.group(1), m.end()
-        ext = re.match(rf"{_bare}+", raw_text[end:])
-        if ext:
-            head, end = ext.group(0)[-1], end + len(ext.group(0))
-        # 糖写法标记可带「，」前缀（#(三)丹，古文：…）
-        guwen_open = re.match(r"[，\s]*古文", raw_text[end:]) is not None
-        heads.append((head, end))
-    return heads
-
-
-GUWEN_PREFIX_RE = re.compile(
-    r"^[，\s]*古\s*文[\s：:、，,]*"
-    r"(?:#[^#\s【(，。][\s：:、，,]*|(?<=\S)[^#\s【(，。][：:、，]*){1,6}"
-)
-
-
-def strip_guwen_prefix(tail_raw: str) -> str:
-    """剥尾部的「古文#变体…」前缀：变体字头是词条页元数据，不在释义段文本内。
-
-    兼容实存格式全家（@312–336 实测）：行内 顿号分隔（古文#丄、#𠄞）、
-    冒号（古文：#𠀇、#𠀃）、变体独占成行（古文\n#𠆤）、竖排把「古文」
-    拆成两行（古\n文\n#𠀚、#𠙐）——旧正则逐一失配致锚定失败。
-    糖写法（2026-11-14）：标记前可带「，」、变体的 # 可省（，古文：𠁿㣋）。
-    裸字变体须紧跟非空白（同行紧贴，不跨行）——与释义首字区分；# 式变体
-    仍可跨行（古文\n#𠆤）；变体字符类排除句读（，。）防误吞释义
-    """
-    return GUWEN_PREFIX_RE.sub("", tail_raw)
 
 
 def locate_tail(entry_n: str, tail_n: str) -> tuple[int | None, str]:
@@ -921,39 +863,40 @@ def ocr_trim_continuation(
     return ocr_trim_to_page(page, continuation, store, what="续文")
 
 
-def _flatten_band(band: list[str]) -> str:
-    """大行压平为单串（重折幂等的第一步）。
+def _flatten_parts(band: list[str]) -> list[tuple[str, int]]:
+    """Keep boundaries on either side of a # scope; ordinary small text can be refolded."""
+    parts: list[tuple[str, int]] = []
+    pos = 0
+    keep_all = any("//" in line for line in band)
+    previous = ""
+    for i, raw in enumerate(band):
+        line = raw.strip(" \t")
+        separator = i > 0 and (keep_all or "#" in previous or "#" in line)
+        if separator: pos += 1
+        parts.append((line, pos))
+        pos += len(line)
+        previous = line
+    return parts
 
-    含 // 注释行的大行保持原样（换行连接——行内注释截断语义不能被并入
-    单行）；普通行只剥半角空白拼接——全角空格 U+3000 是内容字符（空字格
-    ≡*），@312 老样式行尾「入聲。　/【說文】」经 strip 丢字实测（331→330）。
-    """
-    if any("//" in l for l in band):
-        return "\n".join(band)
-    return "".join(l.strip(" \t") for l in band)
+
+def _flatten_band(band: list[str]) -> str:
+    parts = _flatten_parts(band)
+    result = ""
+    for line, offset in parts:
+        result += "\n" * (offset - len(result)) + line
+    return result
 
 
 def _structural_spans(bands: list[list[str]]) -> list[tuple[int, int]]:
-    """结构行（# / // 起始）在 \\u0001 拼接文本中的保护区间（纯函数）。
-
-    行级保护（与分带布局无关）：任何 # / // 起始的行保护其自身跨度。
-    字头行/注释行不可被折行打断——@339 丹字头行实测被 OCR 变体字形组界
-    拆成 #\\n丹\\n古文\\n#𠁿#㣋#𠕑。旧的「带首行 # → 整带保护」对分带布局
-    敏感（regroup 前后保护忽有忽无 → 不幂等，@313 实测 17→15 逐击递减）。
-    """
-    structural: list[tuple[int, int]] = []
-    pos = 0
-    for b in bands:
-        fb = _flatten_band(b)
-        has_comment = any("//" in l for l in b)
-        off = 0
-        for l in b:
-            ls = l.lstrip(" \t")
-            if ls.startswith("#") or ls.startswith("//"):
-                structural.append((pos + off, pos + off + len(ls)))
-            off += len(ls) + (1 if has_comment else 0)
-        pos += len(fb) + 1  # \u0001 分隔符
-    return structural
+    """Protect large scopes and comments from OCR cuts, including a mid-line #."""
+    spans: list[tuple[int, int]] = []
+    base = 0
+    for band in bands:
+        for line, offset in _flatten_parts(band):
+            starts = [i for i in (line.find("#"), line.find("//")) if i >= 0]
+            if starts: spans.append((base + offset + min(starts), base + offset + len(line)))
+        base += len(_flatten_band(band)) + 1
+    return spans
 
 
 def _map_group_offsets(blocks: list, ocr_off: list[int]) -> list[int]:
@@ -1024,7 +967,7 @@ def _rebuild_bands(pieces: list[str]) -> list[list[str]]:
     带或带内前导空行（@339 注释带后双空行实测）。"""
     flat = "\n".join(pieces)
     return [
-        b.strip("\n").split("\n")
+        [line for line in b.strip("\n").split("\n") if line]
         for b in flat.split("\u0001")
         if b.strip("\n")
     ]
@@ -1038,8 +981,8 @@ def ocr_fold_page_lines(page: int, bands: list[list[str]], store: kangxi_store.K
     不做短片段合并（原 <8 合并规则误删 63% 真界——书名堆叠/短行接书证都
     是真实物理短行；过分裂折点保留在稿中可见即删，误折删除无风险，漏折
     补行才是隐性成本）。
-    安全性：只插入换行、不改任何字符——最坏情况折点偏移 1-2 字或过分裂
-    多折一处，对照页中即刻可见、拖动即可；库内转写文本永不因折行改动。
+    大字作用域两侧的换行必须保留，作用域内禁止 OCR 插入换行；
+    仅在小字区域重折，避免把古文标签/释文并入大字。
     纯逻辑在 _flatten_band/_structural_spans/_map_group_offsets/_apply_folds/
     _rebuild_bands（可单测），本函数只做 OCR 读取、对齐判信与组装。
     """
@@ -1084,10 +1027,8 @@ def ocr_fold_page_lines(page: int, bands: list[list[str]], store: kangxi_store.K
     return result, f"OCR 折行：插入 {inserted} 处换行"
 
 
-def _is_section_header(l: str) -> bool:
-    """部题行（## / ### / 「# 」带空格的卷部标题）——regroup 中永远独立成带。"""
-    ls = l.lstrip(" \t")
-    return ls.startswith("##") or ls.startswith("# ")
+def _is_section_header(line: str) -> bool:
+    return section_heading(line) is not None
 
 
 def _regroup_body(body: list[str], line_major: dict[int, int]) -> list[list[str]]:
@@ -1184,7 +1125,7 @@ def _classify_unencoded(chars: list[dict]) -> tuple[dict[int, dict], list[dict]]
     全库实测语义（5,143 字形，2026-11-14）：2 段名 svg（k_code 空、无 char）
     7/7 与主字头同 page_seq = 字头旁的伴随字形；K 码字形 226/226 无词条号、
     128/136 簇与前主字头站点 guwen 数量精确一致 = 古文变体（人工先例
-    @331/@334：K 码归并为「#头古文#A#B」字头行，伴随字形删除）。
+    @331/@334：K 码归并为「#头 / 古文 / #AB」字头行，伴随字形删除）。
     返回 (归属表 主字头ord→{companions,kcodes}, 无前邻主字头的孤儿列表)。
     """
     extra: dict[int, dict] = {}
@@ -1284,7 +1225,7 @@ def _draft_bands(
     获取由调用方完成，组装逻辑零 I/O。continuation 为前页未完字头的续文行
     （置于新字头之前，符合阅读顺序）；skip_head 防重复收录延续字头。
     未编码字形按 _classify_unencoded 的归属生成：K 码簇与前主字头 guwen
-    数量精确一致时并入字头行（#头古文#A#B），否则 #□ 占位紧跟主字头行；
+    数量精确一致时并入字头行（#头 / 古文 / #AB），否则 #□ 占位紧跟主字头行；
     2 段名伴随字形只留注释（人工先例是删除）。"""
     bands: list[list[str]] = []  # 每项 = 一个大行（未折行时单元素）
     counts = {"chars": 0, "unencoded": 0, "with_text": 0}
@@ -1312,7 +1253,7 @@ def _draft_bands(
             gw = _guwen_list(detail)
             if len(gw) == len(kcodes):
                 # 数量精确匹配才归并（128/136 簇）；字头行同人工校对风格
-                head_band[0] = f"#{item['char']}古文" + "".join(f"#{g}" for g in gw)
+                head_band.extend(["古文：", "#" + "".join(gw)])
                 svgs = "、".join(k["svg"] for k in kcodes)
                 bands.append([f"// 古文变体归并自站点 guwen 元数据（{svgs}），请对照原图核对"])
                 counts["guwen_merged"] = counts.get("guwen_merged", 0) + 1

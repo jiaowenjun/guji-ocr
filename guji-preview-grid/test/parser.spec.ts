@@ -1,5 +1,4 @@
-// 解析器测试：移植自 vscode-guji-preview 后的行为契约
-// fixtures/*.expected.json 由原插件解析器（未改动）现场生成，作为移植等价性的权威期望值
+// .gj/2 parser and formatting contracts; old visible geometry is separately pinned by the migration fixture.
 import { describe, expect, it } from "vitest";
 import yibuExpected from "./fixtures/kangxi-yibu.expected.json";
 import expected0312 from "./fixtures/kangxi-0312.expected.json";
@@ -36,217 +35,59 @@ describe("split", () => {
   });
 });
 
-describe("parseLine", () => {
-  it("@数字 识别为页码声明", () => {
+describe("generic line-scoped large text", () => {
+  it("page markers and explicit empty bands", () => {
     expect(parseLine("@312")).toEqual({ page: 312 });
+    expect(parseLine("@blank")).toEqual({ st: "empty" });
   });
-
-  it("#/##/### 识别为整行大字及缩进", () => {
-    expect(parseLine("# 康熙字典")).toEqual({
-      t: "康熙字典",
-      si: "large",
-      i: 0,
-    });
-    expect(parseLine("## 子集上")).toEqual({ t: "子集上", si: "large", i: 1 });
-    expect(parseLine("### 一部")).toEqual({ t: "一部", si: "large", i: 2 });
+  it("all following content is large, including 古文, ASCII and extended Han", () => {
+    expect(parseInline("前#甲古文Ab𠀀")).toEqual([
+      { t: "前" }, ...[..."甲古文Ab𠀀"].map((t) => ({ t, si: "large" })),
+    ]);
   });
-
-  it("单独 # 为空大字列", () => {
-    expect(parseLine("#")).toEqual({ st: "empty" });
+  it("newline resets size; punctuation, blanks and book brackets do not", () => {
+    const blocks = parseInline("#甲，*【乙】丙\n古文：\n#丁");
+    expect(blocks.filter((b) => b.si === "large").map((b) => b.t)).toEqual(["甲", "，", " ", "乙", "丙", "丁"]);
+    expect(blocks).toContainEqual({ t: "古文：" });
+    expect(blocks.filter((b) => b.st === "br")).toHaveLength(2);
+  });
+  it("circle groups are local overlays and keep the large scope active", () => {
+    expect(parseInline("#(十一)(增)甲")).toEqual([
+      { t: "十一", si: "large", st: "circle" }, { t: "增", si: "large", st: "circle" }, { t: "甲", si: "large" },
+    ]);
+    expect(parseInline("#（15）𠀀")).toEqual(parseInline("#(十五)𠀀"));
+    expect(parseInline("#(𠀀)甲")[0]).toEqual({ t: "𠀀", si: "large", st: "circle" });
+    expect(parseInline("#(增甲")).toEqual(parseInline("#(增)甲"));
+  });
+  it("legacy PageModel is an adapter over the canonical grammar", () => {
+    expect(parsePages(sample0312)).toEqual(expected0312);
+    expect(parsePages(sampleYibu)).toEqual(yibuExpected);
+    expect(parsePages(sampleYibu)).toHaveLength(17);
   });
 });
 
-describe("parseInline", () => {
-  it("行内大字、小字、书名", () => {
-    expect(parseInline("#一古文#弌【唐韻】")).toEqual([
-      { t: "一", si: "large" },
-      { t: "古文" },
-      { t: "弌", si: "large" },
-      { t: "唐韻", st: "book" },
-    ]);
-  });
-
-  it("单字带圈大字写作 #(一（不闭合，实际语料形态）", () => {
-    expect(parseInline("#(一")).toEqual([
-      { t: "一", si: "large", st: "circle" },
-    ]);
-  });
-
-  it("两字合成的带圈大字 #(AB)", () => {
-    expect(parseInline("#(AB)")).toEqual([
-      { t: "AB", si: "large", st: "circle" },
-    ]);
-  });
-
-  it("#( 后跟多字时仅取一字符入圈（糖：其后一字为裸写字头，再后为小字）", () => {
-    expect(parseInline("#(一口舌")).toEqual([
-      { t: "一", si: "large", st: "circle" },
-      { t: "口", si: "large" },
-      { t: "舌", si: "large" },
-    ]);
-  });
-
-  it("单字带圈闭合 #(一) 右括号被消费，不再残留杂散小字（与 IR 词法对齐；原实现缺陷已修）", () => {
-    expect(parseInline("#(一)")).toEqual([{ t: "一", si: "large", st: "circle" }]);
-    // 糖：带圈后裸字=字头（音大字）；标点隔开则全为小字
-    expect(parseInline("#(一)音義")).toEqual([
-      { t: "一", si: "large", st: "circle" },
-      { t: "音", si: "large" },
-      { t: "義", si: "large" },
-    ]);
-    expect(parseInline("#(一)：音義")).toEqual([
-      { t: "一", si: "large", st: "circle" },
-      { t: "：音義" },
-    ]);
-  });
-
-  it("换行产生 br 块", () => {
-    expect(parseInline("甲乙\n丙丁")).toEqual([
-      { t: "甲乙" },
-      { st: "br" },
-      { t: "丙丁" },
-    ]);
-  });
-
-  it("跨行书名拆为 start/br/end", () => {
-    expect(parseInline("【說文\n惟初")).toEqual([
-      { t: "說文", st: "book-start" },
-      { st: "br" },
-      { t: "惟初", st: "book-middle" },
-    ]);
-  });
-
-  it("* 转为空格并入小字片段", () => {
-    expect(parseInline("甲*乙")).toEqual([{ t: "甲 乙" }]);
-  });
-});
-
-describe("parsePages", () => {
-  it("@ 之前的内容被丢弃", () => {
-    const pages = parsePages("游离内容\n\n@1\n\n正文");
-    expect(pages).toHaveLength(1);
-    expect(pages[0].p).toBe(1);
-  });
-
-  it("0312 示例与原插件解析结果逐字一致", () => {
-    const pages = parsePages(sample0312);
-    expect(pages).toEqual(expected0312);
-  });
-
-  it("一部示例与原插件解析结果逐字一致（17 页）", () => {
-    const pages = parsePages(sampleYibu);
-    expect(pages).toHaveLength(17);
-    expect(pages).toEqual(yibuExpected);
-  });
-});
-
-describe("输入规范化（全角括号与速记）", () => {
-  const eq = (std: string, ext: string) =>
-    it(`${ext.slice(0, 10)} ≡ ${std.slice(0, 10)}`, () => {
-      const page = (t: string) => JSON.stringify(parsePages(`@1\n\n${t}\n`));
-      expect(page(ext)).toBe(page(std));
-    });
-  eq("#(增) 音義", "#（增） 音義"); // 全角闭 → 半角闭
-  eq("#(增 音義", "#（增 音義"); // 全角开
-  eq("#(增) 音義", "#(z) 音義"); // z 速记
-  eq("#(增) 音義", "#（z） 音義"); // z 全角速记
-  eq("#(十五) 音義", "#(15) 音義"); // 数字速记
-  eq("#(十五) 音義", "#（15） 音義");
-  eq("#(一) 音義", "#（1） 音義");
-  eq("#(十) 音義", "#（10） 音義"); // 10→十（长度变化的用例）
-  it("#(z) 的 IR mark 文本为「增」", async () => {
-    const { gj2ir } = await import("../src/ir/gj2ir");
-    const doc = gj2ir("@2\n\n#(z)#(15)：音義\n");
-    const marks = doc.pages[0].bands[0].lines.flatMap((l) => l.elements).filter((e) => e.class === "large");
-    expect(marks.map((m) => m.text)).toEqual(["增", "十五"]);
-  });
-});
-
-// 校对格式化 formatGj：补全 #(X 右括号 + 字头组独占一行（@335 排版）
-// 不变量口径：折行只改行结构，字符流/大字序列/圆圈与书名 overlay/带数不变
 import { readFileSync, readdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { formatGj } from "../src/parser/split-line";
 import { gj2ir } from "../src/ir/gj2ir";
 import type { IRDocument } from "../src/ir/types";
 
-describe("formatGj 规则", () => {
-  const fmt = (s: string) => formatGj(`@1\n\n${s}\n`);
-
-  it("#(X → #(X)：补右括号（1/2 字内），已闭合不重复", () => {
-    expect(fmt("#(增#𠁦 音義").split("\n")).toEqual(["@1", "", "#(增)𠁦", "音義", ""]);
-    expect(fmt("#(十一 音義")).toContain("#(十一)");
-    expect(fmt("#(十五) 音義")).not.toContain("))");
+describe("formatGj", () => {
+  it("removes redundant # and closes circle tokens without moving size boundaries", () => {
+    expect(formatGj("#甲#乙#丙\n古文：\n#丁")).toBe("#甲乙丙\n古文：\n#丁\n");
+    expect(formatGj("#*#*甲乙")).toBe("#**甲乙\n");
+    expect(formatGj("#（z）#甲")).toBe("#(增)甲\n");
+    expect(formatGj("#(增#甲")).toBe("#(增)甲\n");
   });
-
-  it("字头组独占一行：#A / #(A) / #A古文#B / #(A)#B / 多token（归一为标准糖形）", () => {
-    expect(fmt("去聲。#丮【唐韻】几劇").split("\n"))
-      .toEqual(["@1", "", "去聲。", "#丮", "【唐韻】几劇", ""]);
-    expect(fmt("#丯【廣韻】拜切").split("\n"))
-      .toEqual(["@1", "", "#丯", "【廣韻】拜切", ""]);
-    expect(fmt("非。#丰古文#𫵮【集韻】符風").split("\n"))
-      .toEqual(["@1", "", "非。", "#丰，古文：𫵮", "【集韻】符風", ""]);
-    expect(fmt("丨部，非。#(三)#中古文#𠁧#𠁩【唐韻】陟弓切").split("\n"))
-      .toEqual(["@1", "", "丨部，非。", "#(三)中，古文：𠁧𠁩", "【唐韻】陟弓切", ""]);
+  it("preserves ordinary words and annotations without dictionary rewrites", () => {
+    expect(formatGj("#甲古文乙丙")).toBe("#甲古文乙丙\n");
+    expect(formatGj("古文：㘳")).toBe("古文：㘳\n");
+    expect(formatGj("小字#甲【書】乙 // #注")).toBe("小字#甲【書】乙 // #注\n");
   });
-
-  it("异体并列 #丅、#𠆟 为一组（、为组内分隔符，不拆三行；省冗余 #）", () => {
-    expect(fmt("文#丅、#𠆟【廣韻】胡雅切").split("\n"))
-      .toEqual(["@1", "", "文", "#丅、𠆟", "【廣韻】胡雅切", ""]);
-  });
-
-  it("古文标注冒号为组内胶水：#世古文：#卋 整组一行（混用 、 亦然）", () => {
-    expect(fmt("#世古文：#卋\n【廣韻】舒制切")).toBe("@1\n\n#世，古文：卋\n【廣韻】舒制切\n");
-    expect(fmt("#(四#且古文：#𠀇、#𠀃\n【廣韻】淺野切")).toBe(
-      "@1\n\n#(四)且，古文：𠀇、𠀃\n【廣韻】淺野切\n",
-    );
-  });
-
-  it("行首「古文：」承接跨行异体标注，与字头同组不分拆（古文：#㘳）", () => {
-    expect(fmt("古文：#㘳\n【廣韻】去鳩切")).toBe("@1\n\n古文：㘳\n【廣韻】去鳩切\n");
-  });
-
-  it("字头后注音冒号跟随大字同行（#与: 独占一行，冒号不分到下一行）", () => {
-    expect(fmt("#与:【廣韻】【集韻】𠀤同與").split("\n"))
-      .toEqual(["@1", "", "#与:", "【廣韻】【集韻】𠀤同與", ""]);
-    expect(fmt("#丏：【廣韻】彌殄切").split("\n"))
-      .toEqual(["@1", "", "#丏：", "【廣韻】彌殄切", ""]);
-  });
-
-  it("古文跨 band 断开：尾部半个「古」并入字头组，不拆头（#下古↵文#丅）", () => {
-    expect(fmt("#下古")).toBe("@1\n\n#下古\n");
-    expect(fmt("#丁古文")).toBe("@1\n\n#丁古文\n");
-  });
-
-  it("行尾 # (增 标记：补括号并独立成行（仍在本 band 内折行）", () => {
-    expect(fmt("遣花開。*【正字通】或作㭍。#(增").split("\n"))
-      .toEqual(["@1", "", "遣花開。*【正字通】或作㭍。", "#(增)", ""]);
-  });
-
-  it("首尾空行与注释行删除，EOF 单换行；中间的不动", () => {
-    expect(formatGj("\n\n// 页首注\n@1\n\n釋文。\n// 页中注保留\n\n釋文二。\n\n// 页尾注\n\n"))
-      .toBe("@1\n\n釋文。\n// 页中注保留\n\n釋文二。\n");
-    expect(formatGj("  // 缩进注释  \n@1\n\n正文  ")).toBe("@1\n\n正文\n");
-    expect(formatGj("\n \n//\n")).toBe("");
-  });
-
-  it("标题行与注释不动；已是独占一行的不变；幂等", () => {
-    expect(fmt("# 一部 #甲")).toBe(`@1\n\n# 一部 #甲\n`);
-    expect(fmt("釋文。 // 註：#甲不動")).toBe(`@1\n\n釋文。 // 註：#甲不動\n`);
-    expect(fmt("#(增)#𠁦\n【字彙補】籀")).toBe(`@1\n\n#(增)𠁦\n【字彙補】籀\n`);
-    const once = fmt("去聲。#丮【唐韻】几劇");
+  it("canonicalizes empty columns and trims only document padding", () => {
+    expect(formatGj("\n// header\n@1\n\n#\n\n甲\n// tail\n")).toBe("@1\n\n@blank\n\n甲\n");
+    const once = formatGj("#甲#乙\n古文：\n#(z)#丁");
     expect(formatGj(once)).toBe(once);
-  });
-
-  it("糖输入归一：#(五)(增)𠂂 / #(三)丹古文𠁿㣋 → 标准形（补 ，：、省冗余 #）；幂等", () => {
-    expect(fmt("#(五)#(增)#𠂂")).toBe("@1\n\n#(五)(增)𠂂\n");
-    expect(fmt("#(五)(增)𠂂")).toBe("@1\n\n#(五)(增)𠂂\n");
-    expect(fmt("#(三)丹古文𠁿㣋")).toBe("@1\n\n#(三)丹，古文：𠁿㣋\n");
-    expect(fmt("#(三)#丹古文#𠁿#㣋")).toBe("@1\n\n#(三)丹，古文：𠁿㣋\n");
-    expect(fmt("#(三)丹，古文：𠁿㣋")).toBe("@1\n\n#(三)丹，古文：𠁿㣋\n");
-    // 字头连写串：普通 #X 后的 # 亦省（@340 #丶#宔）；「古」尾不并入（跨行半个标记）
-    expect(fmt("#丶#宔")).toBe("@1\n\n#丶宔\n");
-    expect(fmt("#下古")).toBe("@1\n\n#下古\n");
   });
 });
 

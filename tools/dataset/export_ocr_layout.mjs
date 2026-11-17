@@ -15,6 +15,7 @@ registerHooks({ resolve(s, c, next) {
 const { gj2ir } = await import('../../guji-preview-grid/src/ir/gj2ir.ts');
 const { layout3, planLayoutBand } = await import('../../guji-preview-grid/src/ir/layout3.ts');
 const { projectBooks } = await import('../../guji-preview-grid/src/ir/projection.ts');
+const { kangxiBandHeading } = await import('../../guji-preview-grid/src/semantics/kangxi.ts');
 const { irToText } = await import('../../guji-preview-grid/src/ir/text.ts');
 const compact = s => s.replace(/\s/gu, '');
 
@@ -34,7 +35,7 @@ export function exportLayout(source, pageNo) {
   let offset = 0;
   page.bands.forEach((band, bi) => {
     const placed = laid.bands[bi], left = laid.colStarts[bi];
-    const meta = { id: band.id, order: bi, level: band.level ?? null,
+    const meta = { id: band.id, order: bi, level: kangxiBandHeading(band, ir)?.level ?? null,
       grid_bbox: [left, 0, left + placed.cols, laid.config.rowCap], region_ids: [] };
     const plan = planLayoutBand(band, ir.meta.profile, laid.config);
     const elLine = new Map(band.lines.flatMap(l => l.elements.map(e => [e.id, l.id])));
@@ -87,7 +88,7 @@ export function exportLayout(source, pageNo) {
   books.forEach((b, i) => result.decorations.push({
     id: `${b.overlayId}-fragment-${i}`, overlay_id: b.overlayId, kind: 'book_title',
     band_id: laid.bands[b.bandIdx].id,
-    grid_bbox: [b.col + (b.halfShift ?? 0), b.rowStart, b.col + (b.halfShift ?? 0) + 1, b.rowEnd],
+    grid_bbox: [b.col + (b.halfShift ?? 0), b.rowStart, b.col + (b.halfShift ?? 0) + (b.cols ?? 1), b.rowEnd],
     open_top: b.openTop, open_bottom: b.openBottom,
   }));
   if (result.glyphs.map(g => g.text).join('') !== result.text ||

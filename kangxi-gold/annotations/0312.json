@@ -1,8 +1,8 @@
 {
   "version": 3,
   "meta": {
-    "sourceFormat": "gj",
-    "generatedBy": "guji-ir/3",
+    "sourceFormat": "gj/2",
+    "generatedBy": "guji-ir/3-gj2",
     "fidelity": "full",
     "profile": {
       "stripPunct": [
@@ -46,7 +46,7 @@
           "ord": 0,
           "src": [
             6,
-            12
+            11
           ],
           "lines": [
             {
@@ -54,7 +54,7 @@
               "ord": 0,
               "src": [
                 6,
-                12
+                11
               ],
               "elements": [
                 {
@@ -79,96 +79,111 @@
                 }
               ],
               "cpSrcs": [
+                7,
                 8,
                 9,
-                10,
-                11
+                10
               ]
             }
-          ],
-          "level": 1
+          ]
         },
         {
           "id": "p0312-b1",
           "ord": 1,
           "src": [
-            14,
-            20
+            13,
+            18
           ],
           "lines": [
             {
               "id": "p0312-b1-l0",
               "ord": 0,
               "src": [
-                14,
-                20
+                13,
+                18
               ],
               "elements": [
                 {
                   "id": "p0312-b1-e0",
                   "class": "large",
-                  "text": "子"
+                  "text": " "
                 },
                 {
                   "id": "p0312-b1-e1",
                   "class": "large",
-                  "text": "集"
+                  "text": "子"
                 },
                 {
                   "id": "p0312-b1-e2",
+                  "class": "large",
+                  "text": "集"
+                },
+                {
+                  "id": "p0312-b1-e3",
                   "class": "large",
                   "text": "上"
                 }
               ],
               "cpSrcs": [
-                17,
-                18,
-                19
+                14,
+                15,
+                16,
+                17
               ]
             }
-          ],
-          "level": 2
+          ]
         },
         {
           "id": "p0312-b2",
           "ord": 2,
           "src": [
-            22,
-            28
+            20,
+            25
           ],
           "lines": [
             {
               "id": "p0312-b2-l0",
               "ord": 0,
               "src": [
-                22,
-                28
+                20,
+                25
               ],
               "elements": [
                 {
                   "id": "p0312-b2-e0",
                   "class": "large",
-                  "text": "一"
+                  "text": " "
                 },
                 {
                   "id": "p0312-b2-e1",
+                  "class": "large",
+                  "text": " "
+                },
+                {
+                  "id": "p0312-b2-e2",
+                  "class": "large",
+                  "text": "一"
+                },
+                {
+                  "id": "p0312-b2-e3",
                   "class": "large",
                   "text": "部"
                 }
               ],
               "cpSrcs": [
-                26,
-                27
+                21,
+                22,
+                23,
+                24
               ]
             }
-          ],
-          "level": 3
+          ]
         },
         {
           "id": "p0312-b3",
           "ord": 3,
           "src": [
-            30,
+            27,
             93
           ],
           "lines": [
@@ -176,20 +191,49 @@
               "id": "p0312-b3-l0",
               "ord": 0,
               "src": [
-                30,
-                37
+                27,
+                29
               ],
               "elements": [
                 {
                   "id": "p0312-b3-e0",
                   "class": "large",
                   "text": "一"
-                },
+                }
+              ],
+              "cpSrcs": [
+                28
+              ]
+            },
+            {
+              "id": "p0312-b3-l1",
+              "ord": 1,
+              "src": [
+                30,
+                34
+              ],
+              "elements": [
                 {
                   "id": "p0312-b3-e1",
                   "class": "small",
                   "text": "，古文："
-                },
+                }
+              ],
+              "cpSrcs": [
+                30,
+                31,
+                32,
+                33
+              ]
+            },
+            {
+              "id": "p0312-b3-l2",
+              "ord": 2,
+              "src": [
+                35,
+                37
+              ],
+              "elements": [
                 {
                   "id": "p0312-b3-e2",
                   "class": "large",
@@ -197,17 +241,12 @@
                 }
               ],
               "cpSrcs": [
-                31,
-                32,
-                33,
-                34,
-                35,
                 36
               ]
             },
             {
-              "id": "p0312-b3-l1",
-              "ord": 1,
+              "id": "p0312-b3-l3",
+              "ord": 3,
               "src": [
                 38,
                 68
@@ -243,8 +282,8 @@
               ]
             },
             {
-              "id": "p0312-b3-l2",
-              "ord": 2,
+              "id": "p0312-b3-l4",
+              "ord": 4,
               "src": [
                 69,
                 93
@@ -696,7 +735,7 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0312-b3-l1",
+          "line": "p0312-b3-l3",
           "range": [
             0,
             2
@@ -715,7 +754,7 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0312-b3-l1",
+          "line": "p0312-b3-l3",
           "range": [
             2,
             4
@@ -734,7 +773,7 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0312-b3-l1",
+          "line": "p0312-b3-l3",
           "range": [
             7,
             9
@@ -753,7 +792,7 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0312-b3-l1",
+          "line": "p0312-b3-l3",
           "range": [
             9,
             11
@@ -772,7 +811,7 @@
       "kind": "book-title",
       "spans": [
         {
-          "line": "p0312-b3-l2",
+          "line": "p0312-b3-l4",
           "range": [
             0,
             2

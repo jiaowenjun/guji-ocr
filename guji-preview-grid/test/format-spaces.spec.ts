@@ -38,11 +38,11 @@ describe("formatSpaces 规则", () => {
     expect(fmt("甲* 乙")).toBe("甲**乙");
   });
 
-  it("标题行整行不动（#+ 后空格是语法分隔符；标题 * 会字面渲染）", () => {
-    expect(fmt("# 康熙字典")).toBe("# 康熙字典");
-    expect(fmt("### 一 部")).toBe("### 一 部"); // 标题内的空格也不动
-    expect(fmt("  ## 子集上")).toBe("  ## 子集上");
-    expect(formatSpaces("# 一 部").count).toBe(0);
+  it("large text has the same explicit blank rule as small text", () => {
+    expect(fmt("#*子集上")).toBe("#*子集上");
+    expect(fmt("#甲 乙")).toBe("#甲*乙");
+    expect(fmt("#**一部")).toBe("#**一部");
+    expect(formatSpaces("#甲 乙").count).toBe(1);
   });
 
   it("注释不动（整行 // 与行内 // 尾注）", () => {

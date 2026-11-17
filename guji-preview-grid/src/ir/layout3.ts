@@ -18,6 +18,7 @@ export interface L3Item {
   rawRanges?: Array<[number, number]>;
   lineId?: string;
   cpStart?: number;
+  cpEnd?: number;
   halfShift?: 0.5;
 }
 
@@ -52,7 +53,7 @@ interface PlannedRun {
 }
 
 export type LayoutSegment =
-  | { kind: "glyph"; text: string; elId: string; ligature?: boolean }
+  | { kind: "glyph"; text: string; elId: string; ligature?: boolean; lineId: string; cpStart: number; cpEnd: number }
   | { kind: "parallel"; runs: PlannedRun[] }
   | { kind: "gap"; rows: number };
 
@@ -63,17 +64,9 @@ export interface BandPlan {
   segments: LayoutSegment[];
 }
 
-function planBand(band: IRBand, clean: ReturnType<typeof compileProfile>, config: IRLayoutConfig): BandPlan {
+function planBand(band: IRBand, clean: ReturnType<typeof compileProfile>, _config: IRLayoutConfig): BandPlan {
   const segments: LayoutSegment[] = [];
   const lineIds = band.lines.map((line) => line.id);
-  if (band.level !== undefined) {
-    segments.push({ kind: "gap", rows: (band.level - 1) * config.largeRows });
-    for (const line of band.lines) for (const el of line.elements) {
-      const text = clean(el.text).cells.join("");
-      if (text) segments.push({ kind: "glyph", text, elId: el.id, ligature: el.ligature });
-    }
-    return { id: band.id, lineIds, segments };
-  }
   let fragment: PlannedRun | null = null;
   let runs: PlannedRun[] = [];
   const flushFragment = () => {
@@ -95,8 +88,8 @@ function planBand(band: IRBand, clean: ReturnType<typeof compileProfile>, config
         fragment.ranges.push(...ranges.map(([a, b]): [number, number] => [a + cp, b + cp]));
       } else {
         flushGroup();
-        // The large slot is a skeleton fact even if its displayed text is stripped.
-        segments.push({ kind: "glyph", text: cells.join(""), elId: el.id, ligature: el.ligature });
+        // Stripped punctuation occupies no slot. Explicit blanks remain real large cells.
+        if (cells.length) segments.push({ kind: "glyph", text: cells.join(""), elId: el.id, ligature: el.ligature, lineId: line.id, cpStart: cp, cpEnd: cp + [...el.text].length });
       }
       cp += [...el.text].length;
     }
@@ -121,7 +114,7 @@ function placeBand(plan: BandPlan, config: IRLayoutConfig): L3Band {
   for (const segment of plan.segments) {
     if (segment.kind === "gap") r += segment.rows;
     else if (segment.kind === "glyph") {
-      glyphs.push({ kind: "large", r, c: 0, text: segment.text, elId: segment.elId, ligature: segment.ligature });
+      glyphs.push({ kind: "large", r, c: 0, text: segment.text, elId: segment.elId, ligature: segment.ligature, lineId: segment.lineId, cpStart: segment.cpStart, cpEnd: segment.cpEnd });
       r += config.largeRows;
     } else {
       const slack = cols - segment.runs.length;

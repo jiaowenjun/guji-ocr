@@ -26,11 +26,11 @@ describe("formatCircles 规则", () => {
     expect(fmt("切。○按字彙")).toBe("切。○按字彙");
   });
 
-  it("标题行与注释不动", () => {
-    expect(fmt("# 一部◎")).toBe("# 一部◎");
+  it("大字同样归一；注释不动", () => {
+    expect(fmt("#一部◎")).toBe("#一部〇");
     expect(fmt("// ◎待考")).toBe("// ◎待考");
     expect(fmt("正文。// ◎按")).toBe("正文。// ◎按");
-    expect(formatCircles("# 甲◎\n// ◎\n正文◎").count).toBe(1);
+    expect(formatCircles("# 甲◎\n// ◎\n正文◎").count).toBe(2);
   });
 
   it("幂等", () => {

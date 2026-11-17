@@ -158,7 +158,7 @@ function MatrixPageView({
               box.openTop && "open-top",
               box.openBottom && "open-bottom",
               // 最右列（读序第一列）：右边线叠上版框（matrix.css 共线避让）
-              box.col === page.totalCols - 1 && "m-flush-r",
+              box.col + (box.cols ?? 1) === page.totalCols && "m-flush-r",
               // band 左缘列（最右 band 除外——其左缘是版框）：界栏开时与界栏共线
               box.col === page.colStarts[box.bandIdx] &&
                 box.bandIdx < page.bands.length - 1 &&
@@ -170,7 +170,7 @@ function MatrixPageView({
             style={
               {
                 gridRow: `${box.rowStart + 1} / span ${span}`,
-                gridColumn: `${box.col + 1} / span 1`,
+                gridColumn: `${box.col + 1} / span ${box.cols ?? 1}`,
                 ...(box.halfShift
                   ? { transform: `translateX(calc(var(--guji-unit) * ${box.halfShift}))` }
                   : {}),

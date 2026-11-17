@@ -1,37 +1,7 @@
-// 页面字头解析（字头条展示用，纯逻辑）：
-//   - 提取：逐行复用 formatGj 的字头簇扫描器（与「字头组独占一行」同一事实源），
-//     只保留字头字符——带圈 token（#(增)/#(三) 及糖写 (增)）是圈号标记
-//     （补遗/页位次），不是字头字符，丢弃；糖写裸字（字头/变体）照取
-//   - 归属：本页无字头 = 纯延续页，按清单序回溯最近一个有字头的页，取其最后一组
-//     为宿主（与 前页续入回放验证 的跨页回溯链语义一致，@332/@333 → @331「中」）
-import { scanAllClusters } from "@/parser/split-line";
-
-export interface HeadwordCluster {
-  /** .gj 原文（含标记/古文/冒号，tooltip 展示用） */
-  raw: string;
-  /** 字头字符（主字头 + 古文/异体变体，序即版面序） */
-  chars: string[];
-  /** 所在行号（0 起）与行内偏移（词条区间定位用；// 前缀切片不移动偏移） */
-  line: number;
-  start: number;
-}
-
-/** 提取一页 .gj 内全部字头组；标题行/@页码/注释不参与（口径同 formatGj） */
-export function extractHeadwordClusters(gj: string): HeadwordCluster[] {
-  const out: HeadwordCluster[] = [];
-  for (const [li, line] of gj.split("\n").entries()) {
-    if (/^\s*#+ /.test(line) || /^@\d+\s*$/.test(line)) continue;
-    const cut = line.indexOf("//");
-    const src = cut >= 0 ? line.slice(0, cut) : line;
-    for (const cl of scanAllClusters(src)) {
-      const chars = cl.tokens
-        .filter((t) => t.kind === "plain" || t.kind === "bare")
-        .map((t) => t.ch);
-      if (chars.length > 0) out.push({ raw: src.slice(cl.start, cl.end), chars, line: li, start: cl.start });
-    }
-  }
-  return out;
-}
+// Kangxi semantic adapter for the dictionary UI.
+import { kangxiEntries, type KangxiEntry } from "../../semantics/kangxi";
+export type HeadwordCluster = KangxiEntry;
+export const extractHeadwordClusters = kangxiEntries;
 
 /** 字头词条文本：该组所在行行首 → 下一字头组所在行行首（无则页尾）。
  *  页内止——词条常延续到后页，只切本页部分；同一行多个字头组（未格式化稿）

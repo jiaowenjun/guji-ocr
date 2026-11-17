@@ -1,5 +1,5 @@
 // Read-only corpus audit. Requires Node >= 22.18 with native TypeScript stripping.
-// node tools/eval/audit_gj_layout.mjs [output.json] [--check] [--strict-layout]
+// node tools/eval/audit_gj_layout.mjs [output.json] [--check] [--strict-layout] [--pages=312,313]
 // --check checks source/derived files and skeleton independence; legacy parity is informational.
 // --strict-layout additionally fails on geometry warnings; it does not certify scan fidelity.
 import { registerHooks } from 'node:module';
@@ -20,15 +20,21 @@ registerHooks({ resolve(specifier, context, nextResolve) {
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 const { gj2ir } = await import('../../guji-preview-grid/src/ir/gj2ir.ts');
 const { layout3 } = await import('../../guji-preview-grid/src/ir/layout3.ts');
+const { kangxiBandHeading } = await import('../../guji-preview-grid/src/semantics/kangxi.ts');
 const { irToText } = await import('../../guji-preview-grid/src/ir/text.ts');
 const { parsePages } = await import('../../guji-preview-grid/src/parser/parse-pages.ts');
 const manifest = JSON.parse(readFileSync(resolve(root, 'kangxi-gold/manifest.json'), 'utf8'));
+const pageArg = process.argv.find(arg => arg.startsWith('--pages='));
+const selectedPages = pageArg ? pageArg.slice('--pages='.length).split(',').map(Number) : null;
+if (selectedPages?.some(n => !Number.isInteger(n) || !manifest.pages.some(p => p.page === n)))
+  throw Error('--pages must contain page numbers present in manifest.json');
+const entries = manifest.pages.filter(p => !selectedPages || selectedPages.includes(p.page));
 const cp = s => [...s].length;
 const hist = values => values.reduce((out, n) => ((out[n] = (out[n] ?? 0) + 1), out), {});
 const sha = s => createHash('sha256').update(s).digest('hex');
 const rows = [];
 const texts = [];
-for (const entry of [...manifest.pages].sort((a, b) => a.page - b.page)) {
+for (const entry of [...entries].sort((a, b) => a.page - b.page)) {
   const stem = String(entry.page).padStart(4, '0');
   const base = resolve(root, 'kangxi-gold/annotations', stem);
   const source = readFileSync(`${base}.gj`, 'utf8');
@@ -72,10 +78,10 @@ for (const entry of [...manifest.pages].sort((a, b) => a.page - b.page)) {
     legacyTextEqual: irToText(doc) === legacyText, overlaySourceIndependent: isDeepStrictEqual(layout3(doc), layout3(stripped)),
     pageMarkers: activeLines.filter(l => /^@\d+$/.test(l.trim())).length,
     activeSourceLines: activeLines.length, headSourceLines: activeLines.filter(l => /^#[^#\s]/u.test(l)).length,
-    startsWithSmallText: bands[0]?.level === undefined && bands[0]?.lines[0]?.elements[0]?.class === 'small',
+    startsWithSmallText: (!bands[0] || !kangxiBandHeading(bands[0], doc)) && bands[0]?.lines[0]?.elements[0]?.class === 'small',
     literalStars: (source.match(/\*/g) ?? []).length, openBrackets: (source.match(/【/g) ?? []).length, closeBrackets: (source.match(/】/g) ?? []).length,
     literalCircledIntroducers: (source.match(/#\(/g) ?? []).length, guwenOccurrences: (source.match(/古文/g) ?? []).length, guwenColonOccurrences: (source.match(/古文[:：]/g) ?? []).length,
-    headings: bands.filter(b => b.level !== undefined).length, bands: bands.length, lines: lines.length, elements: elements.length,
+    headings: bands.filter(b => kangxiBandHeading(b, doc)).length, bands: bands.length, lines: lines.length, elements: elements.length,
     largeElements: elements.filter(e => e.class === 'large').length, smallElements: elements.filter(e => e.class === 'small').length,
     largeCodepoints: elements.filter(e => e.class === 'large').reduce((n,e) => n + cp(e.text), 0),
     smallCodepoints: elements.filter(e => e.class === 'small').reduce((n,e) => n + cp(e.text), 0),
@@ -121,13 +127,14 @@ const implementationFiles = [
   'guji-preview-grid/src/ir/layout3.ts', 'guji-preview-grid/src/ir/text.ts',
   'guji-preview-grid/src/ir/profile.ts', 'guji-preview-grid/src/ir/layout-config.ts',
   'guji-preview-grid/src/ir/layout-diagnostics.ts', 'guji-preview-grid/src/ir/projection.ts',
-  'guji-preview-grid/src/parser/structure.ts',
+  'guji-preview-grid/src/parser/structure.ts', 'guji-preview-grid/src/parser/inline-tokens.ts',
+  'guji-preview-grid/src/semantics/kangxi.ts', 'guji-preview-grid/src/semantics/kangxi-rules.json',
   'guji-preview-grid/src/parser/split-line.ts', 'guji-preview-grid/src/parser/parse-pages.ts',
   'guji-preview-grid/src/parser/parse-line.ts', 'guji-preview-grid/src/parser/parse-inline.ts',
   'guji-preview-grid/src/components/matrix/MatrixPages.tsx',
 ];
 const result = { schema: 'gj-layout-audit/2', auditedAt: new Date().toISOString(), node: process.version,
-  scope: 'Current working tree; regenerated in memory; no annotation files written', pageCount: rows.length, statuses: hist(rows.map(r => r.status)), totals,
+  scope: 'Current working tree; regenerated in memory; no annotation files written', selectedPages, pageCount: rows.length, statuses: hist(rows.map(r => r.status)), totals,
   implementationSha256: Object.fromEntries(implementationFiles.map(f => [f, sha(readFileSync(resolve(root, f)))])),
   manifestSha256: sha(readFileSync(resolve(root, 'kangxi-gold/manifest.json'))),
   checks: Object.fromEntries(['jsonFresh','txtFresh','legacyTextEqual','overlaySourceIndependent'].map(k => [k, { pass: rows.filter(r=>r[k]).length, failedPages: rows.filter(r=>!r[k]).map(r=>r.page) }])),

@@ -76,9 +76,9 @@ class TestAlignCut(unittest.TestCase):
 
 
 class TestFindHostMarks(unittest.TestCase):
-    def test_inline_variants_skipped(self):
-        """行内式 @331「#(三)#中古文#𠁧#𠁩」：变体不是宿主。"""
-        self.assertEqual(kpt.find_host_marks("#(三)#中古文#𠁧#𠁩"), [("中", 6)])
+    def test_explicit_variants_skipped(self):
+        """古文标签和变体分行，变体不是宿主。"""
+        self.assertEqual(kpt.find_host_marks("#(三)#中\n古文\n#𠁧𠁩"), [("中", 6)])
 
     def test_standalone_variant_lines_skipped(self):
         """独占式 @313：#丁 + 古文 + 变体 #行。"""
@@ -88,9 +88,9 @@ class TestFindHostMarks(unittest.TestCase):
         """糖连写 #丶宔 ≡ #丶#宔：宿主取串末字。"""
         self.assertEqual(kpt.find_host_marks("#丶宔"), [("宔", 3)])
 
-    def test_sugar_guwen_marker(self):
-        """糖写法 #(三)丹，古文：𠁿㣋 → 宿主 丹。"""
-        self.assertEqual(kpt.find_host_marks("#(三)丹，古文：𠁿㣋"), [("丹", 5)])
+    def test_separate_guwen_marker(self):
+        """主字头后的标点及跨行古文不改变宿主 丹。"""
+        self.assertEqual(kpt.find_host_marks("#(三)丹，\n古文：\n#𠁿㣋"), [("丹", 5)])
 
 
 # ---- A3 续入锚定 ----
@@ -144,12 +144,12 @@ class TestStripGuwenPrefix(unittest.TestCase):
     def test_inline_dunhao(self):
         self.assertEqual(kpt.strip_guwen_prefix("古文#𠁿、#㣋\n殘段"), "殘段")
 
-    def test_sugar_colon(self):
-        self.assertEqual(kpt.strip_guwen_prefix("，古文：𠁿㣋\n殘段"), "\n殘段")
+    def test_separate_colon_label(self):
+        self.assertEqual(kpt.strip_guwen_prefix("，\n古文：\n#𠁿㣋\n殘段"), "殘段")
 
-    def test_space_separated_stops(self):
-        """空格分隔：裸字分支的 (?<=\\S) 失败，释义不被吞。"""
-        self.assertEqual(kpt.strip_guwen_prefix("古文#𠁿、#㣋 殘段"), "殘段")
+    def test_newline_separated_definition(self):
+        """换行结束大字作用域，后续释义不被吞。"""
+        self.assertEqual(kpt.strip_guwen_prefix("古文\n#𠁿、㣋\n殘段"), "殘段")
 
     def test_standalone_variant_line(self):
         self.assertEqual(kpt.strip_guwen_prefix("古文\n#𠆤\n釋文"), "釋文")
@@ -253,8 +253,8 @@ class TestRegroupBody(unittest.TestCase):
 
     def test_section_header_standalone(self):
         """部题行独立成带（@312「## 子集上### 一部」振荡根因）。"""
-        groups = kpt._regroup_body(["甲", "## 子集上", "乙"], {0: 0, 1: 0})
-        self.assertEqual(groups, [["甲"], ["## 子集上"], ["乙"]])
+        groups = kpt._regroup_body(["甲", "#*子集上", "乙"], {0: 0, 1: 0})
+        self.assertEqual(groups, [["甲"], ["#*子集上"], ["乙"]])
 
     def test_comment_attaches_to_preceding_band(self):
         """// 注释附着前正文行所在带（字符流不丢）。"""
@@ -304,7 +304,7 @@ class TestDraftBands(unittest.TestCase):
         ]
         details = {20025: {"guwen": "𠁿、㣋", "text_paragraphs": ["段一"]}}
         bands, counts = kpt._draft_bands(chars, details)
-        self.assertEqual(bands[0], ["#丹古文#𠁿#㣋"])
+        self.assertEqual(bands[0], ["#丹", "古文：", "#𠁿㣋"])
         self.assertEqual(counts["guwen_merged"], 1)
         self.assertEqual(counts["chars"], 1)
         self.assertEqual(counts["with_text"], 1)
@@ -388,6 +388,34 @@ class TestParseGjBands(unittest.TestCase):
     def test_no_trailing_newline(self):
         _, bands = kpt.parse_gj_bands("@312\n\n甲")
         self.assertEqual(bands, [["甲"]])
+
+
+class TestLineScopedType(unittest.TestCase):
+    def test_flatten_keeps_type_boundaries(self):
+        self.assertEqual(kpt._flatten_band(["#甲，", "古文：", "#乙丙", "正文", "續文"]), "#甲，\n古文：\n#乙丙\n正文續文")
+
+    def test_midline_large_scope_protected(self):
+        band = ["正文#甲乙", "釋文"]
+        full = kpt._flatten_band(band)
+        self.assertEqual(full, "正文#甲乙\n釋文")
+        spans = kpt._structural_spans([band])
+        self.assertEqual(spans, [(2, 5)])
+        self.assertIsNone(kpt._apply_folds(full, [4], spans))
+
+    def test_repeated_fold_preserves_large_and_small(self):
+        bands = [["#甲", "古文：", "#乙丙", "釋義正文"]]
+        full = kpt._flatten_band(bands[0])
+        spans = kpt._structural_spans(bands)
+        # Force a cut in the definition; the three earlier type boundaries remain explicit.
+        cut = len(kpt._norm("#甲\n古文：\n#乙丙\n釋義"))
+        pieces = kpt._apply_folds(full, [cut], spans)
+        result = kpt._rebuild_bands(pieces)
+        self.assertEqual(result, [["#甲", "古文：", "#乙丙", "釋義", "正文"]])
+        self.assertEqual(kpt._flatten_band(result[0]), full)
+
+    def test_titles_excluded_from_hosts(self):
+        source = "#康熙字典\n\n#*子集中\n\n#**一部\n\n#一:\n正文"
+        self.assertEqual(kpt.find_host_marks(source), [("一", source.index("一:") + 1)])
 
 
 if __name__ == "__main__":

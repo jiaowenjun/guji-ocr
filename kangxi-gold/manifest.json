@@ -768,6 +768,6 @@
       "origin": "kangxizidian.com 爬取草稿（kangxi_page_tool.py add）"
     }
   ],
-  "annotation_source": "guji-preview-grid/src/samples/kangxi-yibu.gj（人工精标，源自 vscode-guji-preview/example；零漂移对照通过）",
+  "annotation_source": "annotations/*.gj 为逐页转写源；初始 17 页源自 guji-preview-grid/src/samples/kangxi-yibu.gj，后续含人工修订及扩页；JSON/TXT 由 IR v3 派生",
   "annotations_schema": "guji-ir/3"
 }

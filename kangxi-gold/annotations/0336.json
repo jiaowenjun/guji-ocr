@@ -1,8 +1,8 @@
 {
   "version": 3,
   "meta": {
-    "sourceFormat": "gj",
-    "generatedBy": "guji-ir/3",
+    "sourceFormat": "gj/2",
+    "generatedBy": "guji-ir/3-gj2",
     "fidelity": "full",
     "profile": {
       "stripPunct": [
@@ -576,7 +576,7 @@
           "ord": 4,
           "src": [
             229,
-            230
+            235
           ],
           "lines": [
             {
@@ -584,7 +584,7 @@
               "ord": 0,
               "src": [
                 229,
-                230
+                235
               ],
               "elements": []
             }
@@ -594,16 +594,16 @@
           "id": "p0336-b5",
           "ord": 5,
           "src": [
-            232,
-            233
+            237,
+            243
           ],
           "lines": [
             {
               "id": "p0336-b5-l0",
               "ord": 0,
               "src": [
-                232,
-                233
+                237,
+                243
               ],
               "elements": []
             }
@@ -613,16 +613,16 @@
           "id": "p0336-b6",
           "ord": 6,
           "src": [
-            235,
-            236
+            245,
+            251
           ],
           "lines": [
             {
               "id": "p0336-b6-l0",
               "ord": 0,
               "src": [
-                235,
-                236
+                245,
+                251
               ],
               "elements": []
             }
@@ -632,16 +632,16 @@
           "id": "p0336-b7",
           "ord": 7,
           "src": [
-            238,
-            239
+            253,
+            259
           ],
           "lines": [
             {
               "id": "p0336-b7-l0",
               "ord": 0,
               "src": [
-                238,
-                239
+                253,
+                259
               ],
               "elements": []
             }

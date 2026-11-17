@@ -1,8 +1,8 @@
 {
   "version": 3,
   "meta": {
-    "sourceFormat": "gj",
-    "generatedBy": "guji-ir/3",
+    "sourceFormat": "gj/2",
+    "generatedBy": "guji-ir/3-gj2",
     "fidelity": "full",
     "profile": {
       "stripPunct": [
@@ -852,7 +852,7 @@
           "ord": 7,
           "src": [
             412,
-            413
+            418
           ],
           "lines": [
             {
@@ -860,7 +860,7 @@
               "ord": 0,
               "src": [
                 412,
-                413
+                418
               ],
               "elements": []
             }

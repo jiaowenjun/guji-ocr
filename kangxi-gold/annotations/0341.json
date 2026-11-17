@@ -1,8 +1,8 @@
 {
   "version": 3,
   "meta": {
-    "sourceFormat": "gj",
-    "generatedBy": "guji-ir/3",
+    "sourceFormat": "gj/2",
+    "generatedBy": "guji-ir/3-gj2",
     "fidelity": "full",
     "profile": {
       "stripPunct": [
@@ -844,7 +844,7 @@
           "ord": 6,
           "src": [
             410,
-            411
+            416
           ],
           "lines": [
             {
@@ -852,7 +852,7 @@
               "ord": 0,
               "src": [
                 410,
-                411
+                416
               ],
               "elements": []
             }
@@ -862,16 +862,16 @@
           "id": "p0341-b7",
           "ord": 7,
           "src": [
-            413,
-            414
+            418,
+            424
           ],
           "lines": [
             {
               "id": "p0341-b7-l0",
               "ord": 0,
               "src": [
-                413,
-                414
+                418,
+                424
               ],
               "elements": []
             }

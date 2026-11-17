@@ -1,8 +1,8 @@
 {
   "version": 3,
   "meta": {
-    "sourceFormat": "gj",
-    "generatedBy": "guji-ir/3",
+    "sourceFormat": "gj/2",
+    "generatedBy": "guji-ir/3-gj2",
     "fidelity": "full",
     "profile": {
       "stripPunct": [
@@ -762,7 +762,7 @@
                 },
                 {
                   "id": "p0323-b6-e3",
-                  "class": "small",
+                  "class": "large",
                   "text": ":"
                 }
               ],

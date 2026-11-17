@@ -110,7 +110,7 @@ describe("v3 骨架独立（核心原则）", () => {
 
 describe("v3 合字", () => {
   it("#(十一)：一个大字格、两个文本字符；圆圈为 overlay", () => {
-    const doc = gj2ir("@6\n\n#甲#(十一)：音義\n");
+    const doc = gj2ir("@6\n\n#甲#(十一)\n音義\n");
     const els = doc.pages[0].bands[0].lines[0].elements;
     const lig = els.find((e) => e.ligature);
     expect(lig).toMatchObject({ class: "large", text: "十一" });
@@ -127,13 +127,13 @@ describe("v3 合字", () => {
 });
 
 describe("v3 标题入骨架与码点区间", () => {
-  it("标题物化为逐字大字，层级为元数据；layout 顶部按层级缩进", () => {
-    const doc = gj2ir("@7\n\n### 一部\n\n正文\n");
+  it("标题与任意大字行统一；缩进由空字格产生", () => {
+    const doc = gj2ir("@7\n\n#**一部\n\n正文\n");
     const head = doc.pages[0].bands[0];
-    expect(head.level).toBe(3);
-    expect(head.lines[0].elements.map((e) => e.text)).toEqual(["一", "部"]);
+    expect("level" in head).toBe(false);
+    expect(head.lines[0].elements.map((e) => e.text)).toEqual([" ", " ", "一", "部"]);
     const laid = layout3(doc)[0];
-    expect(laid.bands[0].items[0]).toMatchObject({ r: 4, c: 0, text: "一" }); // 缩进 = 3-1
+    expect(laid.bands[0].items[2]).toMatchObject({ r: 4, c: 0, text: "一" }); // 缩进 = 3-1
   });
 
   it("扩展 B 区字符按码点计（range 不切开代理对）", () => {
@@ -201,82 +201,28 @@ describe("v3 联动", () => {
   });
 });
 
-describe("v3 单字联动（光标前一字符 → 字格）", () => {
-  const sample = "@10\n\n#𠀤甲【史記】音義。\n\n#(十一)古文\n\n@11\n\n*續上行\n";
-  const doc = gj2ir(sample);
-  const index = buildCharIndex(doc);
-  const at = (needle: string) => sample.indexOf(needle) + needle.length; // needle 后的光标
-  const l0 = doc.pages[0].bands[0].lines[0].id; // #𠀤甲【史記】音義。
-  const l1 = doc.pages[0].bands[1].lines[0].id; // #(十一)古文
-
-  it("小字：光标在「義」后 → 该行第 5 码点字格", () => {
-    const ch = charHighlightAt(index, sample, at("義"));
-    expect(ch).toEqual({ kind: "cell", lineId: l0, cp: 5 }); // 𠀤甲史記音義 → 義=5
-  });
-
-  it("清洗字符回退：光标在「。」后 → 定位到「。」（cp 6）；渲染层经 rawOffsets 再回退到「義」", () => {
-    // 两层回退：联动层回退到前一产出字符（标点在 canonical 有码点但被清洗不占格），
-    // 渲染层（MatrixPages）找不到 rawOffsets 精确条目时取 ≤cp 的最大偏移 = 前一渲染字
-    const ch = charHighlightAt(index, sample, at("。"));
-    expect(ch).toEqual({ kind: "cell", lineId: l0, cp: 6 });
-    const run = layout3(doc)[0].bands[0].items.find(
-      (i) => i.kind === "run" && i.lineId === l0,
-    )!;
-    const k = (run.rawOffsets ?? []).filter((o) => o <= 6).length - 1;
-    expect(run.cells![k]).toBe("義");
-  });
-
-  it("书名括号回退：光标在「】」后 → 前一渲染字「記」", () => {
-    const ch = charHighlightAt(index, sample, at("】"));
-    expect(ch).toEqual({ kind: "cell", lineId: l0, cp: 3 });
-  });
-
-  it("扩展 B 区大字（代理对）：光标在「𠀤」后 → 该大字格", () => {
-    const els = doc.pages[0].bands[0].lines[0].elements;
-    const ch = charHighlightAt(index, sample, at("𠀤"));
-    expect(ch).toEqual({ kind: "large", elId: els[0].id });
-  });
-
-  it("token 内部：光标在「#(」与内文之间 → 回退前一行末字「。」；在内文后 → 合字整格", () => {
-    const els = doc.pages[0].bands[1].lines[0].elements;
-    // 「(」不产出字符 → 回退到上一行末位产出字「。」（canonical cp 6；渲染层再回退「義」）
-    expect(charHighlightAt(index, sample, at("#("))).toEqual({
-      kind: "cell",
-      lineId: l0,
-      cp: 6,
-    });
-    expect(charHighlightAt(index, sample, at("十"))).toEqual({
-      kind: "large",
-      elId: els.find((e) => e.ligature)!.id,
-    });
-  });
-
-  it("跨行/跨大行回退：光标在行首或 @页声明行内 → 前一大行末字", () => {
-    const atLine2 = sample.indexOf("*續上行");
-    expect(charHighlightAt(index, sample, atLine2)).toEqual({ kind: "cell", lineId: l1, cp: 3 }); // 古文末字「文」
-    expect(charHighlightAt(index, sample, at("@11"))).toEqual({ kind: "cell", lineId: l1, cp: 3 });
-  });
-
-  it("文件头与空光标 → null", () => {
-    expect(charHighlightAt(index, sample, 0)).toBeNull();
-    expect(charHighlightAt(index, sample, null)).toBeNull();
-  });
-
-  it("全语料：每个产出字符后的光标都定位到其所在行", () => {
-    for (const [, text] of corpus) {
-      const d = gj2ir(text);
-      const idx = buildCharIndex(d);
-      for (const e of idx) {
-        const len = String.fromCodePoint(text.codePointAt(e.src)!).length;
-        const ch = charHighlightAt(idx, text, e.src + len);
-        expect(ch).not.toBeNull();
-        const lineId =
-          ch!.kind === "cell"
-            ? ch!.lineId
-            : d.pages.flatMap((p) => p.bands).flatMap((b) => b.lines).find((l) => l.elements.some((el) => el.id === ch!.elId))!.id;
-        expect(lineId).toBe(e.lineId);
-      }
+describe("source linkage after explicit size boundaries", () => {
+  const source = "@1\n\n#**𠀀甲\n古文：\n#(15)乙\n【史記】音義。\n";
+  it("tracks every codepoint, blanks and circle expansions back to source", () => {
+    const doc = gj2ir(source), index = buildCharIndex(doc);
+    for (const e of index) {
+      const ch = String.fromCodePoint(source.codePointAt(e.src)!);
+      const hit = charHighlightAt(index, source, e.src + ch.length);
+      expect(hit).toEqual(e.target);
     }
+    const last = source.indexOf("義") + 1;
+    expect(charHighlightAt(index, source, last)).toMatchObject({ kind: "cell" });
+    const large = source.indexOf("𠀀") + 2;
+    expect(charHighlightAt(index, source, large)).toMatchObject({ kind: "large" });
+    expect(charHighlightAt(index, source, 0)).toBeNull();
+    expect(charHighlightAt(index, source, null)).toBeNull();
+  });
+  it("source-free layout and semantic metadata cannot affect indentation", () => {
+    const doc = gj2ir(source);
+    const stripped = JSON.parse(JSON.stringify(doc), (k, v) => k === "src" || k === "cpSrcs" ? undefined : v);
+    expect(layout3(stripped)).toEqual(layout3(doc));
+    stripped.pages[0].bands[0].level = 3;
+    expect(layout3(stripped)).toEqual(layout3(doc));
   });
 });
 
@@ -290,130 +236,16 @@ describe("v3 JSON 序列化稳定", () => {
   });
 });
 
-// ---- 字头簇糖（2026-11-14）：糖 ↔ 长式骨架/占格/文本三等价 ----
-// 语法：#(五)#(增)#𠂂 ≡ #(五)(增)𠂂；#(三)#丹古文#𠁿#㣋 ≡ #(三)丹，古文：𠁿㣋
-// （，：可省；标记两侧标点为小字内容，TXT 经 profile 剔除与长式一致）
-describe("v3 字头簇糖", () => {
-  const noSrc = (d: IRDocument) =>
-    JSON.parse(JSON.stringify(d.pages), (k, v) => (k === "src" || k === "cpSrcs" ? undefined : v));
-  const pairs: Array<[string, string]> = [
-    ["#(五)#(增)#𠂂", "#(五)(增)𠂂"],
-    ["#(五)#(增)#𠂂", "#(五)(增)#𠂂"],
-    ["#(十一)#(增)#𠁴", "#(十一)(增)𠁴"],
-    ["#(三)#丹古文#𠁿#㣋", "#(三)丹，古文：𠁿㣋"],
-    ["#(三)#丹古文#𠁿#㣋", "#(三)丹古文𠁿㣋"],
-    ["#(四)#且古文：#𠀇、#𠀃", "#(四)且，古文：𠀇、𠀃"],
-    ["#(四)#且古文：#𠀇、#𠀃", "#(四)且古文：𠀇、𠀃"],
-    ["#一古文#弌", "#一，古文：弌"],
-    ["#上古文#丄、#𠄞", "#上，古文：丄、𠄞"],
-    ["#世古文：#卋", "#世，古文：卋"],
-    ["#(增)#𠀃", "#(增)𠀃"],
-    ["#丅、#𠄟", "#丅、𠄟"],
-    ["古文：#㘳", "古文：㘳"],
-    ["#丶#宔", "#丶宔"],
-    ["#(二)#万", "#(二)万"],
-  ];
-
-  // 骨架比对口径：小字文本按 profile 清洗（糖形「，古文：」的标点是小字内容，
-  // 渲染/评测口径剔除后与长式「古文」同归）；大字元素原样；src/cpSrcs 剥除
-  // （源偏移随拼写长度漂移，非骨架事实）
-  const cleanedPages = (d: IRDocument) => {
-    const doc = JSON.parse(JSON.stringify(d), (k, v) =>
-      k === "src" || k === "cpSrcs" ? undefined : v,
-    );
-    for (const p of doc.pages)
-      for (const b of p.bands)
-        for (const l of b.lines)
-          for (const e of l.elements)
-            if (e.class === "small")
-              e.text = [...e.text]
-                .map((ch) => (ch === "◎" || ch === "〇" ? "○" : ch))
-                .filter((ch) => !"。，·\":：、《》".includes(ch))
-                .join("");
-    return doc.pages;
-  };
-  // layout 比对口径：剔除 rawOffsets/cpStart（行内码点偏移随源形漂移，非占格事实）
-  const laidCells = (d: IRDocument) =>
-    JSON.parse(JSON.stringify(layout3(d)), (k, v) =>
-      k === "rawOffsets" || k === "rawRanges" || k === "cpStart" ? undefined : v,
-    );
-
-  it("糖 ↔ 长式：骨架（清洗口径 + 去 src）相同", () => {
-    for (const [long, sugar] of pairs) {
-      const a = gj2ir(`@1\n\n${long}\n`);
-      const b = gj2ir(`@1\n\n${sugar}\n`);
-      expect(stable(cleanedPages(b)), `${sugar} vs ${long}`).toBe(stable(cleanedPages(a)));
-    }
-  });
-
-  it("糖 ↔ 长式：layout3 占格与换行相同（剔除码点偏移）", () => {
-    for (const [long, sugar] of pairs) {
-      const a = gj2ir(`@1\n\n${long}\n`);
-      const b = gj2ir(`@1\n\n${sugar}\n`);
-      expect(stable(laidCells(b)), `${sugar}`).toBe(stable(laidCells(a)));
-    }
-  });
-
-  it("糖 ↔ 长式：阅读序文本相同（标点经 profile 剔除）", () => {
-    for (const [long, sugar] of pairs) {
-      expect(irToText(gj2ir(`@1\n\n${sugar}\n`)), `${sugar}`).toBe(irToText(gj2ir(`@1\n\n${long}\n`)));
-    }
-  });
-
-  it("糖 ↔ 长式：圆圈 overlay 数目一致", () => {
-    for (const [long, sugar] of pairs) {
-      const cs = (t: string) => gj2ir(`@1\n\n${t}\n`).overlays.filter((o) => o.kind === "circle").length;
-      expect(cs(sugar), `${sugar}`).toBe(cs(long));
-    }
-  });
-
-  it("反例：标点/书名隔开后裸字不连大（#丸：俗 → 俗为小字）；正文「古文」不误判", () => {
-    const a = gj2ir("@1\n\n#丸：俗\n");
-    expect(a.pages[0].bands[0].lines[0].elements.map((e) => `${e.class}:${e.text}`)).toEqual([
-      "large:丸",
-      "small:：俗",
-    ]);
-    // 【字彙補】隔开：古文下 为正文小字
-    const b = gj2ir("@1\n\n#丅【字彙補】古文下\n");
-    expect(b.pages[0].bands[0].lines[0].elements.map((e) => `${e.class}:${e.text}`)).toEqual([
-      "large:丅",
-      "small:字彙補古文下",
-    ]);
-    // 「古」不参与裸写：跨行半个「古文」标记仍是小字（#下古↵文#丅）
-    const t1 = gj2ir("@1\n\n#下古\n");
-    expect(t1.pages[0].bands[0].lines[0].elements.map((e) => `${e.class}:${e.text}`)).toEqual([
-      "large:下",
-      "small:古",
-    ]);
-    // 折行把正文「古文酉」折到行首：无冒号不认标记
-    const c = gj2ir("@1\n\n古文酉，从丣。\n");
-    expect(c.pages[0].bands[0].lines[0].elements.map((e) => `${e.class}:${e.text}`)).toEqual([
-      "small:古文酉，从丣。",
-    ]);
-    // 行首承接形须带冒号：古文：㘳 ≡ 古文：#㘳
-    const d1 = gj2ir("@1\n\n古文：㘳\n");
-    const d2 = gj2ir("@1\n\n古文：#㘳\n");
-    expect(stable(noSrc(d1))).toBe(stable(noSrc(d2)));
-  });
-
-  it("速记/全角在糖续写中同样生效：#(5)（Z）𠂂 ≡ #(五)#(增)#𠂂", () => {
-    const a = gj2ir("@1\n\n#(5)(Z)𠂂\n");
-    const b = gj2ir("@1\n\n#(五)#(增)#𠂂\n");
-    expect(stable(noSrc(a))).toBe(stable(noSrc(b)));
-  });
-});
-
-describe("v3 字头簇糖（混排回归）", () => {
-  it("糖行与释义混排：与旧解析器阅读序逐字符一致（小字 frag 先入列保序）", () => {
-    const page = "@1\n\n用安息。*又通作垸。\n#(三)丹，古文：𠁿㣋\n#(五)(增)𠂂\n【唐韻】都寒切。\n";
-    const oldText = (t: string) => {
-      const pages = parsePages(t);
-      const lineText = (line: unknown) =>
-        ("c" in (line as object) ? (line as { c: unknown[] }).c : [line])
-          .map((b) => (b as { t?: string }).t ?? "")
-          .join("");
-      return pages.map((p) => p.l.map(lineText).join("\n") + "\n").join("");
-    };
-    expect(irToText(gj2ir(page))).toBe(oldText(page));
+describe(".gj/2 repeated markers and circle spelling", () => {
+  const noSource = (s: string) => JSON.parse(JSON.stringify(gj2ir(`@1\n\n${s}\n`)),
+    (k, v) => k === "src" || k === "cpSrcs" ? undefined : v);
+  for (const [a, b] of [["#甲#乙#丙", "#甲乙丙"], ["#*#*甲", "#**甲"], ["#(五)#(增)#𠂂", "#(五)(增)𠂂"], ["#（15）𠀀", "#(十五)𠀀"]]) {
+    it(`${a} and ${b} have identical skeletons and overlays`, () => expect(noSource(a)).toEqual(noSource(b)));
+  }
+  it("古文 and book markers no longer reset large type", () => {
+    const doc = gj2ir("@1\n\n#甲古文【乙】丙\n古文：\n#丁\n");
+    expect(doc.pages[0].bands[0].lines[0].elements.every((e) => e.class === "large")).toBe(true);
+    expect(doc.pages[0].bands[0].lines[1].elements).toMatchObject([{ class: "small", text: "古文：" }]);
+    expect(irToText(doc)).toBe("甲古文乙丙古文丁\n");
   });
 });
