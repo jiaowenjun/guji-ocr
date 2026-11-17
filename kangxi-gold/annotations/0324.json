@@ -327,35 +327,40 @@
               "ord": 2,
               "src": [
                 175,
-                177
+                178
               ],
               "elements": [
                 {
                   "id": "p0324-b2-e2",
                   "class": "large",
                   "text": "世"
+                },
+                {
+                  "id": "p0324-b2-e3",
+                  "class": "large",
+                  "text": "，"
                 }
               ],
               "cpSrcs": [
-                176
+                176,
+                177
               ]
             },
             {
               "id": "p0324-b2-l3",
               "ord": 3,
               "src": [
-                178,
+                179,
                 182
               ],
               "elements": [
                 {
-                  "id": "p0324-b2-e3",
+                  "id": "p0324-b2-e4",
                   "class": "small",
-                  "text": "，古文："
+                  "text": "古文："
                 }
               ],
               "cpSrcs": [
-                178,
                 179,
                 180,
                 181
@@ -370,7 +375,7 @@
               ],
               "elements": [
                 {
-                  "id": "p0324-b2-e4",
+                  "id": "p0324-b2-e5",
                   "class": "large",
                   "text": "卋"
                 }
@@ -388,7 +393,7 @@
               ],
               "elements": [
                 {
-                  "id": "p0324-b2-e5",
+                  "id": "p0324-b2-e6",
                   "class": "small",
                   "text": "廣韻"
                 }
@@ -407,7 +412,7 @@
               ],
               "elements": [
                 {
-                  "id": "p0324-b2-e6",
+                  "id": "p0324-b2-e7",
                   "class": "small",
                   "text": "舒制"
                 }

@@ -93,7 +93,7 @@
               "ord": 2,
               "src": [
                 13,
-                18
+                19
               ],
               "elements": [
                 {
@@ -105,29 +105,34 @@
                   "id": "p0350-b0-e3",
                   "class": "large",
                   "text": "乖"
+                },
+                {
+                  "id": "p0350-b0-e4",
+                  "class": "large",
+                  "text": "，"
                 }
               ],
               "cpSrcs": [
                 15,
-                17
+                17,
+                18
               ]
             },
             {
               "id": "p0350-b0-l3",
               "ord": 3,
               "src": [
-                19,
+                20,
                 23
               ],
               "elements": [
                 {
-                  "id": "p0350-b0-e4",
+                  "id": "p0350-b0-e5",
                   "class": "small",
-                  "text": "，古文："
+                  "text": "古文："
                 }
               ],
               "cpSrcs": [
-                19,
                 20,
                 21,
                 22
@@ -142,12 +147,12 @@
               ],
               "elements": [
                 {
-                  "id": "p0350-b0-e5",
+                  "id": "p0350-b0-e6",
                   "class": "large",
                   "text": "𦮃"
                 },
                 {
-                  "id": "p0350-b0-e6",
+                  "id": "p0350-b0-e7",
                   "class": "large",
                   "text": "𠁰"
                 }
@@ -166,7 +171,7 @@
               ],
               "elements": [
                 {
-                  "id": "p0350-b0-e7",
+                  "id": "p0350-b0-e8",
                   "class": "small",
                   "text": "唐韻古懷切集韻韻會正韻"
                 }
@@ -194,7 +199,7 @@
               ],
               "elements": [
                 {
-                  "id": "p0350-b0-e8",
+                  "id": "p0350-b0-e9",
                   "class": "small",
                   "text": "公懷切，𠀤怪平聲。說文背呂"
                 }
@@ -689,7 +694,7 @@
               "ord": 2,
               "src": [
                 274,
-                279
+                280
               ],
               "elements": [
                 {
@@ -701,29 +706,34 @@
                   "id": "p0350-b4-e3",
                   "class": "large",
                   "text": "乘"
+                },
+                {
+                  "id": "p0350-b4-e4",
+                  "class": "large",
+                  "text": "，"
                 }
               ],
               "cpSrcs": [
                 276,
-                278
+                278,
+                279
               ]
             },
             {
               "id": "p0350-b4-l3",
               "ord": 3,
               "src": [
-                280,
+                281,
                 284
               ],
               "elements": [
                 {
-                  "id": "p0350-b4-e4",
+                  "id": "p0350-b4-e5",
                   "class": "small",
-                  "text": "，古文："
+                  "text": "古文："
                 }
               ],
               "cpSrcs": [
-                280,
                 281,
                 282,
                 283
@@ -738,12 +748,12 @@
               ],
               "elements": [
                 {
-                  "id": "p0350-b4-e5",
+                  "id": "p0350-b4-e6",
                   "class": "large",
                   "text": "𠅞"
                 },
                 {
-                  "id": "p0350-b4-e6",
+                  "id": "p0350-b4-e7",
                   "class": "large",
                   "text": "𠓸"
                 }
@@ -762,7 +772,7 @@
               ],
               "elements": [
                 {
-                  "id": "p0350-b4-e7",
+                  "id": "p0350-b4-e8",
                   "class": "small",
                   "text": "唐韻食陵切集韻韻會神"
                 }
@@ -789,7 +799,7 @@
               ],
               "elements": [
                 {
-                  "id": "p0350-b4-e8",
+                  "id": "p0350-b4-e9",
                   "class": "small",
                   "text": "陵切，𠀤音繩。廣韻駕也，登"
                 }

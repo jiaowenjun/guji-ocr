@@ -240,35 +240,40 @@
               "ord": 2,
               "src": [
                 81,
-                83
+                84
               ],
               "elements": [
                 {
                   "id": "p0343-b1-e2",
                   "class": "large",
                   "text": "乃"
+                },
+                {
+                  "id": "p0343-b1-e3",
+                  "class": "large",
+                  "text": "，"
                 }
               ],
               "cpSrcs": [
-                82
+                82,
+                83
               ]
             },
             {
               "id": "p0343-b1-l3",
               "ord": 3,
               "src": [
-                84,
+                85,
                 88
               ],
               "elements": [
                 {
-                  "id": "p0343-b1-e3",
+                  "id": "p0343-b1-e4",
                   "class": "small",
-                  "text": "，古文："
+                  "text": "古文："
                 }
               ],
               "cpSrcs": [
-                84,
                 85,
                 86,
                 87
@@ -283,22 +288,22 @@
               ],
               "elements": [
                 {
-                  "id": "p0343-b1-e4",
+                  "id": "p0343-b1-e5",
                   "class": "large",
                   "text": "𠄎"
                 },
                 {
-                  "id": "p0343-b1-e5",
+                  "id": "p0343-b1-e6",
                   "class": "large",
                   "text": "𠧤"
                 },
                 {
-                  "id": "p0343-b1-e6",
+                  "id": "p0343-b1-e7",
                   "class": "large",
                   "text": "𢏩"
                 },
                 {
-                  "id": "p0343-b1-e7",
+                  "id": "p0343-b1-e8",
                   "class": "large",
                   "text": "𢎧"
                 }
@@ -319,7 +324,7 @@
               ],
               "elements": [
                 {
-                  "id": "p0343-b1-e8",
+                  "id": "p0343-b1-e9",
                   "class": "small",
                   "text": "唐韻奴亥切集韻韻會正"
                 }
@@ -346,7 +351,7 @@
               ],
               "elements": [
                 {
-                  "id": "p0343-b1-e9",
+                  "id": "p0343-b1-e10",
                   "class": "small",
                   "text": "韻囊亥切，𠀤柰上聲。語辭。"
                 }

@@ -194,35 +194,40 @@
               "ord": 2,
               "src": [
                 82,
-                84
+                85
               ],
               "elements": [
                 {
                   "id": "p0347-b1-e2",
                   "class": "large",
                   "text": "乎"
+                },
+                {
+                  "id": "p0347-b1-e3",
+                  "class": "large",
+                  "text": "，"
                 }
               ],
               "cpSrcs": [
-                83
+                83,
+                84
               ]
             },
             {
               "id": "p0347-b1-l3",
               "ord": 3,
               "src": [
-                85,
+                86,
                 89
               ],
               "elements": [
                 {
-                  "id": "p0347-b1-e3",
+                  "id": "p0347-b1-e4",
                   "class": "small",
-                  "text": "，古文："
+                  "text": "古文："
                 }
               ],
               "cpSrcs": [
-                85,
                 86,
                 87,
                 88
@@ -237,7 +242,7 @@
               ],
               "elements": [
                 {
-                  "id": "p0347-b1-e4",
+                  "id": "p0347-b1-e5",
                   "class": "large",
                   "text": "虖"
                 }
@@ -255,7 +260,7 @@
               ],
               "elements": [
                 {
-                  "id": "p0347-b1-e5",
+                  "id": "p0347-b1-e6",
                   "class": "small",
                   "text": "廣韻戸吳切集韻韻會正韻洪孤切，𠀤音"
                 }
@@ -289,7 +294,7 @@
               ],
               "elements": [
                 {
-                  "id": "p0347-b1-e6",
+                  "id": "p0347-b1-e7",
                   "class": "small",
                   "text": "湖。說文兮語之餘也。从兮，象聲上越揚之"
                 }
@@ -750,35 +755,40 @@
               "ord": 2,
               "src": [
                 384,
-                386
+                387
               ],
               "elements": [
                 {
                   "id": "p0347-b5-e2",
                   "class": "large",
                   "text": "乏"
+                },
+                {
+                  "id": "p0347-b5-e3",
+                  "class": "large",
+                  "text": "，"
                 }
               ],
               "cpSrcs": [
-                385
+                385,
+                386
               ]
             },
             {
               "id": "p0347-b5-l3",
               "ord": 3,
               "src": [
-                387,
+                388,
                 391
               ],
               "elements": [
                 {
-                  "id": "p0347-b5-e3",
+                  "id": "p0347-b5-e4",
                   "class": "small",
-                  "text": "，古文："
+                  "text": "古文："
                 }
               ],
               "cpSrcs": [
-                387,
                 388,
                 389,
                 390
@@ -793,7 +803,7 @@
               ],
               "elements": [
                 {
-                  "id": "p0347-b5-e4",
+                  "id": "p0347-b5-e5",
                   "class": "large",
                   "text": "𠓟"
                 }
@@ -811,7 +821,7 @@
               ],
               "elements": [
                 {
-                  "id": "p0347-b5-e5",
+                  "id": "p0347-b5-e6",
                   "class": "small",
                   "text": "唐韻房法切"
                 }
@@ -833,7 +843,7 @@
               ],
               "elements": [
                 {
-                  "id": "p0347-b5-e6",
+                  "id": "p0347-b5-e7",
                   "class": "small",
                   "text": "集韻韻會扶"
                 }

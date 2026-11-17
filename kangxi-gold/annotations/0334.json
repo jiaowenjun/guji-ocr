@@ -631,35 +631,40 @@
               "ord": 2,
               "src": [
                 313,
-                315
+                316
               ],
               "elements": [
                 {
                   "id": "p0334-b4-e2",
                   "class": "large",
                   "text": "丰"
+                },
+                {
+                  "id": "p0334-b4-e3",
+                  "class": "large",
+                  "text": "，"
                 }
               ],
               "cpSrcs": [
-                314
+                314,
+                315
               ]
             },
             {
               "id": "p0334-b4-l3",
               "ord": 3,
               "src": [
-                316,
+                317,
                 320
               ],
               "elements": [
                 {
-                  "id": "p0334-b4-e3",
+                  "id": "p0334-b4-e4",
                   "class": "small",
-                  "text": "，古文："
+                  "text": "古文："
                 }
               ],
               "cpSrcs": [
-                316,
                 317,
                 318,
                 319
@@ -674,7 +679,7 @@
               ],
               "elements": [
                 {
-                  "id": "p0334-b4-e4",
+                  "id": "p0334-b4-e5",
                   "class": "large",
                   "text": "𫵮"
                 }
@@ -692,7 +697,7 @@
               ],
               "elements": [
                 {
-                  "id": "p0334-b4-e5",
+                  "id": "p0334-b4-e6",
                   "class": "small",
                   "text": "集韻符風"
                 }
@@ -713,7 +718,7 @@
               ],
               "elements": [
                 {
-                  "id": "p0334-b4-e6",
+                  "id": "p0334-b4-e7",
                   "class": "small",
                   "text": "切，音馮。丰"
                 }

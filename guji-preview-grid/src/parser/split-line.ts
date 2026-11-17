@@ -1,6 +1,27 @@
 import { scanInline } from "./inline-tokens";
 import { isBlankBand } from "./structure";
 
+/** Keep a leading comma with the preceding large glyph, before its newline/comment. */
+export function attachLeadingCommas(text: string): string {
+  const lines = text.split("\n");
+  for (let i = 1; i < lines.length; i++) {
+    const match = /^([ \t]*)(，+)/.exec(lines[i]);
+    if (!match) continue;
+    const previous = lines[i - 1];
+    const tokens = scanInline(previous).tokens;
+    const glyph = tokens.filter((t) => t.kind === "circle" ||
+      (t.kind === "text" && !/^[ \t]+$/.test(previous.slice(t.from, t.to)))).at(-1);
+    if (glyph?.size !== "large" || !glyph.text.trim()) continue;
+    const comment = tokens.find((t) => t.kind === "comment");
+    const end = previous.slice(0, comment?.from ?? previous.length).replace(/[ \t]+$/, "").length;
+    lines[i - 1] = previous.slice(0, end) + match[2] + previous.slice(end);
+    lines[i] = match[1] + lines[i].slice(match[0].length);
+    // A punctuation-only line must not turn into a new band separator.
+    if (!lines[i].trim()) lines.splice(i--, 1);
+  }
+  return lines.join("\n");
+}
+
 /** Normalize circle spelling only; never infer type size from content or insert a newline. */
 export function normalizeInput(text: string): string {
   return text.split("\n").map((line) => {
@@ -15,7 +36,7 @@ export function normalizeInput(text: string): string {
 
 /** Formatting preserves physical newlines: they terminate the # size scope. */
 export function formatGj(text: string): string {
-  const lines = normalizeInput(text).split("\n").map((line) => {
+  const lines = attachLeadingCommas(normalizeInput(text)).split("\n").map((line) => {
     if (isBlankBand(line)) return line.replace(/^[ \t]*#(?=[ \t]*(?:\/\/|$))/, "@blank");
     let seen = false, out = "", last = 0;
     for (const t of scanInline(line).tokens) if (t.kind === "size") {

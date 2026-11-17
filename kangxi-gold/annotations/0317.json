@@ -415,35 +415,40 @@
               "ord": 2,
               "src": [
                 237,
-                239
+                240
               ],
               "elements": [
                 {
                   "id": "p0317-b3-e2",
                   "class": "large",
                   "text": "三"
+                },
+                {
+                  "id": "p0317-b3-e3",
+                  "class": "large",
+                  "text": "，"
                 }
               ],
               "cpSrcs": [
-                238
+                238,
+                239
               ]
             },
             {
               "id": "p0317-b3-l3",
               "ord": 3,
               "src": [
-                240,
+                241,
                 244
               ],
               "elements": [
                 {
-                  "id": "p0317-b3-e3",
+                  "id": "p0317-b3-e4",
                   "class": "small",
-                  "text": "，古文："
+                  "text": "古文："
                 }
               ],
               "cpSrcs": [
-                240,
                 241,
                 242,
                 243
@@ -458,7 +463,7 @@
               ],
               "elements": [
                 {
-                  "id": "p0317-b3-e4",
+                  "id": "p0317-b3-e5",
                   "class": "large",
                   "text": "弎"
                 }
@@ -476,7 +481,7 @@
               ],
               "elements": [
                 {
-                  "id": "p0317-b3-e5",
+                  "id": "p0317-b3-e6",
                   "class": "small",
                   "text": "唐韻集韻韻會蘇甘"
                 }
@@ -501,7 +506,7 @@
               ],
               "elements": [
                 {
-                  "id": "p0317-b3-e6",
+                  "id": "p0317-b3-e7",
                   "class": "small",
                   "text": "切正韻蘇監切，𡘋颯"
                 }

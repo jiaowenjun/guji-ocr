@@ -509,7 +509,7 @@
               "ord": 5,
               "src": [
                 176,
-                181
+                182
               ],
               "elements": [
                 {
@@ -521,29 +521,34 @@
                   "id": "p0357-b2-e6",
                   "class": "large",
                   "text": "乾"
+                },
+                {
+                  "id": "p0357-b2-e7",
+                  "class": "large",
+                  "text": "，"
                 }
               ],
               "cpSrcs": [
                 178,
-                180
+                180,
+                181
               ]
             },
             {
               "id": "p0357-b2-l6",
               "ord": 6,
               "src": [
-                182,
+                183,
                 186
               ],
               "elements": [
                 {
-                  "id": "p0357-b2-e7",
+                  "id": "p0357-b2-e8",
                   "class": "small",
-                  "text": "，古文："
+                  "text": "古文："
                 }
               ],
               "cpSrcs": [
-                182,
                 183,
                 184,
                 185
@@ -558,12 +563,12 @@
               ],
               "elements": [
                 {
-                  "id": "p0357-b2-e8",
+                  "id": "p0357-b2-e9",
                   "class": "large",
                   "text": "漧"
                 },
                 {
-                  "id": "p0357-b2-e9",
+                  "id": "p0357-b2-e10",
                   "class": "large",
                   "text": "𠄋"
                 }
@@ -582,7 +587,7 @@
               ],
               "elements": [
                 {
-                  "id": "p0357-b2-e10",
+                  "id": "p0357-b2-e11",
                   "class": "small",
                   "text": "唐韻"
                 }
@@ -601,7 +606,7 @@
               ],
               "elements": [
                 {
-                  "id": "p0357-b2-e11",
+                  "id": "p0357-b2-e12",
                   "class": "small",
                   "text": "集韻"
                 }

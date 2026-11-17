@@ -193,35 +193,40 @@
               "ord": 2,
               "src": [
                 81,
-                83
+                84
               ],
               "elements": [
                 {
                   "id": "p0318-b1-e2",
                   "class": "large",
                   "text": "上"
+                },
+                {
+                  "id": "p0318-b1-e3",
+                  "class": "large",
+                  "text": "，"
                 }
               ],
               "cpSrcs": [
-                82
+                82,
+                83
               ]
             },
             {
               "id": "p0318-b1-l3",
               "ord": 3,
               "src": [
-                84,
+                85,
                 88
               ],
               "elements": [
                 {
-                  "id": "p0318-b1-e3",
+                  "id": "p0318-b1-e4",
                   "class": "small",
-                  "text": "，古文："
+                  "text": "古文："
                 }
               ],
               "cpSrcs": [
-                84,
                 85,
                 86,
                 87
@@ -236,17 +241,17 @@
               ],
               "elements": [
                 {
-                  "id": "p0318-b1-e4",
+                  "id": "p0318-b1-e5",
                   "class": "large",
                   "text": "丄"
                 },
                 {
-                  "id": "p0318-b1-e5",
+                  "id": "p0318-b1-e6",
                   "class": "large",
                   "text": "、"
                 },
                 {
-                  "id": "p0318-b1-e6",
+                  "id": "p0318-b1-e7",
                   "class": "large",
                   "text": "𠄞"
                 }
@@ -266,7 +271,7 @@
               ],
               "elements": [
                 {
-                  "id": "p0318-b1-e7",
+                  "id": "p0318-b1-e8",
                   "class": "small",
                   "text": "廣韻集韻韻會正韻𡘋時亮切，音尙。在"
                 }
@@ -300,7 +305,7 @@
               ],
               "elements": [
                 {
-                  "id": "p0318-b1-e8",
+                  "id": "p0318-b1-e9",
                   "class": "small",
                   "text": "上之上，對下之稱。崇也，尊也。易·乾·文言"
                 }

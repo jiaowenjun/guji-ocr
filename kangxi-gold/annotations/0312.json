@@ -192,35 +192,40 @@
               "ord": 0,
               "src": [
                 27,
-                29
+                30
               ],
               "elements": [
                 {
                   "id": "p0312-b3-e0",
                   "class": "large",
                   "text": "一"
+                },
+                {
+                  "id": "p0312-b3-e1",
+                  "class": "large",
+                  "text": "，"
                 }
               ],
               "cpSrcs": [
-                28
+                28,
+                29
               ]
             },
             {
               "id": "p0312-b3-l1",
               "ord": 1,
               "src": [
-                30,
+                31,
                 34
               ],
               "elements": [
                 {
-                  "id": "p0312-b3-e1",
+                  "id": "p0312-b3-e2",
                   "class": "small",
-                  "text": "，古文："
+                  "text": "古文："
                 }
               ],
               "cpSrcs": [
-                30,
                 31,
                 32,
                 33
@@ -235,7 +240,7 @@
               ],
               "elements": [
                 {
-                  "id": "p0312-b3-e2",
+                  "id": "p0312-b3-e3",
                   "class": "large",
                   "text": "弌"
                 }
@@ -253,7 +258,7 @@
               ],
               "elements": [
                 {
-                  "id": "p0312-b3-e3",
+                  "id": "p0312-b3-e4",
                   "class": "small",
                   "text": "唐韻韻會於悉切集韻正韻益悉切，𠀤漪入聲。"
                 }
@@ -290,7 +295,7 @@
               ],
               "elements": [
                 {
-                  "id": "p0312-b3-e4",
+                  "id": "p0312-b3-e5",
                   "class": "small",
                   "text": "說文惟初大始，道立於一。造分天地，化成萬物。"
                 }

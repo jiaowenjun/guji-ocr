@@ -727,7 +727,7 @@
               "ord": 2,
               "src": [
                 312,
-                317
+                318
               ],
               "elements": [
                 {
@@ -739,29 +739,34 @@
                   "id": "p0322-b4-e3",
                   "class": "large",
                   "text": "且"
+                },
+                {
+                  "id": "p0322-b4-e4",
+                  "class": "large",
+                  "text": "，"
                 }
               ],
               "cpSrcs": [
                 314,
-                316
+                316,
+                317
               ]
             },
             {
               "id": "p0322-b4-l3",
               "ord": 3,
               "src": [
-                318,
+                319,
                 322
               ],
               "elements": [
                 {
-                  "id": "p0322-b4-e4",
+                  "id": "p0322-b4-e5",
                   "class": "small",
-                  "text": "，古文："
+                  "text": "古文："
                 }
               ],
               "cpSrcs": [
-                318,
                 319,
                 320,
                 321
@@ -776,17 +781,17 @@
               ],
               "elements": [
                 {
-                  "id": "p0322-b4-e5",
+                  "id": "p0322-b4-e6",
                   "class": "large",
                   "text": "𠀇"
                 },
                 {
-                  "id": "p0322-b4-e6",
+                  "id": "p0322-b4-e7",
                   "class": "large",
                   "text": "、"
                 },
                 {
-                  "id": "p0322-b4-e7",
+                  "id": "p0322-b4-e8",
                   "class": "large",
                   "text": "𠀃"
                 }
@@ -806,7 +811,7 @@
               ],
               "elements": [
                 {
-                  "id": "p0322-b4-e8",
+                  "id": "p0322-b4-e9",
                   "class": "small",
                   "text": "廣韻集韻韻"
                 }
@@ -828,7 +833,7 @@
               ],
               "elements": [
                 {
-                  "id": "p0322-b4-e9",
+                  "id": "p0322-b4-e10",
                   "class": "small",
                   "text": "會淺野切正"
                 }

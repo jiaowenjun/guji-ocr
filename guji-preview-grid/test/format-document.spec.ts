@@ -21,6 +21,22 @@ describe("formatDocument preserves type-size scopes", () => {
     expect(fmt("@1\n\n#甲古文乙// 附注 ◎\n")).toBe("@1\n\n#甲古文乙// 附注 ◎\n");
     expect(fmt("@1\n\n#甲，\n古文：\n#乙\n")).toBe("@1\n\n#甲，\n古文：\n#乙\n");
   });
+  it("places a leading comma immediately after the preceding large headword", () => {
+    const before = "@317\n\n#三\n，古文：\n#弎\n";
+    const after = "@317\n\n#三，\n古文：\n#弎\n";
+    expect(fmt(before)).toBe(after);
+    expect(fmt(after)).toBe(after);
+    expect(fmt("#(十)𠀀 // 字头\n，古文：\n#乙\n")).toBe("#(十)𠀀， // 字头\n古文：\n#乙\n");
+  });
+  it("does not move commas across bands, comments, small text or explicit blanks", () => {
+    for (const source of ["#甲\n\n，古文：", "#甲\n// 注\n，古文：", "正文\n，續文", "#甲*\n，古文："])
+      expect(fmt(source)).toBe(source + "\n");
+  });
+  it("does not create a band when moving a punctuation-only line", () => {
+    const source = "@1\n\n#甲\n，\n古文：\n#乙\n";
+    expect(fmt(source)).toBe("@1\n\n#甲，\n古文：\n#乙\n");
+    expect(gj2ir(fmt(source)).pages[0].bands).toHaveLength(1);
+  });
   it("reports normalization counts and is idempotent", () => {
     const r = formatDocument("@2\n\n甲　乙◎丙　丁•戊\n");
     expect(r).toEqual({ text: "@2\n\n甲*乙〇丙*丁·戊\n", spaces: 2, circles: 1, dots: 1 });

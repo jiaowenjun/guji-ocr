@@ -373,7 +373,7 @@
               "ord": 5,
               "src": [
                 186,
-                191
+                192
               ],
               "elements": [
                 {
@@ -385,29 +385,34 @@
                   "id": "p0339-b2-e6",
                   "class": "large",
                   "text": "丹"
+                },
+                {
+                  "id": "p0339-b2-e7",
+                  "class": "large",
+                  "text": "，"
                 }
               ],
               "cpSrcs": [
                 188,
-                190
+                190,
+                191
               ]
             },
             {
               "id": "p0339-b2-l6",
               "ord": 6,
               "src": [
-                192,
+                193,
                 196
               ],
               "elements": [
                 {
-                  "id": "p0339-b2-e7",
+                  "id": "p0339-b2-e8",
                   "class": "small",
-                  "text": "，古文："
+                  "text": "古文："
                 }
               ],
               "cpSrcs": [
-                192,
                 193,
                 194,
                 195
@@ -422,12 +427,12 @@
               ],
               "elements": [
                 {
-                  "id": "p0339-b2-e8",
+                  "id": "p0339-b2-e9",
                   "class": "large",
                   "text": "𠁿"
                 },
                 {
-                  "id": "p0339-b2-e9",
+                  "id": "p0339-b2-e10",
                   "class": "large",
                   "text": "㣋"
                 }
