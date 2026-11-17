@@ -53,4 +53,4 @@
 
 - **可行**：将 `TextRecognizer`（PP-OCRv6 ONNX）接入现有网格切段管线，作为线上不可用时的本机回退；venv 位于 `var/venvs/yolo-ocr`（Python ≥3.11），识别器加载即用。
 - 字符集外的 4.8% 码点（PUA/未编码）本机识别端无法覆盖，回退通道的用途定位为「初校稿」而非终校；如需收窄，可后续评估 PP-OCRv5 多语言模型或微调方案。
-- 复算脚本：`var/scratch/receval_onnx.py`、`var/scratch/pageeval.py`（拼装+金标验证+CER）。
+- 复算脚本（`tools/eval/`）：`receval_onnx.py`（切段识别+计时，输入清单由 `var/datasets/kangxi-ocr/recognition.jsonl` 对 6 页 scan 域 crop 分层抽样生成）、`receval_metrics.py`（段级 EM/CER 补充口径）、`pageeval.py`（整页拼装+金标验证+CER，线上侧读服务缓存库）、`build_pagecmp.py`（生成自包含可视化对比页 `pagecmp.html`：整页文本 ⏎ 换行 diff／切段对照／图上叠加三视图）。中间产物与页面输出在 `var/scratch/`（不入库，可再生成）。
