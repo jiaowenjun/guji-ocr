@@ -4,10 +4,11 @@ export function formatSpaces(text: string): { text: string; count: number } {
   const out = text
     .split("\n")
     .map((line) => {
-      if (/^\s*\/\//.test(line)) return line; // 整行注释
-      const ci = line.indexOf("//");
-      const head = ci >= 0 ? line.slice(0, ci) : line;
-      const tail = ci >= 0 ? line.slice(ci) : "";
+      const stripped = line.replace(/[ \t　]+$/, ""); // 行尾空格（全角/半角/tab）清除，不再转 *
+      if (/^\s*\/\//.test(stripped)) return stripped; // 整行注释
+      const ci = stripped.indexOf("//");
+      const head = ci >= 0 ? stripped.slice(0, ci) : stripped;
+      const tail = ci >= 0 ? stripped.slice(ci) : "";
       const full = head.replace(/　/g, () => {
         count += 1;
         return "*";

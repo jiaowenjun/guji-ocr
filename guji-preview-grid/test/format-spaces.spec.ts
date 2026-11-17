@@ -1,6 +1,7 @@
 // 空格格式化规则单测 + 全语料不变量：
-// 不变量 = formatSpaces 后 gj2ir 输出逐字节不变（含 src 偏移——语料中的替换都是
-// 1:1 长度，编辑器联动也不受影响），即「空格 → *」在骨架/overlay/文本全口径下等价。
+// 不变量 = formatSpaces 后 gj2ir 输出与「按同一规则清除行尾空格的原文」逐字节一致
+// （含 src 偏移——行内替换都是 1:1 长度，行尾清除是行内末尾删除、后续偏移两侧同移），
+// 即「空格 → *」在骨架/overlay/文本全口径下等价，行尾空格清除不引入其他变化。
 import { readFileSync, readdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
@@ -11,10 +12,12 @@ import yibu from "../src/samples/kangxi-yibu.gj?raw";
 const fmt = (s: string) => formatSpaces(s).text;
 
 describe("formatSpaces 规则", () => {
-  it("全角空格 1:1 → *（含行尾；渲染恒等价）", () => {
+  it("全角空格 1:1 → *（仅行内；行尾清除不转 *）", () => {
     expect(fmt("字，音義。　又某也。")).toBe("字，音義。*又某也。");
     expect(fmt("甲　　乙")).toBe("甲**乙"); // 连续全角不合并（各占一格）
-    expect(fmt("結尾。　")).toBe("結尾。*");
+    expect(fmt("結尾。　")).toBe("結尾。");
+    expect(fmt("結尾。　 \t")).toBe("結尾。"); // 混合行尾空格一并清除
+    expect(formatSpaces("結尾。　").count).toBe(0); // 清除不计入行内转换数
     const r = formatSpaces("a　b　c");
     expect(r.count).toBe(2);
   });
@@ -27,10 +30,11 @@ describe("formatSpaces 规则", () => {
     expect(formatSpaces("a  b").count).toBe(1);
   });
 
-  it("行首/行尾半角空格不动（trim 本会删除，转 * 会凭空多出空字格）", () => {
+  it("行首半角空格不动；行尾空格清除（转 * 会凭空多出空字格）", () => {
     expect(fmt(" 行首保留。又")).toBe(" 行首保留。又");
-    expect(fmt("行尾保留。 ")).toBe("行尾保留。 ");
-    expect(fmt("  ")).toBe("  ");
+    expect(fmt("行尾清除。 ")).toBe("行尾清除。");
+    expect(fmt("  ")).toBe("");
+    expect(fmt("　　")).toBe(""); // 纯全角行清为空行（gj2ir 中作 band 分隔）
   });
 
   it("与已转换内容的邻接：a* b → a**b（两侧原本各占一格，等价）", () => {
@@ -45,9 +49,10 @@ describe("formatSpaces 规则", () => {
     expect(formatSpaces("#甲 乙").count).toBe(1);
   });
 
-  it("注释不动（整行 // 与行内 // 尾注）", () => {
+  it("注释不动（整行 // 与行内 // 尾注；行尾空格仍清除）", () => {
     expect(fmt("// K0000 未编码 字")).toBe("// K0000 未编码 字");
     expect(fmt("正文句。// 附注 空格")).toBe("正文句。// 附注 空格");
+    expect(fmt("// 注释尾空格　")).toBe("// 注释尾空格");
   });
 
   it("页码行/空行不受影响；幂等", () => {
@@ -65,13 +70,15 @@ describe("formatSpaces 规则", () => {
   });
 });
 
-describe("全语料不变量：formatSpaces 后 gj2ir 逐字节不变", () => {
+describe("全语料不变量：formatSpaces ≡ 清除行尾空格 + 逐字节等价替换", () => {
   const dir = fileURLToPath(new URL("../../kangxi-gold/annotations", import.meta.url));
   const files = readdirSync(dir).filter((f) => f.endsWith(".gj"));
   const corpus: Array<[string, string]> = [
     ["样例 17 页全文", yibu],
     ...files.map((f) => [f, readFileSync(`${dir}/${f}`, "utf-8")] as [string, string]),
   ];
+  const stripTrailing = (s: string) =>
+    s.split("\n").map((l) => l.replace(/[ \t　]+$/, "")).join("\n");
 
   it("语料文件非空", () => {
     expect(files.length).toBeGreaterThan(0);
@@ -80,7 +87,7 @@ describe("全语料不变量：formatSpaces 后 gj2ir 逐字节不变", () => {
   for (const [name, src] of corpus) {
     it(`${name}`, () => {
       const { text } = formatSpaces(src);
-      expect(JSON.stringify(gj2ir(text))).toBe(JSON.stringify(gj2ir(src)));
+      expect(JSON.stringify(gj2ir(text))).toBe(JSON.stringify(gj2ir(stripTrailing(src))));
     });
   }
 });
