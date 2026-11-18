@@ -10,8 +10,10 @@
 from __future__ import annotations
 
 import sys
+import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "crawl"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "dataset"))
@@ -458,6 +460,70 @@ class TestLineScopedType(unittest.TestCase):
     def test_titles_excluded_from_hosts(self):
         source = "#康熙字典\n\n#*子集中\n\n#**一部\n\n#一:\n正文"
         self.assertEqual(kpt.find_host_marks(source), [("一", source.index("一:") + 1)])
+
+
+# ---- D 空白页添加 ----
+
+
+class TestBlankPageDraft(unittest.TestCase):
+    """@329 类空白页：无字头索引且无前页续文 → 草稿仅 @页码 行（mock 掉 I/O）。"""
+
+    def test_blank_page_draft_is_header_only(self):
+        with (
+            mock.patch.object(kpt, "page_heads", return_value=[]),
+            mock.patch.object(kpt, "_trim_bands_to_page") as trim,
+            mock.patch.object(kpt, "ocr_fold_page_lines") as fold,
+            mock.patch.object(kpt, "ocr_regroup_bands") as regroup,
+        ):
+            draft, counts = kpt.build_draft_gj(329, object())
+        self.assertEqual(draft, "@329\n")
+        self.assertTrue(counts["blank"])
+        self.assertEqual(
+            (counts["chars"], counts["unencoded"], counts["with_text"]), (0, 0, 0)
+        )
+        self.assertIn("空白页", "".join(counts["ocr_notes"]))
+        trim.assert_not_called()  # 零内容无裁剪对象，提示语反会误导校对者
+        fold.assert_not_called()
+        regroup.assert_not_called()
+
+    def test_nonblank_page_still_requires_data(self):
+        """有前页续文的纯延续页（@332 型）不走空白分支——续文进 bands。"""
+        with (
+            mock.patch.object(kpt, "page_heads", return_value=[]),
+            mock.patch.object(kpt, "_draft_bands",
+                              return_value=([["續文甲乙"]], {"chars": 0, "with_text": 1})) as bands,
+            mock.patch.object(kpt, "_trim_bands_to_page",
+                              side_effect=lambda p, b, s: (b, "略")),
+            mock.patch.object(kpt, "ocr_fold_page_lines",
+                              side_effect=lambda p, b, s: (b, "略")),
+            mock.patch.object(kpt, "ocr_regroup_bands",
+                              side_effect=lambda p, b: (b, "略")),
+        ):
+            draft, counts = kpt.build_draft_gj(332, object(), continuation=["續文甲乙"])
+        self.assertEqual(draft, "@332\n\n續文甲乙\n")
+        self.assertNotIn("blank", counts)
+        bands.assert_called_once()
+
+
+class TestContinuationAcrossBlankPage(unittest.TestCase):
+    """空白页只余 @页码 行：回溯宿主页续入时页码杂字不得混进锚定尾部。"""
+
+    def test_blank_prev_page_does_not_pollute_tail(self):
+        entry = ["甲" * 30 + "乙" * 10, "丙" * 20]
+        with tempfile.TemporaryDirectory() as td:
+            ann = Path(td)
+            (ann / "0328.gj").write_text(
+                f"@328\n\n#丁\n{entry[0][:20]}\n", encoding="utf-8")
+            (ann / "0329.gj").write_text("@329\n", encoding="utf-8")
+            with (
+                mock.patch.object(kpt, "ANNOTATIONS", ann),
+                mock.patch.object(kpt, "entry_detail",
+                                  return_value={"text_paragraphs": entry}),
+            ):
+                rest, info = kpt.continuation_from_prev(330, object())
+        self.assertEqual((info["host_page"], info["head"]), (328, "丁"))
+        # 不剥离 @329：覆盖率 20/24 < 0.9 → 续入被误判不可信而丢失
+        self.assertEqual(rest, [entry[0][20:], entry[1]])
 
 
 if __name__ == "__main__":

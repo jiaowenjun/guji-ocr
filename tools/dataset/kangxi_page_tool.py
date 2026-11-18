@@ -245,10 +245,14 @@ def continuation_from_prev(
         return [], info
     info["head"] = head
     tail_raw = strip_guwen_prefix(tail_raw)
-    # 剥离注释行（伴随字形/归并来源等工具注释不是页面文本，混进尾部会让
-    # 锚点在库内段落中找不到起点——@340 读 @339 丹条尾巴实测踩坑）
+    # 剥离注释行与页码/分隔行（伴随字形/归并来源等工具注释、回溯拼接各页
+    # 带来的 @页码 行不是页面文本，混进尾部会让锚点在库内段落中找不到起点
+    # ——@340 读 @339 丹条尾巴实测踩坑；@329 空白页整页只剩 @页码 行，
+    # 不剥离则 locate_tail 覆盖率被 4 个杂字拖垮，其后各页跨空白页续入即断）
     tail_raw = "\n".join(
-        l for l in tail_raw.splitlines() if l.strip() and not l.strip().startswith("//")
+        l for l in tail_raw.splitlines()
+        if l.strip() and not l.strip().startswith("//")
+        and not re.fullmatch(r"@\d+|=+", l.strip())
     )
     paragraphs = [p for p in (detail.get("text_paragraphs") or []) if p.strip()]
     if not paragraphs:
@@ -1333,13 +1337,17 @@ def build_draft_gj(
     时回退全量并在 notes 警告。fold=True 且 OCR 服务可用时，按 OCR 行组
     在大行内插入折行（只插入换行不改字符）并按大列重组带；不可用/不可信
     时草稿为未折行的平铺段——校对者回退到手工折行。
+    空白页（无字头索引且无前页续文，@329/@337）：草稿仅保留 @页码 行、
+    正文留空，尾裁/折行/重组跳过（零内容无作用对象，提示语反会误导）。
     """
     chars = page_heads(page, store)
     if not chars and not continuation:
-        raise RuntimeError(
-            f"页 {page} 无字头索引（page_chars 为空）且无前页续文——"
-            "阅读页数据不完整或该页既无新字头也无延续内容"
-        )
+        counts = {
+            "blank": True, "chars": 0, "unencoded": 0, "with_text": 0,
+            "ocr_notes": ["空白页：无字头索引且无前页续文，正文留空；"
+                          "若原图实际有内容，请对照原图手工补录"],
+        }
+        return f"@{page}\n", counts
 
     details = {
         item["codepoint"]: entry_detail(item["codepoint"], store)
@@ -1573,13 +1581,21 @@ def cmd_pipeline_replay(page: int) -> dict:
         trim_cont = {"note": "无续文", "kept": []}
     continuation = {"info": info, "rest_paragraphs": cont}
 
-    # ④ 草稿构建四态演化（拆开 build_draft_gj 内部调用以保留中间产物）
+    # ④ 草稿构建四态演化（拆开 build_draft_gj 内部调用以保留中间产物；
+    # 空白页同 build_draft_gj 跳过尾裁/折行/重组——零内容提示语反会误导）
     details = {i["codepoint"]: entry_detail(i["codepoint"], store)
                for i in chars if i["char"]}
     bands0, counts = _draft_bands(chars, details, trim_cont["kept"] or None, info.get("head"))
-    bands1, cut_note = _trim_bands_to_page(page, bands0, store)
-    bands2, fold_note = ocr_fold_page_lines(page, bands1, store)
-    bands3, regroup_note = ocr_regroup_bands(page, bands2)
+    if not chars and not trim_cont["kept"]:
+        counts["blank"] = True
+        note = "空白页：正文留空"
+        bands1, cut_note = bands0, note
+        bands2, fold_note = bands0, note
+        bands3, regroup_note = bands0, note
+    else:
+        bands1, cut_note = _trim_bands_to_page(page, bands0, store)
+        bands2, fold_note = ocr_fold_page_lines(page, bands1, store)
+        bands3, regroup_note = ocr_regroup_bands(page, bands2)
     draft = {
         "counts": counts,
         "stages": [

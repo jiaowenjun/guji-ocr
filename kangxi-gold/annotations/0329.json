@@ -1,0 +1,59 @@
+{
+  "version": 3,
+  "meta": {
+    "sourceFormat": "gj/2",
+    "generatedBy": "guji-ir/3-gj2",
+    "fidelity": "full",
+    "profile": {
+      "stripPunct": [
+        "。",
+        "，",
+        "·",
+        "\"",
+        ":",
+        "：",
+        "、",
+        "《",
+        "》"
+      ],
+      "normalize": [
+        [
+          "◎",
+          "○"
+        ],
+        [
+          "〇",
+          "○"
+        ]
+      ]
+    },
+    "lineLayout": "fold",
+    "orientation": "vertical-rtl",
+    "rangeUnit": "codepoint",
+    "srcUnit": "utf-16",
+    "layout": {
+      "version": 1,
+      "expectedBands": 8,
+      "rowCap": 24,
+      "smallColumnsPerBand": 2,
+      "largeCols": 2,
+      "largeRows": 2
+    },
+    "layoutPreset": {
+      "id": "kangxi-wuyingdian",
+      "revision": 1
+    }
+  },
+  "pages": [
+    {
+      "id": "p0329",
+      "no": 329,
+      "src": [
+        0,
+        4
+      ],
+      "bands": []
+    }
+  ],
+  "overlays": []
+}

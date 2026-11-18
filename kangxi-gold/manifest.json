@@ -292,6 +292,23 @@
       "status": "first"
     },
     {
+      "page": 329,
+      "image": "0329.jpg",
+      "url": "https://p.kangxizidian.com/kangxi2/0329.jpg",
+      "size_bytes": 384300,
+      "sha256": "6d311b23e3eabc486e1b8eb397c52fb99cfb5f6522ed2de0c0d792c30a2bf34a",
+      "width": 1130,
+      "height": 1709,
+      "downloaded_at": "2026-11-18",
+      "status": "first",
+      "annotations": {
+        "gj": "0329.gj",
+        "json": "0329.json",
+        "txt": "0329.txt"
+      },
+      "origin": "kangxizidian.com 爬取草稿（kangxi_page_tool.py add）"
+    },
+    {
       "page": 330,
       "image": "0330.jpg",
       "url": "https://p.kangxizidian.com/kangxi2/0330.jpg",

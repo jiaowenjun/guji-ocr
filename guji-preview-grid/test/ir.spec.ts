@@ -40,7 +40,31 @@ const corpus: Array<[string, string]> = [
       "utf-8",
     ),
   ],
+  [
+    "329 空白页",
+    readFileSync(
+      fileURLToPath(new URL("../../kangxi-gold/annotations/0329.gj", import.meta.url)),
+      "utf-8",
+    ),
+  ],
 ];
+
+describe("v3 空白页（@329 类：仅 @页码 行，无 band）", () => {
+  it("解析为零带页、零 overlay，layout3 不崩", () => {
+    const doc = gj2ir("@329\n");
+    expect(doc.pages).toHaveLength(1);
+    expect(doc.pages[0]).toMatchObject({ no: 329 });
+    expect(doc.pages[0].bands).toHaveLength(0);
+    expect(doc.overlays).toHaveLength(0);
+    const laid = layout3(doc);
+    expect(laid).toHaveLength(1);
+    expect(laid[0]).toMatchObject({ no: 329, bands: [] });
+  });
+
+  it("阅读序文本为空（金标 txt 同源口径：空页无内容字符）", () => {
+    expect(irToText(gj2ir("@329\n"))).toBe("");
+  });
+});
 
 describe("v3 骨架独立（核心原则）", () => {
   it("去掉全部 overlay 与 src，pages 逐字节不变；layout3 输出不变", () => {
@@ -153,7 +177,11 @@ describe("v3 语料回归（目标性断言）", () => {
         ("c" in (line as object) ? (line as { c: unknown[] }).c : [line])
           .map((b) => (b as { t?: string }).t ?? "")
           .join("");
-      return pages.map((p) => p.l.map(lineText).join("\n") + "\n").join("");
+      // 空白页（零行）产出空文本：旧解析器无条件补的页尾 \n 是分页符痕迹，
+      // 金标 txt 同源路径（irToText）对空页本就产出 ""（@329 起的约定）
+      return pages
+        .map((p) => (p.l.length ? p.l.map(lineText).join("\n") + "\n" : ""))
+        .join("");
     };
     for (const [, text] of corpus) {
       expect(irToText(gj2ir(text))).toBe(oldText(text));
