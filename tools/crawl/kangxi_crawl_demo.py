@@ -502,7 +502,8 @@ def api_entry(sword: str) -> dict:
         raise RuntimeError(f"sword 须为单字，收到 {sword!r}")
     row = store.get_entry_by_char(sword)
     if row and row.get("record_json"):
-        rec = json.loads(row["record_json"])
+        from kangxi_entry_parser import resolve_entry
+        rec = resolve_entry(row)
         trace.append(f"字头 {sword} 详情：数据库命中（entries U+{ord(sword):04X}），零网络请求")
     else:
         url = fe.DETAIL_TEMPLATE.format(sword=urllib.parse.quote(sword))

@@ -1,0 +1,2957 @@
+{
+  "at": "2026-11-18T17:01:33+08:00",
+  "baseline": "同一生成流程，使用旧聚合转写；402按用户提供初校标准额外纳入",
+  "pages": [
+    {
+      "page": 312,
+      "status": "first",
+      "gold_sha256": "5e036d9a2e48411352109916237452b80a3d96d1d70fc65ba6c3523bd89a2188",
+      "before_chars": 227,
+      "after_chars": 227,
+      "gold_chars": 236,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 229/546 字（页面物理末界），溢出 317 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 311,
+        "head": null,
+        "paragraphs": 0,
+        "skipped": "前页 311 不在数据集"
+      }
+    },
+    {
+      "page": 313,
+      "status": "first",
+      "gold_sha256": "89943a1232acaadbc50822e0975fb3a79d1ec50ad2367e5b7b38db7fcdc84824",
+      "before_chars": 365,
+      "after_chars": 365,
+      "gold_chars": 365,
+      "body_changes": [],
+      "stream_equal_gold": true,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 367/1049 字（页面物理末界），溢出 682 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 312,
+        "head": "一",
+        "paragraphs": 15,
+        "skipped": null,
+        "host_page": 312
+      }
+    },
+    {
+      "page": 314,
+      "status": "first",
+      "gold_sha256": "62c443a238892c0a7493ddc9196e2722aff398ca902e7d29dad2d6f0ae072325",
+      "before_chars": 375,
+      "after_chars": 375,
+      "gold_chars": 375,
+      "body_changes": [],
+      "stream_equal_gold": true,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 375/682 字（页面物理末界），溢出 307 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 313,
+        "head": "丁",
+        "paragraphs": 29,
+        "skipped": null,
+        "host_page": 313
+      }
+    },
+    {
+      "page": 315,
+      "status": "first",
+      "gold_sha256": "5503d49d743e29f9bf1d82bc0554b2ee403a4d97dfaec9a54fabca4c11729a0f",
+      "before_chars": 364,
+      "after_chars": 364,
+      "gold_chars": 364,
+      "body_changes": [],
+      "stream_equal_gold": true,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 366/400 字（页面物理末界），溢出 34 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 314,
+        "head": "丁",
+        "paragraphs": 11,
+        "skipped": null,
+        "host_page": 313
+      }
+    },
+    {
+      "page": 316,
+      "status": "first",
+      "gold_sha256": "1b78e2652212d29fe6fc29327ff136ea8fd42cd14a2b5c7650e7bcabba090176",
+      "before_chars": 529,
+      "after_chars": 353,
+      "gold_chars": 354,
+      "body_changes": [
+        {
+          "head": "万",
+          "continuation": false,
+          "diffs": [
+            {
+              "tag": "delete",
+              "draft_start": 51,
+              "draft_end": 227,
+              "gold_start": 51,
+              "gold_end": 51,
+              "draft": "唐韻無販切音蔓說文蟲也埤雅蜂一名萬蓋蜂類衆多動以萬計又數名易乾象萬國咸寧前漢律歷志紀于一協于十長于百大于千衍于萬又舞名詩邶風方將萬舞疏萬者舞之總名大戴禮夏小正萬也者干戚舞也韻會湯武以萬人得天下故干舞稱萬舞又州名寰宇記漢巴東郡後唐貞觀曰萬州又姓通志氏族略萬氏孟子門人萬章又韻補入銑韻白居易寄元九詩憐君爲謫吏窮薄家貧褊三寄衣食資數盈二十萬六書正譌或省作万非",
+              "gold": "",
+              "context": "姓俟音其今讀木其北齊特進万俟普│"
+            }
+          ],
+          "removed_score": {
+            "extra": 176
+          }
+        }
+      ],
+      "stream_equal_gold": false,
+      "stream_changes": [
+        {
+          "tag": "delete",
+          "draft_start": 304,
+          "draft_end": 480,
+          "gold_start": 304,
+          "gold_end": 304,
+          "draft": "唐韻無販切音蔓說文蟲也埤雅蜂一名萬蓋蜂類衆多動以萬計又數名易乾象萬國咸寧前漢律歷志紀于一協于十長于百大于千衍于萬又舞名詩邶風方將萬舞疏萬者舞之總名大戴禮夏小正萬也者干戚舞也韻會湯武以萬人得天下故干舞稱萬舞又州名寰宇記漢巴東郡後唐貞觀曰萬州又姓通志氏族略萬氏孟子門人萬章又韻補入銑韻白居易寄元九詩憐君爲謫吏窮薄家貧褊三寄衣食資數盈二十萬六書正譌或省作万非",
+          "gold": "",
+          "context": "姓俟音其今讀木其北齊特進万俟普│丈唐韻直兩切集韻韻會雉兩切正韻"
+        }
+      ],
+      "notes": [
+        "OCR 尾裁：保留 358/518 字（页面物理末界），溢出 160 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 315,
+        "head": "𠀀",
+        "paragraphs": 2,
+        "skipped": null,
+        "host_page": 315
+      }
+    },
+    {
+      "page": 317,
+      "status": "first",
+      "gold_sha256": "fe8f60b065c6ddbd45e6045e5f364c77a114ebfbfca4985292ed26d783987aed",
+      "before_chars": 368,
+      "after_chars": 368,
+      "gold_chars": 368,
+      "body_changes": [],
+      "stream_equal_gold": true,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 370/419 字（页面物理末界），溢出 49 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 316,
+        "head": "丈",
+        "paragraphs": 10,
+        "skipped": null,
+        "host_page": 316
+      }
+    },
+    {
+      "page": 318,
+      "status": "first",
+      "gold_sha256": "b5fd061820ee2c9736c35a96113d7ac72c50ef2a46c955a2aa3b54dd60282f4b",
+      "before_chars": 363,
+      "after_chars": 363,
+      "gold_chars": 362,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 365/453 字（页面物理末界），溢出 88 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 317,
+        "head": "三",
+        "paragraphs": 3,
+        "skipped": null,
+        "host_page": 317
+      }
+    },
+    {
+      "page": 319,
+      "status": "first",
+      "gold_sha256": "db0cd6526abab9a0ff8d2d2b2166c9638ecf5a43b308fdc7d3fc8cd91ca1f028",
+      "before_chars": 360,
+      "after_chars": 360,
+      "gold_chars": 360,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 363/381 字（页面物理末界），溢出 18 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 318,
+        "head": "上",
+        "paragraphs": 2,
+        "skipped": null,
+        "host_page": 318
+      }
+    },
+    {
+      "page": 320,
+      "status": "first",
+      "gold_sha256": "3a18b4721a0b5858af9afbe770ba1a5a722f4d549f2533a0228c2d0d0c473857",
+      "before_chars": 350,
+      "after_chars": 350,
+      "gold_chars": 353,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 353/644 字（页面物理末界），溢出 291 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 319,
+        "head": "丌",
+        "paragraphs": 1,
+        "skipped": null,
+        "host_page": 319
+      }
+    },
+    {
+      "page": 321,
+      "status": "first",
+      "gold_sha256": "d888d8949289a1f166f6e9dfe21f3b977d820afcf84521d5151a268729b35e0f",
+      "before_chars": 1202,
+      "after_chars": 373,
+      "gold_chars": 373,
+      "body_changes": [
+        {
+          "head": "与",
+          "continuation": false,
+          "diffs": [
+            {
+              "tag": "delete",
+              "draft_start": 29,
+              "draft_end": 858,
+              "gold_start": 29,
+              "gold_end": 29,
+              "draft": "廣韻弋諸切正韻弋渚切集韻韻會演女切𠀤音予說文黨與也戰國策是君以合齊與强楚註與黨與也管子八觀篇請謁得于上則黨與成于下又廣韻善也禮禮運諸侯以禮相與又增韻及也易說卦是以立天之道曰隂與陽立地之道曰柔與剛立人之道曰仁與義又許也從也論語吾與點也管子形勢解鬼神助之天地與之又待也論語歲不我與又博雅如也前漢韓信傳大王自料勇悍仁彊孰與項王註師古曰與如也司馬相如子虛賦楚王之獵孰與寡人又施予也禮曲禮與人者不問其所欲周禮春官大卜以邦事作龜之八命一曰征二曰象三曰與註與謂予人物也又助也戰國策吾將深入吳軍若扑一人若捽一人以與大心者也註與猶助也又類也周語夫禮之立成者爲飫昭明大節而已少曲與焉註與類也威儀少比類也又以也詩召南之子歸不我與朱註與猶以也以謂挾己而偕行也又和也戰國策內𡨥不與外敵不可拒註𡨥猶亂與猶和也又用也詩唐風人之爲言苟亦無與傳無與弗用也又數也禮曲禮生與來日註與猶數也又語辭禮表記君子與其有諾責也寧有已怨又容與閑適貌莊子人閒世因案人之所感以求容與其心註以求從容自放而遂其侈心也史記司馬相如傳楚王乃弭節裴回翱翔容與註索隱曰言自得又正字通大與官名主爵祿之官又不與國名山海經有不與之國烈姓黍食又姓又廣韻羊洳切集韻韻會正韻羊茹切𠀤音豫參與也正韻干也中庸夫婦之愚可以與知焉周禮冬官考工記國有六職百工與居一焉又縣名史記曹相國世家參以中涓從將擊胡陵方與註索隱曰地理志二縣皆屬山陽正義曰與音預又正字通疑慮未決也通作豫前漢昌邑王傳楊敞猶與無決又陳湯傳士卒猶與通作豫又集韻韻會羊諸切正韻雲俱切𠀤音余語辭論語其爲仁之本與禮檀弓曾子曰微與其嗟也可去其謝也可食疏微無也與語助又詩小雅我黍與與我稷翼翼箋與與翼翼蕃廡貌又論語與與如也註威儀中適貌又舒也前漢禮樂志朱明盛長旉與萬物註師古曰敷與言開舒也與弋於反又人名書舜典垂拜稽首讓于殳斨暨伯與傳殳斨伯與二臣名釋文與音餘又山名同輿山海經敦與之山註按名勝志作敦輿山又苦山之首曰休與之山註與或作輿又集韻倚亥切音欸与也◎按說文与訓賜予也一勺爲与與訓黨與也今俗與字通作与",
+              "gold": "",
+              "context": "一勺爲与六書正譌寡則均故从一勺│"
+            }
+          ],
+          "removed_score": {
+            "extra": 829
+          }
+        }
+      ],
+      "stream_equal_gold": false,
+      "stream_changes": [
+        {
+          "tag": "delete",
+          "draft_start": 321,
+          "draft_end": 1150,
+          "gold_start": 321,
+          "gold_end": 321,
+          "draft": "廣韻弋諸切正韻弋渚切集韻韻會演女切𠀤音予說文黨與也戰國策是君以合齊與强楚註與黨與也管子八觀篇請謁得于上則黨與成于下又廣韻善也禮禮運諸侯以禮相與又增韻及也易說卦是以立天之道曰隂與陽立地之道曰柔與剛立人之道曰仁與義又許也從也論語吾與點也管子形勢解鬼神助之天地與之又待也論語歲不我與又博雅如也前漢韓信傳大王自料勇悍仁彊孰與項王註師古曰與如也司馬相如子虛賦楚王之獵孰與寡人又施予也禮曲禮與人者不問其所欲周禮春官大卜以邦事作龜之八命一曰征二曰象三曰與註與謂予人物也又助也戰國策吾將深入吳軍若扑一人若捽一人以與大心者也註與猶助也又類也周語夫禮之立成者爲飫昭明大節而已少曲與焉註與類也威儀少比類也又以也詩召南之子歸不我與朱註與猶以也以謂挾己而偕行也又和也戰國策內𡨥不與外敵不可拒註𡨥猶亂與猶和也又用也詩唐風人之爲言苟亦無與傳無與弗用也又數也禮曲禮生與來日註與猶數也又語辭禮表記君子與其有諾責也寧有已怨又容與閑適貌莊子人閒世因案人之所感以求容與其心註以求從容自放而遂其侈心也史記司馬相如傳楚王乃弭節裴回翱翔容與註索隱曰言自得又正字通大與官名主爵祿之官又不與國名山海經有不與之國烈姓黍食又姓又廣韻羊洳切集韻韻會正韻羊茹切𠀤音豫參與也正韻干也中庸夫婦之愚可以與知焉周禮冬官考工記國有六職百工與居一焉又縣名史記曹相國世家參以中涓從將擊胡陵方與註索隱曰地理志二縣皆屬山陽正義曰與音預又正字通疑慮未決也通作豫前漢昌邑王傳楊敞猶與無決又陳湯傳士卒猶與通作豫又集韻韻會羊諸切正韻雲俱切𠀤音余語辭論語其爲仁之本與禮檀弓曾子曰微與其嗟也可去其謝也可食疏微無也與語助又詩小雅我黍與與我稷翼翼箋與與翼翼蕃廡貌又論語與與如也註威儀中適貌又舒也前漢禮樂志朱明盛長旉與萬物註師古曰敷與言開舒也與弋於反又人名書舜典垂拜稽首讓于殳斨暨伯與傳殳斨伯與二臣名釋文與音餘又山名同輿山海經敦與之山註按名勝志作敦輿山又苦山之首曰休與之山註與或作輿又集韻倚亥切音欸与也◎按說文与訓賜予也一勺爲与與訓黨與也今俗與字通作与",
+          "gold": "",
+          "context": "一勺爲与六書正譌寡則均故从一勺│丏廣韻集韻韻會彌殄切正韻美辨切"
+        }
+      ],
+      "notes": [
+        "OCR 尾裁：保留 375/389 字（页面物理末界），溢出 14 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 320,
+        "head": "不",
+        "paragraphs": 7,
+        "skipped": null,
+        "host_page": 320
+      }
+    },
+    {
+      "page": 322,
+      "status": "first",
+      "gold_sha256": "38f0a4517ef65f97fb92aefca5487b5b747dcca14ceaf482b0b0ed10940d3e9c",
+      "before_chars": 797,
+      "after_chars": 352,
+      "gold_chars": 343,
+      "body_changes": [
+        {
+          "head": "丑",
+          "continuation": false,
+          "diffs": [
+            {
+              "tag": "delete",
+              "draft_start": 106,
+              "draft_end": 551,
+              "gold_start": 106,
+              "gold_end": 106,
+              "draft": "唐韻集韻韻會正韻𠀤齒九切犨上聲說文可惡也詩小雅日有食之亦孔之醜傳醜惡也左傳文十八年醜類惡物註醜亦惡也前漢項羽紀項王爲天下宰不平今盡王故王於醜地又釋名臭也如臭穢也又惡之也左傳昭二十八年惡直醜正實蕃有徒史記殷本紀伊尹去湯適夏旣醜有夏復歸於亳又相惡也戰國策又身自醜於秦註自醜於秦與秦惡也又羞也史記魏世家以羞先君宗廟社稷寡人甚醜之又韓非傳在知飾所說之所敬而滅其所醜註索隱曰謂人主有所避諱而醜之游說者當滅其事端而不言也又貌惡也前漢五行志或形貌醜惡亦是也淮南子說山訓不求美又不求醜則無美無醜矣又類也易漸卦夫征不復離羣醜也疏醜類也孟子地醜德齊又衆也詩小雅執訊獲醜箋醜衆也左傳定四年將其醜類註醜衆也又比也禮學記古之學者比物醜類註醜猶比也又揚子方言醜同也東齊曰醜又山名山海經崑崙之丘洋水出焉而西南流注于醜塗之水註醜塗亦山名也又禮内則鼈去醜註醜謂鼈竅也又姓後漢袁術傳有醜長又複姓西秦錄有下將軍醜門于第又諡法怙威肆行曰醜晉書何曾傳曾驕奢過度宜諡繆醜又韻補叶敞呂切音杵易林東家中女嫫母敢醜三十無家媒自勞苦集韻或作魗",
+              "gold": "",
+              "context": "字十二月之象也又丑象子初生舉手│"
+            }
+          ],
+          "removed_score": {
+            "extra": 445
+          }
+        }
+      ],
+      "stream_equal_gold": false,
+      "stream_changes": [
+        {
+          "tag": "delete",
+          "draft_start": 156,
+          "draft_end": 601,
+          "gold_start": 156,
+          "gold_end": 156,
+          "draft": "唐韻集韻韻會正韻𠀤齒九切犨上聲說文可惡也詩小雅日有食之亦孔之醜傳醜惡也左傳文十八年醜類惡物註醜亦惡也前漢項羽紀項王爲天下宰不平今盡王故王於醜地又釋名臭也如臭穢也又惡之也左傳昭二十八年惡直醜正實蕃有徒史記殷本紀伊尹去湯適夏旣醜有夏復歸於亳又相惡也戰國策又身自醜於秦註自醜於秦與秦惡也又羞也史記魏世家以羞先君宗廟社稷寡人甚醜之又韓非傳在知飾所說之所敬而滅其所醜註索隱曰謂人主有所避諱而醜之游說者當滅其事端而不言也又貌惡也前漢五行志或形貌醜惡亦是也淮南子說山訓不求美又不求醜則無美無醜矣又類也易漸卦夫征不復離羣醜也疏醜類也孟子地醜德齊又衆也詩小雅執訊獲醜箋醜衆也左傳定四年將其醜類註醜衆也又比也禮學記古之學者比物醜類註醜猶比也又揚子方言醜同也東齊曰醜又山名山海經崑崙之丘洋水出焉而西南流注于醜塗之水註醜塗亦山名也又禮内則鼈去醜註醜謂鼈竅也又姓後漢袁術傳有醜長又複姓西秦錄有下將軍醜門于第又諡法怙威肆行曰醜晉書何曾傳曾驕奢過度宜諡繆醜又韻補叶敞呂切音杵易林東家中女嫫母敢醜三十無家媒自勞苦集韻或作魗",
+          "gold": "",
+          "context": "字十二月之象也又丑象子初生舉手│𠀇玉篇古文且字註詳四畫𠀈字彙補"
+        }
+      ],
+      "notes": [
+        "OCR 尾裁：保留 358/674 字（页面物理末界），溢出 316 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 321,
+        "head": "丏",
+        "paragraphs": 2,
+        "skipped": null,
+        "host_page": 321
+      }
+    },
+    {
+      "page": 323,
+      "status": "first",
+      "gold_sha256": "7f175bbdc887c2c0393d841a5d8cda375e8790af1bde427b938a56e07d412ca5",
+      "before_chars": 367,
+      "after_chars": 367,
+      "gold_chars": 367,
+      "body_changes": [],
+      "stream_equal_gold": true,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 368/499 字（页面物理末界），溢出 131 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 322,
+        "head": "且",
+        "paragraphs": 11,
+        "skipped": null,
+        "host_page": 322
+      }
+    },
+    {
+      "page": 324,
+      "status": "first",
+      "gold_sha256": "6a4742d5fedb0c7aee856f3561cf089f080db888c0d945ccc9a7f3f843dad121",
+      "before_chars": 362,
+      "after_chars": 362,
+      "gold_chars": 356,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 367/891 字（页面物理末界），溢出 524 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 323,
+        "head": "丕",
+        "paragraphs": 6,
+        "skipped": null,
+        "host_page": 323
+      }
+    },
+    {
+      "page": 325,
+      "status": "first",
+      "gold_sha256": "0fcbbcb8cc83bceb46159afbb41d98f9b7ca4a16d552fc7980019422eaf2abcf",
+      "before_chars": 370,
+      "after_chars": 370,
+      "gold_chars": 370,
+      "body_changes": [],
+      "stream_equal_gold": true,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 370/524 字（页面物理末界），溢出 154 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 324,
+        "head": "丘",
+        "paragraphs": 19,
+        "skipped": null,
+        "host_page": 324
+      }
+    },
+    {
+      "page": 326,
+      "status": "first",
+      "gold_sha256": "bc89aa07080060c79c22c4f32d6b9c723c784367dd663b90060a1ff84ceb73bf",
+      "before_chars": 352,
+      "after_chars": 352,
+      "gold_chars": 357,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 356/364 字（页面物理末界，末段判信回缩 4 字），溢出 8 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 325,
+        "head": "丘",
+        "paragraphs": 7,
+        "skipped": null,
+        "host_page": 324
+      }
+    },
+    {
+      "page": 327,
+      "status": "first",
+      "gold_sha256": "9d35969ad509482e5306036005cb7e0a78a6db9355d6f56a75376b7de01ee2de",
+      "before_chars": 348,
+      "after_chars": 348,
+      "gold_chars": 350,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 355/455 字（页面物理末界），溢出 100 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 326,
+        "head": "㐁",
+        "paragraphs": 1,
+        "skipped": null,
+        "host_page": 326
+      }
+    },
+    {
+      "page": 328,
+      "status": "first",
+      "gold_sha256": "cc9377aa16cf77b13204712de96382ffab5fcff93e9e2cfb1969dec86fbb1248",
+      "before_chars": 274,
+      "after_chars": 274,
+      "gold_chars": 280,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：本页内容未溢出页界"
+      ],
+      "continuation": {
+        "prev_page": 327,
+        "head": "丣",
+        "paragraphs": 2,
+        "skipped": null,
+        "host_page": 327
+      }
+    },
+    {
+      "page": 330,
+      "status": "first",
+      "gold_sha256": "069c262f5d54e0209b27ca2f48f7d1280891c99a7a502f09ca28508c35dcb9fa",
+      "before_chars": 304,
+      "after_chars": 304,
+      "gold_chars": 311,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 308/507 字（页面物理末界，末段判信回缩 46 字），溢出 199 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 329,
+        "head": "𠁕",
+        "paragraphs": 0,
+        "skipped": "前页尾部与库内段落不匹配（可能已大幅校订），未自动续入",
+        "host_page": 328
+      }
+    },
+    {
+      "page": 331,
+      "status": "first",
+      "gold_sha256": "5162313997bfc3324b32b174eac5be5c9b274aa1a53bf81c45e22d154e478f6c",
+      "before_chars": 443,
+      "after_chars": 359,
+      "gold_chars": 360,
+      "body_changes": [
+        {
+          "head": "个",
+          "continuation": true,
+          "diffs": [
+            {
+              "tag": "delete",
+              "draft_start": 197,
+              "draft_end": 281,
+              "gold_start": 197,
+              "gold_end": 197,
+              "draft": "字彙與个同鄭康成儀禮註俗呼个爲個◎按個爲後人增加从个箇爲正廣韻古賀切集韻韻會居賀切正韻古荷切𠀤音吤數也又揚子方言箇枚也郭註爲枚數也荀子議兵篇負矢五十箇集韻亦作个介俗作個",
+              "gold": "",
+              "context": "韓愈合江亭詩栽竹逾萬个𠀤與箇同│"
+            }
+          ],
+          "removed_score": {
+            "extra": 84
+          }
+        }
+      ],
+      "stream_equal_gold": false,
+      "stream_changes": [
+        {
+          "tag": "delete",
+          "draft_start": 197,
+          "draft_end": 281,
+          "gold_start": 197,
+          "gold_end": 197,
+          "draft": "字彙與个同鄭康成儀禮註俗呼个爲個◎按個爲後人增加从个箇爲正廣韻古賀切集韻韻會居賀切正韻古荷切𠀤音吤數也又揚子方言箇枚也郭註爲枚數也荀子議兵篇負矢五十箇集韻亦作个介俗作個",
+          "gold": "",
+          "context": "韓愈合江亭詩栽竹逾萬个𠀤與箇同│丫廣韻集韻正韻𠀤於加切音鴉物之"
+        }
+      ],
+      "notes": [
+        "OCR 尾裁：保留 363/1190 字（页面物理末界），溢出 827 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 330,
+        "head": "个",
+        "paragraphs": 9,
+        "skipped": null,
+        "host_page": 330
+      }
+    },
+    {
+      "page": 332,
+      "status": "first",
+      "gold_sha256": "19f362b36ec133254b2a1b94bb3ad8219324f7e2f76ca17c56090fe2b696c6b2",
+      "before_chars": 371,
+      "after_chars": 371,
+      "gold_chars": 371,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 371/827 字（页面物理末界），溢出 456 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 331,
+        "head": "中",
+        "paragraphs": 39,
+        "skipped": null,
+        "host_page": 331
+      }
+    },
+    {
+      "page": 333,
+      "status": "first",
+      "gold_sha256": "b374a6eb7f41d4dd41f04766ea2df5ea53a66c1ed5e61dae8ce7e0ca1714c84b",
+      "before_chars": 373,
+      "after_chars": 373,
+      "gold_chars": 372,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 373/456 字（页面物理末界），溢出 83 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 332,
+        "head": "中",
+        "paragraphs": 16,
+        "skipped": null,
+        "host_page": 331
+      }
+    },
+    {
+      "page": 334,
+      "status": "first",
+      "gold_sha256": "c4b6b170ff501feb8a3862755deee254fc36f3bbc7dc9e53b89d8844ea672036",
+      "before_chars": 999,
+      "after_chars": 357,
+      "gold_chars": 358,
+      "body_changes": [
+        {
+          "head": "丰",
+          "continuation": false,
+          "diffs": [
+            {
+              "tag": "delete",
+              "draft_start": 72,
+              "draft_end": 714,
+              "gold_start": 72,
+              "gold_end": 72,
+              "draft": "唐韻敷戎切集韻韻會敷馮切𠀤音酆說文豆之豐滿者也一曰器名鄕飮酒有豐侯亦謂之廢禁陸佃云似豆而𤰞海錄碎事射禮置豐於西階古豐國之君以酒亡國故以爲罰爵圖其人形於下寓戒也儀禮鄕射禮司射適堂西命弟子設豐註將飮不勝者設豐所以承其爵也疏按燕禮君尊有豐此言承爵豐則兩用之又玉篇大也廣韻多也易豐卦疏豐者多大之名盈足之義財多德大故謂之豐書高宗肜日典祀無豐于昵疏謂犧牲禮物多也楚語彼若謀楚其必有豐敗也哉註大也揚子方言凡物之大貌曰豐又趙魏之郊燕之北鄙凡大人謂之豐人燕記曰豐人杼首杼首長首也又廣韻茂也盛也詩小雅在彼豐草傳豐茂也楚語夫事君者不以豐約舉註豐盛約衰也又猶厚也周禮地官大司徒原隰其民豐肉而庳又歲熟曰豐詩周頌豐年多黍多稌公羊傳桓三年大有年何大豐年也註謂五穀皆大成熟又博雅雲師謂之豐隆一曰雷師也屈原離騷吾令豐隆乗雲淮南子天文訓季春三月豐隆乃出註雷也又豐席孔安國書傳豐莞也郭璞曰今西方人呼蒲爲莞用之爲席鄭康成曰刮凍竹席也又豐本韭別名禮曲禮凡祭宗廟之禮韭曰豐本註其根本茂盛也又地名書武成王來自商至于豐傳文王舊都在京兆鄠縣今長安縣西北是也通作酆又水名詩大雅豐水東注後漢郡國志註豐水出鄠南山豐谷北入于渭通作灃又縣名前漢地理志豐縣屬沛郡又州名古太原郡宋置豐州又陝西隋置豐州又山名豐山在滁州南二里許上有豐樂亭見歐陽修記又人名前漢古今人表𨻰豐帝嚳妃生堯師古曰卽𨻰鋒也又姓廣韻鄭穆公子豐之後又複姓豐將氏見潛夫論又叶敷文切音分蔡邕𥓓民安物豐上叶綏我荆衡下叶以紀洪勳又叶敷康切音芳韓愈歐陽生哀辭友則旣獲兮祿實不豐以志爲養兮何有牛羊",
+              "gold": "",
+              "context": "丰兮六書正譌俗作丰上畫从丿者非│"
+            }
+          ],
+          "removed_score": {
+            "extra": 642
+          }
+        }
+      ],
+      "stream_equal_gold": false,
+      "stream_changes": [
+        {
+          "tag": "delete",
+          "draft_start": 287,
+          "draft_end": 929,
+          "gold_start": 287,
+          "gold_end": 287,
+          "draft": "唐韻敷戎切集韻韻會敷馮切𠀤音酆說文豆之豐滿者也一曰器名鄕飮酒有豐侯亦謂之廢禁陸佃云似豆而𤰞海錄碎事射禮置豐於西階古豐國之君以酒亡國故以爲罰爵圖其人形於下寓戒也儀禮鄕射禮司射適堂西命弟子設豐註將飮不勝者設豐所以承其爵也疏按燕禮君尊有豐此言承爵豐則兩用之又玉篇大也廣韻多也易豐卦疏豐者多大之名盈足之義財多德大故謂之豐書高宗肜日典祀無豐于昵疏謂犧牲禮物多也楚語彼若謀楚其必有豐敗也哉註大也揚子方言凡物之大貌曰豐又趙魏之郊燕之北鄙凡大人謂之豐人燕記曰豐人杼首杼首長首也又廣韻茂也盛也詩小雅在彼豐草傳豐茂也楚語夫事君者不以豐約舉註豐盛約衰也又猶厚也周禮地官大司徒原隰其民豐肉而庳又歲熟曰豐詩周頌豐年多黍多稌公羊傳桓三年大有年何大豐年也註謂五穀皆大成熟又博雅雲師謂之豐隆一曰雷師也屈原離騷吾令豐隆乗雲淮南子天文訓季春三月豐隆乃出註雷也又豐席孔安國書傳豐莞也郭璞曰今西方人呼蒲爲莞用之爲席鄭康成曰刮凍竹席也又豐本韭別名禮曲禮凡祭宗廟之禮韭曰豐本註其根本茂盛也又地名書武成王來自商至于豐傳文王舊都在京兆鄠縣今長安縣西北是也通作酆又水名詩大雅豐水東注後漢郡國志註豐水出鄠南山豐谷北入于渭通作灃又縣名前漢地理志豐縣屬沛郡又州名古太原郡宋置豐州又陝西隋置豐州又山名豐山在滁州南二里許上有豐樂亭見歐陽修記又人名前漢古今人表𨻰豐帝嚳妃生堯師古曰卽𨻰鋒也又姓廣韻鄭穆公子豐之後又複姓豐將氏見潛夫論又叶敷文切音分蔡邕𥓓民安物豐上叶綏我荆衡下叶以紀洪勳又叶敷康切音芳韓愈歐陽生哀辭友則旣獲兮祿實不豐以志爲養兮何有牛羊",
+          "gold": "",
+          "context": "丰兮六書正譌俗作丰上畫从丿者非│丱廣韻集韻韻會正韻𠀤古患切音慣"
+        }
+      ],
+      "notes": [
+        "OCR 尾裁：保留 362/406 字（页面物理末界），溢出 44 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 333,
+        "head": "中",
+        "paragraphs": 1,
+        "skipped": null,
+        "host_page": 331
+      }
+    },
+    {
+      "page": 335,
+      "status": "first",
+      "gold_sha256": "124fa6faac719f57d1884502f04e1b96b92ef32faf7abbcae374204611870a08",
+      "before_chars": 326,
+      "after_chars": 326,
+      "gold_chars": 334,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：本页内容未溢出页界"
+      ],
+      "continuation": {
+        "prev_page": 334,
+        "head": "丱",
+        "paragraphs": 1,
+        "skipped": null,
+        "host_page": 334
+      }
+    },
+    {
+      "page": 336,
+      "status": "first",
+      "gold_sha256": "700d6fcf7e4b60cddefab3a8b8add1ca1fc8bf58a20a1ee16a5aa45b4a1d93f5",
+      "before_chars": 133,
+      "after_chars": 133,
+      "gold_chars": 131,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：本页内容未溢出页界"
+      ],
+      "continuation": {
+        "prev_page": 335,
+        "head": "𠁮",
+        "paragraphs": 0,
+        "skipped": "前页 335 的 .gj 已完整收录字头「𠁮」全部 1 段，无剩余正文可续入；若本页原图仍有该条续文，请核对前页的物理页界",
+        "host_page": 335,
+        "fully_included": true
+      }
+    },
+    {
+      "page": 338,
+      "status": "first",
+      "gold_sha256": "a41341faa2374cc5d3cf24f096ab89bf62f7fe8eedf8e87376c97071b7894956",
+      "before_chars": 318,
+      "after_chars": 318,
+      "gold_chars": 321,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 321/434 字（页面物理末界），溢出 113 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 337,
+        "head": "𠁴",
+        "paragraphs": 0,
+        "skipped": "前页 337 的 .gj 已完整收录字头「𠁴」全部 1 段，无剩余正文可续入；若本页原图仍有该条续文，请核对前页的物理页界",
+        "host_page": 336,
+        "fully_included": true
+      }
+    },
+    {
+      "page": 339,
+      "status": "first",
+      "gold_sha256": "dc6167aeaaa213a66deef2389c4d46710d18fb361158f82cea4aecc19857d1ac",
+      "before_chars": 352,
+      "after_chars": 352,
+      "gold_chars": 353,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 355/483 字（页面物理末界），溢出 128 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 338,
+        "head": "𠁽",
+        "paragraphs": 8,
+        "skipped": null,
+        "host_page": 338
+      }
+    },
+    {
+      "page": 340,
+      "status": "first",
+      "gold_sha256": "f0be8242183259e9d3247418188669fe5285cf4feb949075228921dbea579ad2",
+      "before_chars": 358,
+      "after_chars": 358,
+      "gold_chars": 359,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 360/458 字（页面物理末界），溢出 98 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 339,
+        "head": "丹",
+        "paragraphs": 4,
+        "skipped": null,
+        "host_page": 339
+      }
+    },
+    {
+      "page": 341,
+      "status": "first",
+      "gold_sha256": "41a6459bdd3632836db261c864dd16788dcb6ee3ee272c2c539baac294b170a4",
+      "before_chars": 224,
+      "after_chars": 239,
+      "gold_chars": 241,
+      "body_changes": [
+        {
+          "head": "丽",
+          "continuation": false,
+          "diffs": [
+            {
+              "tag": "delete",
+              "draft_start": 12,
+              "draft_end": 14,
+              "gold_start": 12,
+              "gold_end": 12,
+              "draft": "唐韻",
+              "gold": "",
+              "context": "集韻麗古作丽註詳鹿部八畫│"
+            }
+          ],
+          "removed_score": {
+            "extra": 2
+          }
+        }
+      ],
+      "stream_equal_gold": false,
+      "stream_changes": [
+        {
+          "tag": "insert",
+          "draft_start": 222,
+          "draft_end": 222,
+          "gold_start": 222,
+          "gold_end": 223,
+          "draft": "",
+          "gold": "𠂄",
+          "context": "从衤丽集韻麗古作丽註詳鹿部八畫│唐韻𠂄兜四凶名卽讙兜古文尚書作"
+        },
+        {
+          "tag": "insert",
+          "draft_start": 224,
+          "draft_end": 224,
+          "gold_start": 225,
+          "gold_end": 239,
+          "draft": "",
+          "gold": "𠂄兜四凶名卽讙兜古文尚書作鴅",
+          "context": "集韻麗古作丽註詳鹿部八畫𠂄唐韻│"
+        }
+      ],
+      "notes": [
+        "OCR 尾裁：本页内容未溢出页界"
+      ],
+      "continuation": {
+        "prev_page": 340,
+        "head": "主",
+        "paragraphs": 7,
+        "skipped": null,
+        "host_page": 340
+      }
+    },
+    {
+      "page": 342,
+      "status": "first",
+      "gold_sha256": "0be501ae594832e56e5d968a61e72227634982cf053d10a1d69b6c8d17a797ae",
+      "before_chars": 316,
+      "after_chars": 316,
+      "gold_chars": 318,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 321/347 字（页面物理末界），溢出 26 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 341,
+        "head": "𠂄",
+        "paragraphs": 0,
+        "skipped": "前页 341 的 .gj 已完整收录字头「𠂄」全部 2 段，无剩余正文可续入；若本页原图仍有该条续文，请核对前页的物理页界",
+        "host_page": 341,
+        "fully_included": true
+      }
+    },
+    {
+      "page": 343,
+      "status": "first",
+      "gold_sha256": "52fe42ed8456837d5f0737675c83be96aeb035a948fde8b203630a8a33c10f9b",
+      "before_chars": 349,
+      "after_chars": 349,
+      "gold_chars": 349,
+      "body_changes": [],
+      "stream_equal_gold": true,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 352/667 字（页面物理末界），溢出 315 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 342,
+        "head": "乂",
+        "paragraphs": 2,
+        "skipped": null,
+        "host_page": 342
+      }
+    },
+    {
+      "page": 344,
+      "status": "first",
+      "gold_sha256": "9dcae4d325f845df3046b37923265de97cc5d58dad9f65f4aae4721bec490579",
+      "before_chars": 367,
+      "after_chars": 367,
+      "gold_chars": 366,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 370/574 字（页面物理末界），溢出 204 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 343,
+        "head": "乃",
+        "paragraphs": 9,
+        "skipped": null,
+        "host_page": 343
+      }
+    },
+    {
+      "page": 345,
+      "status": "first",
+      "gold_sha256": "793e59d7711efba0e56a4ffc8c874414de2fcd3d114dbce47e4effad424db5b2",
+      "before_chars": 432,
+      "after_chars": 349,
+      "gold_chars": 351,
+      "body_changes": [
+        {
+          "head": "么",
+          "continuation": false,
+          "diffs": [
+            {
+              "tag": "delete",
+              "draft_start": 5,
+              "draft_end": 88,
+              "gold_start": 5,
+              "gold_end": 5,
+              "draft": "唐韻亡果切集韻韻會毋果切正韻忙果切𠀤音𣋟玉篇幺麽細小廣雅微也又一作䯢班彪王命論幺䯢不及數子註細小曰䯢又集韻韻會𠀤眉波切音摩又集韻忙皮切音糜義𠀤同正字通下从幺俗作么誤麽",
+              "gold": "",
+              "context": "韻會俗幺字│"
+            }
+          ],
+          "removed_score": {
+            "extra": 83
+          }
+        }
+      ],
+      "stream_equal_gold": false,
+      "stream_changes": [
+        {
+          "tag": "delete",
+          "draft_start": 259,
+          "draft_end": 342,
+          "gold_start": 259,
+          "gold_end": 259,
+          "draft": "唐韻亡果切集韻韻會毋果切正韻忙果切𠀤音𣋟玉篇幺麽細小廣雅微也又一作䯢班彪王命論幺䯢不及數子註細小曰䯢又集韻韻會𠀤眉波切音摩又集韻忙皮切音糜義𠀤同正字通下从幺俗作么誤麽",
+          "gold": "",
+          "context": "委乇字樣別作侂託通么韻會俗幺字│之古文㞢唐韻正韻止而切集韻韻會"
+        }
+      ],
+      "notes": [
+        "OCR 尾裁：保留 354/701 字（页面物理末界），溢出 347 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 344,
+        "head": "久",
+        "paragraphs": 10,
+        "skipped": null,
+        "host_page": 344
+      }
+    },
+    {
+      "page": 346,
+      "status": "first",
+      "gold_sha256": "e8ef64707263a834c9e695c1d18353116c7a0f5c3149c8847f8175877340dfaa",
+      "before_chars": 370,
+      "after_chars": 370,
+      "gold_chars": 370,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 371/421 字（页面物理末界），溢出 50 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 345,
+        "head": "之",
+        "paragraphs": 14,
+        "skipped": null,
+        "host_page": 345
+      }
+    },
+    {
+      "page": 347,
+      "status": "first",
+      "gold_sha256": "cf70eebb92f2d04aa3f708d05ed847f405d8d22d933d64a15ad0d527b1eb7cb6",
+      "before_chars": 361,
+      "after_chars": 361,
+      "gold_chars": 355,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 366/465 字（页面物理末界），溢出 99 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 346,
+        "head": "乍",
+        "paragraphs": 2,
+        "skipped": null,
+        "host_page": 346
+      }
+    },
+    {
+      "page": 348,
+      "status": "first",
+      "gold_sha256": "cc6e3b882e8d3d8eb3957a71dcb69aed4f9ee352d89f45a3bdec80120f65e7c2",
+      "before_chars": 360,
+      "after_chars": 360,
+      "gold_chars": 361,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 364/444 字（页面物理末界），溢出 80 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 347,
+        "head": "乏",
+        "paragraphs": 7,
+        "skipped": null,
+        "host_page": 347
+      }
+    },
+    {
+      "page": 349,
+      "status": "first",
+      "gold_sha256": "7541d97ce42835e0768b1e349a9cce80b49b512e37a0f3ae4559561a5d6e28ea",
+      "before_chars": 376,
+      "after_chars": 376,
+      "gold_chars": 364,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 380/389 字（页面物理末界），溢出 9 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 348,
+        "head": "乑",
+        "paragraphs": 1,
+        "skipped": null,
+        "host_page": 348
+      }
+    },
+    {
+      "page": 350,
+      "status": "first",
+      "gold_sha256": "d789eda9848e4b93f1851c8a2f663f38547608c2764b0d593cf719d9490eeb15",
+      "before_chars": 326,
+      "after_chars": 315,
+      "gold_chars": 325,
+      "body_changes": [
+        {
+          "head": "𠂳",
+          "continuation": false,
+          "diffs": [
+            {
+              "tag": "delete",
+              "draft_start": 0,
+              "draft_end": 11,
+              "gold_start": 0,
+              "gold_end": 0,
+              "draft": "集韻總古作𠂳註詳十一畫",
+              "gold": "",
+              "context": "│集韻總古作𠂳註詳糸部十一畫"
+            }
+          ],
+          "removed_score": {
+            "extra": 11
+          }
+        }
+      ],
+      "stream_equal_gold": false,
+      "stream_changes": [
+        {
+          "tag": "delete",
+          "draft_start": 127,
+          "draft_end": 138,
+          "gold_start": 127,
+          "gold_end": 127,
+          "draft": "集韻總古作𠂳註詳十一畫",
+          "gold": "",
+          "context": "𠂲字彙補古文棗字註詳木部八畫𠂳│集韻總古作𠂳註詳糸部十一畫𠂷玉"
+        }
+      ],
+      "notes": [
+        "OCR 尾裁：保留 329/541 字（页面物理末界），溢出 212 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 349,
+        "head": "𠂯",
+        "paragraphs": 0,
+        "skipped": "跨页续文待核：前页「𠂯」正文仅 4 字，本页 OCR 开头不足以确认紧接的续文，未自动续入",
+        "host_page": 349
+      }
+    },
+    {
+      "page": 351,
+      "status": "first",
+      "gold_sha256": "a4884f5a68cd041cd4852f1d0225a530ad15681b00cdf629b62e6fa18b9e5949",
+      "before_chars": 243,
+      "after_chars": 243,
+      "gold_chars": 264,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 250/269 字（页面物理末界，末段判信回缩 18 字），溢出 19 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 350,
+        "head": "乘",
+        "paragraphs": 9,
+        "skipped": null,
+        "host_page": 350
+      }
+    },
+    {
+      "page": 352,
+      "status": "first",
+      "gold_sha256": "1da8995d7cad294d72cb68c6b6d73258938336e261d70e4308d08a63629f94e4",
+      "before_chars": 323,
+      "after_chars": 323,
+      "gold_chars": 325,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 325/424 字（页面物理末界），溢出 99 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 351,
+        "head": "𠂿",
+        "paragraphs": 0,
+        "skipped": "前页 351 的 .gj 已完整收录字头「𠂿」全部 1 段，无剩余正文可续入；若本页原图仍有该条续文，请核对前页的物理页界",
+        "host_page": 351,
+        "fully_included": true
+      }
+    },
+    {
+      "page": 353,
+      "status": "first",
+      "gold_sha256": "0a3a4b227d884d051c5447c40473958f3ce456ef5227e61e76968ac8f47f8370",
+      "before_chars": 364,
+      "after_chars": 364,
+      "gold_chars": 364,
+      "body_changes": [],
+      "stream_equal_gold": true,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 367/553 字（页面物理末界），溢出 186 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 352,
+        "head": "𠃉",
+        "paragraphs": 4,
+        "skipped": null,
+        "host_page": 352
+      }
+    },
+    {
+      "page": 354,
+      "status": "first",
+      "gold_sha256": "939b3dddc1d555c4da7027a2bb387cea7803fd2a4029ea09269e188f107fd2cb",
+      "before_chars": 356,
+      "after_chars": 356,
+      "gold_chars": 358,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 359/384 字（页面物理末界），溢出 25 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 353,
+        "head": "九",
+        "paragraphs": 10,
+        "skipped": null,
+        "host_page": 353
+      }
+    },
+    {
+      "page": 355,
+      "status": "first",
+      "gold_sha256": "df9918c7513d5b38a88f161ea4445b006df4468e97aa62d3eaeafb2e68fdfa67",
+      "before_chars": 322,
+      "after_chars": 322,
+      "gold_chars": 322,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 333/339 字（页面物理末界），溢出 6 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 354,
+        "head": "乞",
+        "paragraphs": 1,
+        "skipped": null,
+        "host_page": 354
+      }
+    },
+    {
+      "page": 356,
+      "status": "first",
+      "gold_sha256": "352c6de4dc98b639ff6528da13289eaca397d0dc713839ee291294f19b988dcf",
+      "before_chars": 635,
+      "after_chars": 342,
+      "gold_chars": 345,
+      "body_changes": [
+        {
+          "head": "乱",
+          "continuation": false,
+          "diffs": [
+            {
+              "tag": "delete",
+              "draft_start": 6,
+              "draft_end": 299,
+              "gold_start": 6,
+              "gold_end": 6,
+              "draft": "唐韻郞段切集韻韻會正韻盧玩切𠀤鑾去聲紊也爾雅釋詁亂治也說文从乙乙治之也玉篇理也書臯陶謨亂而敬孔傳有治而能敬謹又盤庚亂越我家梓材厥亂爲民洛誥四方迪亂亂爲四輔立政丕乃俾亂之類皆訓治也又不治也凡事物不理皆曰亂爾雅釋訓夢夢訰訰亂也書周官制治於未亂周禮地官司虣掌憲巿之禁令禁其鬥囂與其虣亂又兵寇也又事未定之時禮檀弓仲梁子曰夫婦方亂註喪次男女哭位未成列也又樂之卒章曰亂論語關雎之亂又古賦末皆有亂總一賦之終發其要指也又爾雅釋水水正絕流曰亂註橫流而濟之也書禹貢亂于河詩大雅涉渭爲亂又韻補叶力眷切音戀揚雄交州牧箴周公攝胙白雉自獻昭王陵遲周室昏亂又叶力敬切夌去聲揚戲李正方贊不協不和忘節言亂疾終惜始實惟厥性",
+              "gold": "",
+              "context": "正字通俗亂字│"
+            }
+          ],
+          "removed_score": {
+            "extra": 293
+          }
+        }
+      ],
+      "stream_equal_gold": false,
+      "stream_changes": [
+        {
+          "tag": "delete",
+          "draft_start": 13,
+          "draft_end": 306,
+          "gold_start": 13,
+          "gold_end": 13,
+          "draft": "唐韻郞段切集韻韻會正韻盧玩切𠀤鑾去聲紊也爾雅釋詁亂治也說文从乙乙治之也玉篇理也書臯陶謨亂而敬孔傳有治而能敬謹又盤庚亂越我家梓材厥亂爲民洛誥四方迪亂亂爲四輔立政丕乃俾亂之類皆訓治也又不治也凡事物不理皆曰亂爾雅釋訓夢夢訰訰亂也書周官制治於未亂周禮地官司虣掌憲巿之禁令禁其鬥囂與其虣亂又兵寇也又事未定之時禮檀弓仲梁子曰夫婦方亂註喪次男女哭位未成列也又樂之卒章曰亂論語關雎之亂又古賦末皆有亂總一賦之終發其要指也又爾雅釋水水正絕流曰亂註橫流而濟之也書禹貢亂于河詩大雅涉渭爲亂又韻補叶力眷切音戀揚雄交州牧箴周公攝胙白雉自獻昭王陵遲周室昏亂又叶力敬切夌去聲揚戲李正方贊不協不和忘節言亂疾終惜始實惟厥性",
+          "gold": "",
+          "context": "詳臼部十畫𦦙乱正字通俗亂字│㐖集韻奚結切音頁㐖毒國名乳唐韻"
+        }
+      ],
+      "notes": [
+        "OCR 尾裁：保留 348/359 字（页面物理末界），溢出 11 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 355,
+        "head": "𠃥",
+        "paragraphs": 1,
+        "skipped": null,
+        "host_page": 355
+      }
+    },
+    {
+      "page": 357,
+      "status": "first",
+      "gold_sha256": "0d5f0deb527ef47c956c4f17c0c688064d8bfa7f9ae754e35ee40d9689f12c65",
+      "before_chars": 327,
+      "after_chars": 327,
+      "gold_chars": 341,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 333/392 字（页面物理末界），溢出 59 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 356,
+        "head": "𠃭",
+        "paragraphs": 0,
+        "skipped": "跨页续文待核：前页「𠃭」正文仅 2 字，本页 OCR 开头不足以确认紧接的续文，未自动续入",
+        "host_page": 356
+      }
+    },
+    {
+      "page": 358,
+      "status": "first",
+      "gold_sha256": "b581733f7212a567fc6a65da93e728e396c9205551743f9490bd0b83766d1f9f",
+      "before_chars": 415,
+      "after_chars": 415,
+      "gold_chars": 344,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁未执行：OCR 不可用——本页草稿含全量词条，添加下页前请先手工裁剪到物理页界"
+      ],
+      "continuation": {
+        "prev_page": 357,
+        "head": "乾",
+        "paragraphs": 3,
+        "skipped": null,
+        "host_page": 357
+      }
+    },
+    {
+      "page": 359,
+      "status": "first",
+      "gold_sha256": "3966dabe076510b6e2adbb5f653c71f8a9b65e37a3ccad1fb973b798cf04eec7",
+      "before_chars": 237,
+      "after_chars": 237,
+      "gold_chars": 247,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：本页内容未溢出页界"
+      ],
+      "continuation": {
+        "prev_page": 358,
+        "head": "亂",
+        "paragraphs": 4,
+        "skipped": null,
+        "host_page": 358
+      }
+    },
+    {
+      "page": 360,
+      "status": "first",
+      "gold_sha256": "8a7dabfb90b438a052ee2019947b19f561ca7f27ec1d2c34aa5ab26235c6ddeb",
+      "before_chars": 406,
+      "after_chars": 293,
+      "gold_chars": 298,
+      "body_changes": [
+        {
+          "head": "了",
+          "continuation": false,
+          "diffs": [
+            {
+              "tag": "delete",
+              "draft_start": 158,
+              "draft_end": 271,
+              "gold_start": 158,
+              "gold_end": 158,
+              "draft": "廣韻盧鳥切集韻韻會朗鳥切正韻盧皎切𠀤音了廣韻目睛明也周禮春官大師眂瞭三百人註瞭目明者孟子胷中正則眸子瞭焉又師曠禽經瞭曰鷂張華註能遠視也又楚辭九辯瞭冥冥而薄天註瞭音了一音杳亦通作杳又廣韻落蕭切集韻韻會憐蕭切正韻連條切𠀤了平聲義同",
+              "gold": "",
+              "context": "仇池筆記注似鸚鵡腦有肉冠能言笑│"
+            }
+          ],
+          "removed_score": {
+            "extra": 113
+          }
+        }
+      ],
+      "stream_equal_gold": false,
+      "stream_changes": [
+        {
+          "tag": "delete",
+          "draft_start": 214,
+          "draft_end": 327,
+          "gold_start": 214,
+          "gold_end": 214,
+          "draft": "廣韻盧鳥切集韻韻會朗鳥切正韻盧皎切𠀤音了廣韻目睛明也周禮春官大師眂瞭三百人註瞭目明者孟子胷中正則眸子瞭焉又師曠禽經瞭曰鷂張華註能遠視也又楚辭九辯瞭冥冥而薄天註瞭音了一音杳亦通作杳又廣韻落蕭切集韻韻會憐蕭切正韻連條切𠀤了平聲義同",
+          "gold": "",
+          "context": "仇池筆記注似鸚鵡腦有肉冠能言笑│𠄍集韻類篇𠀤居謁切音訐𠄍𠄑動貌"
+        }
+      ],
+      "notes": [
+        "OCR 尾裁：保留 301/529 字（页面物理末界），溢出 228 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 359,
+        "head": "𠄋",
+        "paragraphs": 0,
+        "skipped": "前页 359 的 .gj 已完整收录字头「𠄋」全部 1 段，无剩余正文可续入；若本页原图仍有该条续文，请核对前页的物理页界",
+        "host_page": 359,
+        "fully_included": true
+      }
+    },
+    {
+      "page": 361,
+      "status": "first",
+      "gold_sha256": "9710324d3c145d2a7d90b93f521a4a61e21cdb5945896d243238f12d7fa6bf3f",
+      "before_chars": 333,
+      "after_chars": 333,
+      "gold_chars": 339,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 340/362 字（页面物理末界），溢出 22 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 360,
+        "head": "予",
+        "paragraphs": 6,
+        "skipped": null,
+        "host_page": 360
+      }
+    },
+    {
+      "page": 362,
+      "status": "first",
+      "gold_sha256": "76cd7bf74499b25989f21db808a306380022086c31cc24851f81e9589fc88923",
+      "before_chars": 321,
+      "after_chars": 321,
+      "gold_chars": 332,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 327/330 字（页面物理末界），溢出 3 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 361,
+        "head": "㐨",
+        "paragraphs": 1,
+        "skipped": null,
+        "host_page": 361
+      }
+    },
+    {
+      "page": 363,
+      "status": "first",
+      "gold_sha256": "f32f025412df6d37d0d27cd8fde6f193f879261b8cdbc3ff9dde869cf2e86cb3",
+      "before_chars": 3,
+      "after_chars": 3,
+      "gold_chars": 3,
+      "body_changes": [],
+      "stream_equal_gold": true,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁未执行：对齐不可信（末段匹配稀疏）——本页草稿含全量词条，添加下页前请先手工裁剪到物理页界"
+      ],
+      "continuation": {
+        "prev_page": 362,
+        "head": "𠄝",
+        "paragraphs": 1,
+        "skipped": null,
+        "host_page": 362
+      }
+    },
+    {
+      "page": 364,
+      "status": "first",
+      "gold_sha256": "47cade6e4f5eda6ba9b807a37b5d4a343a96abe4bc3b65e6f5cf5e7b0d112369",
+      "before_chars": 325,
+      "after_chars": 325,
+      "gold_chars": 311,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 331/831 字（页面物理末界），溢出 500 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 363,
+        "head": "𠄝",
+        "paragraphs": 0,
+        "skipped": "前页 363 的 .gj 已完整收录字头「𠄝」全部 2 段，无剩余正文可续入；若本页原图仍有该条续文，请核对前页的物理页界",
+        "host_page": 362,
+        "fully_included": true
+      }
+    },
+    {
+      "page": 365,
+      "status": "first",
+      "gold_sha256": "dbaf8296cd48fc7d27f8b55be71794d82c26a779dabf729f3547ff4dbe63b56b",
+      "before_chars": 370,
+      "after_chars": 370,
+      "gold_chars": 371,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 370/500 字（页面物理末界），溢出 130 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 364,
+        "head": "于",
+        "paragraphs": 21,
+        "skipped": null,
+        "host_page": 364
+      }
+    },
+    {
+      "page": 366,
+      "status": "first",
+      "gold_sha256": "332abb2c24bd47cdf4e2f5cf92b480cd1187ede2c557abd633e2ab3928525281",
+      "before_chars": 721,
+      "after_chars": 365,
+      "gold_chars": 365,
+      "body_changes": [
+        {
+          "head": "于",
+          "continuation": true,
+          "diffs": [
+            {
+              "tag": "delete",
+              "draft_start": 130,
+              "draft_end": 406,
+              "gold_start": 130,
+              "gold_end": 130,
+              "draft": "唐韻哀都切集韻韻會正韻汪胡切𠀤同烏韻會隷變作於古文本象烏形今但以爲歎辭及語辭字遂無以爲鴉烏字者矣又爾雅釋詁註於乎皆語之韻絕疏歎辭也書堯典僉曰於鯀哉詩周頌於穆淸廟又周頌於乎不顯○按或作嗚烏音義皆同又廣韻央居切集韻韻會正韻衣虛切𠀤音淤語辭也博雅於于也○按說文于訓於也蓋于於古通用凡經典語辭皆作于又廣韻居也韓愈示兒詩前榮饌賓親冠昏之所於朱子考異所或作依○按所於作依於則是依之以居也孔融書舉杯相於曹植樂府心相於杜甫詩良友幸相於卽相依以居之意又揚子太𤣥經白舌於於註多難貌又廣韻代也集韻往也又地名戰國策商於之地六百里又姓姓氏急就篇黃帝臣於則造履前漢功臣表涉安侯於單",
+              "gold": "",
+              "context": "休居切與吁通歎辭詩周南于嗟麟兮│"
+            }
+          ],
+          "removed_score": {
+            "extra": 276
+          }
+        },
+        {
+          "head": "亏",
+          "continuation": false,
+          "diffs": [
+            {
+              "tag": "delete",
+              "draft_start": 23,
+              "draft_end": 103,
+              "gold_start": 23,
+              "gold_end": 23,
+              "draft": "唐韻去爲切集韻韻會驅爲切𠀤音𡓰說文氣損也徐曰气闕則其出舒遲故字从亐廣韻缺也史記蔡澤傳月滿則虧晉書律歷志月在外道先交後會者虧蝕西南角起又與羲通六書正譌伏羲古作虙虧",
+              "gold": "",
+              "context": "舒从丂从一一者其氣平之也今作于│"
+            }
+          ],
+          "removed_score": {
+            "extra": 80
+          }
+        }
+      ],
+      "stream_equal_gold": false,
+      "stream_changes": [
+        {
+          "tag": "delete",
+          "draft_start": 130,
+          "draft_end": 406,
+          "gold_start": 130,
+          "gold_end": 130,
+          "draft": "唐韻哀都切集韻韻會正韻汪胡切𠀤同烏韻會隷變作於古文本象烏形今但以爲歎辭及語辭字遂無以爲鴉烏字者矣又爾雅釋詁註於乎皆語之韻絕疏歎辭也書堯典僉曰於鯀哉詩周頌於穆淸廟又周頌於乎不顯○按或作嗚烏音義皆同又廣韻央居切集韻韻會正韻衣虛切𠀤音淤語辭也博雅於于也○按說文于訓於也蓋于於古通用凡經典語辭皆作于又廣韻居也韓愈示兒詩前榮饌賓親冠昏之所於朱子考異所或作依○按所於作依於則是依之以居也孔融書舉杯相於曹植樂府心相於杜甫詩良友幸相於卽相依以居之意又揚子太𤣥經白舌於於註多難貌又廣韻代也集韻往也又地名戰國策商於之地六百里又姓姓氏急就篇黃帝臣於則造履前漢功臣表涉安侯於單",
+          "gold": "",
+          "context": "休居切與吁通歎辭詩周南于嗟麟兮│亏說文亏於也象氣之舒从丂从一一"
+        },
+        {
+          "tag": "delete",
+          "draft_start": 430,
+          "draft_end": 510,
+          "gold_start": 154,
+          "gold_end": 154,
+          "draft": "唐韻去爲切集韻韻會驅爲切𠀤音𡓰說文氣損也徐曰气闕則其出舒遲故字从亐廣韻缺也史記蔡澤傳月滿則虧晉書律歷志月在外道先交後會者虧蝕西南角起又與羲通六書正譌伏羲古作虙虧",
+          "gold": "",
+          "context": "舒从丂从一一者其氣平之也今作于│云唐韻集韻王分切韻會正韻于分切"
+        }
+      ],
+      "notes": [
+        "OCR 尾裁：保留 367/483 字（页面物理末界），溢出 116 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 365,
+        "head": "于",
+        "paragraphs": 3,
+        "skipped": null,
+        "host_page": 364
+      }
+    },
+    {
+      "page": 367,
+      "status": "first",
+      "gold_sha256": "069bb0d94ca889f241440f66540df2f4e1c4635f70b002603f175020599aa47e",
+      "before_chars": 641,
+      "after_chars": 365,
+      "gold_chars": 367,
+      "body_changes": [
+        {
+          "head": "云",
+          "continuation": true,
+          "diffs": [
+            {
+              "tag": "delete",
+              "draft_start": 116,
+              "draft_end": 392,
+              "gold_start": 116,
+              "gold_end": 116,
+              "draft": "唐韻集韻王分切韻會正韻于分切𠀤音云說文山川气也从雨云象雲回轉形廣韻河圖曰雲者天地之本元命包隂陽聚爲雲易乾卦雲行雨施又詩大雅倬彼雲漢傳雲漢天河也又爾雅釋親仍孫之子爲雲孫註言輕遠如浮雲又周禮春官大司樂舞雲門大卷註周所存六代之樂黃帝曰雲門大卷又史記黃帝紀官名皆以雲命爲雲師又澤名書禹貢雲土夢作又左傳定四年楚子涉睢濟江入于雲中爾雅釋地楚有雲夢疏此澤跨江南北亦得單稱雲單稱夢司馬相如子虛賦雲夢者方九百里又拾遺記蓬萊山亦名雲來又郡縣名前漢地理志琅邪郡雲縣又雲中郡又姓正字通縉雲氏之後唐雲洪嗣明雲衢雲岫又叶于員切𨻰琳馬瑙勒賦初傷勿用俟慶雲兮君子窮達亦時然兮說文通作云",
+              "gold": "",
+              "context": "謝再拜汝無復云往追不及來可待焉│"
+            }
+          ],
+          "removed_score": {
+            "extra": 276
+          }
+        }
+      ],
+      "stream_equal_gold": false,
+      "stream_changes": [
+        {
+          "tag": "delete",
+          "draft_start": 116,
+          "draft_end": 392,
+          "gold_start": 116,
+          "gold_end": 116,
+          "draft": "唐韻集韻王分切韻會正韻于分切𠀤音云說文山川气也从雨云象雲回轉形廣韻河圖曰雲者天地之本元命包隂陽聚爲雲易乾卦雲行雨施又詩大雅倬彼雲漢傳雲漢天河也又爾雅釋親仍孫之子爲雲孫註言輕遠如浮雲又周禮春官大司樂舞雲門大卷註周所存六代之樂黃帝曰雲門大卷又史記黃帝紀官名皆以雲命爲雲師又澤名書禹貢雲土夢作又左傳定四年楚子涉睢濟江入于雲中爾雅釋地楚有雲夢疏此澤跨江南北亦得單稱雲單稱夢司馬相如子虛賦雲夢者方九百里又拾遺記蓬萊山亦名雲來又郡縣名前漢地理志琅邪郡雲縣又雲中郡又姓正字通縉雲氏之後唐雲洪嗣明雲衢雲岫又叶于員切𨻰琳馬瑙勒賦初傷勿用俟慶雲兮君子窮達亦時然兮說文通作云",
+          "gold": "",
+          "context": "謝再拜汝無復云往追不及來可待焉│互廣韻胡誤切韻會正韻胡故切𠀤音"
+        }
+      ],
+      "notes": [
+        "OCR 尾裁：保留 366/394 字（页面物理末界，末段判信回缩 2 字），溢出 28 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 366,
+        "head": "云",
+        "paragraphs": 7,
+        "skipped": null,
+        "host_page": 366
+      }
+    },
+    {
+      "page": 368,
+      "status": "first",
+      "gold_sha256": "a5475e8052d2f075939f9f9a2a6031a22ac0f36493a19b95c0e10eb97f235e5a",
+      "before_chars": 377,
+      "after_chars": 377,
+      "gold_chars": 356,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 381/489 字（页面物理末界，末段判信回缩 4 字），溢出 108 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 367,
+        "head": "互",
+        "paragraphs": 1,
+        "skipped": null,
+        "host_page": 367
+      }
+    },
+    {
+      "page": 369,
+      "status": "first",
+      "gold_sha256": "437ed720593b6f3c2182b3dbf8276674aa83c37cb58250df7851bacb006456ec",
+      "before_chars": 340,
+      "after_chars": 340,
+      "gold_chars": 344,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 346/429 字（页面物理末界），溢出 83 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 368,
+        "head": "井",
+        "paragraphs": 8,
+        "skipped": null,
+        "host_page": 368
+      }
+    },
+    {
+      "page": 370,
+      "status": "first",
+      "gold_sha256": "4b54cd490f8dcda58ece2d8f4ae3697973c235a48cdca5ea8f1b79e674ebfa7b",
+      "before_chars": 365,
+      "after_chars": 365,
+      "gold_chars": 363,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 369/466 字（页面物理末界），溢出 97 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 369,
+        "head": "𠄣",
+        "paragraphs": 3,
+        "skipped": null,
+        "host_page": 369
+      }
+    },
+    {
+      "page": 371,
+      "status": "first",
+      "gold_sha256": "678f79c0b70a9eb1e581dc8e5c3ac05cfc7ff75ec8a04aa66128d5df0e6c1c68",
+      "before_chars": 357,
+      "after_chars": 357,
+      "gold_chars": 358,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 360/496 字（页面物理末界），溢出 136 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 370,
+        "head": "些",
+        "paragraphs": 5,
+        "skipped": null,
+        "host_page": 370
+      }
+    },
+    {
+      "page": 372,
+      "status": "first",
+      "gold_sha256": "83801ca75ae3df61604ac1eee1be7edf9c563dcda08a96abc68dea76feba2a0f",
+      "before_chars": 348,
+      "after_chars": 348,
+      "gold_chars": 353,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 352/366 字（页面物理末界），溢出 14 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 371,
+        "head": "亞",
+        "paragraphs": 4,
+        "skipped": null,
+        "host_page": 371
+      }
+    },
+    {
+      "page": 373,
+      "status": "first",
+      "gold_sha256": "1ae24fc8f1186e2953845fbc2695fdc82273918919f44e43dc50ad69237acca7",
+      "before_chars": 48,
+      "after_chars": 48,
+      "gold_chars": 48,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：本页内容未溢出页界"
+      ],
+      "continuation": {
+        "prev_page": 372,
+        "head": "𠄵",
+        "paragraphs": 1,
+        "skipped": null,
+        "host_page": 372
+      }
+    },
+    {
+      "page": 374,
+      "status": "first",
+      "gold_sha256": "497ce43c214c8112a4834614528d66123189816c6da58762824bc806e2b1d43a",
+      "before_chars": 314,
+      "after_chars": 314,
+      "gold_chars": 317,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 317/472 字（页面物理末界），溢出 155 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 373,
+        "head": "𠄿",
+        "paragraphs": 0,
+        "skipped": "前页 373 的 .gj 已完整收录字头「𠄿」全部 1 段，无剩余正文可续入；若本页原图仍有该条续文，请核对前页的物理页界",
+        "host_page": 373,
+        "fully_included": true
+      }
+    },
+    {
+      "page": 375,
+      "status": "first",
+      "gold_sha256": "34731a61b6d9354654adb5b5b65c700dc517fd6eb74d2052d752400ec97e1073",
+      "before_chars": 350,
+      "after_chars": 350,
+      "gold_chars": 352,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 353/393 字（页面物理末界），溢出 40 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 374,
+        "head": "亢",
+        "paragraphs": 8,
+        "skipped": null,
+        "host_page": 374
+      }
+    },
+    {
+      "page": 376,
+      "status": "first",
+      "gold_sha256": "eec8c9af8b3ace657327a5bdb7fc1c0e8e58e4b7b54b2c441c358d47cb8032c2",
+      "before_chars": 360,
+      "after_chars": 360,
+      "gold_chars": 361,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：本页内容未溢出页界"
+      ],
+      "continuation": {
+        "prev_page": 375,
+        "head": "交",
+        "paragraphs": 4,
+        "skipped": null,
+        "host_page": 375
+      }
+    },
+    {
+      "page": 377,
+      "status": "first",
+      "gold_sha256": "59930b3bc081b71e9026597f20b4e090f92e03c6571f70c8ec58f629aa5dc34a",
+      "before_chars": 339,
+      "after_chars": 339,
+      "gold_chars": 339,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 346/379 字（页面物理末界），溢出 33 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 376,
+        "head": "亦",
+        "paragraphs": 0,
+        "skipped": "前页 376 的 .gj 已完整收录字头「亦」全部 9 段，无剩余正文可续入；若本页原图仍有该条续文，请核对前页的物理页界",
+        "host_page": 376,
+        "fully_included": true
+      }
+    },
+    {
+      "page": 378,
+      "status": "first",
+      "gold_sha256": "f3f03b5352073999a19c2dbb8b155fe64418443e6e8faed2a71dfa5d08a6879d",
+      "before_chars": 353,
+      "after_chars": 353,
+      "gold_chars": 354,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 357/754 字（页面物理末界），溢出 397 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 377,
+        "head": "享",
+        "paragraphs": 1,
+        "skipped": null,
+        "host_page": 377
+      }
+    },
+    {
+      "page": 379,
+      "status": "first",
+      "gold_sha256": "7277d0a6eb52a17a617eecfbf6f7a93c021e3dffb6bc98027aa33837fcb0f54b",
+      "before_chars": 372,
+      "after_chars": 372,
+      "gold_chars": 372,
+      "body_changes": [],
+      "stream_equal_gold": true,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 372/397 字（页面物理末界），溢出 25 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 378,
+        "head": "亭",
+        "paragraphs": 20,
+        "skipped": null,
+        "host_page": 378
+      }
+    },
+    {
+      "page": 380,
+      "status": "first",
+      "gold_sha256": "246de05796ec852e5af75282816980eff6b3d3f2ff4d970067ca09bdc651869b",
+      "before_chars": 362,
+      "after_chars": 362,
+      "gold_chars": 353,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 368/453 字（页面物理末界），溢出 85 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 379,
+        "head": "亭",
+        "paragraphs": 2,
+        "skipped": null,
+        "host_page": 378
+      }
+    },
+    {
+      "page": 381,
+      "status": "first",
+      "gold_sha256": "ca2e753ce1507f9368871ca1f2130186ddca50793378ba6507dc83a3a384e1af",
+      "before_chars": 351,
+      "after_chars": 351,
+      "gold_chars": 328,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 362/465 字（页面物理末界），溢出 103 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 380,
+        "head": "亳",
+        "paragraphs": 4,
+        "skipped": null,
+        "host_page": 380
+      }
+    },
+    {
+      "page": 382,
+      "status": "first",
+      "gold_sha256": "d0facddd4a8e821e5ad10fb1129f8f28a97eef2631a6f281bef4f59fe589967f",
+      "before_chars": 327,
+      "after_chars": 327,
+      "gold_chars": 338,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 333/356 字（页面物理末界），溢出 23 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 381,
+        "head": "亶",
+        "paragraphs": 9,
+        "skipped": null,
+        "host_page": 381
+      }
+    },
+    {
+      "page": 383,
+      "status": "first",
+      "gold_sha256": "4748baf4c42e3a03bd2dc68486ffd4cce50e782b20c98e86f367728084c4810d",
+      "before_chars": 23,
+      "after_chars": 23,
+      "gold_chars": 23,
+      "body_changes": [],
+      "stream_equal_gold": true,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁未执行：对齐不可信（页面 128 字中匹配 23）——本页草稿含全量词条，添加下页前请先手工裁剪到物理页界"
+      ],
+      "continuation": {
+        "prev_page": 382,
+        "head": "亹",
+        "paragraphs": 1,
+        "skipped": null,
+        "host_page": 382
+      }
+    },
+    {
+      "page": 400,
+      "status": "first",
+      "gold_sha256": "e5785a6ea74209052414f8a726a60a61f9504275c65bfacd907c4274ba6fef17",
+      "before_chars": 221,
+      "after_chars": 221,
+      "gold_chars": 230,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 224/263 字（页面物理末界），溢出 39 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 399,
+        "head": "同",
+        "paragraphs": 0,
+        "skipped": "跨页续文待核：前页「同」正文仅 1 字，与词条开头不一致，未自动续入",
+        "host_page": 398,
+        "source_note": "字头「同」来源卡片无法唯一匹配（页位 398），保留原文待核"
+      }
+    },
+    {
+      "page": 401,
+      "status": "first",
+      "gold_sha256": "26b21adc25771707e84a9e35d1276a0bf052a79d7801632fda16370978e7f9fd",
+      "before_chars": 349,
+      "after_chars": 349,
+      "gold_chars": 351,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 354/420 字（页面物理末界），溢出 66 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 400,
+        "head": "亼",
+        "paragraphs": 3,
+        "skipped": null,
+        "host_page": 400
+      }
+    },
+    {
+      "page": 402,
+      "status": "first",
+      "gold_sha256": "1cc66363e50b431bd178c77eefacf8ffcaefa4e82a36a28ddd150e99c3789b2b",
+      "before_chars": 811,
+      "after_chars": 354,
+      "gold_chars": 354,
+      "body_changes": [
+        {
+          "head": "仅",
+          "continuation": false,
+          "diffs": [
+            {
+              "tag": "delete",
+              "draft_start": 25,
+              "draft_end": 70,
+              "gold_start": 25,
+              "gold_end": 25,
+              "draft": "唐韻集韻韻會渠吝切正韻具吝切𠀤音覲說文纔能也又少也餘也通作堇廑亦作㢙禮射義蓋㢙有存者又劣也",
+              "gold": "",
+              "context": "从手持物以對人曰仅又集韻與帑同│"
+            }
+          ],
+          "removed_score": {
+            "extra": 45
+          }
+        },
+        {
+          "head": "仆",
+          "continuation": false,
+          "diffs": [
+            {
+              "tag": "delete",
+              "draft_start": 57,
+              "draft_end": 469,
+              "gold_start": 57,
+              "gold_end": 57,
+              "draft": "唐韻集韻韻會𠀤蒲沃切蓬入聲說文給事者禮禮運仕于公曰臣仕于家曰僕周禮春官車僕掌戎路廣車闕車苹車輕車之萃註車僕主供副車者僕猶御也萃猶副也謂供副車以待乏用也五車皆兵車也又司僕官名五代史百官志唐龍朔中改太保曰司馭又改爲司僕齊職儀衆僕之長曰太僕掌輿馬明制有太僕寺又御車曰僕論語冉有僕又僕隷賤役左傳僖二十四年秦伯送衞于晉三千人實紀綱之僕又自謙之辭前漢韋玄成傳自稱爲僕𤰞辭也又辱也戰國策傳命僕官又徒也莊子則陽篇仲尼曰是聖人僕也註猶言聖人之徒也又僕僕煩猥貌又附也詩大雅君子萬年景命有僕又隱也左傳昭七年楚芋尹無宇曰吾先君文王作僕區之法曰盜所隱器與盜同罪註僕區𠛬書名區匿也作爲隱匿亡人之法又虎僕獸名博物志羽民國有獸文似豹名虎僕毛可爲筆又僕纍蝸牛也山海經靑要之山多僕纍蒲盧註僕纍一名蚹贏蒲盧細腰蟲蠮螉也又姓漢僕朋宋僕斗南明僕淮又集韻普木切音撲羣飛貌莊子天運篇蚉蝱僕緣又叶鼻墨切音匐柳宗元佩韋賦尼父戮齊而誅卯兮本柔仁以作極蘭竦顏以誚秦兮入降廉猶臣僕",
+              "gold": "",
+              "context": "集韻韻會正韻𠀤敷救切否去聲頓也│"
+            }
+          ],
+          "removed_score": {
+            "extra": 412
+          }
+        }
+      ],
+      "stream_equal_gold": true,
+      "stream_changes": [
+        {
+          "tag": "delete",
+          "draft_start": 275,
+          "draft_end": 320,
+          "gold_start": 275,
+          "gold_end": 275,
+          "draft": "唐韻集韻韻會渠吝切正韻具吝切𠀤音覲說文纔能也又少也餘也通作堇廑亦作㢙禮射義蓋㢙有存者又劣也",
+          "gold": "",
+          "context": "从手持物以對人曰仅又集韻與帑同│仆唐韻集韻韻會芳遇切正韻芳故切"
+        },
+        {
+          "tag": "delete",
+          "draft_start": 378,
+          "draft_end": 790,
+          "gold_start": 333,
+          "gold_end": 333,
+          "draft": "唐韻集韻韻會𠀤蒲沃切蓬入聲說文給事者禮禮運仕于公曰臣仕于家曰僕周禮春官車僕掌戎路廣車闕車苹車輕車之萃註車僕主供副車者僕猶御也萃猶副也謂供副車以待乏用也五車皆兵車也又司僕官名五代史百官志唐龍朔中改太保曰司馭又改爲司僕齊職儀衆僕之長曰太僕掌輿馬明制有太僕寺又御車曰僕論語冉有僕又僕隷賤役左傳僖二十四年秦伯送衞于晉三千人實紀綱之僕又自謙之辭前漢韋玄成傳自稱爲僕𤰞辭也又辱也戰國策傳命僕官又徒也莊子則陽篇仲尼曰是聖人僕也註猶言聖人之徒也又僕僕煩猥貌又附也詩大雅君子萬年景命有僕又隱也左傳昭七年楚芋尹無宇曰吾先君文王作僕區之法曰盜所隱器與盜同罪註僕區𠛬書名區匿也作爲隱匿亡人之法又虎僕獸名博物志羽民國有獸文似豹名虎僕毛可爲筆又僕纍蝸牛也山海經靑要之山多僕纍蒲盧註僕纍一名蚹贏蒲盧細腰蟲蠮螉也又姓漢僕朋宋僕斗南明僕淮又集韻普木切音撲羣飛貌莊子天運篇蚉蝱僕緣又叶鼻墨切音匐柳宗元佩韋賦尼父戮齊而誅卯兮本柔仁以作極蘭竦顏以誚秦兮入降廉猶臣僕",
+          "gold": "",
+          "context": "集韻韻會正韻𠀤敷救切否去聲頓也│仇唐韻巨鳩切集韻韻會正韻渠尤切"
+        }
+      ],
+      "notes": [
+        "OCR 尾裁：保留 360/568 字（页面物理末界），溢出 208 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 401,
+        "head": "仁",
+        "paragraphs": 3,
+        "skipped": null,
+        "host_page": 401
+      }
+    },
+    {
+      "page": 403,
+      "status": "first",
+      "gold_sha256": "3f3d1e37a80aa915fcbb10b5db285ba70bb88edea441645f7af2bad12d51c8ca",
+      "before_chars": 363,
+      "after_chars": 363,
+      "gold_chars": 363,
+      "body_changes": [],
+      "stream_equal_gold": true,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 366/390 字（页面物理末界），溢出 24 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 402,
+        "head": "仇",
+        "paragraphs": 12,
+        "skipped": null,
+        "host_page": 402
+      }
+    },
+    {
+      "page": 404,
+      "status": "first",
+      "gold_sha256": "c4cdff69699395bebcd5604bbb15dccc168b1fd64aa93cc85c57a0a9625dfba8",
+      "before_chars": 366,
+      "after_chars": 366,
+      "gold_chars": 365,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 367/558 字（页面物理末界），溢出 191 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 403,
+        "head": "今",
+        "paragraphs": 2,
+        "skipped": null,
+        "host_page": 403
+      }
+    },
+    {
+      "page": 405,
+      "status": "first",
+      "gold_sha256": "63165f59d54cdd11cafc65593f05e92b22bb98367b4f2f77af3cb3d7e6debebe",
+      "before_chars": 366,
+      "after_chars": 366,
+      "gold_chars": 367,
+      "body_changes": [],
+      "stream_equal_gold": false,
+      "stream_changes": [],
+      "notes": [
+        "OCR 尾裁：保留 368/474 字（页面物理末界），溢出 106 字留给下页自动续入"
+      ],
+      "continuation": {
+        "prev_page": 404,
+        "head": "介",
+        "paragraphs": 9,
+        "skipped": null,
+        "host_page": 404
+      }
+    }
+  ],
+  "removed_score": {
+    "extra": 3767
+  },
+  "implementation_sha256": {
+    "tools/crawl/kangxi_entry_parser.py": "f4e6062c13abeb50867fb1f39ade38e44121f04e4749de9e3915012d82d0641e",
+    "tools/crawl/fetch_kangxi_entry.py": "8bf21f166251d50090c9e0c0c439d710e4b4d046d7d1e0efd0fdd09b3c76284c",
+    "tools/dataset/kangxi_page_tool.py": "eec562187007b8526119e25627fd38ed067a1863d1d880e9543ec124775f57e7",
+    "tools/crawl/kangxi_crawl_demo.py": "88056e563385a871d30985a50ae75245307ce75a065932a2a073db7cdaed7c79",
+    "tools/tests/test_kangxi_entry_parser.py": "803075a005f0e8172dcf7519be7d350c7fedd97c1263fde27e5c2649cd982bb6",
+    "tools/tests/fixtures/kangxi-entry-cards.json": "288608ba3b4877fe3a6c2d4efb8a9afcf0fe80df005c7b0f46f754a81f89339b"
+  },
+  "cache": {
+    "stats": {
+      "entries": 16405,
+      "selected": 16291,
+      "text_changed": 162,
+      "unresolved": 100,
+      "legacy": 2,
+      "no_html": 12
+    },
+    "changed": [
+      {
+        "head": "㐹",
+        "before_chars": 15,
+        "after_chars": 5
+      },
+      {
+        "head": "㝦",
+        "before_chars": 29,
+        "after_chars": 7
+      },
+      {
+        "head": "㟜",
+        "before_chars": 20,
+        "after_chars": 6
+      },
+      {
+        "head": "㤖",
+        "before_chars": 41,
+        "after_chars": 21
+      },
+      {
+        "head": "䇲",
+        "before_chars": 287,
+        "after_chars": 5
+      },
+      {
+        "head": "万",
+        "before_chars": 227,
+        "after_chars": 51
+      },
+      {
+        "head": "与",
+        "before_chars": 858,
+        "after_chars": 29
+      },
+      {
+        "head": "丑",
+        "before_chars": 551,
+        "after_chars": 106
+      },
+      {
+        "head": "个",
+        "before_chars": 481,
+        "after_chars": 397
+      },
+      {
+        "head": "丰",
+        "before_chars": 714,
+        "after_chars": 72
+      },
+      {
+        "head": "丽",
+        "before_chars": 711,
+        "after_chars": 12
+      },
+      {
+        "head": "么",
+        "before_chars": 88,
+        "after_chars": 5
+      },
+      {
+        "head": "乱",
+        "before_chars": 299,
+        "after_chars": 6
+      },
+      {
+        "head": "了",
+        "before_chars": 271,
+        "after_chars": 158
+      },
+      {
+        "head": "于",
+        "before_chars": 790,
+        "after_chars": 514
+      },
+      {
+        "head": "亏",
+        "before_chars": 103,
+        "after_chars": 23
+      },
+      {
+        "head": "云",
+        "before_chars": 602,
+        "after_chars": 326
+      },
+      {
+        "head": "仅",
+        "before_chars": 70,
+        "after_chars": 25
+      },
+      {
+        "head": "仆",
+        "before_chars": 469,
+        "after_chars": 57
+      },
+      {
+        "head": "从",
+        "before_chars": 501,
+        "after_chars": 26
+      },
+      {
+        "head": "价",
+        "before_chars": 100,
+        "after_chars": 35
+      },
+      {
+        "head": "体",
+        "before_chars": 341,
+        "after_chars": 77
+      },
+      {
+        "head": "余",
+        "before_chars": 614,
+        "after_chars": 188
+      },
+      {
+        "head": "偬",
+        "before_chars": 24,
+        "after_chars": 20
+      },
+      {
+        "head": "儿",
+        "before_chars": 232,
+        "after_chars": 86
+      },
+      {
+        "head": "克",
+        "before_chars": 261,
+        "after_chars": 161
+      },
+      {
+        "head": "党",
+        "before_chars": 418,
+        "after_chars": 32
+      },
+      {
+        "head": "关",
+        "before_chars": 774,
+        "after_chars": 28
+      },
+      {
+        "head": "冲",
+        "before_chars": 564,
+        "after_chars": 105
+      },
+      {
+        "head": "决",
+        "before_chars": 419,
+        "after_chars": 5
+      },
+      {
+        "head": "况",
+        "before_chars": 249,
+        "after_chars": 27
+      },
+      {
+        "head": "准",
+        "before_chars": 260,
+        "after_chars": 33
+      },
+      {
+        "head": "凉",
+        "before_chars": 178,
+        "after_chars": 41
+      },
+      {
+        "head": "减",
+        "before_chars": 103,
+        "after_chars": 10
+      },
+      {
+        "head": "几",
+        "before_chars": 640,
+        "after_chars": 128
+      },
+      {
+        "head": "凭",
+        "before_chars": 130,
+        "after_chars": 71
+      },
+      {
+        "head": "出",
+        "before_chars": 374,
+        "after_chars": 325
+      },
+      {
+        "head": "划",
+        "before_chars": 140,
+        "after_chars": 77
+      },
+      {
+        "head": "刮",
+        "before_chars": 53,
+        "after_chars": 44
+      },
+      {
+        "head": "制",
+        "before_chars": 339,
+        "after_chars": 194
+      },
+      {
+        "head": "医",
+        "before_chars": 288,
+        "after_chars": 47
+      },
+      {
+        "head": "卜",
+        "before_chars": 127,
+        "after_chars": 118
+      },
+      {
+        "head": "卤",
+        "before_chars": 465,
+        "after_chars": 11
+      },
+      {
+        "head": "却",
+        "before_chars": 10,
+        "after_chars": 5
+      },
+      {
+        "head": "卷",
+        "before_chars": 455,
+        "after_chars": 262
+      },
+      {
+        "head": "厂",
+        "before_chars": 112,
+        "after_chars": 71
+      },
+      {
+        "head": "厘",
+        "before_chars": 627,
+        "after_chars": 15
+      },
+      {
+        "head": "厜",
+        "before_chars": 79,
+        "after_chars": 23
+      },
+      {
+        "head": "厦",
+        "before_chars": 93,
+        "after_chars": 23
+      },
+      {
+        "head": "厮",
+        "before_chars": 217,
+        "after_chars": 84
+      },
+      {
+        "head": "双",
+        "before_chars": 395,
+        "after_chars": 7
+      },
+      {
+        "head": "只",
+        "before_chars": 404,
+        "after_chars": 248
+      },
+      {
+        "head": "叶",
+        "before_chars": 272,
+        "after_chars": 70
+      },
+      {
+        "head": "号",
+        "before_chars": 304,
+        "after_chars": 17
+      },
+      {
+        "head": "叹",
+        "before_chars": 164,
+        "after_chars": 10
+      },
+      {
+        "head": "叽",
+        "before_chars": 127,
+        "after_chars": 18
+      },
+      {
+        "head": "同",
+        "before_chars": 538,
+        "after_chars": 487
+      },
+      {
+        "head": "后",
+        "before_chars": 749,
+        "after_chars": 471
+      },
+      {
+        "head": "向",
+        "before_chars": 728,
+        "after_chars": 485
+      },
+      {
+        "head": "听",
+        "before_chars": 424,
+        "after_chars": 128
+      },
+      {
+        "head": "启",
+        "before_chars": 301,
+        "after_chars": 76
+      },
+      {
+        "head": "吴",
+        "before_chars": 459,
+        "after_chars": 40
+      },
+      {
+        "head": "周",
+        "before_chars": 476,
+        "after_chars": 464
+      },
+      {
+        "head": "咏",
+        "before_chars": 252,
+        "after_chars": 115
+      },
+      {
+        "head": "咤",
+        "before_chars": 334,
+        "after_chars": 243
+      },
+      {
+        "head": "咸",
+        "before_chars": 509,
+        "after_chars": 377
+      },
+      {
+        "head": "回",
+        "before_chars": 592,
+        "after_chars": 473
+      },
+      {
+        "head": "园",
+        "before_chars": 334,
+        "after_chars": 45
+      },
+      {
+        "head": "圣",
+        "before_chars": 263,
+        "after_chars": 86
+      },
+      {
+        "head": "坂",
+        "before_chars": 483,
+        "after_chars": 162
+      },
+      {
+        "head": "坏",
+        "before_chars": 322,
+        "after_chars": 173
+      },
+      {
+        "head": "垒",
+        "before_chars": 344,
+        "after_chars": 19
+      },
+      {
+        "head": "声",
+        "before_chars": 299,
+        "after_chars": 10
+      },
+      {
+        "head": "够",
+        "before_chars": 48,
+        "after_chars": 46
+      },
+      {
+        "head": "夸",
+        "before_chars": 381,
+        "after_chars": 174
+      },
+      {
+        "head": "奸",
+        "before_chars": 250,
+        "after_chars": 119
+      },
+      {
+        "head": "姜",
+        "before_chars": 64,
+        "after_chars": 60
+      },
+      {
+        "head": "姹",
+        "before_chars": 90,
+        "after_chars": 30
+      },
+      {
+        "head": "宁",
+        "before_chars": 769,
+        "after_chars": 118
+      },
+      {
+        "head": "尘",
+        "before_chars": 229,
+        "after_chars": 14
+      },
+      {
+        "head": "尸",
+        "before_chars": 339,
+        "after_chars": 239
+      },
+      {
+        "head": "尽",
+        "before_chars": 399,
+        "after_chars": 12
+      },
+      {
+        "head": "屉",
+        "before_chars": 27,
+        "after_chars": 10
+      },
+      {
+        "head": "属",
+        "before_chars": 654,
+        "after_chars": 6
+      },
+      {
+        "head": "岭",
+        "before_chars": 177,
+        "after_chars": 33
+      },
+      {
+        "head": "巨",
+        "before_chars": 635,
+        "after_chars": 218
+      },
+      {
+        "head": "巩",
+        "before_chars": 192,
+        "after_chars": 5
+      },
+      {
+        "head": "帘",
+        "before_chars": 175,
+        "after_chars": 83
+      },
+      {
+        "head": "幂",
+        "before_chars": 173,
+        "after_chars": 107
+      },
+      {
+        "head": "干",
+        "before_chars": 1925,
+        "after_chars": 1148
+      },
+      {
+        "head": "广",
+        "before_chars": 388,
+        "after_chars": 89
+      },
+      {
+        "head": "庄",
+        "before_chars": 192,
+        "after_chars": 11
+      },
+      {
+        "head": "庙",
+        "before_chars": 202,
+        "after_chars": 5
+      },
+      {
+        "head": "异",
+        "before_chars": 410,
+        "after_chars": 117
+      },
+      {
+        "head": "弃",
+        "before_chars": 90,
+        "after_chars": 42
+      },
+      {
+        "head": "弥",
+        "before_chars": 325,
+        "after_chars": 4
+      },
+      {
+        "head": "强",
+        "before_chars": 544,
+        "after_chars": 14
+      },
+      {
+        "head": "征",
+        "before_chars": 639,
+        "after_chars": 168
+      },
+      {
+        "head": "御",
+        "before_chars": 801,
+        "after_chars": 572
+      },
+      {
+        "head": "忏",
+        "before_chars": 71,
+        "after_chars": 37
+      },
+      {
+        "head": "志",
+        "before_chars": 551,
+        "after_chars": 348
+      },
+      {
+        "head": "忧",
+        "before_chars": 488,
+        "after_chars": 38
+      },
+      {
+        "head": "忾",
+        "before_chars": 180,
+        "after_chars": 23
+      },
+      {
+        "head": "怀",
+        "before_chars": 463,
+        "after_chars": 10
+      },
+      {
+        "head": "怜",
+        "before_chars": 133,
+        "after_chars": 51
+      },
+      {
+        "head": "恋",
+        "before_chars": 36,
+        "after_chars": 5
+      },
+      {
+        "head": "恒",
+        "before_chars": 269,
+        "after_chars": 5
+      },
+      {
+        "head": "惊",
+        "before_chars": 113,
+        "after_chars": 23
+      },
+      {
+        "head": "愠",
+        "before_chars": 195,
+        "after_chars": 171
+      },
+      {
+        "head": "愿",
+        "before_chars": 280,
+        "after_chars": 74
+      },
+      {
+        "head": "慭",
+        "before_chars": 236,
+        "after_chars": 6
+      },
+      {
+        "head": "扑",
+        "before_chars": 266,
+        "after_chars": 124
+      },
+      {
+        "head": "扰",
+        "before_chars": 300,
+        "after_chars": 37
+      },
+      {
+        "head": "折",
+        "before_chars": 815,
+        "after_chars": 697
+      },
+      {
+        "head": "抚",
+        "before_chars": 182,
+        "after_chars": 5
+      },
+      {
+        "head": "担",
+        "before_chars": 285,
+        "after_chars": 55
+      },
+      {
+        "head": "拼",
+        "before_chars": 83,
+        "after_chars": 3
+      },
+      {
+        "head": "挂",
+        "before_chars": 256,
+        "after_chars": 136
+      },
+      {
+        "head": "挽",
+        "before_chars": 218,
+        "after_chars": 110
+      },
+      {
+        "head": "挿",
+        "before_chars": 135,
+        "after_chars": 3
+      },
+      {
+        "head": "据",
+        "before_chars": 370,
+        "after_chars": 137
+      },
+      {
+        "head": "插",
+        "before_chars": 135,
+        "after_chars": 132
+      },
+      {
+        "head": "携",
+        "before_chars": 130,
+        "after_chars": 3
+      },
+      {
+        "head": "撑",
+        "before_chars": 146,
+        "after_chars": 17
+      },
+      {
+        "head": "斗",
+        "before_chars": 570,
+        "after_chars": 363
+      },
+      {
+        "head": "梦",
+        "before_chars": 496,
+        "after_chars": 3
+      },
+      {
+        "head": "漤",
+        "before_chars": 69,
+        "after_chars": 37
+      },
+      {
+        "head": "炉",
+        "before_chars": 30,
+        "after_chars": 9
+      },
+      {
+        "head": "献",
+        "before_chars": 327,
+        "after_chars": 9
+      },
+      {
+        "head": "窑",
+        "before_chars": 48,
+        "after_chars": 6
+      },
+      {
+        "head": "类",
+        "before_chars": 416,
+        "after_chars": 13
+      },
+      {
+        "head": "籼",
+        "before_chars": 49,
+        "after_chars": 26
+      },
+      {
+        "head": "粜",
+        "before_chars": 64,
+        "after_chars": 5
+      },
+      {
+        "head": "肤",
+        "before_chars": 285,
+        "after_chars": 8
+      },
+      {
+        "head": "胶",
+        "before_chars": 495,
+        "after_chars": 22
+      },
+      {
+        "head": "脉",
+        "before_chars": 193,
+        "after_chars": 59
+      },
+      {
+        "head": "茧",
+        "before_chars": 149,
+        "after_chars": 10
+      },
+      {
+        "head": "荐",
+        "before_chars": 306,
+        "after_chars": 110
+      },
+      {
+        "head": "虑",
+        "before_chars": 570,
+        "after_chars": 7
+      },
+      {
+        "head": "衅",
+        "before_chars": 488,
+        "after_chars": 47
+      },
+      {
+        "head": "赶",
+        "before_chars": 53,
+        "after_chars": 44
+      },
+      {
+        "head": "辟",
+        "before_chars": 943,
+        "after_chars": 765
+      },
+      {
+        "head": "达",
+        "before_chars": 471,
+        "after_chars": 78
+      },
+      {
+        "head": "迹",
+        "before_chars": 439,
+        "after_chars": 370
+      },
+      {
+        "head": "邹",
+        "before_chars": 113,
+        "after_chars": 5
+      },
+      {
+        "head": "隽",
+        "before_chars": 164,
+        "after_chars": 9
+      },
+      {
+        "head": "韵",
+        "before_chars": 286,
+        "after_chars": 5
+      },
+      {
+        "head": "鴆",
+        "before_chars": 266,
+        "after_chars": 159
+      },
+      {
+        "head": "𠋴",
+        "before_chars": 20,
+        "after_chars": 10
+      },
+      {
+        "head": "𠡠",
+        "before_chars": 92,
+        "after_chars": 5
+      },
+      {
+        "head": "𠴢",
+        "before_chars": 15,
+        "after_chars": 6
+      },
+      {
+        "head": "𠵸",
+        "before_chars": 14,
+        "after_chars": 4
+      },
+      {
+        "head": "𡝠",
+        "before_chars": 46,
+        "after_chars": 2
+      },
+      {
+        "head": "𡠟",
+        "before_chars": 65,
+        "after_chars": 3
+      },
+      {
+        "head": "𡵝",
+        "before_chars": 21,
+        "after_chars": 16
+      },
+      {
+        "head": "𢗓",
+        "before_chars": 122,
+        "after_chars": 11
+      },
+      {
+        "head": "𢟼",
+        "before_chars": 183,
+        "after_chars": 6
+      },
+      {
+        "head": "𢪓",
+        "before_chars": 60,
+        "after_chars": 21
+      },
+      {
+        "head": "𢪗",
+        "before_chars": 87,
+        "after_chars": 5
+      },
+      {
+        "head": "𢫬",
+        "before_chars": 166,
+        "after_chars": 19
+      },
+      {
+        "head": "𥐟",
+        "before_chars": 39,
+        "after_chars": 12
+      },
+      {
+        "head": "𦴇",
+        "before_chars": 44,
+        "after_chars": 5
+      }
+    ],
+    "unverified_changes": []
+  },
+  "summary": {
+    "pages": 76,
+    "changed_pages": [
+      316,
+      321,
+      322,
+      331,
+      334,
+      341,
+      345,
+      350,
+      356,
+      360,
+      366,
+      367,
+      402
+    ],
+    "removed_score": {
+      "extra": 3767
+    }
+  },
+  "validation": {
+    "related_tests": {
+      "command": "python3 -m unittest tools.tests.test_kangxi_entry_parser tools.tests.test_kangxi_page_tool tools.tests.test_page_continuation tools.tests.test_crawl_queries",
+      "run": 93,
+      "passed": 93
+    },
+    "earlier_full_suite": {
+      "run": 114,
+      "passed": 112,
+      "preexisting_failures": [
+        "test_ocr_dataset.LayoutContracts.test_short_page_aligns_text_and_book_frames_to_the_right",
+        "test_ocr_dataset.IncrementalContracts.test_review_merge_and_stale_import_are_safe"
+      ],
+      "baseline_reproduced": true
+    },
+    "notes": [
+      "最终页集合为76个first非空页，402已在其中；baseline字段保留脚本的额外纳入规则。",
+      "当前基线与新版均使用完整续文组装后统一尾裁，较先前续文预裁流程的3144字增加623字：331/个82、366/于265、367/云276。",
+      "最终实现哈希及所有初校文件哈希均已核对，未发生漂移。"
+    ]
+  }
+}

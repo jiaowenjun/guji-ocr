@@ -1,0 +1,2524 @@
+{
+  "date": "2026-11-18",
+  "scope": "探索性页中尾段裁剪；只读，未接入生产；仅402为定向正样本",
+  "units": "去标点/空白/*/#/@页码/注释；保留字头汉字；OCR剥页缘邊題；不作繁简异体替换",
+  "source_entries": [
+    {
+      "head": "仅",
+      "url": "https://www.kangxizidian.com/search/index_v.php?stype=Word&sword=%E4%BB%85&detail=y",
+      "html_sha256": "f934de94cefe5b407d1a532e4b163283e8327c2339b2a1215229321e150905c2",
+      "normalized_detail_chars": 70,
+      "extra_present_in_cached_html": true
+    },
+    {
+      "head": "仆",
+      "url": "https://www.kangxizidian.com/search/index_v.php?stype=Word&sword=%E4%BB%86&detail=y",
+      "html_sha256": "2000a0e118a689a0b9d4fee68fcd8bae7db99378f727936d2a321774cb3ed3a4",
+      "normalized_detail_chars": 469,
+      "extra_present_in_cached_html": true
+    }
+  ],
+  "pilot_402": {
+    "experiment": "只读探索；402 调参样本，不接入生产",
+    "script_sha256": "7310af183e4e7a8ce947e60250426d335d7f4439d15dd68eee6f0552f0ead52f",
+    "summary": {
+      "pages": 1,
+      "eligible": 1,
+      "skip_reasons": {},
+      "proposed_pages": [
+        402
+      ],
+      "accepted_pages": [
+        402
+      ],
+      "removed_extra": 457,
+      "removed_gold": 0,
+      "removed_ambiguous": 0,
+      "clean_control_eligible": 1,
+      "clean_control_accepted": []
+    },
+    "results": [
+      {
+        "draft_chars": 811,
+        "ocr_chars": 356,
+        "skip": null,
+        "proposals": [
+          {
+            "head": "仅",
+            "next_head": "仆",
+            "start": 275,
+            "end": 320,
+            "removed_chars": 45,
+            "keep_tail": "又手也从手持物以對人曰仅又集韻與帑同",
+            "removed": "唐韻集韻韻會渠吝切正韻具吝切𠀤音覲說文纔能也又少也餘也通作堇廑亦作㢙禮射義蓋㢙有存者又劣也",
+            "prefix_anchor_coverage": 1.0,
+            "tail_supported_chars": 12
+          },
+          {
+            "head": "仆",
+            "next_head": "仇",
+            "start": 378,
+            "end": 790,
+            "removed_chars": 412,
+            "keep_tail": "義同又集韻韻會正韻𠀤敷救切否去聲頓也",
+            "removed": "唐韻集韻韻會𠀤蒲沃切蓬入聲說文給事者禮禮運仕于公曰臣仕于家曰僕周禮春官車僕掌戎路廣車闕車苹車輕車之萃註車僕主供副車者僕猶御也萃猶副也謂供副車以待乏用也五車皆兵車也又司僕官名五代史百官志唐龍朔中改太保曰司馭又改爲司僕齊職儀衆僕之長曰太僕掌輿馬明制有太僕寺又御車曰僕論語冉有僕又僕隷賤役左傳僖二十四年秦伯送衞于晉三千人實紀綱之僕又自謙之辭前漢韋玄成傳自稱爲僕𤰞辭也又辱也戰國策傳命僕官又徒也莊子則陽篇仲尼曰是聖人僕也註猶言聖人之徒也又僕僕煩猥貌又附也詩大雅君子萬年景命有僕又隱也左傳昭七年楚芋尹無宇曰吾先君文王作僕區之法曰盜所隱器與盜同罪註僕區𠛬書名區匿也作爲隱匿亡人之法又虎僕獸名博物志羽民國有獸文似豹名虎僕毛可爲筆又僕纍蝸牛也山海經靑要之山多僕纍蒲盧註僕纍一名蚹贏蒲盧細腰蟲蠮螉也又姓漢僕朋宋僕斗南明僕淮又集韻普木切音撲羣飛貌莊子天運篇蚉蝱僕緣又叶鼻墨切音匐柳宗元佩韋賦尼父戮齊而誅卯兮本柔仁以作極蘭竦顏以誚秦兮入降廉猶臣僕",
+            "prefix_anchor_coverage": 0.7193,
+            "tail_supported_chars": 8
+          }
+        ],
+        "accepted": true,
+        "removed_chars": 457,
+        "residual_chars": -2,
+        "tolerance": 8,
+        "page": 402,
+        "gold_chars": 354,
+        "baseline_notes": [
+          "OCR 尾裁：保留 817/1025 字（页面物理末界），溢出 208 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "877918346d302e3c15e6d275a7359de5c6fd15fe0accb50ee50c245d6cfb0049",
+          "gold": "1168ba2ff2b8237287e5d2b276dea463216a618e4373a07661f60a378742350c",
+          "ocr": "a78cafbb27e631c7bc1891fb4014d04b576231c0761206ccc20b2a671d016776"
+        },
+        "scoring": {
+          "removed_extra": 457,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": true
+        },
+        "clean_gold_control": {
+          "skip": null,
+          "accepted": false,
+          "removed_chars": 0,
+          "residual_chars": -2
+        },
+        "source_card_probes": [
+          {
+            "query": "仅",
+            "source_url": "https://www.kangxizidian.com/search/index_v.php?stype=Word&sword=%E4%BB%85&detail=y",
+            "cards": [
+              {
+                "head": "仅",
+                "page": 402,
+                "nth_char": 4,
+                "svg": "0000s/0402-04-00253-4EC5.svg",
+                "normalized_text": "六書故同付正譌又手也从手持物以對人曰仅又集韻與帑同（僅）唐韻集韻韻會渠吝切正韻具吝切𠀤音覲說文纔能也又少也餘也通作堇廑亦作㢙禮射義蓋㢙有存者又劣也"
+              },
+              {
+                "head": "僅",
+                "page": 510,
+                "nth_char": 3,
+                "svg": "0000s/0510-03-00830-50C5.svg",
+                "normalized_text": "唐韻集韻韻會渠吝切正韻具吝切𠀤音覲說文纔能也又少也餘也通作堇廑亦作㢙禮射義蓋㢙有存者又劣也"
+              }
+            ],
+            "inline_other_entry": [
+              {
+                "head": "僅",
+                "page": 510,
+                "text_equals_other_card": true
+              }
+            ],
+            "selected_normalized_text": "六書故同付正譌又手也从手持物以對人曰仅又集韻與帑同"
+          },
+          {
+            "query": "仆",
+            "source_url": "https://www.kangxizidian.com/search/index_v.php?stype=Word&sword=%E4%BB%86&detail=y",
+            "cards": [
+              {
+                "head": "仆",
+                "page": 402,
+                "nth_char": 5,
+                "svg": "0000s/0402-05-00254-4EC6.svg",
+                "normalized_text": "唐韻集韻韻會芳遇切正韻芳故切𠀤音赴偃也僵也唐書房杜傳贊興仆植僵又集韻普木切音攴義同又集韻韻會正韻𠀤敷救切否去聲頓也"
+              },
+              {
+                "head": "僕",
+                "page": 514,
+                "nth_char": 1,
+                "svg": "0000s/0514-01-00861-50D5.svg",
+                "normalized_text": "唐韻集韻韻會𠀤蒲沃切蓬入聲說文給事者禮禮運仕于公曰臣仕于家曰僕周禮春官車僕掌戎路廣車闕車苹車輕車之萃註車僕主供副車者僕猶御也萃猶副也謂供副車以待乏用也五車皆兵車也又司僕官名五代史百官志唐龍朔中改太保曰司馭又改爲司僕齊職儀衆僕之長曰太僕掌輿馬明制有太僕寺又御車曰僕論語冉有僕又僕隷賤役左傳僖二十四年秦伯送衞于晉三千人實紀綱之僕又自謙之辭前漢韋玄成傳自稱爲僕𤰞辭也又辱也戰國策傳命僕官又徒也莊子則陽篇仲尼曰是聖人僕也註猶言聖人之徒也又僕僕煩猥貌又附也詩大雅君子萬年景命有僕又隱也左傳昭七年楚芋尹無宇曰吾先君文王作僕區之法曰盜所隱器與盜同罪註僕區𠛬書名區匿也作爲隱匿亡人之法又虎僕獸名博物志羽民國有獸文似豹名虎僕毛可爲筆又僕纍蝸牛也山海經靑要之山多僕纍蒲盧註僕纍一名蚹贏蒲盧細腰蟲蠮螉也又姓漢僕朋宋僕斗南明僕淮又集韻普木切音撲羣飛貌莊子天運篇蚉蝱僕緣又叶鼻墨切音匐柳宗元佩韋賦尼父戮齊而誅卯兮本柔仁以作極蘭竦顏以誚秦兮入降廉猶臣僕"
+              }
+            ],
+            "inline_other_entry": [],
+            "selected_normalized_text": "唐韻集韻韻會芳遇切正韻芳故切𠀤音赴偃也僵也唐書房杜傳贊興仆植僵又集韻普木切音攴義同又集韻韻會正韻𠀤敷救切否去聲頓也"
+          }
+        ],
+        "normalized_output": "切音然歐陽修送吳子京南歸詩我笑謂吳生爾其聽我言顏回不貳過後世稱其仁六書正譌元从二从人仁則从人从二在天爲元在人爲仁人所以靈於萬物者仁也仂廣韻林直切集韻韻會正韻歷德切𠀤音勒數之餘也禮王制祭用數之仂喪用三年之仂註十分之一也疏以爲分散之名通作阞周禮冬官考工記以其圍之阞捎其數註阞三分之一也又集韻六直切音力玉篇勤也仃廣韻同㣔仄說文厠本字通作側又平仄字聲也又仄慝月行遲也占家曰朔而月見東方謂之仄慝仄慝則王侯其肅又赤仄錢名又六書本義湢仄水流貌作㳁非又稫仄禾密貌作稫稄非从厂从人厂音罕山石之厓巖人處厂下有慮傾側之象仅六書故同付正譌又手也从手持物以對人曰仅又集韻與帑同仆唐韻集韻韻會芳遇切正韻芳故切𠀤音赴偃也僵也唐書房杜傳贊興仆植僵又集韻普木切音攴義同又集韻韻會正韻𠀤敷救切否去聲頓也仇唐韻巨鳩切集韻韻會正韻渠尤切𠀤音求匹也匡",
+        "monotonic_large_gaps": [
+          {
+            "tag": "replace",
+            "draft_chars": 50,
+            "ocr_chars": 1,
+            "draft_start": "韻與帑同唐韻集韻韻會渠吝切正韻具吝切𠀤音覲說文纔能也又少也餘",
+            "ocr_text": "卜"
+          },
+          {
+            "tag": "delete",
+            "draft_chars": 423,
+            "ocr_chars": 0,
+            "draft_start": "正韻𠀤敷救切否去聲頓也唐韻集韻韻會𠀤蒲沃切蓬入聲說文給事者禮",
+            "ocr_text": ""
+          }
+        ],
+        "synthetic_ocr_omission_control": {
+          "removed_ocr_chars": 26,
+          "omitted_ocr_fragments": [
+            "又集韻普木切音支義同又集韻韻會",
+            "正韻叅敷救切否去聲頓也"
+          ],
+          "accepted": true,
+          "proposals": [
+            {
+              "head": "仆",
+              "next_head": "仇",
+              "start": 307,
+              "end": 333,
+              "removed_chars": 26,
+              "keep_tail": "切𠀤音赴偃也僵也唐書房杜傳贊興仆植僵",
+              "removed": "又集韻普木切音攴義同又集韻韻會正韻𠀤敷救切否去聲頓也",
+              "prefix_anchor_coverage": 0.871,
+              "tail_supported_chars": 12
+            }
+          ],
+          "warning": "这是人工删 OCR 的压力样本，不是真实模型失误频率。"
+        }
+      }
+    ]
+  },
+  "first_pass_regression": {
+    "experiment": "只读探索；402 调参样本，不接入生产",
+    "script_sha256": "7310af183e4e7a8ce947e60250426d335d7f4439d15dd68eee6f0552f0ead52f",
+    "summary": {
+      "pages": 89,
+      "eligible": 23,
+      "skip_reasons": {
+        "复杂字头/作用域不在本实验范围": 52,
+        "无有效 OCR 缓存": 14
+      },
+      "proposed_pages": [
+        366
+      ],
+      "accepted_pages": [],
+      "removed_extra": 0,
+      "removed_gold": 0,
+      "removed_ambiguous": 0,
+      "clean_control_eligible": 15,
+      "clean_control_accepted": []
+    },
+    "results": [
+      {
+        "draft_chars": 227,
+        "ocr_chars": 237,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 312,
+        "gold_chars": 239,
+        "baseline_notes": [
+          "OCR 尾裁：保留 229/546 字（页面物理末界），溢出 317 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "9f5cff6d93430bac64a2bbe0f24e5fdd91e7c0b2cc944552a4730cb2486abbd1",
+          "gold": "5e036d9a2e48411352109916237452b80a3d96d1d70fc65ba6c3523bd89a2188",
+          "ocr": "34296255adad78e56fffa5720fd2882a6ddd6eab312863f5b132f46ab2717c32"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 365,
+        "ocr_chars": 364,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 313,
+        "gold_chars": 365,
+        "baseline_notes": [
+          "OCR 尾裁：保留 367/1049 字（页面物理末界），溢出 682 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "5e0d8ba455cdc975ba023061d61a868d7f03d11d4d0d93fb93e3557730c9bdeb",
+          "gold": "89943a1232acaadbc50822e0975fb3a79d1ec50ad2367e5b7b38db7fcdc84824",
+          "ocr": "a7f58113468985ea292a40ef0d444843f0b738ea22bf72d33f083e2c2dcfe253"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": true
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 375,
+        "ocr_chars": 375,
+        "skip": null,
+        "proposals": [],
+        "accepted": false,
+        "removed_chars": 0,
+        "residual_chars": 0,
+        "tolerance": 8,
+        "page": 314,
+        "gold_chars": 375,
+        "baseline_notes": [
+          "OCR 尾裁：本页内容未溢出页界"
+        ],
+        "hashes": {
+          "draft": "b8e706d470d0ea4d948a558cef7c50445e9b1b0027d55b76d6925bcca0b9b4c9",
+          "gold": "62c443a238892c0a7493ddc9196e2722aff398ca902e7d29dad2d6f0ae072325",
+          "ocr": "8fff7e8f00f300c840df37159df15a8a197bd4100db3f38ef8c39e02418f9e11"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": true
+        },
+        "clean_gold_control": {
+          "skip": null,
+          "accepted": false,
+          "removed_chars": 0,
+          "residual_chars": 0
+        }
+      },
+      {
+        "draft_chars": 364,
+        "ocr_chars": 364,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 315,
+        "gold_chars": 364,
+        "baseline_notes": [
+          "OCR 尾裁：保留 366/400 字（页面物理末界），溢出 34 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "aee1c33520b93f0f61001e5921fee44c8220404c00ccaf1b4311091b2243a095",
+          "gold": "5503d49d743e29f9bf1d82bc0554b2ee403a4d97dfaec9a54fabca4c11729a0f",
+          "ocr": "f36ef81079b013f8e6005f5831c601d93d4e5cde6f061598affd98dab396bc1f"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": true
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 529,
+        "ocr_chars": 354,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 316,
+        "gold_chars": 358,
+        "baseline_notes": [
+          "OCR 尾裁：保留 534/694 字（页面物理末界），溢出 160 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "f9efda0b3e98c4e8fa240dc86903a0689c891aae2a0a20ac7eb363811ad77ab9",
+          "gold": "1b78e2652212d29fe6fc29327ff136ea8fd42cd14a2b5c7650e7bcabba090176",
+          "ocr": "f02565222a176914041030a4ce3c26cc62cde5d0a1a4e366010e736af14da276"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 368,
+        "ocr_chars": 368,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 317,
+        "gold_chars": 368,
+        "baseline_notes": [
+          "OCR 尾裁：保留 370/419 字（页面物理末界），溢出 49 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "6c0bb28bc7f726a36bf27db701ba55f3830552309cf317303d2161be72b80fbe",
+          "gold": "fe8f60b065c6ddbd45e6045e5f364c77a114ebfbfca4985292ed26d783987aed",
+          "ocr": "caae15b03cd66a79b8f7e7d837b1b0cd9b5e513ae5d6918e55957c9233075fb3"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": true
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 362,
+        "ocr_chars": 362,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 318,
+        "gold_chars": 362,
+        "baseline_notes": [
+          "OCR 尾裁：保留 364/452 字（页面物理末界），溢出 88 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "9ebcbaf28f1a481d8e934f62433af8296be1af8cfb1d0a6545fcf7eb1bc64b66",
+          "gold": "b5fd061820ee2c9736c35a96113d7ac72c50ef2a46c955a2aa3b54dd60282f4b",
+          "ocr": "94ac1400543f780a976f574f6ec88aab1cfda0724539c486698801acbf602291"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": true
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 360,
+        "ocr_chars": 360,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 319,
+        "gold_chars": 360,
+        "baseline_notes": [
+          "OCR 尾裁：保留 363/381 字（页面物理末界），溢出 18 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "e2abb9ac36ef6fa7479d3975716c1e695c210eac97d0c715edf1c3ddf6de64d6",
+          "gold": "db0cd6526abab9a0ff8d2d2b2166c9638ecf5a43b308fdc7d3fc8cd91ca1f028",
+          "ocr": "eca6f6f60e34e395d88dd19d8d48b2238cade2c6859876e81438e2ad8cdb3bc5"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "字头非独立单字",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 350,
+        "ocr_chars": 337,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 320,
+        "gold_chars": 357,
+        "baseline_notes": [
+          "OCR 尾裁：保留 353/644 字（页面物理末界），溢出 291 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "672dc2de18fd0d0bd16ae9dc31b9700fb17bfc518ad89775f7f5b76680ed358a",
+          "gold": "3a18b4721a0b5858af9afbe770ba1a5a722f4d549f2533a0228c2d0d0c473857",
+          "ocr": "47046ca56f897d21c52da41fd1b7fd1bb9cad48a74ba7accd8539eefaa1a49f3"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 1202,
+        "ocr_chars": 370,
+        "skip": null,
+        "proposals": [],
+        "accepted": false,
+        "removed_chars": 0,
+        "residual_chars": 832,
+        "tolerance": 8,
+        "page": 321,
+        "gold_chars": 373,
+        "baseline_notes": [
+          "OCR 尾裁：保留 1204/1218 字（页面物理末界），溢出 14 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "710fb7e271be79a6cb2d2fd92a2f7ad8daf435a5a599fd7287467914b91538e6",
+          "gold": "d888d8949289a1f166f6e9dfe21f3b977d820afcf84521d5151a268729b35e0f",
+          "ocr": "bea3ca9b093039afb0ba636dd9ad8c9071fb7f9bc2921a1f2845ac848ea0a240"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": null,
+          "accepted": false,
+          "removed_chars": 0,
+          "residual_chars": 3
+        }
+      },
+      {
+        "draft_chars": 797,
+        "ocr_chars": 342,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 322,
+        "gold_chars": 347,
+        "baseline_notes": [
+          "OCR 尾裁：保留 803/1119 字（页面物理末界），溢出 316 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "3058ea9b99e01dd66810693092e15b414fe2673a41b791594ca01e2046f015ba",
+          "gold": "38f0a4517ef65f97fb92aefca5487b5b747dcca14ceaf482b0b0ed10940d3e9c",
+          "ocr": "e0a63b4beb1ac2e48ebc79a0743bd1d5d8ac03d42dc230accaa8e98683988eea"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 367,
+        "ocr_chars": 366,
+        "skip": null,
+        "proposals": [],
+        "accepted": false,
+        "removed_chars": 0,
+        "residual_chars": 1,
+        "tolerance": 8,
+        "page": 323,
+        "gold_chars": 367,
+        "baseline_notes": [
+          "OCR 尾裁：保留 368/499 字（页面物理末界），溢出 131 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "5db96731e7454a6514f4a02c5bf0517c49c92c9ddd44907c548f085931936f01",
+          "gold": "7f175bbdc887c2c0393d841a5d8cda375e8790af1bde427b938a56e07d412ca5",
+          "ocr": "a8101c95289a5a560a89a4c74c82e12a55573919bddbf0dda77f6a215450a468"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": true
+        },
+        "clean_gold_control": {
+          "skip": null,
+          "accepted": false,
+          "removed_chars": 0,
+          "residual_chars": 1
+        }
+      },
+      {
+        "draft_chars": 356,
+        "ocr_chars": 356,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 324,
+        "gold_chars": 356,
+        "baseline_notes": [
+          "OCR 尾裁：保留 361/885 字（页面物理末界），溢出 524 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "3275ba846b4e9a93824588a724a50c8be7674402fad434506c26bd30b86f4806",
+          "gold": "6a4742d5fedb0c7aee856f3561cf089f080db888c0d945ccc9a7f3f843dad121",
+          "ocr": "b595733ee31f8a0235f0e29aeee0ff7733ce3b709edb478e2c1d5f39deb84bf1"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 370,
+        "ocr_chars": 370,
+        "skip": null,
+        "proposals": [],
+        "accepted": false,
+        "removed_chars": 0,
+        "residual_chars": 0,
+        "tolerance": 8,
+        "page": 325,
+        "gold_chars": 370,
+        "baseline_notes": [
+          "OCR 尾裁：本页内容未溢出页界"
+        ],
+        "hashes": {
+          "draft": "3a6278492ff189b85ec26636b8199154752ad06e3561a65a941c8ffe20f9d879",
+          "gold": "0fcbbcb8cc83bceb46159afbb41d98f9b7ca4a16d552fc7980019422eaf2abcf",
+          "ocr": "bfe2bfa93aaca820268caa90ac01f4abca676158c4ea40b4dc375ac0f72f58c8"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": true
+        },
+        "clean_gold_control": {
+          "skip": null,
+          "accepted": false,
+          "removed_chars": 0,
+          "residual_chars": 0
+        }
+      },
+      {
+        "draft_chars": 351,
+        "ocr_chars": 357,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 326,
+        "gold_chars": 359,
+        "baseline_notes": [
+          "OCR 尾裁：保留 355/363 字（页面物理末界，末段判信回缩 4 字），溢出 8 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "9b09a438e90ac35c38d4a78ac60fcba891b672f0981148b4d3fe1bcc9340068f",
+          "gold": "bc89aa07080060c79c22c4f32d6b9c723c784367dd663b90060a1ff84ceb73bf",
+          "ocr": "bca47f4b4c22a678953b4afcbce1831150959e8a7a61f1abac301f1e9f202def"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 348,
+        "ocr_chars": 350,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 327,
+        "gold_chars": 354,
+        "baseline_notes": [
+          "OCR 尾裁：保留 355/455 字（页面物理末界），溢出 100 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "92921e795d66f1e232537a74086ec803da96517a4f021ef6db3b6d3ff0c43236",
+          "gold": "9d35969ad509482e5306036005cb7e0a78a6db9355d6f56a75376b7de01ee2de",
+          "ocr": "6d6bbc83bdea8efc27eafbc40ec219992e6f20ac93f85299ed8160211a8b26e0"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 274,
+        "ocr_chars": 279,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 328,
+        "gold_chars": 290,
+        "baseline_notes": [
+          "OCR 尾裁：本页内容未溢出页界"
+        ],
+        "hashes": {
+          "draft": "a52e7893ae16e8af0dba0976ba5dd5775e9aeb5bbc5821e70c3b50fc3bf644ef",
+          "gold": "cc9377aa16cf77b13204712de96382ffab5fcff93e9e2cfb1969dec86fbb1248",
+          "ocr": "ac4152faf139340ff1478284fcc415e5c026ed9a6845f537e76aa8a76a790dff"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 0,
+        "ocr_chars": 145,
+        "skip": null,
+        "proposals": [],
+        "accepted": false,
+        "removed_chars": 0,
+        "residual_chars": -145,
+        "tolerance": 8,
+        "page": 329,
+        "gold_chars": 0,
+        "baseline_notes": [
+          "空白页：无字头索引且无前页续文，正文留空；若原图实际有内容，请对照原图手工补录"
+        ],
+        "hashes": {
+          "draft": "42ad6423c86e20dfe6f2c05b6c181ab237023e8f717cd9a4416dc0ac29e86d06",
+          "gold": "42ad6423c86e20dfe6f2c05b6c181ab237023e8f717cd9a4416dc0ac29e86d06",
+          "ocr": "3c76219596a90aeb393caeb2d9eff0d8bf662ddba8b9db1267e2889b667590b4"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": true
+        },
+        "clean_gold_control": {
+          "skip": null,
+          "accepted": false,
+          "removed_chars": 0,
+          "residual_chars": -145
+        }
+      },
+      {
+        "draft_chars": 304,
+        "ocr_chars": 318,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 330,
+        "gold_chars": 316,
+        "baseline_notes": [
+          "OCR 尾裁：保留 308/591 字（页面物理末界，末段判信回缩 46 字），溢出 283 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "709aed68ae512200ec39176173f20b230f7ac4d746d71ff56bb6289f72c974fd",
+          "gold": "069c262f5d54e0209b27ca2f48f7d1280891c99a7a502f09ca28508c35dcb9fa",
+          "ocr": "c5373fa8039b925826d5d3f54f25d63b228697703b51d1dcc81927cfef707f08"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 361,
+        "ocr_chars": 360,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 331,
+        "gold_chars": 362,
+        "baseline_notes": [
+          "OCR 尾裁：保留 365/1192 字（页面物理末界），溢出 827 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "c194a2c0f042a41c604bcf0bae1547c6446906efa315de9c096c5cdb2907e6e7",
+          "gold": "5162313997bfc3324b32b174eac5be5c9b274aa1a53bf81c45e22d154e478f6c",
+          "ocr": "2a92838415b632d30721deece3a8e1fdaadf5ffd805c0434077e0c6f5279c633"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 371,
+        "ocr_chars": 371,
+        "skip": null,
+        "proposals": [],
+        "accepted": false,
+        "removed_chars": 0,
+        "residual_chars": 0,
+        "tolerance": 8,
+        "page": 332,
+        "gold_chars": 371,
+        "baseline_notes": [
+          "OCR 尾裁：本页内容未溢出页界"
+        ],
+        "hashes": {
+          "draft": "02279603ccf8bfccade93e2228150bdeeb3f202a7372abe4421591721696e022",
+          "gold": "19f362b36ec133254b2a1b94bb3ad8219324f7e2f76ca17c56090fe2b696c6b2",
+          "ocr": "2dfbedf955acac27f026f6aa80603522291fa0016ac990a9ab931d94165c20db"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": null,
+          "accepted": false,
+          "removed_chars": 0,
+          "residual_chars": 0
+        }
+      },
+      {
+        "draft_chars": 373,
+        "ocr_chars": 372,
+        "skip": null,
+        "proposals": [],
+        "accepted": false,
+        "removed_chars": 0,
+        "residual_chars": 1,
+        "tolerance": 8,
+        "page": 333,
+        "gold_chars": 372,
+        "baseline_notes": [
+          "OCR 尾裁：本页内容未溢出页界"
+        ],
+        "hashes": {
+          "draft": "0102bc469032c5c8a389d7290b59b8e88d288dc2781fe3e18a9bff92b9e37165",
+          "gold": "b374a6eb7f41d4dd41f04766ea2df5ea53a66c1ed5e61dae8ce7e0ca1714c84b",
+          "ocr": "078807f4d54aec82844d62798f9e115827d1155168665e5f220c09e2155a4c9c"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": null,
+          "accepted": false,
+          "removed_chars": 0,
+          "residual_chars": 0
+        }
+      },
+      {
+        "draft_chars": 999,
+        "ocr_chars": 358,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 334,
+        "gold_chars": 360,
+        "baseline_notes": [
+          "OCR 尾裁：保留 1004/1048 字（页面物理末界），溢出 44 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "de7cb5450e7cfa18cfa3f59a0ba428b13539a04f6c1077ccaefe7443299c2911",
+          "gold": "c4b6b170ff501feb8a3862755deee254fc36f3bbc7dc9e53b89d8844ea672036",
+          "ocr": "10d59d63259e8c4a51887d4b202f3843cb467dd8c9a487816b6b4c325be8358d"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 326,
+        "ocr_chars": 334,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 335,
+        "gold_chars": 350,
+        "baseline_notes": [
+          "OCR 尾裁：本页内容未溢出页界"
+        ],
+        "hashes": {
+          "draft": "b868c1e782c5981babe0eeb219e7d120b9976e2d8ae97792099e3188b7977a97",
+          "gold": "124fa6faac719f57d1884502f04e1b96b92ef32faf7abbcae374204611870a08",
+          "ocr": "62e6be297eef0fe29fb717ddb45c04742fe25f3d72fdee145cb2f45fbd7abde8"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 133,
+        "ocr_chars": 147,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 336,
+        "gold_chars": 139,
+        "baseline_notes": [
+          "OCR 尾裁：本页内容未溢出页界"
+        ],
+        "hashes": {
+          "draft": "6057c345c7cdb17560a300625dd15c468b293eef665a574b500fdd52ab26dbf1",
+          "gold": "700d6fcf7e4b60cddefab3a8b8add1ca1fc8bf58a20a1ee16a5aa45b4a1d93f5",
+          "ocr": "9ccaa567e43876b4f05b9b2ff50659f3344b75187eca5113dab740f23eaefded"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 0,
+        "ocr_chars": 248,
+        "skip": null,
+        "proposals": [],
+        "accepted": false,
+        "removed_chars": 0,
+        "residual_chars": -248,
+        "tolerance": 8,
+        "page": 337,
+        "gold_chars": 0,
+        "baseline_notes": [
+          "空白页：无字头索引且无前页续文，正文留空；若原图实际有内容，请对照原图手工补录"
+        ],
+        "hashes": {
+          "draft": "a38b9cb6a3be2aaf82dee4b7a1947e8606db28609aa083906bfade644e42e56c",
+          "gold": "a38b9cb6a3be2aaf82dee4b7a1947e8606db28609aa083906bfade644e42e56c",
+          "ocr": "2e3a259be57f0b319678f2b9c77b3e9229a21cb5ec6fc4ddbbb6509087bedad8"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": true
+        },
+        "clean_gold_control": {
+          "skip": null,
+          "accepted": false,
+          "removed_chars": 0,
+          "residual_chars": -248
+        }
+      },
+      {
+        "draft_chars": 318,
+        "ocr_chars": 319,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 338,
+        "gold_chars": 324,
+        "baseline_notes": [
+          "OCR 尾裁：保留 321/434 字（页面物理末界），溢出 113 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "d38a2bdb720a359733fdc35d313ba683635a3eb851653fd61de0321d4cde8d36",
+          "gold": "a41341faa2374cc5d3cf24f096ab89bf62f7fe8eedf8e87376c97071b7894956",
+          "ocr": "95872184be49211cf9ad1cc091851913a2160b50e5c6de31f51eb826c2cd7575"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 352,
+        "ocr_chars": 353,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 339,
+        "gold_chars": 355,
+        "baseline_notes": [
+          "OCR 尾裁：保留 355/483 字（页面物理末界），溢出 128 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "e118d0bc681bd4fff3ecf2e07ff2e688011d5091f4294f12eb50dc4e527b73ac",
+          "gold": "dc6167aeaaa213a66deef2389c4d46710d18fb361158f82cea4aecc19857d1ac",
+          "ocr": "3f354ba4fa00a0495c2bd3d309ea50ace8d0b34e09de8516d2b787faac18c238"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 358,
+        "ocr_chars": 359,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 340,
+        "gold_chars": 361,
+        "baseline_notes": [
+          "OCR 尾裁：保留 360/458 字（页面物理末界），溢出 98 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "58b69e4585f4aaa06228e0bf5f652cc936d6192750c9befd150b5c15a81e3701",
+          "gold": "f0be8242183259e9d3247418188669fe5285cf4feb949075228921dbea579ad2",
+          "ocr": "d05a960e00d291b78fe9468325852e569fa4318797070af3dc1d6ecaaa8d36fa"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 224,
+        "ocr_chars": 241,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 341,
+        "gold_chars": 255,
+        "baseline_notes": [
+          "OCR 尾裁：保留 228/943 字（页面物理末界，末段判信回缩 715 字），溢出 715 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "a9b1e564dd695369716e218ad228d559f894a08bc9a444065496c2990197cbf8",
+          "gold": "41a6459bdd3632836db261c864dd16788dcb6ee3ee272c2c539baac294b170a4",
+          "ocr": "349c6d8208ce97cd0cb77828035435de181d2695ba69652cc31904c5d0419560"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 316,
+        "ocr_chars": 316,
+        "skip": null,
+        "proposals": [],
+        "accepted": false,
+        "removed_chars": 0,
+        "residual_chars": 0,
+        "tolerance": 8,
+        "page": 342,
+        "gold_chars": 319,
+        "baseline_notes": [
+          "OCR 尾裁：保留 321/347 字（页面物理末界），溢出 26 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "648ef4826738ee86b4323026b3e314a783425147475b6663b92b8827e2b5456a",
+          "gold": "0be501ae594832e56e5d968a61e72227634982cf053d10a1d69b6c8d17a797ae",
+          "ocr": "431a24623de84d82c5af4a8503fc09406f677873d09420c8fdab1284c7810188"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 349,
+        "ocr_chars": 333,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 343,
+        "gold_chars": 349,
+        "baseline_notes": [
+          "OCR 尾裁：保留 352/667 字（页面物理末界），溢出 315 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "1525f51bbffe4a1e9dfe50bad60eba4a50ebf1355606d50f18a077dfb4289de0",
+          "gold": "52fe42ed8456837d5f0737675c83be96aeb035a948fde8b203630a8a33c10f9b",
+          "ocr": "872960756d2174b01c259f5d855d985567a2305e89c721296e48d13df0db1323"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": true
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 367,
+        "ocr_chars": 366,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 344,
+        "gold_chars": 370,
+        "baseline_notes": [
+          "OCR 尾裁：保留 370/574 字（页面物理末界），溢出 204 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "e4162aab8de655e5e37aaf6c4bcb021b60be8da21f1309e7f3a924f6c6c073b5",
+          "gold": "9dcae4d325f845df3046b37923265de97cc5d58dad9f65f4aae4721bec490579",
+          "ocr": "607bc26d264c98fcfcf046176a735a1a1cc996299070871db75981a29a125b52"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 432,
+        "ocr_chars": 331,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 345,
+        "gold_chars": 355,
+        "baseline_notes": [
+          "OCR 尾裁：保留 437/784 字（页面物理末界），溢出 347 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "8f7c4e0be37d6becb2517f697d2b4b0e9d7cd0aec8386e79da9e5a6afeb82e3b",
+          "gold": "793e59d7711efba0e56a4ffc8c874414de2fcd3d114dbce47e4effad424db5b2",
+          "ocr": "e35d565193f0b1f1c2a6eafb6e59109b26d6d089b47e5f906cb567d33beedb53"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 370,
+        "ocr_chars": 368,
+        "skip": null,
+        "proposals": [],
+        "accepted": false,
+        "removed_chars": 0,
+        "residual_chars": 2,
+        "tolerance": 8,
+        "page": 346,
+        "gold_chars": 372,
+        "baseline_notes": [
+          "OCR 尾裁：保留 371/421 字（页面物理末界），溢出 50 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "dbb60a47d828bbe5624ea801416f759dbea16fac3456c28187798ef72454928c",
+          "gold": "e8ef64707263a834c9e695c1d18353116c7a0f5c3149c8847f8175877340dfaa",
+          "ocr": "2fc51b1f19fa2f0282b0090cf1cb8eee4d4ad4c20f0e403f89feb03ca2fb7a90"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 361,
+        "ocr_chars": 355,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 347,
+        "gold_chars": 355,
+        "baseline_notes": [
+          "OCR 尾裁：保留 366/465 字（页面物理末界），溢出 99 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "4cf4828fb8e62135b93d274527263b5a566b403ca2ff6d73f3a38edcab1450d4",
+          "gold": "cf70eebb92f2d04aa3f708d05ed847f405d8d22d933d64a15ad0d527b1eb7cb6",
+          "ocr": "65f3624d072701b222295a0400e0767e32f18363cf481e53956fe25e75f0ef09"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 360,
+        "ocr_chars": 361,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 348,
+        "gold_chars": 365,
+        "baseline_notes": [
+          "OCR 尾裁：保留 364/444 字（页面物理末界），溢出 80 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "7153f5c0c1a3b0610ba1424b608c9dc9f79c827c6af63c2badefa2c5d4ad990f",
+          "gold": "cc6e3b882e8d3d8eb3957a71dcb69aed4f9ee352d89f45a3bdec80120f65e7c2",
+          "ocr": "94c1b91314bc26328ca2f0f533c7295aac822f09a5dcd25c88bd67747327f28c"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 371,
+        "ocr_chars": 362,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 349,
+        "gold_chars": 368,
+        "baseline_notes": [
+          "OCR 尾裁：保留 375/384 字（页面物理末界），溢出 9 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "68cbc4cdf407279038473729e28bf185cb1f5684fbe420c8058252410002578b",
+          "gold": "7541d97ce42835e0768b1e349a9cce80b49b512e37a0f3ae4559561a5d6e28ea",
+          "ocr": "2029a93c9cf0cddb501e7bf7722d0259547ea6d2bea8d8890996ae72fde0dfd5"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 333,
+        "ocr_chars": 324,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 350,
+        "gold_chars": 335,
+        "baseline_notes": [
+          "OCR 尾裁：保留 340/552 字（页面物理末界），溢出 212 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "c60a13b0a03a2c750c7e1f00773f70c05ebc506bcd0aab901cb63fec556a6cb4",
+          "gold": "d789eda9848e4b93f1851c8a2f663f38547608c2764b0d593cf719d9490eeb15",
+          "ocr": "7cbeabc5f2524e47cd5b4b1a1c8f801bc8561e8a0b6ed82e9ba1884bc2d266c6"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 248,
+        "ocr_chars": 271,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 351,
+        "gold_chars": 270,
+        "baseline_notes": [
+          "OCR 尾裁：保留 250/269 字（页面物理末界，末段判信回缩 18 字），溢出 19 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "0f893d5e37fcc537da62d086b94680d7a65cc853cc57bee9382abc92a2b0664d",
+          "gold": "a4884f5a68cd041cd4852f1d0225a530ad15681b00cdf629b62e6fa18b9e5949",
+          "ocr": "80f202dcd15a55ec2a47f9bc40d8b1bf6f19e1ca6e04dba1b298277bd68cf1bd"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 323,
+        "ocr_chars": 327,
+        "skip": null,
+        "proposals": [],
+        "accepted": false,
+        "removed_chars": 0,
+        "residual_chars": -4,
+        "tolerance": 8,
+        "page": 352,
+        "gold_chars": 326,
+        "baseline_notes": [
+          "OCR 尾裁：保留 325/424 字（页面物理末界），溢出 99 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "00a8865931b140975b305dbb3d38b8b648023b73ac9f08fb09497a492a021f67",
+          "gold": "1da8995d7cad294d72cb68c6b6d73258938336e261d70e4308d08a63629f94e4",
+          "ocr": "8610d4303552a96b60b1c105de8f1cb86c1051a6ced2a06436088363cb3196d7"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 364,
+        "ocr_chars": 362,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 353,
+        "gold_chars": 364,
+        "baseline_notes": [
+          "OCR 尾裁：保留 367/553 字（页面物理末界），溢出 186 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "67da187d71bfef3c4b0c7393224031c9b9e358a68b66d6414c60cb4577b4d13f",
+          "gold": "0a3a4b227d884d051c5447c40473958f3ce456ef5227e61e76968ac8f47f8370",
+          "ocr": "2886859580b55dbc5b6735063dc350178c29a4cb7dc7c86ed04716c2198d15db"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": true
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 353,
+        "ocr_chars": 357,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 354,
+        "gold_chars": 362,
+        "baseline_notes": [
+          "OCR 尾裁：保留 356/381 字（页面物理末界），溢出 25 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "dd6bc92e0b6490927a16c7e22591802300ec4829a6a5633ea319ce7231de8830",
+          "gold": "939b3dddc1d555c4da7027a2bb387cea7803fd2a4029ea09269e188f107fd2cb",
+          "ocr": "7178c1501bfbf8b0e1ccabf9925b48a5d7105e13d562135dd5a24ecdc8fda476"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 322,
+        "ocr_chars": 322,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 355,
+        "gold_chars": 334,
+        "baseline_notes": [
+          "OCR 尾裁：保留 333/339 字（页面物理末界），溢出 6 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "b59a83e7687baf8c101bf4f91819729a16b15a60db09f69bc4fd43b5a5f30511",
+          "gold": "df9918c7513d5b38a88f161ea4445b006df4468e97aa62d3eaeafb2e68fdfa67",
+          "ocr": "319b3b043d2b37990ae0c0d74cd2f475f9bbc3ecd6d4f8eac7d50bfc08cc8b8e"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 635,
+        "ocr_chars": 344,
+        "skip": null,
+        "proposals": [],
+        "accepted": false,
+        "removed_chars": 0,
+        "residual_chars": 291,
+        "tolerance": 8,
+        "page": 356,
+        "gold_chars": 351,
+        "baseline_notes": [
+          "OCR 尾裁：保留 641/652 字（页面物理末界），溢出 11 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "21d775e5f025cbddbc80f6176c03422707ee52585dd789903cb060428b2d0e5a",
+          "gold": "352c6de4dc98b639ff6528da13289eaca397d0dc713839ee291294f19b988dcf",
+          "ocr": "143c4f9938f7f98af9c9db3d749877f990e0ae564573b214904cbd50268ceafc"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 327,
+        "ocr_chars": 337,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 357,
+        "gold_chars": 347,
+        "baseline_notes": [
+          "OCR 尾裁：保留 333/392 字（页面物理末界），溢出 59 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "0fe97742589df9c3f2c821f1c699febe3a36c3df9f3ce3d182fe82054ed80f59",
+          "gold": "0d5f0deb527ef47c956c4f17c0c688064d8bfa7f9ae754e35ee40d9689f12c65",
+          "ocr": "f522b5ae0696ff0e38694a55d513453160d6fe31bd115f064b883c171728b1ee"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "page": 358,
+        "skip": "无有效 OCR 缓存"
+      },
+      {
+        "draft_chars": 237,
+        "ocr_chars": 236,
+        "skip": null,
+        "proposals": [],
+        "accepted": false,
+        "removed_chars": 0,
+        "residual_chars": 1,
+        "tolerance": 8,
+        "page": 359,
+        "gold_chars": 261,
+        "baseline_notes": [
+          "OCR 尾裁：本页内容未溢出页界"
+        ],
+        "hashes": {
+          "draft": "00c717c71562e14ce3a14b9b6248ecd2fd530f798f1b8df1caf7e98827ec3be3",
+          "gold": "3966dabe076510b6e2adbb5f653c71f8a9b65e37a3ccad1fb973b798cf04eec7",
+          "ocr": "9c3f29b909aa0259ea7405622aadc249291112cb6d6d95e013fe678579ee0c26"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 406,
+        "ocr_chars": 295,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 360,
+        "gold_chars": 305,
+        "baseline_notes": [
+          "OCR 尾裁：保留 414/642 字（页面物理末界），溢出 228 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "9a9ca1be8ef878daa90e4c4ac85c10395f5037bc6f6e8469e7bd338ffb781340",
+          "gold": "8a7dabfb90b438a052ee2019947b19f561ca7f27ec1d2c34aa5ab26235c6ddeb",
+          "ocr": "d3ed27634b8f3a204b5939a06907e696d4b184f8f64af3c9574ec74f8c11f7d5"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 333,
+        "ocr_chars": 339,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 361,
+        "gold_chars": 351,
+        "baseline_notes": [
+          "OCR 尾裁：保留 340/362 字（页面物理末界），溢出 22 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "318a0af8a8fca3b823ec63948a82952a604e0f11d46806296f9f473b65cfc220",
+          "gold": "9710324d3c145d2a7d90b93f521a4a61e21cdb5945896d243238f12d7fa6bf3f",
+          "ocr": "89a25866ac6e763d1d0327686240e0d00133a1b446f7cdad180ddf8be5de6697"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 320,
+        "ocr_chars": 329,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 362,
+        "gold_chars": 346,
+        "baseline_notes": [
+          "OCR 尾裁：保留 326/329 字（页面物理末界），溢出 3 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "cc13c56f492cce0b57deebd25f2d655f3a9476161b8e1c532fbfa7dad954ffec",
+          "gold": "76cd7bf74499b25989f21db808a306380022086c31cc24851f81e9589fc88923",
+          "ocr": "9ba7746fe1ab8a1c776225310bd1699be66fe83e454cb9879515c2e34eca90f6"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 3,
+        "ocr_chars": 265,
+        "skip": null,
+        "proposals": [],
+        "accepted": false,
+        "removed_chars": 0,
+        "residual_chars": -262,
+        "tolerance": 8,
+        "page": 363,
+        "gold_chars": 3,
+        "baseline_notes": [
+          "OCR 尾裁未执行：对齐不可信（末段匹配稀疏）——本页草稿含全量词条，添加下页前请先手工裁剪到物理页界"
+        ],
+        "hashes": {
+          "draft": "a628dd4f787df928a21b9f77985362d963661d4a1f17c7c0946fba9d81d6c700",
+          "gold": "f32f025412df6d37d0d27cd8fde6f193f879261b8cdbc3ff9dde869cf2e86cb3",
+          "ocr": "7d181fe827cb1fd58e3a72fea1e9366f353cd04bc6b8a73666f424c67c1cea2e"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": true
+        },
+        "clean_gold_control": {
+          "skip": null,
+          "accepted": false,
+          "removed_chars": 0,
+          "residual_chars": -262
+        }
+      },
+      {
+        "draft_chars": 325,
+        "ocr_chars": 316,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 364,
+        "gold_chars": 312,
+        "baseline_notes": [
+          "OCR 尾裁：保留 331/1107 字（页面物理末界），溢出 776 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "ce4d68854fc286b8fb5d52e0f1074b2d0b1c7824f545c98a02c09e4b7a83a555",
+          "gold": "47cade6e4f5eda6ba9b807a37b5d4a343a96abe4bc3b65e6f5cf5e7b0d112369",
+          "ocr": "2dfe3943c37d729a5d0f6bcd7f81819698095844a07889b20a56a77834795457"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 370,
+        "ocr_chars": 371,
+        "skip": null,
+        "proposals": [],
+        "accepted": false,
+        "removed_chars": 0,
+        "residual_chars": -1,
+        "tolerance": 8,
+        "page": 365,
+        "gold_chars": 371,
+        "baseline_notes": [
+          "OCR 尾裁：本页内容未溢出页界"
+        ],
+        "hashes": {
+          "draft": "3377e0fd664fae4dd161d27883d849e4a10d2530d2a2bb2608c761c809bddb75",
+          "gold": "dbaf8296cd48fc7d27f8b55be71794d82c26a779dabf729f3547ff4dbe63b56b",
+          "ocr": "a80aca341bcc91b22e3526594f06827043d51d1f981497fa134c4dfe0d33aaaa"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": null,
+          "accepted": false,
+          "removed_chars": 0,
+          "residual_chars": 0
+        }
+      },
+      {
+        "draft_chars": 456,
+        "ocr_chars": 365,
+        "skip": null,
+        "proposals": [
+          {
+            "head": "亏",
+            "next_head": "云",
+            "start": 165,
+            "end": 245,
+            "removed_chars": 80,
+            "keep_tail": "象氣之舒从丂从一一者其氣平之也今作于",
+            "removed": "唐韻去爲切集韻韻會驅爲切𠀤音𡓰說文氣損也徐曰气闕則其出舒遲故字从亐廣韻缺也史記蔡澤傳月滿則虧晉書律歷志月在外道先交後會者虧蝕西南角起又與羲通六書正譌伏羲古作虙虧",
+            "prefix_anchor_coverage": 1.0,
+            "tail_supported_chars": 12
+          }
+        ],
+        "accepted": false,
+        "removed_chars": 80,
+        "residual_chars": 11,
+        "tolerance": 8,
+        "page": 366,
+        "gold_chars": 367,
+        "baseline_notes": [
+          "OCR 尾裁：保留 458/850 字（页面物理末界），溢出 392 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "820879cab501748777449fa1bb030937c054f8a39d5ab47cd1ccc7c181ac3579",
+          "gold": "332abb2c24bd47cdf4e2f5cf92b480cd1187ede2c557abd633e2ab3928525281",
+          "ocr": "52382b59d7cec4dfe38eb312d7e780ac8f269c8302232c93bb71269b2e20779b"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 365,
+        "ocr_chars": 367,
+        "skip": null,
+        "proposals": [],
+        "accepted": false,
+        "removed_chars": 0,
+        "residual_chars": -2,
+        "tolerance": 8,
+        "page": 367,
+        "gold_chars": 367,
+        "baseline_notes": [
+          "OCR 尾裁：保留 366/394 字（页面物理末界，末段判信回缩 2 字），溢出 28 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "c08edb3ac1a0cc78ee62b174d6bcceb67b4170c9e456cb572ed4f87195da24b2",
+          "gold": "069bb0d94ca889f241440f66540df2f4e1c4635f70b002603f175020599aa47e",
+          "ocr": "340777919057b9c3a3d85cec3569b2bed926f68f5fb22255fac45d8cba6d0d1d"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": null,
+          "accepted": false,
+          "removed_chars": 0,
+          "residual_chars": 0
+        }
+      },
+      {
+        "draft_chars": 377,
+        "ocr_chars": 367,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 368,
+        "gold_chars": 356,
+        "baseline_notes": [
+          "OCR 尾裁：保留 381/489 字（页面物理末界，末段判信回缩 4 字），溢出 108 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "5408f22e7e2e8c65d14f2ac8f196373c980c4272db2411f3d527fb28bd20935a",
+          "gold": "a5475e8052d2f075939f9f9a2a6031a22ac0f36493a19b95c0e10eb97f235e5a",
+          "ocr": "659db21c950b290b1f17c3e4a11a0cc959ad6dd8ef0f03f18155db134661c608"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 339,
+        "ocr_chars": 344,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 369,
+        "gold_chars": 352,
+        "baseline_notes": [
+          "OCR 尾裁：保留 345/428 字（页面物理末界），溢出 83 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "c5ddbfde832f90170c5daa3de5a9616041820e442eda325715c863f69157af27",
+          "gold": "437ed720593b6f3c2182b3dbf8276674aa83c37cb58250df7851bacb006456ec",
+          "ocr": "1fb504c41bcd32689f7673ecc97b1f08d97d5a0a4fd63380990fdb5649bdf7a7"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 363,
+        "ocr_chars": 364,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 370,
+        "gold_chars": 367,
+        "baseline_notes": [
+          "OCR 尾裁：保留 367/464 字（页面物理末界），溢出 97 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "23f2d243dd4158d6ff567a464b0e08ae8ab87b69e6b67855ca85d2b547b139ba",
+          "gold": "4b54cd490f8dcda58ece2d8f4ae3697973c235a48cdca5ea8f1b79e674ebfa7b",
+          "ocr": "9998168d1116b6d0fdbba7d765625a83177c1414dd613bb4a1fb24d2d1c006f6"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 357,
+        "ocr_chars": 358,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 371,
+        "gold_chars": 360,
+        "baseline_notes": [
+          "OCR 尾裁：保留 360/496 字（页面物理末界），溢出 136 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "010748ac57c35967eab700219acce30031a9f32a6904fc39788dc226ec82a547",
+          "gold": "678f79c0b70a9eb1e581dc8e5c3ac05cfc7ff75ec8a04aa66128d5df0e6c1c68",
+          "ocr": "a9994c7658310fc579488351f4e731ae764ea3ecce776a510ff67d7c472d673f"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 348,
+        "ocr_chars": 354,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 372,
+        "gold_chars": 361,
+        "baseline_notes": [
+          "OCR 尾裁：保留 352/366 字（页面物理末界），溢出 14 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "11a58cba739728a234dd55ae884c0995f358d75d000c130433b10684821a4752",
+          "gold": "83801ca75ae3df61604ac1eee1be7edf9c563dcda08a96abc68dea76feba2a0f",
+          "ocr": "d1df19348a048699d0eafcba0e681f6b79ebf5087f633065b32ad00490c7f122"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 48,
+        "ocr_chars": 48,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 373,
+        "gold_chars": 56,
+        "baseline_notes": [
+          "OCR 尾裁：本页内容未溢出页界"
+        ],
+        "hashes": {
+          "draft": "91237b760f4f9a4abbd63bf8d8255c84541fb910c3ea36d8af8fb3627038c8c0",
+          "gold": "1ae24fc8f1186e2953845fbc2695fdc82273918919f44e43dc50ad69237acca7",
+          "ocr": "ed6df041de5f885f102921fd7c8f6d346ad7468cbdd628ae967278c507b61006"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 314,
+        "ocr_chars": 315,
+        "skip": null,
+        "proposals": [],
+        "accepted": false,
+        "removed_chars": 0,
+        "residual_chars": -1,
+        "tolerance": 8,
+        "page": 374,
+        "gold_chars": 320,
+        "baseline_notes": [
+          "OCR 尾裁：保留 317/472 字（页面物理末界），溢出 155 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "026a7a20107438d30c4769ddd5191450fb412464239506d9b80d300563811f8a",
+          "gold": "497ce43c214c8112a4834614528d66123189816c6da58762824bc806e2b1d43a",
+          "ocr": "e50e552d5392d800b4768c0f0b0d01a77c2344dcbad480d96c724967839da947"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 350,
+        "ocr_chars": 352,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 375,
+        "gold_chars": 356,
+        "baseline_notes": [
+          "OCR 尾裁：保留 353/393 字（页面物理末界），溢出 40 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "762e290c54ec8cb94016d308777785eb7106674e06d75bd3afba7c1d523179ff",
+          "gold": "34731a61b6d9354654adb5b5b65c700dc517fd6eb74d2052d752400ec97e1073",
+          "ocr": "b31ebca249328ed718475fd5cde956e3a7afa4238248500ac15a325112a4644e"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 360,
+        "ocr_chars": 361,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 376,
+        "gold_chars": 363,
+        "baseline_notes": [
+          "OCR 尾裁：本页内容未溢出页界"
+        ],
+        "hashes": {
+          "draft": "85c5f5395d179cd21db876c4b76a727e36de16901fb92c7c5132419f8f6df9e7",
+          "gold": "eec8c9af8b3ace657327a5bdb7fc1c0e8e58e4b7b54b2c441c358d47cb8032c2",
+          "ocr": "668c85e457b7926fb83940f6c641370e399922e30e7af7cbd45c420b5afda4f4"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 339,
+        "ocr_chars": 338,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 377,
+        "gold_chars": 345,
+        "baseline_notes": [
+          "OCR 尾裁：保留 346/379 字（页面物理末界），溢出 33 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "0479ed5ee6e87ea19f5fae02fba27e6ec0236bb70d0105aa8bc5c9ce49ea6d53",
+          "gold": "59930b3bc081b71e9026597f20b4e090f92e03c6571f70c8ec58f629aa5dc34a",
+          "ocr": "c3d22554840145c438d333238ff2a79e4ff095680bb9432a5d904d447b9b2e28"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 353,
+        "ocr_chars": 354,
+        "skip": null,
+        "proposals": [],
+        "accepted": false,
+        "removed_chars": 0,
+        "residual_chars": -1,
+        "tolerance": 8,
+        "page": 378,
+        "gold_chars": 358,
+        "baseline_notes": [
+          "OCR 尾裁：保留 357/754 字（页面物理末界），溢出 397 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "b040959e6fedfcc84e0150498cfee4b2d0166865727606deac8d804f8010c4b3",
+          "gold": "f3f03b5352073999a19c2dbb8b155fe64418443e6e8faed2a71dfa5d08a6879d",
+          "ocr": "9e17a9d35b67bfe6694fd701a936cc859fefadeedb98a53ac945ba6659250bfd"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 372,
+        "ocr_chars": 372,
+        "skip": null,
+        "proposals": [],
+        "accepted": false,
+        "removed_chars": 0,
+        "residual_chars": 0,
+        "tolerance": 8,
+        "page": 379,
+        "gold_chars": 372,
+        "baseline_notes": [
+          "OCR 尾裁：本页内容未溢出页界"
+        ],
+        "hashes": {
+          "draft": "ef21651689bbab721b2c765208d97f5c538a19b9d876781f42328d77996b9f78",
+          "gold": "7277d0a6eb52a17a617eecfbf6f7a93c021e3dffb6bc98027aa33837fcb0f54b",
+          "ocr": "c53c3cafeff7262cf73078ed13509b64c38358ff622763acb85be41809665343"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": true
+        },
+        "clean_gold_control": {
+          "skip": null,
+          "accepted": false,
+          "removed_chars": 0,
+          "residual_chars": 0
+        }
+      },
+      {
+        "draft_chars": 362,
+        "ocr_chars": 352,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 380,
+        "gold_chars": 357,
+        "baseline_notes": [
+          "OCR 尾裁：保留 368/453 字（页面物理末界），溢出 85 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "4975ce6914307dfb926df8b941baa6406d5f4d0e79d53d7c6649badf7e1cdab4",
+          "gold": "246de05796ec852e5af75282816980eff6b3d3f2ff4d970067ca09bdc651869b",
+          "ocr": "fe2dad2358d37f410662d21e970cbc3148b434aee8b07ca7548e69c276b17a73"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 351,
+        "ocr_chars": 283,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 381,
+        "gold_chars": 340,
+        "baseline_notes": [
+          "OCR 尾裁：保留 362/465 字（页面物理末界），溢出 103 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "51c92f8104724ce55fa80be3aca4e858fd2300ff550458f62e585daac994f21b",
+          "gold": "ca2e753ce1507f9368871ca1f2130186ddca50793378ba6507dc83a3a384e1af",
+          "ocr": "12fd780a51ff711f6bba3d37e59d230a06c130a7603d05afd3a5a3c79ae54b3a"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 327,
+        "ocr_chars": 335,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 382,
+        "gold_chars": 352,
+        "baseline_notes": [
+          "OCR 尾裁：保留 333/356 字（页面物理末界），溢出 23 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "df58cef12c0dc484f4e43628be77be388e79d363e26634dcfcf976a2e2b47d0f",
+          "gold": "d0facddd4a8e821e5ad10fb1129f8f28a97eef2631a6f281bef4f59fe589967f",
+          "ocr": "06367674212c773f0f852e625a544028d2818ba010c73e7dfae857f376f94abc"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 23,
+        "ocr_chars": 128,
+        "skip": null,
+        "proposals": [],
+        "accepted": false,
+        "removed_chars": 0,
+        "residual_chars": -105,
+        "tolerance": 8,
+        "page": 383,
+        "gold_chars": 23,
+        "baseline_notes": [
+          "OCR 尾裁未执行：对齐不可信（页面 128 字中匹配 23）——本页草稿含全量词条，添加下页前请先手工裁剪到物理页界"
+        ],
+        "hashes": {
+          "draft": "223c082e5f9cb11d7b76907139fdeadb0e3a708a4bdd5e13bbebe1cda4f9384d",
+          "gold": "4748baf4c42e3a03bd2dc68486ffd4cce50e782b20c98e86f367728084c4810d",
+          "ocr": "0d94917e0946bfdde36fa825407f69b99f6f4657d673dc3c8266952a662aba2f"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": true
+        },
+        "clean_gold_control": {
+          "skip": null,
+          "accepted": false,
+          "removed_chars": 0,
+          "residual_chars": -105
+        }
+      },
+      {
+        "page": 384,
+        "skip": "无有效 OCR 缓存"
+      },
+      {
+        "page": 385,
+        "skip": "无有效 OCR 缓存"
+      },
+      {
+        "page": 386,
+        "skip": "无有效 OCR 缓存"
+      },
+      {
+        "page": 387,
+        "skip": "无有效 OCR 缓存"
+      },
+      {
+        "page": 388,
+        "skip": "无有效 OCR 缓存"
+      },
+      {
+        "page": 389,
+        "skip": "无有效 OCR 缓存"
+      },
+      {
+        "page": 390,
+        "skip": "无有效 OCR 缓存"
+      },
+      {
+        "page": 391,
+        "skip": "无有效 OCR 缓存"
+      },
+      {
+        "draft_chars": 0,
+        "ocr_chars": 86,
+        "skip": null,
+        "proposals": [],
+        "accepted": false,
+        "removed_chars": 0,
+        "residual_chars": -86,
+        "tolerance": 8,
+        "page": 392,
+        "gold_chars": 0,
+        "baseline_notes": [
+          "空白页：无字头索引且无前页续文，正文留空；若原图实际有内容，请对照原图手工补录"
+        ],
+        "hashes": {
+          "draft": "72e6d09229567182b81f7b36f8cfa84c5fd1f322ede74c764d06a19b67e08ec4",
+          "gold": "72e6d09229567182b81f7b36f8cfa84c5fd1f322ede74c764d06a19b67e08ec4",
+          "ocr": "12c29b44037835a07a3b03bc48b9796b33c67638cb5cf7a8927ade77107270c5"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": true
+        },
+        "clean_gold_control": {
+          "skip": null,
+          "accepted": false,
+          "removed_chars": 0,
+          "residual_chars": -86
+        }
+      },
+      {
+        "page": 393,
+        "skip": "无有效 OCR 缓存"
+      },
+      {
+        "page": 394,
+        "skip": "无有效 OCR 缓存"
+      },
+      {
+        "page": 395,
+        "skip": "无有效 OCR 缓存"
+      },
+      {
+        "page": 396,
+        "skip": "无有效 OCR 缓存"
+      },
+      {
+        "page": 397,
+        "skip": "无有效 OCR 缓存"
+      },
+      {
+        "draft_chars": 0,
+        "ocr_chars": 146,
+        "skip": null,
+        "proposals": [],
+        "accepted": false,
+        "removed_chars": 0,
+        "residual_chars": -146,
+        "tolerance": 8,
+        "page": 399,
+        "gold_chars": 0,
+        "baseline_notes": [
+          "空白页：无字头索引且无前页续文，正文留空；若原图实际有内容，请对照原图手工补录"
+        ],
+        "hashes": {
+          "draft": "183a0a3aaeaa3a9f7d72ff857946dd2fd932462188accb0cf014c6aee0264b95",
+          "gold": "183a0a3aaeaa3a9f7d72ff857946dd2fd932462188accb0cf014c6aee0264b95",
+          "ocr": "6327018a1232d9eb572385cac812bc6d5e3f2040c7c526e3f2323f1790d2ea5d"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": true
+        },
+        "clean_gold_control": {
+          "skip": null,
+          "accepted": false,
+          "removed_chars": 0,
+          "residual_chars": -146
+        }
+      },
+      {
+        "draft_chars": 221,
+        "ocr_chars": 232,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 400,
+        "gold_chars": 233,
+        "baseline_notes": [
+          "OCR 尾裁：保留 224/263 字（页面物理末界），溢出 39 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "ec886b0de78a5317f236248c3ae68de75ed32f01fc3fa61f10eb7c572206c465",
+          "gold": "e5785a6ea74209052414f8a726a60a61f9504275c65bfacd907c4274ba6fef17",
+          "ocr": "332de3945b61b6eaa8ad3000b14e45b83fca689c1c7ad5c2064bf38cc24a4c6d"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      },
+      {
+        "draft_chars": 349,
+        "ocr_chars": 350,
+        "skip": "复杂字头/作用域不在本实验范围",
+        "proposals": [],
+        "accepted": false,
+        "page": 401,
+        "gold_chars": 355,
+        "baseline_notes": [
+          "OCR 尾裁：保留 354/420 字（页面物理末界），溢出 66 字留给下页自动续入"
+        ],
+        "hashes": {
+          "draft": "364c3fd9614ca8245a3b8b1cfe977c0d48c339aa70c7177e1ea7259e6d5eefd8",
+          "gold": "26b21adc25771707e84a9e35d1276a0bf052a79d7801632fda16370978e7f9fd",
+          "ocr": "b2dab53e7c0d589f4c14b5239add96cc0341d910d99272306b2ceb41961a5cf6"
+        },
+        "scoring": {
+          "removed_extra": 0,
+          "removed_gold": 0,
+          "removed_ambiguous": 0,
+          "output_equals_gold": false
+        },
+        "clean_gold_control": {
+          "skip": "复杂字头/作用域不在本实验范围",
+          "accepted": false,
+          "removed_chars": null,
+          "residual_chars": null
+        }
+      }
+    ]
+  }
+}

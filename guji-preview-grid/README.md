@@ -126,6 +126,7 @@ pnpm build
   fetch_kangxi_entry 增量爬取）→ 由 page_chars + entries 生成 .gj 草稿（字头行 +
   释义段落带，未编码字 `#□` 占位注释）入 `annotations/`、manifest 追加该页，
   前端通过 `dataset-index` 重新读取当前清单并自动跳转；`POST /dataset/page-tool` 中间件仅 dev 生效
+- **来源卡片拆分**：添加新页按字头、宿主页位和 SVG 选择来源卡片，排除有其他卡片佐证的附带子段，避免「仆」混入「僕」等释文。旧缓存利用已存 HTML 按需解析，无须重抓；归属不明时保留原文并提示待核。已有校对文件不会自动重写，规则及验收见[来源卡片拆分说明](../docs/development/kangxi-source-cards.md)。
 - **爬取字头与详情**：字头栏通过 `POST /dataset/page-tool` 的
   `{ action: "crawl-heads", page }` 按页只读查询 SQLite；点击字头后通过
   `{ action: "crawl-entry", codepoint }`（十进制 Unicode 码位）只取该字词条。

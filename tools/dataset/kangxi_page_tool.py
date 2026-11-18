@@ -76,6 +76,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "crawl"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import kangxi_store  # noqa: E402
 import paths  # noqa: E402
+from kangxi_entry_parser import resolve_entry  # noqa: E402
 from kangxi_semantics import find_host_marks, strip_guwen_prefix, section_heading  # noqa: E402
 
 HERE = Path(__file__).resolve().parent          # tools/dataset
@@ -207,17 +208,17 @@ def continuation_from_prev(
         info["skipped"] = f"前页 {page - 1} 不在数据集"
         return [], info
 
-    def host_in(raw_text: str):
+    def host_in(raw_text: str, source_page: int):
         """在单页文本中找最后一个有库内详情的主字头；返回 (head, detail, tail_raw)。
         标记解析走 find_host_marks（纯），库内详情查询在此（I/O）。"""
         for cand, end in reversed(find_host_marks(raw_text)):
-            e = entry_detail(ord(cand), store) if len(cand) == 1 else None
+            e = entry_detail(ord(cand), store, page=source_page) if len(cand) == 1 else None
             if e is not None:
                 return cand, e, raw_text[end:]
         return None, None, ""
 
     raw = raw_prev
-    head, detail, tail_raw = host_in(raw)
+    head, detail, tail_raw = host_in(raw, page - 1)
     info["host_page"] = page - 1
     if detail is None:
         # 前页是纯延续页：逐页向前找宿主页，边回溯边累计纯延续页全文（正序），
@@ -229,7 +230,7 @@ def continuation_from_prev(
             if not cand_gj.exists():
                 break  # 数据集不连续，回溯终止
             cand_raw = cand_gj.read_text(encoding="utf-8")
-            h, e, t = host_in(cand_raw)
+            h, e, t = host_in(cand_raw, back)
             if e is not None:
                 head, detail = h, e
                 tail_raw = t + "\n" + "\n".join(reversed(chained))
@@ -244,6 +245,8 @@ def continuation_from_prev(
         info["skipped"] = "前页字头在库中均无详情"
         return [], info
     info["head"] = head
+    if detail.get("selection_note"):
+        info["source_note"] = detail["selection_note"]
     tail_raw = strip_guwen_prefix(tail_raw)
     # 剥离注释行与页码/分隔行（伴随字形/归并来源等工具注释、回溯拼接各页
     # 带来的 @页码 行不是页面文本，混进尾部会让锚点在库内段落中找不到起点
@@ -451,8 +454,12 @@ def page_heads(page: int, store: kangxi_store.KangxiStore | None = None) -> list
     return (store or kangxi_store.KangxiStore(readonly=True)).get_page_chars(page)
 
 
-def entry_detail(head: str | int, store: kangxi_store.KangxiStore | None = None) -> dict | None:
-    """给定字头 → 词条详情（record_json 已解析的结构化记录）；未收录返回 None。
+def entry_detail(head: str | int, store: kangxi_store.KangxiStore | None = None,
+                 *, page: int | None = None, svg: str | None = None) -> dict | None:
+    """字头＋可选来源页位／缩略图 → 卡片详情；未收录返回 None。
+
+    旧缓存从保存的 HTML 按需重解析，查询零网络、零写盘。续文使用宿主页位，
+    不使用当前续页。缺 HTML 或卡片归属不明时保留旧文，后者附 selection_note。
 
     head 收单字（'丹'）或十进制码位（ord，如 20025）；未编码字形无码位不可查。
     记录字段：sword/pinyin/zhuyin/radical/total_strokes/guwen（古文变体，
@@ -463,7 +470,14 @@ def entry_detail(head: str | int, store: kangxi_store.KangxiStore | None = None)
     row = s.get_entry(head) if isinstance(head, int) else s.get_entry_by_char(head)
     if row is None:
         return None
-    return json.loads(row["record_json"])
+    return resolve_entry(row, head=chr(head) if isinstance(head, int) else head, page=page, svg=svg)
+
+
+def _page_entry_details(chars: list[dict], page: int, store) -> dict:
+    """页内按缩略图取卡片；同码位重复出现时不覆盖不同来源。"""
+    return {item.get("svg") or item["codepoint"]:
+            entry_detail(item["codepoint"], store, page=page, svg=item.get("svg"))
+            for item in chars if item["char"]}
 
 
 def page_ocr(page: int, model: str = "paddle",
@@ -1260,13 +1274,13 @@ def _trim_bands_to_page(
 
 def _draft_bands(
     chars: list[dict],
-    details: dict[int, dict | None],
+    details: dict[int | str, dict | None],
     continuation: list[str] | None = None,
     skip_head: str | None = None,
 ) -> tuple[list[list[str]], dict]:
     """chars + 预取注入的字头详情 → band 序列（纯函数，可单测）。
 
-    details 键为 codepoint（值 = entry_detail 结果，缺词条为 None）——数据
+    details 键为缩略图路径（兼容 codepoint；值 = entry_detail 结果）——数据
     获取由调用方完成，组装逻辑零 I/O。continuation 为前页未完字头的续文行
     （置于新字头之前，符合阅读顺序）；skip_head 防重复收录延续字头。
     未编码字形按 _classify_unencoded 的归属生成：K 码簇与前主字头 guwen
@@ -1288,7 +1302,7 @@ def _draft_bands(
         head_band = [f"#{item['char']}"]
         bands.append(head_band)
         counts["chars"] += 1
-        detail = details.get(item["codepoint"])
+        detail = details.get(item.get("svg")) or details.get(item["codepoint"])
         ex = extra.get(item["ord"]) or {}
         for c in ex.get("companions") or []:
             bands.append([f"// 站点伴随字形（{c['svg']}）：非词条，确认后删除本行"])
@@ -1349,12 +1363,9 @@ def build_draft_gj(
         }
         return f"@{page}\n", counts
 
-    details = {
-        item["codepoint"]: entry_detail(item["codepoint"], store)
-        for item in chars if item["char"]
-    }
+    details = _page_entry_details(chars, page, store)
     bands, counts = _draft_bands(chars, details, continuation, skip_head)
-    notes: list[str] = []
+    notes = [d["selection_note"] for d in details.values() if d and d.get("selection_note")]
 
     bands, note = _trim_bands_to_page(page, bands, store)
     notes.append(note)
@@ -1583,8 +1594,7 @@ def cmd_pipeline_replay(page: int) -> dict:
 
     # ④ 草稿构建四态演化（拆开 build_draft_gj 内部调用以保留中间产物；
     # 空白页同 build_draft_gj 跳过尾裁/折行/重组——零内容提示语反会误导）
-    details = {i["codepoint"]: entry_detail(i["codepoint"], store)
-               for i in chars if i["char"]}
+    details = _page_entry_details(chars, page, store)
     bands0, counts = _draft_bands(chars, details, trim_cont["kept"] or None, info.get("head"))
     if not chars and not trim_cont["kept"]:
         counts["blank"] = True
@@ -1706,8 +1716,7 @@ def cmd_ocr_skeleton_replay(page: int) -> dict:
     chars = page_heads(page, store)
     cont, info = continuation_from_prev(page, store)
     kept = ocr_trim_continuation(page, cont, store)[0] if cont else []
-    details = {i["codepoint"]: entry_detail(i["codepoint"], store)
-               for i in chars if i["char"]}
+    details = _page_entry_details(chars, page, store)
     bands0, _ = _draft_bands(chars, details, kept or None, info.get("head"))
     bp_bands, _ = _trim_bands_to_page(page, bands0, store)
     bp_n = _norm("".join(l.strip(" \t") for b in bp_bands for l in b))
@@ -1965,6 +1974,8 @@ def cmd_add(page: int) -> dict:
     # 前页未完字头续入（只读前页 .gj，不回写；站点 page_chars 不标延续字头）
     page_ocr(page, store=store)
     continuation, cont_info = continuation_from_prev(page, store)
+    if cont_info.get("source_note"):
+        summaries.append(cont_info["source_note"])
     if cont_info.get("skipped"):
         summaries.append(f"前页续入跳过：{cont_info['skipped']}")
     else:

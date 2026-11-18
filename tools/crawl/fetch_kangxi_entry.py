@@ -4,16 +4,17 @@
 依据 docs/research/2026-11-12-kangxizidian-网站结构调研.md 第 7 节：
 - 详情端点 /search/index_v.php?stype=Word&sword={字}&detail=y（阅读页缩略图
   链接经 iframe 嵌入的真实数据页），服务端渲染纯 HTML，无 JS 依赖；
-- 卡片（#cornerbody1）含：古文、部首/笔画、拼音/注音、倉頡、统一碼、卷別、
-  同文書局本与武英殿本双版本页位、完整释文（og:description 为纯文本副本）；
-- 释文中的 U+EAB1 为站点段落分隔符（剥离后与人工金标逐字符一致）；
+- 每张卡片保存自己的字形、古文、部首/笔画、拼音、倉頡及双版本页位。
+  og:description 可能合并多个字形；正文由来源卡片确定范围，再映射回
+  og 转写以保留标点。另条子段和考證单独保存，解析见 kangxi_entry_parser。
+- 释文中的 U+EAB1 为站点段落分隔符；
   其余私用区（PUA）字符可能是站方 kxfont 字形，记录并在 pua_other 中标出；
 - 侧栏「歡迎光臨/古今人名/康熙頻道」等 #cornerbody1 块为随机轮换广告位，勿爬；
 - sword 须为单个 Unicode 可表示字符；缩略图链接为破损实体 &#x 的真·未编码字
   无法经此端点查询（--pages 模式会跳过并计数）。
 
 输出：结构化记录与详情页原始 HTML 经 kangxi_store 入 SQLite（entries 表，
-主键 Unicode 码位，天然去重；二次运行零网络请求）；磁盘旧 JSON 自动采纳
+主键为查询 Unicode 码位，record 内保存 cards；二次运行零网络请求）；磁盘旧 JSON 自动采纳
 入库不联网；同时仍写每字一个 JSON 文件副本（{码位}.json）。--save-html
 留存 HTML 文件副本。
 
@@ -27,7 +28,6 @@ from __future__ import annotations
 
 import argparse
 import hashlib
-import html as html_mod
 import json
 import random
 import re
@@ -36,11 +36,11 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
-from datetime import date
 from pathlib import Path
 
 import kangxi_log
 import kangxi_store
+from kangxi_entry_parser import parse_detail
 
 DETAIL_TEMPLATE = "https://www.kangxizidian.com/search/index_v.php?stype=Word&sword={sword}&detail=y"
 READING_PAGE_TEMPLATE = "https://www.kangxizidian.com/v2/index2.php?page={page}"
@@ -109,21 +109,6 @@ def check_robots() -> None:
             sys.exit(2)
 
 
-def _field(pattern: str, source: str, cast=str):
-    """取单字段；int 直接转换，字符串默认 strip。"""
-    m = re.search(pattern, source)
-    if not m:
-        return None
-    v = m.group(1)
-    return int(v) if cast is int else v.strip()
-
-
-def _edition(label: str, source: str) -> dict | None:
-    """解析「同文書局本/武英殿本：N頁，第X字」双版本页位。"""
-    m = re.search(label + r"</a>：(\d+)頁，第(\d+)字", source)
-    return {"page": int(m.group(1)), "nth_char": int(m.group(2))} if m else None
-
-
 def chars_from_reading_page(html: str) -> tuple[list[str], int]:
     """从阅读页缩略图列提取可查询字头。
 
@@ -138,49 +123,6 @@ def chars_from_reading_page(html: str) -> tuple[list[str], int]:
             chars.append(c)
     broken = len(re.findall(r"sword=&#x(?![0-9A-Fa-f])", html))
     return chars, broken
-
-
-def parse_detail(html: str, sword: str) -> dict | None:
-    """解析详情卡；无「字頭：」字段视为未命中返回 None。"""
-    if "字頭：" not in html:
-        return None
-    og = re.search(r'og:description" content="([^"]*)"', html)
-    full_text_raw = og.group(1) if og else ""
-    # og 副本以「{字}:」开头；正文 HTML 为准，两处互为校验
-    paragraphs = [p for p in (seg.strip() for seg in full_text_raw.split(PARA_SEP)) if p]
-    if paragraphs and paragraphs[0].startswith(sword + ":"):
-        paragraphs[0] = paragraphs[0][len(sword) + 1:]
-    pua_other = sorted({f"U+{ord(c):04X}" for p in paragraphs for c in p if 0xE000 <= ord(c) <= 0xF8FF})
-
-    # 拼音/注音行：字段名后同行内的 <a> 文本
-    def linked_values(label: str) -> list[str]:
-        line = re.search(label + r"：.*?<br>", html)
-        if not line:
-            return []
-        return [html_mod.unescape(t) for t in re.findall(r">([^<>]+)</a>", line.group(0))]
-
-    return {
-        "sword": sword,
-        "unicode": f"U+{ord(sword):04X}" if len(sword) == 1 else None,
-        "head": _field(r"字頭：<font color=blue>(.*?)</font>", html),
-        "guwen": _field(r"古文：<font24>(.*?)</font24>", html),
-        "radical": _field(r"部首：([^<]*)<br>", html),
-        "radical_strokes": _field(r"部首筆畫：(\d+)", html, int),
-        "extra_strokes": _field(r"部外筆畫：(\d+)", html, int),
-        "total_strokes": _field(r"總筆畫：(\d+)", html, int),
-        "pinyin": linked_values("拼音"),
-        "zhuyin": linked_values("注音"),
-        "cangjie": _field(r"倉頡：([^<]*)<br>", html),
-        "unihan": _field(r"统一碼：([0-9A-Fa-f]+)", html),
-        "juan": _field(r"卷別：([^<]*)<br>", html),
-        "tongwen_edition": _edition("同文書局本", html),
-        "wuying_edition": _edition("武英殿本", html),
-        "text_paragraphs": paragraphs,
-        "text_chars": sum(len(p) for p in paragraphs),
-        "pua_other": pua_other,  # 非 U+EAB1 的 PUA，疑似 kxfont 字形，需人工定字
-        "fetched_at": str(date.today()),
-        "source": DETAIL_TEMPLATE.format(sword=urllib.parse.quote(sword)),
-    }
 
 
 def fetch_entry(sword: str, out_dir: Path, store: kangxi_store.KangxiStore,
