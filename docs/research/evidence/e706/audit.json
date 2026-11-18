@@ -1,0 +1,64 @@
+{
+  "checked_at": "2026-11-18",
+  "target": {
+    "page": 421,
+    "entry": "㐺",
+    "source_text": "【六書本義】从人，三成類爲意。象形。亦作〈亻亻亻〉。",
+    "descriptive_ids": "⿲亻亻亻",
+    "scan_sha256": "a84887b80784ed856ec03a96b64bbcfcce4d4f247271247f140b7b4d954548f5",
+    "page_sha256": "226f0f99f878e06200c8e9d02d656e15f80e2892b6e50a1fdafa9f945965274f"
+  },
+  "unicode": {
+    "encoded_character": "U+343A 㐺",
+    "unihan_version": "18.0.0",
+    "kKangXi": "0095.220",
+    "kIRG_GSource": "GKX-0095.22",
+    "chise_ids": "⿰亻𠆧",
+    "babelstone_ids": "⿰亻𠆧",
+    "ivd_snapshot": "2025-07-14",
+    "ivd_u343a_record": false,
+    "conclusion": "The character identity is encoded as U+343A. No separately callable standardized variant was confirmed for the exact three-side-person form."
+  },
+  "fonts_before": {
+    "guji-plane0.ttf": {
+      "sha256": "d95b07155dd6993f86175cc6ee979403be7fa712b4f79881981011d80d276da8",
+      "cmap": 30709,
+      "contains_u343a": true,
+      "contains_e706": false
+    },
+    "guji-plane2.ttf": {
+      "sha256": "80df094a2e63091b222706696a8b244c9dba45219af866226a097d0fbb2bf28d",
+      "cmap": 61228,
+      "contains_u343a": false,
+      "contains_e706": false
+    },
+    "guji-planef.ttf": {
+      "sha256": "cfeb8527cfc75fe244b1c773056ed8e8896e67918f368999d12f6bd86dee323b",
+      "cmap": 42620,
+      "contains_u343a": false,
+      "contains_e706": false
+    }
+  },
+  "font_search": {
+    "threshold": 80,
+    "mapped_nonempty": {
+      "guji-plane0.ttf": 28998,
+      "guji-plane2.ttf": 61119,
+      "guji-planef.ttf": 42520
+    },
+    "top_candidates": {
+      "guji-plane0.ttf": ["U+6673", 1.315],
+      "guji-plane2.ttf": ["U+2AA81", 1.354],
+      "guji-planef.ttf": ["U+F45A3", 1.168]
+    },
+    "saved_per_font": 100,
+    "result": "No matching glyph among reviewed candidates or plane0 unmapped glyph atlas.",
+    "limits": "Candidate ranking and finite visual review, not an exhaustive visual audit of every mapped glyph or all third-party fonts."
+  },
+  "mechanisms": {
+    "format14_count_each_font": 0,
+    "plane0_gsub": "vert only; no relevant alternate invocation",
+    "plane2_and_planef_gsub": false
+  },
+  "decision": "Allocate small-font PUA U+E706 for faithful glyph-level transcription while preserving standard U+343A unchanged."
+}

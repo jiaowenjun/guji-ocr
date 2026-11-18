@@ -1,0 +1,8 @@
+{
+  "file": "kangxi-gold/annotations/0421.gj",
+  "replacement": {"before": "〈亻亻亻〉", "after": "U+E706", "count": 1},
+  "sha256_before": "e9192c27950ea6b406e750379d5cb4a66d9130ead15825898aee92c3d41fc832",
+  "sha256_after": "5a9cf0edcb05b60694442dacb6f367ba2b6ca14be3c64a1699f2beaf308b8c64",
+  "counts_after": {"U+E706": 1, "descriptive_placeholder": 0, "U+343A": 1},
+  "scope": "One placeholder replacement in an existing untracked draft; no whole-page formatting or status change."
+}

@@ -1,0 +1,53 @@
+{
+  "patch_event": {
+    "tool": "guji_pua_patch",
+    "cp": "U+E706",
+    "version": 1,
+    "at": "2026-11-18T21:51:17+08:00",
+    "operation": "insert",
+    "cache_version": "e701-4-e704-1-e705-1-e706-1",
+    "result": {
+      "font": "guji-preview-grid/public/fonts/guji-plane0.ttf",
+      "scheme": "compose",
+      "source": "tools/dataset/font-sources/e706-songti-v1.json",
+      "sha256_before": "d95b07155dd6993f86175cc6ee979403be7fa712b4f79881981011d80d276da8",
+      "sha256_after": "25857b0b476193a79e4b280e42302f0e00977385d2bbc62e603cc8e3a00568ed",
+      "bytes_before": 17252900,
+      "bytes_after": 17253152,
+      "chamfer": 0.753,
+      "chamfer_gate": 0.85,
+      "cmap_before": 30709,
+      "cmap_after": 30710,
+      "other_glyphs_and_metrics_unchanged": true,
+      "backup": "var/unencoded/kangxi-unencoded/font-backups/guji-plane0.ttf.d95b07155dd6993f86175cc6ee979403be7fa712b4f79881981011d80d276da8.ttf"
+    }
+  },
+  "production_verification": {
+    "glyph_name": "uniE706",
+    "glyph_sha256": "b70f363fdaae3b9abb0798b70c4d480fca9a4ac513b6baeb389633fd7bea727c",
+    "contours": 3,
+    "points": 72,
+    "bbox": [86, -124, 955, 848],
+    "hmtx": [1024, 86],
+    "vmtx": [1024, 22],
+    "existing_glyphs_verified": 30805,
+    "final_glyph_count": 30806,
+    "existing_glyphs_and_metrics_unchanged": true,
+    "preserved_glyph_sha256": {
+      "U+343A": "87c61df8268d07548924df6aa0fcaa198c5998f63b4fd1d544228a72100e4072",
+      "U+E701": "0ef6027de1532c8bc037f5944ab4080e7e14651298ba2f61d468a36d898493c4",
+      "U+E704": "f28a8bf767d91fa2ae6cbf73b5ba8ef70869e4e4ddac3487cb00e135555b3604",
+      "U+E705": "1fe4d3e014eb00135b454eba31cbab7263e1a62aea67105a419d68bbb1cf3ec7"
+    },
+    "recipe_rebuild": "Passed; complete frozen recipe identical"
+  },
+  "fonts_after": [
+    {"path": "guji-preview-grid/public/fonts/guji-plane0.ttf", "bytes": 17253152, "sha256": "25857b0b476193a79e4b280e42302f0e00977385d2bbc62e603cc8e3a00568ed", "contains_E706": true},
+    {"path": "guji-preview-grid/public/fonts/guji-plane2.ttf", "bytes": 42717516, "sha256": "80df094a2e63091b222706696a8b244c9dba45219af866226a097d0fbb2bf28d", "contains_E706": false},
+    {"path": "guji-preview-grid/public/fonts/guji-planef.ttf", "bytes": 26189728, "sha256": "cfeb8527cfc75fe244b1c773056ed8e8896e67918f368999d12f6bd86dee323b", "contains_E706": false},
+    {"path": "guji-preview-grid/public/fonts/guji-large.ttf", "bytes": 46624948, "sha256": "3973ccbe8bbdb4b91af44269a12f9b9f58daeb0c225d78e3a934f676f1c4c231", "contains_E706": false},
+    {"path": "/Users/jwj/Library/Fonts/KX_47043_14.ttf", "bytes": 46623752, "sha256": "7d916ab6e4bcc935894cd372997ebc7536e315a1e8ae7270d39e53e2dbb9c4fa", "contains_E706": false}
+  ],
+  "tests": {"command": "npm test -- --run", "files_passed": 22, "tests_passed": 784, "exit_code": 0},
+  "build": {"command": "npm run build", "exit_code": 0, "warnings": ["Vite native config future compatibility (__dirname)", "Bundle chunk over 500 kB"]}
+}

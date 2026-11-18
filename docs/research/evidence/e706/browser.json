@@ -1,0 +1,16 @@
+{
+  "checked_at": "2026-11-18",
+  "url": "http://127.0.0.1:4177/",
+  "page": 421,
+  "viewport": [1440, 1000],
+  "matrix_matches": 1,
+  "cell": {
+    "text": "U+E706",
+    "class": "m-cell",
+    "font_size_px": 23.8469,
+    "rect_px": {"x": 664.5390625, "y": 166.21875, "width": 29.8046875, "height": 32.0390625},
+    "css_font_stack": "GujiPlane0, GujiPlane2, GujiPlaneF, 中华书局宋体00平面, 中华书局宋体02平面, 中华书局宋体15平面, HanaMinA, serif"
+  },
+  "platform_font": {"familyName": "ZhongHuaSongPlane00", "postScriptName": "FZSONG_ZHSJ_SIP--GB1-5", "glyphCount": 1, "isCustomFont": true},
+  "result": "E706 rendered in the page-421 matrix with the bundled plane0 custom font and no fallback box."
+}

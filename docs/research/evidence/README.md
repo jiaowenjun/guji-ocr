@@ -13,6 +13,8 @@
 
 新增字体证据：**[E705〈口𠂹〉全过程报告](../2026-11-18-U+E705口𠂹调研核验与补录报告.md)**，对应 [补录前编码调研](kou-200b9/audit.json)、[全字体排名](kou-200b9/font-search.json)、[字体覆盖](kou-200b9/font-coverage.json)、[口部候选](kou-200b9/mouth-candidates.json)、[写入前基线](e705/before.json)、[试作参数](e705/layout-trials.json)、[反例与来源拒绝](e705/extra-checks.json)、[正式写入和全量保护核验](e705/patch-verification.json)、[正文替换](e705/annotation.json)、[实际浏览器字体](e705/browser.json)。形似分数是弱回归检查，不能单独识别目标；报告明确保存通过数值闸的错误结构对照。
 
+新增字体证据：**[E706〈亻亻亻〉全过程报告](../2026-11-18-U+E706亻亻亻调研核验与补录报告.md)**，对应 [字符身份与补前字体核验](e706/audit.json)、[补前全字体候选](e706/font-search.json)、[正式写入与原字保护](e706/patch-verification.json)、[421页单点替换](e706/annotation.json)、[实际浏览器字体](e706/browser.json)。U+343A 已编码；E706 只保存原文明确另举的三侧立人字形，不能写成 Unicode 新字符。
+
 这里保存 2026-11-11 调研时对公开文件的检查记录。它们是支撑[综合报告](../README.md)的文件计数、哈希和局部观察，**不是 OCR 性能复现实验，也不是全库人工质量审计**。
 
 | 文件 | 检查方法与结果 | 适用边界 |
