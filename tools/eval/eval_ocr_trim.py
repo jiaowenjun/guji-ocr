@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""初校真值 × 续文 OCR 裁剪 对照评估：ocr_trim_continuation 逐页验证。
+"""初校真值 × 草稿页首续文对照评估：整页尾裁后逐页验证。
 
 用法：python3 scripts/eval_ocr_trim.py [-v] [--page N]
   -v 逐页打印边界上下文（裁点/真值末尾各 12 字）。
 数据源：kangxi-gold/annotations/*.gj（初校真值）+ 生产代码路径
-（kangxi_page_tool.continuation_from_prev → ocr_trim_continuation，OCR 走
+（continuation_from_prev → build_draft_gj → 提取页首续文，OCR 走
 持久缓存，服务不必运行）。
 
 真值口径：本页 .gj 首个字头行（# 开头）之前的正文＝人工认定的本页续文；
@@ -22,6 +22,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "dataset"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "crawl"))
 import kangxi_page_tool as kpt  # noqa: E402
 import kangxi_store  # noqa: E402
+from eval_continuation_replay import generated_continuation  # noqa: E402
 
 MANIFEST = kpt.MANIFEST
 ANNOTATIONS = kpt.ANNOTATIONS
@@ -73,15 +74,14 @@ def evaluate(store, page: int, verbose: bool = False) -> dict:
         r["gt_len"] = len(gt_n)
         return r
 
-    trimmed, note = kpt.ocr_trim_continuation(page, cont, store)
-    end, total, why = kpt.ocr_page_cut(page, "\n".join(cont), store)
+    trimmed, note = generated_continuation(page, store, cont, info.get("head"))
     trim_n = kpt._norm("\n".join(trimmed))
     full_n = kpt._norm("\n".join(cont))
     assert trim_n == full_n[: len(trim_n)], "裁剪必须是前缀"
 
     delta = len(trim_n) - len(gt_n)
     r.update(
-        cut=end, total=total, gt_len=len(gt_n), delta=delta,
+        cut=len(trim_n), total=len(full_n), gt_len=len(gt_n), delta=delta,
         note=note, score=score(delta, len(trim_n) == len(full_n)),
     )
     if len(trim_n) == len(full_n):
@@ -107,7 +107,7 @@ def main() -> int:
     args = ap.parse_args()
 
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
-    store = kangxi_store.KangxiStore(args.db)
+    store = kangxi_store.KangxiStore(args.db, readonly=True)
     pages = [p["page"] for p in manifest["pages"] if p["status"] == "first"]
     if args.page:
         pages = [p for p in pages if p == args.page]

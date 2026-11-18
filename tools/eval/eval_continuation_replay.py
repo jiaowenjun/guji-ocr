@@ -3,7 +3,7 @@
 
 口径（复现 add 时的真实链路，唯一替换：前页 .gj 用初校版而非草稿版）：
   cont = continuation_from_prev(page)   —— 库内全量余段（未受页界约束）
-  trim = ocr_trim_continuation(cont)    —— OCR 标尺裁到本页物理范围
+  trim = generated_continuation(...)   —— 整页组装、尾裁后取首字头之前的续文
   GT   = 初校 .gj 首个字头行之前的正文（人工放置在本页的续文）
 
 指标（全部按 _norm 归一化）：
@@ -89,6 +89,21 @@ def lcp(a: str, b: str) -> int:
     return n
 
 
+def generated_continuation(page: int, store, cont: list[str], head: str | None) -> tuple[list[str], str]:
+    """从生产草稿取页首续文；沿用整页尾裁，不能单独匹配续文与整页 OCR。"""
+    draft, counts = kpt.build_draft_gj(page, store, cont or None, head, fold=False)
+    _, bands = kpt.parse_gj_bands(draft)
+    leading = []
+    note = "；".join(counts["ocr_notes"])
+    for band in bands:
+        for line in band:
+            if line.lstrip().startswith("#"):
+                return leading, note
+            if not line.lstrip().startswith("//"):
+                leading.append(line)
+    return leading, note
+
+
 def find_fallback(hay: str, needle: str) -> int | None:
     """GT 前缀在库文定位：前缀长逐级回退（人工校订改了开头也不误判）。"""
     if not needle:
@@ -153,7 +168,7 @@ def score_page(gt_n: str, cont: list[str], trim_n: str, host_ok: bool) -> tuple[
 
 def main() -> None:
     verbose = "--json" not in sys.argv  # 人读逐页报告；--json 仅输出证据 JSON
-    store = kangxi_store.KangxiStore()
+    store = kangxi_store.KangxiStore(readonly=True)
     manifest = json.loads(kpt.MANIFEST.read_text(encoding="utf-8"))
     status = {p["page"]: p["status"] for p in manifest["pages"]}
     done = sorted(p for p, s in status.items() if s in ("first", "final"))
@@ -177,7 +192,7 @@ def main() -> None:
 
         trim_n, trim_note = "", "（未执行）"
         if cont:
-            trimmed, trim_note = kpt.ocr_trim_continuation(page, cont, store)
+            trimmed, trim_note = generated_continuation(page, store, cont, info.get("head"))
             trim_n = kpt._norm("\n".join(trimmed))
         row["trim_note"] = trim_note
 

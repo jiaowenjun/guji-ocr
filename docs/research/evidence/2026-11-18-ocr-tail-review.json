@@ -1,0 +1,769 @@
+{
+  "date": "2026-11-18",
+  "scope": "修改前快照中具有效整页 OCR 且候选非空的 83 页；使用当前扫描图校验后的列级缓存，零网络、零标注改写。",
+  "implementation_sha256": "9354ed9a81cbbddff39b8c6e39ed0d1e974467a9a681a6dcdef08e988b99fb81",
+  "pages": 83,
+  "changed": [
+    412
+  ],
+  "pending": [
+    326,
+    330,
+    336,
+    351,
+    367,
+    368,
+    372,
+    376,
+    411
+  ],
+  "rows": [
+    {
+      "page": 312,
+      "before": 229,
+      "after": 229,
+      "candidate_length": 546,
+      "pending": false,
+      "note": "",
+      "input_sha256": "a53470f14b000a4e2088f51a221ccd308c00ed71bab8d83cf310caf7d547ebae"
+    },
+    {
+      "page": 313,
+      "before": 367,
+      "after": 367,
+      "candidate_length": 1049,
+      "pending": false,
+      "note": "",
+      "input_sha256": "da9ead7b25933858791cd4dee2aa1809c017568426c0272c3e7c52a1b31f920f"
+    },
+    {
+      "page": 314,
+      "before": 375,
+      "after": 375,
+      "candidate_length": 682,
+      "pending": false,
+      "note": "",
+      "input_sha256": "57f0196e56f252c84acfc90cd2d60d5d54ffd3c52ca4757cf388cf34cd0d11c0"
+    },
+    {
+      "page": 315,
+      "before": 366,
+      "after": 366,
+      "candidate_length": 400,
+      "pending": false,
+      "note": "",
+      "input_sha256": "df9af530d9f1e5f4d02da9c91ee8fd1c9eb8342a8c98c1019c0f186e339d056b"
+    },
+    {
+      "page": 316,
+      "before": 358,
+      "after": 358,
+      "candidate_length": 518,
+      "pending": false,
+      "note": "",
+      "input_sha256": "41f3a108b8826b3689b0765b10734d61b0975577eaddcb6315ce3a3169cfe2a1"
+    },
+    {
+      "page": 317,
+      "before": 370,
+      "after": 370,
+      "candidate_length": 419,
+      "pending": false,
+      "note": "",
+      "input_sha256": "798b24e969004eea4fdd47f205c28eae932f7b2093e954f51695baea78ed0b4a"
+    },
+    {
+      "page": 318,
+      "before": 365,
+      "after": 365,
+      "candidate_length": 453,
+      "pending": false,
+      "note": "",
+      "input_sha256": "ba144fb4ea70e0e91a7c087a786222b4dc4f74dd91f82fb56bf635563012bab6"
+    },
+    {
+      "page": 319,
+      "before": 363,
+      "after": 363,
+      "candidate_length": 381,
+      "pending": false,
+      "note": "",
+      "input_sha256": "34baaa7363068155a6418ca0a63046d7aa2a1829562e806017cf589a8d6646b6"
+    },
+    {
+      "page": 320,
+      "before": 353,
+      "after": 353,
+      "candidate_length": 644,
+      "pending": false,
+      "note": "",
+      "input_sha256": "e9482e79f468b3ad633ecd45193c6cbe8bc1e28abfa9dfbcafa91c67d07f7a68"
+    },
+    {
+      "page": 321,
+      "before": 375,
+      "after": 375,
+      "candidate_length": 389,
+      "pending": false,
+      "note": "",
+      "input_sha256": "a6303d98f56e0de77ac3f97102ba358b7f6acfcff8cb5a47c2951d9774a1610a"
+    },
+    {
+      "page": 322,
+      "before": 358,
+      "after": 358,
+      "candidate_length": 674,
+      "pending": false,
+      "note": "",
+      "input_sha256": "73a180ed530be5bebb316e0b5a3436cbd228ca780cf39779b7854ab7a2b4ab9c"
+    },
+    {
+      "page": 323,
+      "before": 368,
+      "after": 368,
+      "candidate_length": 499,
+      "pending": false,
+      "note": "",
+      "input_sha256": "9670ad6e09e55694d2da26f367ec8509d545ab00b53706292079427d3ac49120"
+    },
+    {
+      "page": 324,
+      "before": 367,
+      "after": 367,
+      "candidate_length": 891,
+      "pending": false,
+      "note": "",
+      "input_sha256": "0eb60cdfd0f344c9e851192e06c9c4559ef1edfd07fc314e3ae0ac9e8a37685a"
+    },
+    {
+      "page": 325,
+      "before": 370,
+      "after": 370,
+      "candidate_length": 524,
+      "pending": false,
+      "note": "",
+      "input_sha256": "1ae567c93dfc8672a25a35024d4d58e9c815e27d256aa38c850d36b59bb89a29"
+    },
+    {
+      "page": 326,
+      "before": 356,
+      "after": 356,
+      "candidate_length": 364,
+      "pending": true,
+      "note": "，末段判信回缩 4 字，页尾待核：OCR 余文「○按丙字」4 字，库文邻文「〇按㐁字」，连续匹配锚点不足；请核对末列原图",
+      "input_sha256": "57f44ca3c88a7cc23c487fa05c04e833db0b5a508159a1fab3f97a9b588e393a"
+    },
+    {
+      "page": 327,
+      "before": 355,
+      "after": 355,
+      "candidate_length": 455,
+      "pending": false,
+      "note": "",
+      "input_sha256": "65474ae821b8375416d118f519ea370e59be35d0c8420895c9066500fd799d50"
+    },
+    {
+      "page": 328,
+      "before": 282,
+      "after": 282,
+      "candidate_length": 282,
+      "pending": false,
+      "note": "",
+      "input_sha256": "d0d43645885746f9e892e3742a955150a0b4a181b09d4886a4fae5d7e63502e6"
+    },
+    {
+      "page": 330,
+      "before": 308,
+      "after": 308,
+      "candidate_length": 507,
+      "pending": true,
+      "note": "，末段判信回缩 46 字，页尾待核：OCR 余文「陳餘子集」15 字，库文邻文「𨻰餘傳獨」，超过 4 字局部复核范围；请核对末列原图",
+      "input_sha256": "559e4551a918feada314092968a55325f1cc896159270f9d5cc454e7c7d7c728"
+    },
+    {
+      "page": 331,
+      "before": 363,
+      "after": 363,
+      "candidate_length": 1190,
+      "pending": false,
+      "note": "",
+      "input_sha256": "f10dd48dda3c33316f0acd8002e46bd450af05cad3e1807bce9ff3c08930bf7f"
+    },
+    {
+      "page": 332,
+      "before": 371,
+      "after": 371,
+      "candidate_length": 827,
+      "pending": false,
+      "note": "",
+      "input_sha256": "1a23a231c645b97b5ff3784283c13564e7cc2a7394cf1b43041eff5a8b425863"
+    },
+    {
+      "page": 333,
+      "before": 373,
+      "after": 373,
+      "candidate_length": 456,
+      "pending": false,
+      "note": "",
+      "input_sha256": "ceaa7a7c8185f742139aad006f61ea8d968c7fad57c651257d2570293361aa8a"
+    },
+    {
+      "page": 334,
+      "before": 362,
+      "after": 362,
+      "candidate_length": 406,
+      "pending": false,
+      "note": "",
+      "input_sha256": "1d5431bc2def96c8d6d11b862adce24a1b935cf46d15812a60dd69ccf929381e"
+    },
+    {
+      "page": 335,
+      "before": 333,
+      "after": 333,
+      "candidate_length": 333,
+      "pending": false,
+      "note": "",
+      "input_sha256": "ad719afe6bea3d46b24c53175a1b72b1ccbad3fa7d69804b2ad633cd422f6ea5"
+    },
+    {
+      "page": 336,
+      "before": 137,
+      "after": 137,
+      "candidate_length": 137,
+      "pending": true,
+      "note": "，页尾待核：OCR 余文「集熙字典」17 字，库文邻文「（无）」，超过 4 字局部复核范围；请核对末列原图",
+      "input_sha256": "fb55ad103b61bf0a5f70453543a1704e42f8e25d4e84304afe80b8eba954e407"
+    },
+    {
+      "page": 338,
+      "before": 321,
+      "after": 321,
+      "candidate_length": 434,
+      "pending": false,
+      "note": "",
+      "input_sha256": "1f828a5bffc580cbcce0e702d92c1d1cf8a3a7ceee950158248b88bc24e55f2b"
+    },
+    {
+      "page": 339,
+      "before": 355,
+      "after": 355,
+      "candidate_length": 483,
+      "pending": false,
+      "note": "",
+      "input_sha256": "a60ad6c05f7221f8777332776030cb110474e1e7cdbf4bf5532ee5b181fef219"
+    },
+    {
+      "page": 340,
+      "before": 360,
+      "after": 360,
+      "candidate_length": 458,
+      "pending": false,
+      "note": "",
+      "input_sha256": "64a4823d161899f791470f6d36da8395e3d8aa8e40834a103b4a6db1316ce8d9"
+    },
+    {
+      "page": 341,
+      "before": 244,
+      "after": 244,
+      "candidate_length": 244,
+      "pending": false,
+      "note": "",
+      "input_sha256": "30bd7e4291881b2f755eb55b0067a0f3f7440e3fa6e40825c320915fbe2726bb"
+    },
+    {
+      "page": 342,
+      "before": 321,
+      "after": 321,
+      "candidate_length": 347,
+      "pending": false,
+      "note": "",
+      "input_sha256": "c5db0a131a716e9dab0aca9a4adadab89de69a8f63a31fb60aed5fddd209e5b3"
+    },
+    {
+      "page": 343,
+      "before": 352,
+      "after": 352,
+      "candidate_length": 667,
+      "pending": false,
+      "note": "",
+      "input_sha256": "c953cd0d27e1aa8082c119470668da506cada51d33eee2fa2fd2e8b2d7890fc3"
+    },
+    {
+      "page": 344,
+      "before": 370,
+      "after": 370,
+      "candidate_length": 574,
+      "pending": false,
+      "note": "",
+      "input_sha256": "1fd21bf0c25f7ed19d96a759afd3e4df5d9c4e6ceb34fa9f0059b9a38f997f2e"
+    },
+    {
+      "page": 345,
+      "before": 354,
+      "after": 354,
+      "candidate_length": 701,
+      "pending": false,
+      "note": "",
+      "input_sha256": "2944af8ba290e9fdf647c2a99d5f277de4af61ec61e8d2710ab71651ca0a3155"
+    },
+    {
+      "page": 346,
+      "before": 371,
+      "after": 371,
+      "candidate_length": 421,
+      "pending": false,
+      "note": "",
+      "input_sha256": "4c2f8af5339095b5d2a616bec192c683084348e69326e03a81fa229065d5b4cf"
+    },
+    {
+      "page": 347,
+      "before": 366,
+      "after": 366,
+      "candidate_length": 465,
+      "pending": false,
+      "note": "",
+      "input_sha256": "60cc685fda1a1c3fafd7e5dd53b5b32ac2f64636665886a82ffdd143c5b6eabe"
+    },
+    {
+      "page": 348,
+      "before": 364,
+      "after": 364,
+      "candidate_length": 444,
+      "pending": false,
+      "note": "",
+      "input_sha256": "c22c73111e2a9228533aea0b2be9ccbfd0d934a2b4c2d345a097ac23212ca0f7"
+    },
+    {
+      "page": 349,
+      "before": 380,
+      "after": 380,
+      "candidate_length": 389,
+      "pending": false,
+      "note": "",
+      "input_sha256": "979c3cf350080c45821c4a4a0db61efd43657e29e34712f249f4cccc4fd4254b"
+    },
+    {
+      "page": 350,
+      "before": 329,
+      "after": 329,
+      "candidate_length": 541,
+      "pending": false,
+      "note": "",
+      "input_sha256": "2163fc70c6afe2b3680b2ba1c2e3cbe4e4caf333856fb8fd528469de8002ef2b"
+    },
+    {
+      "page": 351,
+      "before": 250,
+      "after": 250,
+      "candidate_length": 269,
+      "pending": true,
+      "note": "，末段判信回缩 18 字，页尾待核：OCR 余文「魯十增玉」33 字，库文邻文「𠂺註詳心」，超过 4 字局部复核范围；请核对末列原图",
+      "input_sha256": "8bed508a0a36fe09f57c4d199b2f9ee95868e8bf093ae857586153d0f744bf33"
+    },
+    {
+      "page": 352,
+      "before": 325,
+      "after": 325,
+      "candidate_length": 424,
+      "pending": false,
+      "note": "",
+      "input_sha256": "c13c7fc69653a3502aeecaa52d05ecf4e1abf379f170f53beeba3c26ae3eb280"
+    },
+    {
+      "page": 353,
+      "before": 367,
+      "after": 367,
+      "candidate_length": 553,
+      "pending": false,
+      "note": "",
+      "input_sha256": "c28faaa8019e931cac1e3b4ffb2ee0a734ef83d50704844f9605f3450d12f0ef"
+    },
+    {
+      "page": 354,
+      "before": 359,
+      "after": 359,
+      "candidate_length": 384,
+      "pending": false,
+      "note": "",
+      "input_sha256": "cffe5740190773c3ab7a660eb5a4a37d04945bc411e43e16538567482a06f780"
+    },
+    {
+      "page": 355,
+      "before": 333,
+      "after": 333,
+      "candidate_length": 339,
+      "pending": false,
+      "note": "",
+      "input_sha256": "9912cbe68f0b09e6371389633b6381e2519bb8586fef668dff8d3c848aaf04a0"
+    },
+    {
+      "page": 356,
+      "before": 348,
+      "after": 348,
+      "candidate_length": 359,
+      "pending": false,
+      "note": "",
+      "input_sha256": "d915a6ce98db67d23083e52b1c202493faf445952e526966b0bf340fecd2616a"
+    },
+    {
+      "page": 357,
+      "before": 333,
+      "after": 333,
+      "candidate_length": 392,
+      "pending": false,
+      "note": "",
+      "input_sha256": "f43112480ea2ad1efd230a81731b3ecdbc9e8d1f88260b4491cf6e2fd2fb9e5a"
+    },
+    {
+      "page": 359,
+      "before": 245,
+      "after": 245,
+      "candidate_length": 245,
+      "pending": false,
+      "note": "",
+      "input_sha256": "514689f6b9fb8a059e781dfd83ee145e580fe28569d381706fab1b259e487e1e"
+    },
+    {
+      "page": 360,
+      "before": 301,
+      "after": 301,
+      "candidate_length": 529,
+      "pending": false,
+      "note": "",
+      "input_sha256": "0db395a4b9d5cdbf2b6c9a200f85868f4c7772021533d4ac4f0f0ef99ae950d9"
+    },
+    {
+      "page": 361,
+      "before": 340,
+      "after": 340,
+      "candidate_length": 362,
+      "pending": false,
+      "note": "",
+      "input_sha256": "98da77e121e10fae9fab07fdb6645e882d0a628ec4bbe6135a419ab176038f92"
+    },
+    {
+      "page": 362,
+      "before": 327,
+      "after": 327,
+      "candidate_length": 330,
+      "pending": false,
+      "note": "",
+      "input_sha256": "e27fcda3730f1ebb4d17af13819682dd3a038d4679fa4446335ef7b83020190a"
+    },
+    {
+      "page": 363,
+      "before": null,
+      "after": null,
+      "candidate_length": 3,
+      "pending": false,
+      "note": "对齐不可信（末段匹配稀疏）",
+      "input_sha256": "78f03ee1fa1b7382f311674d488674da519057792b94d3291263b22b4c79aa68"
+    },
+    {
+      "page": 364,
+      "before": 331,
+      "after": 331,
+      "candidate_length": 831,
+      "pending": false,
+      "note": "",
+      "input_sha256": "02b6b8a348bbacb213d8785e161100b1b3ab5251437ba0d9ff537ee269011b74"
+    },
+    {
+      "page": 365,
+      "before": 370,
+      "after": 370,
+      "candidate_length": 500,
+      "pending": false,
+      "note": "",
+      "input_sha256": "3a163519ee2619c7527f09af9dd970c0237d4bca6df9e2f2a60211fd34e50591"
+    },
+    {
+      "page": 366,
+      "before": 367,
+      "after": 367,
+      "candidate_length": 483,
+      "pending": false,
+      "note": "",
+      "input_sha256": "e2917e923d409eec92e82bbab31f054f1a487c86387f57f2c286146f66a510c6"
+    },
+    {
+      "page": 367,
+      "before": 366,
+      "after": 366,
+      "candidate_length": 394,
+      "pending": true,
+      "note": "，末段判信回缩 2 字，页尾待核：OCR 余文「乖北」2 字，库文邻文「㸦北史文」，末列 OCR 与整页尾文不一致，未自动延伸；请核对末列原图",
+      "input_sha256": "4082db64037cab0d36980ffcf245e7da5e3ef856b224a798ee4f8acc547e5f90"
+    },
+    {
+      "page": 368,
+      "before": 381,
+      "after": 381,
+      "candidate_length": 489,
+      "pending": true,
+      "note": "，末段判信回缩 4 字，页尾待核：OCR 余文「子集上康」11 字，库文邻文「井井經畫」，超过 4 字局部复核范围；请核对末列原图",
+      "input_sha256": "d341ef623a51afb0a6b9ffa623b29da85ecb050c3f748b08ed90f654d77ea87e"
+    },
+    {
+      "page": 369,
+      "before": 346,
+      "after": 346,
+      "candidate_length": 429,
+      "pending": false,
+      "note": "",
+      "input_sha256": "1ac9792d987b2dfd1442e4144612b8ac83089a66017564b1962dea074df7c312"
+    },
+    {
+      "page": 370,
+      "before": 369,
+      "after": 369,
+      "candidate_length": 466,
+      "pending": false,
+      "note": "",
+      "input_sha256": "3d3380ae188a6400410a8eb92b9463c74aa2c1bcc1aab75ef82dc9c17a2a369b"
+    },
+    {
+      "page": 371,
+      "before": 360,
+      "after": 360,
+      "candidate_length": 496,
+      "pending": false,
+      "note": "",
+      "input_sha256": "3dd435ce7ed2d396add0853f77bf1337c06072d448ac228a77a1193209918c25"
+    },
+    {
+      "page": 372,
+      "before": 352,
+      "after": 352,
+      "candidate_length": 366,
+      "pending": true,
+      "note": "，页尾待核：OCR 余文「碑」1 字，库文邻文「𥓓懿賢后」，末列 OCR 无法唯一定位前文，未自动延伸；请核对末列原图",
+      "input_sha256": "134e3378975b936400d819a6d80a506ed853041664859c4c681adb390ca2f7bf"
+    },
+    {
+      "page": 373,
+      "before": 50,
+      "after": 50,
+      "candidate_length": 50,
+      "pending": false,
+      "note": "",
+      "input_sha256": "08a135e66f2000d10e6180e3bb5da5fcbda28c0cce6386077d3bba8decbee62d"
+    },
+    {
+      "page": 374,
+      "before": 317,
+      "after": 317,
+      "candidate_length": 472,
+      "pending": false,
+      "note": "",
+      "input_sha256": "3d24bdc7ad16e1fa4e03050389fdb031bb8782df45b97165e128a61bcf390862"
+    },
+    {
+      "page": 375,
+      "before": 353,
+      "after": 353,
+      "candidate_length": 393,
+      "pending": false,
+      "note": "",
+      "input_sha256": "912c650a5afd015c9b439053f3d60030c2b2ec45c5e722793c70121d16818963"
+    },
+    {
+      "page": 376,
+      "before": 363,
+      "after": 363,
+      "candidate_length": 363,
+      "pending": true,
+      "note": "，页尾待核：OCR 余文「增」1 字，库文邻文「（无）」，库文已结束或下一字为新字头，不能推断缺字；请核对末列原图",
+      "input_sha256": "113421a67d85c3b89b22f8125fab6d55f719ad2fa9d1ea0c7f33ad0fddd87632"
+    },
+    {
+      "page": 377,
+      "before": 346,
+      "after": 346,
+      "candidate_length": 379,
+      "pending": false,
+      "note": "",
+      "input_sha256": "74c11f65dae3943da86f09cafc989c4986599cc9aa048433cba42f41d32a5493"
+    },
+    {
+      "page": 378,
+      "before": 357,
+      "after": 357,
+      "candidate_length": 754,
+      "pending": false,
+      "note": "",
+      "input_sha256": "5dd1c2122eb78150db853d61828bd88b4d6c2b5c3d3fdadf2f4f29925718bdd6"
+    },
+    {
+      "page": 379,
+      "before": 372,
+      "after": 372,
+      "candidate_length": 397,
+      "pending": false,
+      "note": "",
+      "input_sha256": "77808a832e5a0df66f17ab8e5b444135fa31d8ab7fd7fc7495a95efbd8f59acf"
+    },
+    {
+      "page": 380,
+      "before": 368,
+      "after": 368,
+      "candidate_length": 453,
+      "pending": false,
+      "note": "",
+      "input_sha256": "4c036dfa361e87dd5c5ff2b6bdc0858742e230826ff8aaaf4b77adfeef58e7f0"
+    },
+    {
+      "page": 381,
+      "before": 362,
+      "after": 362,
+      "candidate_length": 465,
+      "pending": false,
+      "note": "",
+      "input_sha256": "e0cf9e4c2b55ef529a371b167752f3c9b93f4e38a6c7a642174311606611f499"
+    },
+    {
+      "page": 382,
+      "before": 333,
+      "after": 333,
+      "candidate_length": 356,
+      "pending": false,
+      "note": "",
+      "input_sha256": "24b7ea8b80618b001e76c29fc23a9c487a4ab79c04fa496483d3f7328d9c3de9"
+    },
+    {
+      "page": 383,
+      "before": null,
+      "after": null,
+      "candidate_length": 23,
+      "pending": false,
+      "note": "对齐不可信（页面 128 字中匹配 23）",
+      "input_sha256": "2130fd5d316bc6e6062271b9b8f653e22154134c1a11a97516e0c282ed18e005"
+    },
+    {
+      "page": 400,
+      "before": 224,
+      "after": 224,
+      "candidate_length": 263,
+      "pending": false,
+      "note": "",
+      "input_sha256": "32cbe2eb8f6a52d88fefa9f241d4b9118134e2a0a4bcbdef6d9d177206132c44"
+    },
+    {
+      "page": 401,
+      "before": 354,
+      "after": 354,
+      "candidate_length": 420,
+      "pending": false,
+      "note": "",
+      "input_sha256": "0171b5a91c32193880677069ba20fe5d6ae89191058367fdde4d95c080e74658"
+    },
+    {
+      "page": 402,
+      "before": 360,
+      "after": 360,
+      "candidate_length": 568,
+      "pending": false,
+      "note": "",
+      "input_sha256": "a1f04e4c2d84326c5ad4ee4731dceef684293b520634c9f2ffb597ffc7d25d30"
+    },
+    {
+      "page": 403,
+      "before": 366,
+      "after": 366,
+      "candidate_length": 390,
+      "pending": false,
+      "note": "",
+      "input_sha256": "f0b6924ff75404739061e585fb7a7904d8e4afc1308e6ce0e03384c51e9c0a04"
+    },
+    {
+      "page": 404,
+      "before": 367,
+      "after": 367,
+      "candidate_length": 558,
+      "pending": false,
+      "note": "",
+      "input_sha256": "b821a8d3f41017a15b657f6207105da68268f2d3ae86d4b8db5749bbee13ac68"
+    },
+    {
+      "page": 405,
+      "before": 368,
+      "after": 368,
+      "candidate_length": 474,
+      "pending": false,
+      "note": "",
+      "input_sha256": "1fc6ff7cc3cc5751997a1b77724dba6fd6c9844251ab26c34b07b3596cca5d97"
+    },
+    {
+      "page": 406,
+      "before": 358,
+      "after": 358,
+      "candidate_length": 358,
+      "pending": false,
+      "note": "",
+      "input_sha256": "c23f81c8584b0a9d0757d61cff50aa077267efa7b2bbe69614143102be99dcdf"
+    },
+    {
+      "page": 407,
+      "before": 368,
+      "after": 368,
+      "candidate_length": 455,
+      "pending": false,
+      "note": "",
+      "input_sha256": "560039012fed7b86f3a8fc5b80c01baff42c15663cce23d6ea7f7cff5a918149"
+    },
+    {
+      "page": 408,
+      "before": 355,
+      "after": 355,
+      "candidate_length": 670,
+      "pending": false,
+      "note": "",
+      "input_sha256": "f3b593af90c39b5c7e532e2ab127ede77edebef2ef1cff248780bc9c34c81ab6"
+    },
+    {
+      "page": 409,
+      "before": 373,
+      "after": 373,
+      "candidate_length": 373,
+      "pending": false,
+      "note": "",
+      "input_sha256": "adae1c3fae3b08952eaf1acef89c8d73ac6fdfa0266f76945a4b2e735c89db56"
+    },
+    {
+      "page": 410,
+      "before": 367,
+      "after": 367,
+      "candidate_length": 717,
+      "pending": false,
+      "note": "",
+      "input_sha256": "8847558d6e431b64c071694887b30a386be4bbe51ed34fc4223bfcfe0d68f6db"
+    },
+    {
+      "page": 411,
+      "before": 382,
+      "after": 382,
+      "candidate_length": 607,
+      "pending": true,
+      "note": "，末段判信回缩 35 字，页尾待核：OCR 余文「記其尤誤」7 字，库文邻文「人其代之」，超过 4 字局部复核范围；请核对末列原图",
+      "input_sha256": "98567d857f5a5a0c858f68dc7098e026fd2a6f1fb232440ffc097dffe935eb20"
+    },
+    {
+      "page": 412,
+      "before": 368,
+      "after": 369,
+      "candidate_length": 569,
+      "pending": false,
+      "note": "，末列 OCR 复核通过：局部 1 字差异，保留库文尾字「郞」",
+      "input_sha256": "3c82efd5fc3085c409b44f97598f77d28befd17b772dbc1f989cd41ea5fad2c4"
+    },
+    {
+      "page": 413,
+      "before": 364,
+      "after": 364,
+      "candidate_length": 414,
+      "pending": false,
+      "note": "",
+      "input_sha256": "83b793cd9325243f74a05b2c83aa1424033146038f0951d4a92d9123b891bea4"
+    }
+  ]
+}

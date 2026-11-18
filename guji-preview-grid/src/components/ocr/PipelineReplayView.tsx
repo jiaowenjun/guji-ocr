@@ -31,7 +31,6 @@ type Replay = {
     };
     rest_paragraphs: string[];
   };
-  trim_cont: { note: string; kept: string[] };
   draft: {
     counts: Record<string, number>;
     stages: Stage[];
@@ -56,10 +55,9 @@ type Replay = {
 const STEPS = [
   { id: "data", label: "① 数据" },
   { id: "cont", label: "② 前页续入" },
-  { id: "trim", label: "③ 续文裁剪" },
-  { id: "draft", label: "④ 草稿构建" },
-  { id: "compare", label: "⑤ 对照找错" },
-  { id: "gold", label: "⑥ 金标原文" },
+  { id: "draft", label: "③ 草稿构建" },
+  { id: "compare", label: "④ 对照找错" },
+  { id: "gold", label: "⑤ 金标原文" },
 ] as const;
 
 const SK_STEPS = [
@@ -427,6 +425,7 @@ export function PipelineReplayView() {
               title="③ 蓝本纠错（库文对齐替换）"
               meta="SequenceMatcher(蓝本, 底稿)：replace=错字改库文 / insert=伪读删去 / delete=漏识补入"
             >
+              <p className="mb-2 text-xs text-muted-foreground">{curSkeleton.blueprint.source}</p>
               <div className="mb-2 flex flex-wrap gap-3 text-xs">
                 <span>替换 <b className="tabular-nums">{curSkeleton.fix.replace_chars}</b> 字</span>
                 <span className="text-amber-600">OCR 伪读 {curSkeleton.fix.ocr_only_chars} 字（删去）</span>
@@ -524,18 +523,9 @@ export function PipelineReplayView() {
               ) : null}
             </SectionCard>
 
-            <SectionCard id="trim" title="③ 续文 OCR 裁剪" meta="ocr_trim_continuation">
-              <p className="text-xs">{curReplay.trim_cont.note}</p>
-              {curReplay.trim_cont.kept.map((p, i) => (
-                <pre key={i} className="mt-1 rounded border p-1.5 font-mono text-[11px] leading-5 whitespace-pre-wrap">
-                  裁后段 {i + 1}：{p}
-                </pre>
-              ))}
-            </SectionCard>
-
             <SectionCard
               id="draft"
-              title="④ 草稿构建"
+              title="③ 草稿构建"
               meta={Object.entries(curReplay.draft.counts)
                 .filter(([k]) => COUNT_LABELS[k])
                 .map(([k, v]) => `${COUNT_LABELS[k]} ${v}`)
@@ -564,7 +554,7 @@ export function PipelineReplayView() {
 
             <SectionCard
               id="compare"
-              title="⑤ 对照找错"
+              title="④ 对照找错"
               meta="自动重组后 vs 人工初校（指标口径同 eval_pipeline_replay）"
             >
               {cmp ? (
@@ -613,7 +603,7 @@ export function PipelineReplayView() {
               ) : null}
             </SectionCard>
 
-            <SectionCard id="gold" title="⑥ 金标原文" meta="人工初校 .gj（终态对照）">
+            <SectionCard id="gold" title="⑤ 金标原文" meta="人工初校 .gj（终态对照）">
               <pre className="font-mono text-[11px] leading-5 whitespace-pre-wrap">{curReplay.gold}</pre>
             </SectionCard>
           </div>

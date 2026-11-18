@@ -36,7 +36,7 @@
   replay-pages          流程演示样例集：所有初校（first）页 + 金标带/行数
   pipeline-replay --page N
                         单页全管线只读重放（零写盘）：数据现状→前页续入→
-                        续文裁剪→草稿四态演化（原始/尾裁/折行/重组）→
+                        草稿四态演化（完整续文组装/整页尾裁/折行/重组）→
                         金标对照（字符流/行界带界 F1/漏多折/首分歧）
   ocr-skeleton-replay --page N
                         新版流程实验（只读演示）：整页 OCR 底稿→分列分段→
@@ -832,6 +832,90 @@ def _align_cut(cand_n: str, ocr_n: str, full_page: bool = False) -> tuple[int | 
     return end, why_tail
 
 
+_TAIL_REVIEW_MAX = 4
+_TAIL_ANCHOR_MIN = 12
+_TAIL_REVIEW_MARK = "页尾待核："
+
+
+def _tail_context(cand_n: str, ocr_n: str, end: int) -> tuple[str, str]:
+    """原裁点对应的连续匹配块、其后 OCR 余文；不把后续孤字伪匹配当锚点。"""
+    blocks = difflib.SequenceMatcher(None, cand_n, ocr_n, autojunk=False).get_matching_blocks()
+    block = next((b for b in blocks if b.size and b.a + b.size == end), None)
+    if block is None:
+        return "", ""
+    return cand_n[block.a:end], ocr_n[block.b + block.size:]
+
+
+def _prefix_edit_costs(source: str, observed: str) -> list[int]:
+    """局部编辑距离：消费全部 observed 时，source 各前缀的代价（含零长度）。"""
+    row = list(range(len(source) + 1))
+    for i, ch in enumerate(observed, 1):
+        nxt = [i]
+        for j, src in enumerate(source, 1):
+            nxt.append(min(row[j] + 1, nxt[j - 1] + 1, row[j - 1] + (src != ch)))
+        row = nxt
+    return row
+
+
+def _review_tail_cut(cand_n: str, ocr_n: str, end: int,
+                     column_n: str | None) -> tuple[int, str]:
+    """短尾局部复核（纯函数）。原文字不替换，只返回经末列确认的裁点。
+
+    自动延伸要求：唯一的 ≥12 字连续锚点；OCR 余文 1–4 字；候选正长度
+    前缀中编辑距离最小的终点唯一且至多 1 次替换；有效末列 OCR 在同一锚点
+    后恰好结束于该尾文（库文或整页 OCR 写法）。插入/删除、跨字头及冲突
+    均待核。零长度解释（OCR 多识）不能仅靠文本距离排除，必须有末列证据。
+    同模型两次识别仍可能共同误识；这是有边界的恢复规则，不是绝对真值。
+    """
+    anchor, rest = _tail_context(cand_n, ocr_n, end)
+    if not rest:
+        return end, ""
+    preview = rest[:_TAIL_REVIEW_MAX]
+
+    def pending(reason: str) -> tuple[int, str]:
+        nearby = cand_n[end:end + _TAIL_REVIEW_MAX] or "（无）"
+        return end, (
+            f"，{_TAIL_REVIEW_MARK}OCR 余文「{preview}」{len(rest)} 字，库文邻文「{nearby}」，"
+            f"{reason}；请核对末列原图"
+        )
+
+    if len(rest) > _TAIL_REVIEW_MAX:
+        return pending(f"超过 {_TAIL_REVIEW_MAX} 字局部复核范围")
+    if len(anchor) < _TAIL_ANCHOR_MIN:
+        return pending("连续匹配锚点不足")
+    anchor = anchor[-_TAIL_WINDOW:]
+    if cand_n.find(anchor) != cand_n.rfind(anchor) or ocr_n.find(anchor) != ocr_n.rfind(anchor):
+        return pending("前文定位不唯一")
+    # 多看一个源字以检查相邻裁点的插入/删除歧义，不允许越过新字头。
+    source = cand_n[end:end + len(rest) + 1].split("#", 1)[0]
+    if not source:
+        return pending("库文已结束或下一字为新字头，不能推断缺字")
+    costs = _prefix_edit_costs(source, rest)
+    best = min(costs[1:])
+    ends = [i for i in range(1, len(costs)) if costs[i] == best]
+    if best > 1:
+        return pending("局部差异超过 1 字")
+    if len(ends) != 1:
+        return pending("局部容错存在多个裁点")
+    size = ends[0]
+    addition = source[:size]
+    if size != len(rest) or sum(a != b for a, b in zip(addition, rest)) != best:
+        return pending("需要插入或删除字符，不能自动延伸")
+    blocks = difflib.SequenceMatcher(None, cand_n, ocr_n, autojunk=False).get_matching_blocks()
+    if any(b.size and b.a >= end + size for b in blocks):
+        return pending("OCR 尾文还匹配到更后面的库文，位置存在歧义")
+    if column_n is None:
+        return pending("无有效末列 OCR 缓存，未自动延伸")
+    if anchor not in column_n or column_n.find(anchor) != column_n.rfind(anchor):
+        return pending("末列 OCR 无法唯一定位前文，未自动延伸")
+    column_tail = column_n.split(anchor, 1)[1]
+    if column_tail not in (rest, addition):
+        return pending("末列 OCR 与整页尾文不一致，未自动延伸")
+    return end + size, (
+        f"，末列 OCR 复核通过：局部 {best} 字差异，保留库文尾字「{addition}」"
+    )
+
+
 def ocr_page_cut(
     page: int, text: str, store: kangxi_store.KangxiStore, full_page: bool = False
 ) -> tuple[int | None, int, str]:
@@ -840,7 +924,10 @@ def ocr_page_cut(
     裁点是候选文本归一化坐标里页面的最后一字位置；None = 不可信/不可用，
     调用方不应裁剪。文本始终以库内转写为准，OCR 只作范围标尺（全量测试：
     21 页 micro-CER 5.65%；干净链路 @332→333 裁剪与人工初校差 1 字）。
-    判信规则见 _align_cut。"""
+    判信规则见 _align_cut；整页模式还用 _review_tail_cut 检查 OCR 未匹配尾文。
+    说明含「页尾待核」时返回的只是暂定裁点，调用方必须保留待核提示，不能
+    将裁后全部文字直接宣称为已确认的下页内容。复核只读有效末列 OCR 缓存。
+    """
     md_text = _ocr_cache_read(page, store)
     cand_n = _norm(text)
     if md_text is None:
@@ -853,6 +940,16 @@ def ocr_page_cut(
     end, why = _align_cut(cand_n, ocr_n, full_page)
     if end is None:
         return None, len(cand_n), why
+    if full_page:
+        # 查询/回放保持只读：只在末端尚有 OCR 余文时读同一扫描图的末列缓存。
+        # 缺失/过期/冲突均显式待核，不启动整页或分列识别，不按余文长度补字。
+        _, rest = _tail_context(cand_n, ocr_n, end)
+        if rest:
+            columns = _column_cache_read(page, _page_sha(page, store))
+            last_md = columns[-1]["markdown"] if columns else None
+            column_n = _norm("".join(_ocr_groups(last_md))) if last_md else None
+            end, review = _review_tail_cut(cand_n, ocr_n, end, column_n)
+            why += review
     return end, len(cand_n), why
 
 
@@ -867,59 +964,6 @@ def _strip_dangling_open(seg: str) -> str:
     while seg and seg[-1] in _OPEN_BRACKETS:
         seg = seg[:-1].rstrip()
     return seg
-
-
-def _cut_mapped(paragraphs: list[str], end: int) -> list[str]:
-    """归一化裁点 end 映射回段落列表：裁点前整段全留，裁点所在段取前半。"""
-    kept = 0
-    cut_para, cut_idx = len(paragraphs) - 1, len(paragraphs[-1])
-    for pi, para in enumerate(paragraphs):
-        for ci, ch in enumerate(para):
-            if ch in PUNCT_STRIP:
-                continue
-            if kept == end:
-                cut_para, cut_idx = pi, ci
-                break
-            kept += 1
-        else:
-            continue
-        break
-    trimmed = list(paragraphs[:cut_para])  # 裁点前的整段全部保留
-    if cut_idx > 0:
-        trimmed.append(paragraphs[cut_para][:cut_idx].rstrip())  # 裁点所在段取前半
-    if trimmed:  # 剥最终保留段的孤悬开括号（裁点落段首时前段整段保留，同样会悬挂）
-        trimmed[-1] = _strip_dangling_open(trimmed[-1])
-        if not trimmed[-1]:
-            trimmed.pop()
-    return trimmed
-
-
-def ocr_trim_to_page(
-    page: int, paragraphs: list[str], store: kangxi_store.KangxiStore, what: str = "续文"
-) -> tuple[list[str], str]:
-    """把段落列表裁剪到本页物理范围（删尾）。
-
-    裁掉的内容物理上属于后续页，无需保留——库内词条是全量转写，添加后续页
-    时 continuation_from_prev 自动从库内补回余段。对齐不可信时原样返回并
-    说明（回退全量灌入）。
-    """
-    text = "\n".join(paragraphs)
-    end, total, why = ocr_page_cut(page, text, store)
-    if end is None:
-        return paragraphs, f"{what}未裁剪：{why}"
-    if end >= total:
-        return paragraphs, f"{what}已在页面范围内，无需裁剪{why}"
-    trimmed = _cut_mapped(paragraphs, end)
-    return trimmed, (
-        f"OCR 裁剪：保留 {end}/{total} 字（页面物理末界{why}），溢出 {total - end} 字留给下页"
-    )
-
-
-def ocr_trim_continuation(
-    page: int, continuation: list[str], store: kangxi_store.KangxiStore
-) -> tuple[list[str], str]:
-    """(兼容旧名) 把前页续文裁剪到页面物理范围（删尾）。"""
-    return ocr_trim_to_page(page, continuation, store, what="续文")
 
 
 def _flatten_parts(band: list[str]) -> list[tuple[str, int]]:
@@ -1247,7 +1291,7 @@ def _cut_bands_at(bands: list[list[str]], cut: tuple[int, int, int]) -> list[lis
 def _trim_bands_to_page(
     page: int, bands: list[list[str]], store: kangxi_store.KangxiStore
 ) -> tuple[list[list[str]], str]:
-    """把草稿大行裁剪到本页物理末界（band 感知版 ocr_trim_to_page）——编排层。
+    """把完整续文与新词条组装后的草稿裁剪到本页物理末界——编排层。
 
     注释行不参与对齐（svg 路径等非页面文本会污染归一化候选）。定位/裁剪
     规则在 _locate_band_cut / _cut_bands_at（可单测）。"""
@@ -1260,12 +1304,20 @@ def _trim_bands_to_page(
             f"OCR 尾裁未执行：{why}——本页草稿含全量词条，"
             "添加下页前请先手工裁剪到物理页界"
         )
+    review = why.partition(_TAIL_REVIEW_MARK)[2]
     if end >= total:
-        return bands, "OCR 尾裁：本页内容未溢出页界"
+        if review:
+            return [*bands, [f"// {_TAIL_REVIEW_MARK}{review}"]], f"OCR 尾裁：保留全部 {total} 字{why}"
+        return bands, f"OCR 尾裁：本页内容未溢出页界{why}"
     cut = _locate_band_cut(bands, end)
     if cut is None:  # 裁点在注释行之间的缝隙：保守不裁
         return bands, "OCR 尾裁：裁点未落定，保守保留全量"
     trimmed = _cut_bands_at(bands, cut)
+    if review:
+        trimmed.append([f"// {_TAIL_REVIEW_MARK}{review}"])
+        return trimmed, (
+            f"OCR 尾裁暂保留 {end}/{total} 字{why}；裁后 {total - end} 字的归页尚未确认"
+        )
     return trimmed, (
         f"OCR 尾裁：保留 {end}/{total} 字（页面物理末界{why}），"
         f"溢出 {total - end} 字留给下页自动续入"
@@ -1346,8 +1398,10 @@ def build_draft_gj(
 ) -> tuple[str, dict]:
     """由库内 page_chars + entries 生成 .gj 草稿与统计——编排层。
 
-    band 组装在 _draft_bands（纯函数）；页尾 OCR 裁剪（_trim_bands_to_page）
-    把溢出到下页的尾段裁掉——库内全量在，添加下页时自动续入；OCR 不可用
+    continuation 必须是未裁剪的完整续文，与本页新字头一起交给 _draft_bands
+    组装；只执行一次整页 OCR 尾裁（_trim_bands_to_page）。单独拿续文匹配
+    整页 OCR 会把页中漏识误作页界（@406「辨」），并误中后续词条的同文。
+    整页尾裁把溢出到下页的尾段裁掉——库内全量在，添加下页时自动续入；OCR 不可用
     时回退全量并在 notes 警告。fold=True 且 OCR 服务可用时，按 OCR 行组
     在大行内插入折行（只插入换行不改字符）并按大列重组带；不可用/不可信
     时草稿为未折行的平铺段——校对者回退到手工折行。
@@ -1583,20 +1637,15 @@ def cmd_pipeline_replay(page: int) -> dict:
         "missing_entries": store.coded_chars_missing_entries(page),
     }
 
-    # ② 前页续入 → ③ 续文 OCR 裁剪
+    # ② 完整前页续入：与新词条一起组装后才裁页尾，不能独立裁续文。
     cont, info = continuation_from_prev(page, store)
-    if cont:
-        kept, trim_note = ocr_trim_continuation(page, cont, store)
-        trim_cont = {"note": trim_note, "kept": kept}
-    else:
-        trim_cont = {"note": "无续文", "kept": []}
     continuation = {"info": info, "rest_paragraphs": cont}
 
-    # ④ 草稿构建四态演化（拆开 build_draft_gj 内部调用以保留中间产物；
+    # ③ 草稿构建四态演化（拆开 build_draft_gj 内部调用以保留中间产物；
     # 空白页同 build_draft_gj 跳过尾裁/折行/重组——零内容提示语反会误导）
     details = _page_entry_details(chars, page, store)
-    bands0, counts = _draft_bands(chars, details, trim_cont["kept"] or None, info.get("head"))
-    if not chars and not trim_cont["kept"]:
+    bands0, counts = _draft_bands(chars, details, cont or None, info.get("head"))
+    if not chars and not cont:
         counts["blank"] = True
         note = "空白页：正文留空"
         bands1, cut_note = bands0, note
@@ -1617,7 +1666,7 @@ def cmd_pipeline_replay(page: int) -> dict:
         ],
     }
 
-    # ⑤⑥ 金标对照 + 原文
+    # ④⑤ 金标对照 + 原文
     raw = page_gj(page)
     _, gold_bands = parse_gj_bands(raw) if raw else ([], [])
     return {
@@ -1625,7 +1674,6 @@ def cmd_pipeline_replay(page: int) -> dict:
         "page": page,
         "data": data,
         "continuation": continuation,
-        "trim_cont": trim_cont,
         "draft": draft,
         "compare": _compare_bands(bands3, gold_bands),
         "gold": raw,
@@ -1637,7 +1685,7 @@ def cmd_ocr_skeleton_replay(page: int) -> dict:
 
     与生产流程（库文字符 + OCR 标尺）相反的范式——各步骤：
       ① 整页 OCR = 文字底稿；② 分列 OCR = 分段（列界=带界）；
-      ③ 蓝本（前页续入裁后 + 本页字头详情，即 _draft_bands+尾裁的库文流）
+      ③ 蓝本（完整前页续文 + 本页字头详情，统一组装并尾裁的库文流）
         对底稿做对齐替换（SequenceMatcher 非等块：replace=错字改库文、
         insert=OCR 伪读删去、delete=OCR 漏识补入）；
       ④ 终稿 = 纠错后字符流按列字符量切段（每列一带）。
@@ -1715,11 +1763,11 @@ def cmd_ocr_skeleton_replay(page: int) -> dict:
     # ③ 蓝本纠错：库文流（同生产流程字符源）对底稿整页对齐
     chars = page_heads(page, store)
     cont, info = continuation_from_prev(page, store)
-    kept = ocr_trim_continuation(page, cont, store)[0] if cont else []
     details = _page_entry_details(chars, page, store)
-    bands0, _ = _draft_bands(chars, details, kept or None, info.get("head"))
-    bp_bands, _ = _trim_bands_to_page(page, bands0, store)
-    bp_n = _norm("".join(l.strip(" \t") for b in bp_bands for l in b))
+    bands0, _ = _draft_bands(chars, details, cont or None, info.get("head"))
+    bp_bands, bp_note = _trim_bands_to_page(page, bands0, store)
+    bp_n = _norm("".join(l.strip(" \t") for b in bp_bands for l in b
+                        if not l.lstrip().startswith("//")))
     sm = difflib.SequenceMatcher(None, bp_n, ocr_n, autojunk=False)
     n_replace = n_ocr_only = n_bp_only = 0
     diff_blocks = []
@@ -1756,7 +1804,7 @@ def cmd_ocr_skeleton_replay(page: int) -> dict:
         "page": page,
         "draft_ocr": {"markdown": md, "norm_len": len(ocr_n), "groups_n": len(groups)},
         "columns": col_infos,
-        "blueprint": {"norm_len": len(bp_n), "source": "前页续入(裁后)+本页字头详情（库文）"},
+        "blueprint": {"norm_len": len(bp_n), "source": f"完整续文与本页字头详情统一尾裁；{bp_note}"},
         "fix": {
             "replace_chars": n_replace,
             "ocr_only_chars": n_ocr_only,
@@ -1983,9 +2031,6 @@ def cmd_add(page: int) -> dict:
             f"前页续入：@{cont_info['prev_page']} 字头「{cont_info['head']}」余 {cont_info['paragraphs']} 段"
         )
 
-    if continuation:
-        continuation, trim_note = ocr_trim_continuation(page, continuation, store)
-        summaries.append(trim_note)
     draft, counts = build_draft_gj(
         page, store, continuation=continuation or None, skip_head=cont_info.get("head")
     )
