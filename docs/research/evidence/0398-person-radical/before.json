@@ -1,0 +1,244 @@
+{
+  "guji-plane0.ttf": {
+    "sha256": "f7e40e014584f6f4fd73ac1de97b2e9aac414e5eeb0e9c9a3847a78e4c27a20b",
+    "bytes": 17252348,
+    "cmap_count": 30708,
+    "glyph_count": 30804,
+    "unitsPerEm": 1024,
+    "codepoints": {
+      "U+4EBB": {
+        "char": "亻",
+        "unicode_name": "CJK UNIFIED IDEOGRAPH-4EBB",
+        "glyph": "uni4EBB"
+      },
+      "U+2E85": {
+        "char": "⺅",
+        "unicode_name": "CJK RADICAL PERSON",
+        "glyph": "uni2E85"
+      },
+      "U+2F08": {
+        "char": "⼈",
+        "unicode_name": "KANGXI RADICAL MAN",
+        "glyph": "uni2F08"
+      },
+      "U+4EBA": {
+        "char": "人",
+        "unicode_name": "CJK UNIFIED IDEOGRAPH-4EBA",
+        "glyph": "uni4EBA"
+      },
+      "U+4E3F": {
+        "char": "丿",
+        "unicode_name": "CJK UNIFIED IDEOGRAPH-4E3F",
+        "glyph": "uni4E3F"
+      },
+      "U+4E28": {
+        "char": "丨",
+        "unicode_name": "CJK UNIFIED IDEOGRAPH-4E28",
+        "glyph": "uni4E28"
+      }
+    },
+    "subtables": [
+      [
+        1,
+        0,
+        0,
+        195
+      ],
+      [
+        3,
+        1,
+        4,
+        30708
+      ]
+    ]
+  },
+  "guji-planef.ttf": {
+    "sha256": "cfeb8527cfc75fe244b1c773056ed8e8896e67918f368999d12f6bd86dee323b",
+    "bytes": 26189728,
+    "cmap_count": 42620,
+    "glyph_count": 42621,
+    "unitsPerEm": 1024,
+    "codepoints": {
+      "U+4EBB": {
+        "char": "亻",
+        "unicode_name": "CJK UNIFIED IDEOGRAPH-4EBB",
+        "glyph": null
+      },
+      "U+2E85": {
+        "char": "⺅",
+        "unicode_name": "CJK RADICAL PERSON",
+        "glyph": null
+      },
+      "U+2F08": {
+        "char": "⼈",
+        "unicode_name": "KANGXI RADICAL MAN",
+        "glyph": null
+      },
+      "U+4EBA": {
+        "char": "人",
+        "unicode_name": "CJK UNIFIED IDEOGRAPH-4EBA",
+        "glyph": null
+      },
+      "U+4E3F": {
+        "char": "丿",
+        "unicode_name": "CJK UNIFIED IDEOGRAPH-4E3F",
+        "glyph": null
+      },
+      "U+4E28": {
+        "char": "丨",
+        "unicode_name": "CJK UNIFIED IDEOGRAPH-4E28",
+        "glyph": null
+      }
+    },
+    "subtables": [
+      [
+        1,
+        0,
+        0,
+        255
+      ],
+      [
+        3,
+        1,
+        4,
+        95
+      ],
+      [
+        3,
+        10,
+        12,
+        42620
+      ]
+    ]
+  },
+  "guji-plane2.ttf": {
+    "sha256": "80df094a2e63091b222706696a8b244c9dba45219af866226a097d0fbb2bf28d",
+    "bytes": 42717516,
+    "cmap_count": 61228,
+    "glyph_count": 61229,
+    "unitsPerEm": 1024,
+    "codepoints": {
+      "U+4EBB": {
+        "char": "亻",
+        "unicode_name": "CJK UNIFIED IDEOGRAPH-4EBB",
+        "glyph": null
+      },
+      "U+2E85": {
+        "char": "⺅",
+        "unicode_name": "CJK RADICAL PERSON",
+        "glyph": null
+      },
+      "U+2F08": {
+        "char": "⼈",
+        "unicode_name": "KANGXI RADICAL MAN",
+        "glyph": null
+      },
+      "U+4EBA": {
+        "char": "人",
+        "unicode_name": "CJK UNIFIED IDEOGRAPH-4EBA",
+        "glyph": null
+      },
+      "U+4E3F": {
+        "char": "丿",
+        "unicode_name": "CJK UNIFIED IDEOGRAPH-4E3F",
+        "glyph": null
+      },
+      "U+4E28": {
+        "char": "丨",
+        "unicode_name": "CJK UNIFIED IDEOGRAPH-4E28",
+        "glyph": null
+      }
+    },
+    "subtables": [
+      [
+        1,
+        0,
+        0,
+        228
+      ],
+      [
+        3,
+        1,
+        4,
+        173
+      ],
+      [
+        3,
+        10,
+        12,
+        61228
+      ]
+    ]
+  },
+  "guji-large.ttf": {
+    "sha256": "99be6a77b93afa746b2d29e37d6014cab9f9c21471f685a2392426760a17dabf",
+    "bytes": 46623752,
+    "cmap_count": 49408,
+    "glyph_count": 49411,
+    "unitsPerEm": 1024,
+    "codepoints": {
+      "U+4EBB": {
+        "char": "亻",
+        "unicode_name": "CJK UNIFIED IDEOGRAPH-4EBB",
+        "glyph": null
+      },
+      "U+2E85": {
+        "char": "⺅",
+        "unicode_name": "CJK RADICAL PERSON",
+        "glyph": null
+      },
+      "U+2F08": {
+        "char": "⼈",
+        "unicode_name": "KANGXI RADICAL MAN",
+        "glyph": null
+      },
+      "U+4EBA": {
+        "char": "人",
+        "unicode_name": "CJK UNIFIED IDEOGRAPH-4EBA",
+        "glyph": "uni4EBA"
+      },
+      "U+4E3F": {
+        "char": "丿",
+        "unicode_name": "CJK UNIFIED IDEOGRAPH-4E3F",
+        "glyph": "uni4E3F"
+      },
+      "U+4E28": {
+        "char": "丨",
+        "unicode_name": "CJK UNIFIED IDEOGRAPH-4E28",
+        "glyph": "uni4E28"
+      }
+    },
+    "subtables": [
+      [
+        0,
+        3,
+        4,
+        24858
+      ],
+      [
+        0,
+        4,
+        12,
+        49408
+      ],
+      [
+        1,
+        0,
+        6,
+        11
+      ],
+      [
+        3,
+        1,
+        4,
+        24858
+      ],
+      [
+        3,
+        10,
+        12,
+        49408
+      ]
+    ]
+  }
+}

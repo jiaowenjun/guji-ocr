@@ -1,0 +1,242 @@
+{
+  "page": 398,
+  "ir": {
+    "version": 3,
+    "meta": {
+      "sourceFormat": "gj/3",
+      "generatedBy": "guji-ir/3-auto",
+      "fidelity": "full",
+      "profile": {
+        "stripPunct": [
+          "。",
+          "，",
+          "·",
+          "\"",
+          ":",
+          "：",
+          "、",
+          "《",
+          "》"
+        ],
+        "normalize": [
+          [
+            "◎",
+            "○"
+          ],
+          [
+            "〇",
+            "○"
+          ]
+        ]
+      },
+      "lineLayout": "auto",
+      "orientation": "vertical-rtl",
+      "rangeUnit": "codepoint",
+      "srcUnit": "utf-16",
+      "layout": {
+        "version": 1,
+        "expectedBands": 8,
+        "rowCap": 24,
+        "smallColumnsPerBand": 2,
+        "largeCols": 2,
+        "largeRows": 2
+      },
+      "layoutPreset": {
+        "id": "kangxi-wuyingdian",
+        "revision": 1
+      }
+    },
+    "pages": [
+      {
+        "id": "p0398",
+        "no": 398,
+        "src": [
+          0,
+          4
+        ],
+        "bands": [
+          {
+            "id": "p0398-b0",
+            "ord": 0,
+            "lines": [
+              {
+                "id": "p0398-b0-l0",
+                "ord": 0,
+                "elements": [
+                  {
+                    "id": "p0398-b0-l0-e0",
+                    "class": "large",
+                    "text": "康"
+                  },
+                  {
+                    "id": "p0398-b0-l0-e1",
+                    "class": "large",
+                    "text": "熙"
+                  },
+                  {
+                    "id": "p0398-b0-l0-e2",
+                    "class": "large",
+                    "text": "字"
+                  },
+                  {
+                    "id": "p0398-b0-l0-e3",
+                    "class": "large",
+                    "text": "典"
+                  }
+                ],
+                "cpSrcs": [
+                  7,
+                  8,
+                  9,
+                  10
+                ],
+                "src": [
+                  7,
+                  11
+                ]
+              }
+            ],
+            "src": [
+              7,
+              11
+            ],
+            "breakAfter": true
+          },
+          {
+            "id": "p0398-b1",
+            "ord": 1,
+            "lines": [
+              {
+                "id": "p0398-b1-l0",
+                "ord": 0,
+                "elements": [
+                  {
+                    "id": "p0398-b1-l0-e0",
+                    "class": "large",
+                    "text": " "
+                  },
+                  {
+                    "id": "p0398-b1-l0-e1",
+                    "class": "large",
+                    "text": "子"
+                  },
+                  {
+                    "id": "p0398-b1-l0-e2",
+                    "class": "large",
+                    "text": "集"
+                  },
+                  {
+                    "id": "p0398-b1-l0-e3",
+                    "class": "large",
+                    "text": "中"
+                  },
+                  {
+                    "id": "p0398-b1-l0-e4",
+                    "class": "large",
+                    "text": " "
+                  },
+                  {
+                    "id": "p0398-b1-l0-e5",
+                    "class": "large",
+                    "text": "二"
+                  },
+                  {
+                    "id": "p0398-b1-l0-e6",
+                    "class": "large",
+                    "text": "画"
+                  }
+                ],
+                "cpSrcs": [
+                  15,
+                  16,
+                  17,
+                  18,
+                  19,
+                  20,
+                  21
+                ],
+                "src": [
+                  15,
+                  22
+                ]
+              }
+            ],
+            "src": [
+              15,
+              22
+            ],
+            "breakAfter": true
+          },
+          {
+            "id": "p0398-b2",
+            "ord": 2,
+            "lines": [
+              {
+                "id": "p0398-b2-l0",
+                "ord": 0,
+                "elements": [
+                  {
+                    "id": "p0398-b2-l0-e0",
+                    "class": "large",
+                    "text": " "
+                  },
+                  {
+                    "id": "p0398-b2-l0-e1",
+                    "class": "large",
+                    "text": " "
+                  },
+                  {
+                    "id": "p0398-b2-l0-e2",
+                    "class": "large",
+                    "text": "人"
+                  },
+                  {
+                    "id": "p0398-b2-l0-e3",
+                    "class": "large",
+                    "text": "部"
+                  },
+                  {
+                    "id": "p0398-b2-l0-e4",
+                    "class": "large",
+                    "text": " "
+                  },
+                  {
+                    "id": "p0398-b2-l0-e5",
+                    "class": "large",
+                    "text": "⺅"
+                  },
+                  {
+                    "id": "p0398-b2-l0-e6",
+                    "class": "large",
+                    "text": "同"
+                  }
+                ],
+                "cpSrcs": [
+                  26,
+                  27,
+                  28,
+                  29,
+                  30,
+                  31,
+                  32
+                ],
+                "src": [
+                  26,
+                  33
+                ]
+              }
+            ],
+            "src": [
+              26,
+              33
+            ],
+            "breakAfter": true
+          }
+        ]
+      }
+    ],
+    "overlays": []
+  },
+  "text": "康熙字典\n 子集中 二画\n  人部 ⺅同\n",
+  "source_sha256": "ebc2e4511edabcc28216b698975b7ac0e08876bc7dccbae0d03924d58eca4d52"
+}

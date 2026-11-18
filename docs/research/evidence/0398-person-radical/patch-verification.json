@@ -1,0 +1,49 @@
+{
+  "at": "2026-11-18T15:54:59+08:00",
+  "operation": "add-standard-radical",
+  "applied": true,
+  "font": "guji-preview-grid/public/fonts/guji-large.ttf",
+  "sha256_before": "99be6a77b93afa746b2d29e37d6014cab9f9c21471f685a2392426760a17dabf",
+  "sha256_after": "3973ccbe8bbdb4b91af44269a12f9b9f58daeb0c225d78e3a934f676f1c4c231",
+  "bytes_before": 46623752,
+  "bytes_after": 46624948,
+  "source_sha256": "b353d2e47a4b67ed9f7ac74ef4576c4f4d404402577c33deb4ea786fa090a78c",
+  "svg_sha256": "b08b2c6012a034284efffe9bf80dc64f864e491b9a757d22a674ca74c8176928",
+  "cache_version": "001016-2bd6e-2e85",
+  "trace": {
+    "threshold": 120,
+    "raw_ink_pixels": 5044,
+    "clean_ink_pixels": 5052,
+    "pixel_boundary_edges": 874,
+    "quadratic_segments": 250,
+    "rdp_tolerance_px": 0.65
+  },
+  "validation": {
+    "svg_to_font": 0.07878999092590347,
+    "scan_to_font": 0.020715780242838332
+  },
+  "codepoint": "U+2E85",
+  "glyph": "uni2E85",
+  "cmap_before": 49408,
+  "cmap_after": 49409,
+  "unchanged_existing_glyphs": 49411,
+  "bbox": [
+    228,
+    -113,
+    796,
+    725
+  ],
+  "advance": 1024,
+  "contours": 1,
+  "points": 500,
+  "transform": [
+    4.211055276381909,
+    0,
+    0,
+    -4.211055276381909,
+    206.69849246231155,
+    863.964824120603
+  ],
+  "glyph_sha256": "8ededa8fd2ea8f117542abdb9015a8e768152913618c554e4ebbec4eabce952d",
+  "backup": "var/unencoded/kangxi-unencoded/font-backups/guji-large.ttf.99be6a77b93afa746b2d29e37d6014cab9f9c21471f685a2392426760a17dabf.ttf"
+}

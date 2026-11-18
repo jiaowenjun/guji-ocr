@@ -13,8 +13,8 @@
    Chrome 兜底。小字三个平面保持独立别名，保留逐字回退。 */
 @font-face {
     font-family: "GujiLarge";
-    /* 保留 U+2BD6E 补录；仅用于小字的 U+E701 已从此字体移除。 */
-    src: url("/fonts/guji-large.ttf?v=001015-2bd6e-no-e701") format("truetype"),
+    /* U+2BD6E、U+2E85（@398 人部偏旁刻形）；U+E701 仅在小字字体收录。 */
+    src: url("/fonts/guji-large.ttf?v=001016-2bd6e-2e85") format("truetype"),
         local("KangXiFontFullVersion"),
         local("康熙字典體傳承版 KangXiZiDian.com"),
         local("康熙傳承版 KangXiZiDian.com");
