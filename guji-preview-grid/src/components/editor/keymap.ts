@@ -14,7 +14,7 @@
 // Alt/Option-Z 插入 #(增)，Alt/Option-X 插入 □，Alt/Option-数字插入 #(数字)
 //   （如 Alt-1 → #(1)）；原生布局字符（≈/Ω/¡…）经 beforeinput 兜底吞掉。
 import { Prec } from "@codemirror/state";
-import { EditorView, keymap, type Command } from "@codemirror/view";
+import { EditorView, ViewPlugin, keymap, type Command } from "@codemirror/view";
 import { Vim, getCM } from "@replit/codemirror-vim";
 
 // vim normal 模态 J → gJ：合并下一行时不额外插空格；count 前缀与 . 重复
@@ -110,15 +110,76 @@ function insertSnippet(view: EditorView, text: string) {
 // .gj 文本中不会合法出现）。
 const altInserts: Record<string, string | undefined> = { KeyZ: "#(增)", KeyX: "□" };
 const optionChars = new Set(["≈", "Ω", "¡", "™", "£", "¢", "∞", "§", "¶", "•", "ª"]);
+
+function altSnippet(code: string): string | undefined {
+  const digit = /^Digit([1-9])$/.exec(code);
+  return digit ? `#(${digit[1]})` : altInserts[code];
+}
+
+// macOS WebKit 会先把 Option 数字交给拼音，才发 keydown（keyCode=229）。
+// 取消该事件后，输入法仍留着数字；下次 ⌘S 会在保存 keydown 之前写入
+// 不可取消的组合文本「4 s」。blur/focus（含异步）及重挂 DOM 均无法清理。
+// 必须在单独的 Option keydown 时暂关原生输入，让数字走普通快捷键路径。
+// 只覆写 DOM 属性，不改 editable facet：Vim 的模态守卫仍独立管理该 facet。
+const optionInputGuard = ViewPlugin.fromClass(class {
+  suspended = false;
+  private readonly view: EditorView;
+  private readonly macWebKit: boolean;
+
+  constructor(view: EditorView) {
+    this.view = view;
+    const nav = view.dom.ownerDocument.defaultView!.navigator;
+    this.macWebKit = /Mac/.test(nav.platform) && /AppleWebKit/.test(nav.userAgent)
+      && !/Chrome|Chromium|Edg\//.test(nav.userAgent);
+  }
+
+  private suspend(value: boolean) {
+    if (this.suspended === value) return;
+    this.suspended = value;
+    this.view.dispatch({}); // 让 contentAttributes 同步到 DOM，保留焦点和选区
+  }
+
+  keydown(event: KeyboardEvent) {
+    const plainAlt = event.altKey && !event.ctrlKey && !event.metaKey && !event.shiftKey;
+    if (this.suspended) {
+      // 未绑定按键恢复原生行为；切换修饰键（如 Ctrl-Alt-F）、Esc 也立即释放。
+      if (!plainAlt || (event.key !== "Alt" && altSnippet(event.code) === undefined)) this.suspend(false);
+    } else if (this.macWebKit && event.key === "Alt" && plainAlt
+      && !event.isComposing && !this.view.compositionStarted && !vimNormalMode(this.view)
+      && this.view.state.facet(EditorView.editable)) {
+      this.suspend(true);
+    }
+    return false;
+  }
+
+  keyup(event: KeyboardEvent) {
+    if (event.key === "Alt" || !event.altKey) this.suspend(false);
+    return false;
+  }
+
+  blur() {
+    this.suspend(false); // 窗口/控件切换可能丢失 Option keyup
+    return false;
+  }
+}, {
+  eventHandlers: {
+    keydown(event) { return this.keydown(event); },
+    keyup(event) { return this.keyup(event); },
+    blur() { return this.blur(); },
+  },
+  provide: (plugin) => EditorView.contentAttributes.of((view) =>
+    view.plugin(plugin)?.suspended ? { contenteditable: "false", tabindex: "0" } : null),
+});
+
 const altInsertHandler = EditorView.domEventHandlers({
   keydown(event, view) {
     if (!event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return false;
     if (vimNormalMode(view)) return false; // normal 模态归 vim：Alt 键未被映射，布局字符由 beforeinput 兜底
-    const digit = /^Digit([1-9])$/.exec(event.code);
-    const text = digit ? `#(${digit[1]})` : altInserts[event.code];
+    if (event.isComposing || view.compositionStarted) return false;
+    const text = altSnippet(event.code);
     if (text === undefined) return false;
-    insertSnippet(view, text);
     event.preventDefault();
+    insertSnippet(view, text);
     return true;
   },
   beforeinput(event) {
@@ -146,6 +207,7 @@ const killToLineStart: Command = (view) => {
 };
 
 export const gujiKeymap = [
+  Prec.highest(optionInputGuard),
   Prec.highest(
     keymap.of([
       { key: "Ctrl-j", run: insertOrSwallow(joinNextLine) },

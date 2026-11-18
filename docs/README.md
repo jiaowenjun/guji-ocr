@@ -27,6 +27,7 @@
 | 决定某类文件放 git / 本地 var/ / 外置盘 | [数据文件存放规范](data-storage.md) |
 | 查站点页号 ↔ 无水印原始扫描的对应规则与互查工具 | [康熙字典页号对应规则](kangxi-page-mapping.md) |
 | 使用字格矩阵预览与数据集对照校对 | [guji-preview-grid 使用与开发说明](../guji-preview-grid/README.md) |
+| 排查 Safari 拼音下 Option 快捷键残留、复查失败方案与原生验收 | [Option 快捷键与输入法修复报告](development/editor-ime-shortcuts.md) |
 | 核验康熙字典未编码字头（K0000）与字体缺字判定 | [未编码字头字体核验流程](research/2026-11-13-kangxi-未编码字头字体核验流程.md) |
 | 向康熙字典體补录缺字字形（K0000 字形入库） | [字体补录流程](research/2026-11-13-kangxi-字体补录流程.md) |
 | 查 U+2BD6E 丰条古文的出处、身份、候选排除、补录与精确复现 | [U+2BD6E 调研核验与补录全过程](research/2026-11-18-U+2BD6E𫵮调研核验与补录报告.md) |
@@ -48,6 +49,9 @@ docs/
 ├── kangxi-page-mapping.md             康熙字典站点页号↔原始扫描对应规则（2026-11-18）
 ├── font-operations.md                 字体操作留痕登记簿（制度+登记+哈希基线）
 ├── font-changelog.md                  补录、修改、撤销与试验时间线
+├── development/
+│   ├── editor-ime-shortcuts.md         Safari 拼音与 Option 快捷键修复报告
+│   └── evidence/2026-11-18-safari-option-ime.json  原生事件摘录与验收证据
 └── research/
     ├── README.md                      新综合报告，主要阅读入口
     ├── references.md                  论文与文章来源索引

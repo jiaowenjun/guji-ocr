@@ -1,0 +1,312 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-18",
+  "timezone": "Asia/Shanghai",
+  "provenance": "根据本次用户原生键盘复现、Safari 页面事件日志及已完成的工具执行结果整理。事件数组是保序摘录，不是完整原始浏览器抓包；缺失字段未推定。",
+  "environment": {
+    "browser": "Safari",
+    "os": "macOS",
+    "input_method": "macOS 自带拼音",
+    "exact_native_build": "未独立归档完整构建号，不从测试中模拟的 UA 推定",
+    "dependencies": {
+      "@codemirror/view": "6.43.15",
+      "@codemirror/state": "6.7.6",
+      "@replit/codemirror-vim": "6.4.0",
+      "@uiw/react-codemirror": "4.25.12",
+      "vitest": "5.1.0",
+      "jsdom": "31.0.1"
+    }
+  },
+  "baseline": {
+    "events": [
+      {
+        "type": "keydown",
+        "key": "Alt",
+        "code": "AltLeft",
+        "altKey": true
+      },
+      {
+        "type": "keydown",
+        "key": "4",
+        "code": "Digit4",
+        "keyCode": 229,
+        "altKey": true,
+        "isComposing": false
+      },
+      {
+        "type": "keyup",
+        "key": "4",
+        "code": "Digit4",
+        "keyCode": 52,
+        "altKey": true,
+        "isComposing": false
+      },
+      {
+        "type": "keyup",
+        "key": "Alt",
+        "code": "AltLeft",
+        "altKey": false
+      },
+      {
+        "type": "keydown",
+        "key": "Meta",
+        "code": "MetaLeft",
+        "metaKey": true,
+        "isComposing": false
+      },
+      {
+        "type": "compositionstart",
+        "data": ""
+      },
+      {
+        "type": "compositionupdate",
+        "data": "4 s"
+      },
+      {
+        "type": "beforeinput",
+        "inputType": "insertCompositionText",
+        "data": "4 s",
+        "isComposing": true,
+        "cancelable": false
+      },
+      {
+        "type": "input",
+        "inputType": "insertCompositionText",
+        "data": "4 s",
+        "isComposing": true,
+        "cancelable": false
+      },
+      {
+        "type": "keydown",
+        "key": "s",
+        "code": "KeyS",
+        "keyCode": 229,
+        "metaKey": true,
+        "isComposing": true
+      },
+      {
+        "type": "diagnostic_save",
+        "count": 1
+      },
+      {
+        "type": "keyup",
+        "key": "Meta",
+        "code": "MetaLeft",
+        "metaKey": false,
+        "isComposing": true
+      },
+      {
+        "type": "keyup",
+        "key": "s",
+        "code": "KeyS",
+        "keyCode": 83,
+        "metaKey": false,
+        "isComposing": true
+      }
+    ],
+    "snapshot": {
+      "doc": "#(4)4 s甲乙",
+      "composing": true,
+      "insertMode": true,
+      "save_count": 1
+    },
+    "saving_scope": "诊断页只计数，无保存 HTTP 请求，不代表磁盘内容核验"
+  },
+  "experiments": [
+    {
+      "id": "v1",
+      "method": "命中 229 的 Option 数字后同步 blur/focus",
+      "result": "失败：仍有 4 s",
+      "evidence": "原生事件日志确认 blur/focus 已执行"
+    },
+    {
+      "id": "v2",
+      "method": "blur 后 setTimeout(0) 恢复焦点",
+      "result": "失败：用户复测仍有 4 s"
+    },
+    {
+      "id": "v3",
+      "method": "移出并重新挂载 scrollDOM，然后恢复焦点",
+      "result": "失败：用户复测仍有异常",
+      "limitation": "不能由该结果断言此方案对所有已开始的 composition 都无效"
+    },
+    {
+      "id": "v4-A",
+      "method": "仅在 Option+4 的捕获监听中 stopImmediatePropagation，不调用 preventDefault，放行原生默认输入",
+      "result": "用户确认 A 有残留"
+    },
+    {
+      "id": "v4-B",
+      "method": "Option 修饰键 keydown 时提前设 contenteditable=false，松键恢复",
+      "result": "用户确认 B 正常",
+      "events": [
+        {
+          "type": "keydown",
+          "key": "Alt",
+          "code": "AltLeft",
+          "keyCode": 18,
+          "altKey": true,
+          "metaKey": false,
+          "isComposing": false
+        },
+        {
+          "type": "diagnostic_gate",
+          "suspended": true
+        },
+        {
+          "type": "keydown",
+          "key": "4",
+          "code": "Digit4",
+          "keyCode": 52,
+          "altKey": true,
+          "metaKey": false,
+          "isComposing": false
+        },
+        {
+          "type": "keyup",
+          "key": "4",
+          "code": "Digit4",
+          "keyCode": 52,
+          "altKey": true,
+          "metaKey": false,
+          "isComposing": false
+        },
+        {
+          "type": "keyup",
+          "key": "Alt",
+          "code": "AltLeft",
+          "keyCode": 18,
+          "altKey": false,
+          "metaKey": false,
+          "isComposing": false
+        },
+        {
+          "type": "diagnostic_gate",
+          "suspended": false
+        },
+        {
+          "type": "keydown",
+          "key": "Meta",
+          "code": "MetaLeft",
+          "keyCode": 91,
+          "altKey": false,
+          "metaKey": true,
+          "isComposing": false
+        },
+        {
+          "type": "keydown",
+          "key": "s",
+          "code": "KeyS",
+          "keyCode": 83,
+          "altKey": false,
+          "metaKey": true,
+          "isComposing": false
+        },
+        {
+          "type": "diagnostic_save",
+          "count": 1
+        },
+        {
+          "type": "keyup",
+          "key": "Meta",
+          "code": "MetaLeft",
+          "keyCode": 91,
+          "altKey": false,
+          "metaKey": false,
+          "isComposing": false
+        },
+        {
+          "type": "keyup",
+          "key": "s",
+          "code": "KeyS",
+          "keyCode": 83,
+          "altKey": false,
+          "metaKey": false,
+          "isComposing": false
+        }
+      ],
+      "snapshot": {
+        "doc": "#(4)甲乙",
+        "composing": false,
+        "insertMode": true,
+        "save_count": 1
+      }
+    },
+    {
+      "id": "v5",
+      "method": "正式 optionInputGuard，挂入 gujiKeymap",
+      "result": "用户确认：两种模式都正常，中文也正常",
+      "modes": [
+        "Vim insert",
+        "未启用 Vim"
+      ],
+      "last_observed_snapshot": {
+        "mode": "未启用 Vim",
+        "doc": "#(4)甲乙",
+        "composing": false,
+        "save_count": 1
+      },
+      "scope": "最终中文提交行为以用户确认作为证据；末次截图状态未包含中文提交后的全文"
+    }
+  ],
+  "validation": {
+    "performed_during_fix": true,
+    "rerun_for_report_only": false,
+    "editor_test_command": "pnpm exec vitest run test/alt-input.spec.ts test/vim-input.spec.ts test/vim-mode.spec.ts test/editor-command.spec.ts",
+    "test_files_passed": 4,
+    "tests_passed": 45,
+    "new_alt_tests": 14,
+    "build": "pnpm build 通过",
+    "lint": "pnpm exec oxlint src/components/editor/keymap.ts test/alt-input.spec.ts 通过",
+    "limits": [
+      "jsdom 不提供系统拼音输入上下文",
+      "本次自动化 pressKey 未触发系统拼音，不能代替原生键盘",
+      "未执行项目全量测试；45 是编辑器相关集合",
+      "未独立验证生产部署或保存接口磁盘写入"
+    ]
+  },
+  "interpretation_limits": [
+    "keyCode=229 与后续事件共同支持输入法参与处理；网页无法直接读到原生缓冲",
+    "不能把 Cmd+S key=Process 的合成探针当成本次原生原因；原生记录 key=s，保存监听命中",
+    "最初捕获监听中排入微任务读取的 defaultPrevented 不代表分发最终状态，该字段不用于因果判断",
+    "WebKit main 源码为机制参考，不是安装版 Safari 精确源码映射",
+    "报告形成时本修复尚未提交，源码哈希仅标识该时点本地内容"
+  ],
+  "source_snapshots": [
+    {
+      "path": "guji-preview-grid/src/components/editor/keymap.ts",
+      "sha256": "7732f5ed25e30ba3b0e72a4cb46c5ad8d5a502250ce17a3810d7c081ab0e7824"
+    },
+    {
+      "path": "guji-preview-grid/src/components/editor/vim-input.ts",
+      "sha256": "2fe55334bb0bb48ee40fa921df15f7dce0dd31098fc7d4dba361ef84e55c1d8c"
+    },
+    {
+      "path": "guji-preview-grid/test/alt-input.spec.ts",
+      "sha256": "0561ac053dcac4c5c1ed760f771366b890a40608c37ea033087c6aca7f36a9e0"
+    },
+    {
+      "path": "guji-preview-grid/test/vim-input.spec.ts",
+      "sha256": "ece769a12f986b64c108d1151659f66e9092c99f463f6716813c6422c2da493f"
+    },
+    {
+      "path": "guji-preview-grid/test/vim-mode.spec.ts",
+      "sha256": "420602971b5b696cd540920f0413b6648279f1241619e0f10352b657de218e7c"
+    },
+    {
+      "path": "guji-preview-grid/test/editor-command.spec.ts",
+      "sha256": "91a28c53f94a1e25febc84eb066d3bc996cf86c48e275dd8ac33dae7e5746f2d"
+    }
+  ],
+  "webkit_reference": {
+    "url": "https://github.com/WebKit/WebKit/blob/main/Source/WebKit/UIProcess/mac/WebViewImpl.mm",
+    "retrieved_date": "2026-11-18",
+    "sha256": "7d121073e58a2b88864a81f1e12fa779ea56506d29492799c3140acfbd7c3465",
+    "functions": [
+      "inputContext",
+      "interpretKeyEvent",
+      "performKeyEquivalent"
+    ],
+    "full_source_in_repository": false
+  }
+}
