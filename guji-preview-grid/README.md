@@ -231,6 +231,10 @@ python3 tools/eval/prefetch_ocr.py        # 可选：预识别近期页（默认
 字体来源：大字 `康熙傳承版 KangXiZiDian.com`（[官網](https://www.chinesecj.com/forum/forum.php?mod=viewthread&tid=195626)）；
 小字 `中華書局宋體00/02/15平面`（[官網](https://www.ancientbooks.cn/helpcore?font)）。
 
+小字 `guji-plane0.ttf` 新增 **PUA U+E705〈口𠂹〉**，用于 @407「他」条注音；
+从原有口旁与完整𠂹组合，仅限项目小字，未同步系统字体。详见
+[调研核验与补录全过程](../docs/research/2026-11-18-U+E705口𠂹调研核验与补录报告.md)。
+
 ## 审计与优化边界
 
 从仓库根目录运行：

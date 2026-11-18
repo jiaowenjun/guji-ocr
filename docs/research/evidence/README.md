@@ -7,6 +7,8 @@
 
 新增字体证据：**[E704〈二心支〉全过程报告](../2026-11-18-U+E704二心支调研核验与补录报告.md)**，对应 [补录前核验](e704/audit-before.json)、[候选排名](e704/font-search.json)、[正式补录与验证](e704/patch-verification.json)、[浏览器字体确认](e704/browser.json)。检索结论有明确范围，不把未命中当成 Unicode 官方不存在证明。
 
+新增字体证据：**[E705〈口𠂹〉全过程报告](../2026-11-18-U+E705口𠂹调研核验与补录报告.md)**，对应 [补录前编码调研](kou-200b9/audit.json)、[全字体排名](kou-200b9/font-search.json)、[字体覆盖](kou-200b9/font-coverage.json)、[口部候选](kou-200b9/mouth-candidates.json)、[写入前基线](e705/before.json)、[试作参数](e705/layout-trials.json)、[反例与来源拒绝](e705/extra-checks.json)、[正式写入和全量保护核验](e705/patch-verification.json)、[正文替换](e705/annotation.json)、[实际浏览器字体](e705/browser.json)。形似分数是弱回归检查，不能单独识别目标；报告明确保存通过数值闸的错误结构对照。
+
 这里保存 2026-11-11 调研时对公开文件的检查记录。它们是支撑[综合报告](../README.md)的文件计数、哈希和局部观察，**不是 OCR 性能复现实验，也不是全库人工质量审计**。
 
 | 文件 | 检查方法与结果 | 适用边界 |

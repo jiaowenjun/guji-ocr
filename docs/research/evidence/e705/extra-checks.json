@@ -1,0 +1,50 @@
+{
+  "source_rejection_checks": [
+    {
+      "case": "internal_donor",
+      "rejected": true,
+      "message": "compose 来源字 U+5439 已变化，请重新审定部件"
+    },
+    {
+      "case": "external_donor",
+      "rejected": true,
+      "message": "compose 外部来源字 guji-preview-grid/public/fonts/guji-plane2.ttf/U+200B9 已变化，请重新审定部件"
+    },
+    {
+      "case": "frozen_outline",
+      "rejected": true,
+      "message": "compose 冻结轮廓校验失败"
+    }
+  ],
+  "negative_character_comparison": [
+    {
+      "cp": "U+2A88A",
+      "score128": 3.3051949382513466,
+      "passes_numerical_gate": true
+    },
+    {
+      "cp": "U+200B9",
+      "score128": 2.5120876799382894,
+      "passes_numerical_gate": true
+    },
+    {
+      "cp": "U+E701",
+      "score128": 4.128969818732185,
+      "passes_numerical_gate": false
+    },
+    {
+      "cp": "U+5683",
+      "score128": 4.024389877319585,
+      "passes_numerical_gate": false
+    }
+  ],
+  "component_overlap": {
+    "raster_size": [
+      2048,
+      2048
+    ],
+    "intersected_pixels": 0,
+    "method": "Independent component SVGs; alpha>128; no union or clipping"
+  },
+  "scope_note": "Score is only a weak layout regression guard, not an identity classifier. Whole-component extraction and exact source hashes are the primary invariants."
+}

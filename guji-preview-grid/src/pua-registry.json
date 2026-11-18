@@ -18,7 +18,7 @@
         "guji-preview-grid/public/fonts/guji-plane0.ttf"
       ],
       "sha256_after": {
-        "guji-plane0.ttf": "f7e40e014584f6f4fd73ac1de97b2e9aac414e5eeb0e9c9a3847a78e4c27a20b"
+        "guji-plane0.ttf": "d95b07155dd6993f86175cc6ee979403be7fa712b4f79881981011d80d276da8"
       },
       "history": [
         {
@@ -138,7 +138,7 @@
         "guji-preview-grid/public/fonts/guji-plane0.ttf"
       ],
       "sha256_after": {
-        "guji-plane0.ttf": "f7e40e014584f6f4fd73ac1de97b2e9aac414e5eeb0e9c9a3847a78e4c27a20b"
+        "guji-plane0.ttf": "d95b07155dd6993f86175cc6ee979403be7fa712b4f79881981011d80d276da8"
       },
       "history": [
         {
@@ -184,6 +184,74 @@
       "allocation_note": "E702、E703 曾用于 E701 历史试验，保留不用以免旧材料混淆。",
       "font_versions": {
         "guji-plane0.ttf": 1
+      },
+      "patched_at": "2026-11-18"
+    },
+    {
+      "cp": "E705",
+      "char": "⿰口𠂹",
+      "description": "康熙 @407 他 U+4ED6 条「【註】他音〈口𠂹〉」的注音刻形；尚未确认独立标准 Unicode 码位。",
+      "first_seen": "kangxi-gold @407 他条，子集中人部；原提问称403页，经原图与网站核对为407页",
+      "scheme": "compose",
+      "version": 1,
+      "source": "tools/dataset/font-sources/e705-songti-v1.json",
+      "source_note": "左口取 plane0 吹的完整口旁（外轮廓与内白）；右𠂹取 plane2 全部五轮廓，各逻辑部件共用一次正向仿射，无切笔或重绘。",
+      "verify_image": "tools/dataset/font-sources/e705-scan-mask.png",
+      "verify_note": "原截图灰度阈值120；形似回归辅助，非逐像素描摹质量证明。",
+      "fonts": [
+        "guji-preview-grid/public/fonts/guji-plane0.ttf"
+      ],
+      "history": [
+        {
+          "version": 1,
+          "at": "2026-11-18T17:14:41+08:00",
+          "operation": "insert",
+          "results": [
+            {
+              "font": "guji-preview-grid/public/fonts/guji-plane0.ttf",
+              "scheme": "compose",
+              "source": "tools/dataset/font-sources/e705-songti-v1.json",
+              "sha256_before": "f7e40e014584f6f4fd73ac1de97b2e9aac414e5eeb0e9c9a3847a78e4c27a20b",
+              "sha256_after": "d95b07155dd6993f86175cc6ee979403be7fa712b4f79881981011d80d276da8",
+              "bytes_before": 17252348,
+              "bytes_after": 17252900,
+              "chamfer": 3.256,
+              "chamfer_gate": 3.4,
+              "cmap_before": 30708,
+              "cmap_after": 30709,
+              "other_glyphs_and_metrics_unchanged": true,
+              "backup": "var/unencoded/kangxi-unencoded/font-backups/guji-plane0.ttf.f7e40e014584f6f4fd73ac1de97b2e9aac414e5eeb0e9c9a3847a78e4c27a20b.ttf"
+            }
+          ],
+          "cache_version": "e701-4-e704-1-e705-1"
+        }
+      ],
+      "usage": "small-only",
+      "usage_note": "仅用于小字正文，不写大字、来源plane2或系统字体。",
+      "unicode_status": "unconfirmed-independent-codepoint",
+      "report": "docs/research/2026-11-18-U+E705口𠂹调研核验与补录报告.md",
+      "related_characters": [
+        {
+          "char": "他",
+          "cp": "4ED6",
+          "relation": "来源字头；注中以目标刻形注音"
+        },
+        {
+          "char": "𠂹",
+          "cp": "200B9",
+          "relation": "右部整字供体，目标另有左口"
+        },
+        {
+          "char": "𪢊",
+          "cp": "2A88A",
+          "relation": "⿰口衆，右上有额外围框，现字体实形不同"
+        }
+      ],
+      "font_versions": {
+        "guji-plane0.ttf": 1
+      },
+      "sha256_after": {
+        "guji-plane0.ttf": "d95b07155dd6993f86175cc6ee979403be7fa712b4f79881981011d80d276da8"
       },
       "patched_at": "2026-11-18"
     }

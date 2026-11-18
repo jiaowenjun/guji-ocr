@@ -1,0 +1,179 @@
+{
+  "trials": [
+    {
+      "trial": "A",
+      "mouth_bbox": [
+        30,
+        210,
+        285,
+        735
+      ],
+      "right_bbox": [
+        265,
+        -146,
+        998,
+        848
+      ],
+      "preview": "temporary-ttf",
+      "adopted": false
+    },
+    {
+      "trial": "B",
+      "mouth_bbox": [
+        30,
+        215,
+        280,
+        725
+      ],
+      "right_bbox": [
+        215,
+        -146,
+        998,
+        848
+      ],
+      "preview": "temporary-ttf",
+      "adopted": false
+    },
+    {
+      "trial": "C",
+      "mouth_bbox": [
+        30,
+        215,
+        280,
+        725
+      ],
+      "right_bbox": [
+        165,
+        -146,
+        998,
+        848
+      ],
+      "preview": "temporary-ttf",
+      "adopted": false
+    },
+    {
+      "trial": "D",
+      "mouth_bbox": [
+        30,
+        200,
+        265,
+        735
+      ],
+      "right_bbox": [
+        245,
+        -146,
+        998,
+        848
+      ],
+      "preview": "temporary-ttf",
+      "adopted": false
+    },
+    {
+      "trial": "E",
+      "mouth_bbox": [
+        30,
+        290,
+        260,
+        745
+      ],
+      "right_bbox": [
+        90,
+        -146,
+        998,
+        848
+      ],
+      "preview": "svg",
+      "adopted": false
+    },
+    {
+      "trial": "F",
+      "mouth_bbox": [
+        30,
+        350,
+        250,
+        745
+      ],
+      "right_bbox": [
+        90,
+        -146,
+        998,
+        848
+      ],
+      "preview": "svg",
+      "adopted": false
+    },
+    {
+      "trial": "G",
+      "mouth_bbox": [
+        30,
+        280,
+        235,
+        745
+      ],
+      "right_bbox": [
+        145,
+        -146,
+        998,
+        848
+      ],
+      "preview": "svg",
+      "adopted": false
+    },
+    {
+      "trial": "H",
+      "mouth_bbox": [
+        30,
+        320,
+        235,
+        745
+      ],
+      "right_bbox": [
+        145,
+        -146,
+        998,
+        848
+      ],
+      "preview": "svg",
+      "adopted": false
+    },
+    {
+      "trial": "I",
+      "mouth_bbox": [
+        30,
+        250,
+        235,
+        745
+      ],
+      "right_bbox": [
+        195,
+        -146,
+        998,
+        848
+      ],
+      "preview": "svg",
+      "adopted": false
+    },
+    {
+      "trial": "J",
+      "mouth_bbox": [
+        30,
+        290,
+        235,
+        745
+      ],
+      "right_bbox": [
+        195,
+        -146,
+        998,
+        848
+      ],
+      "preview": "svg",
+      "adopted": true
+    }
+  ],
+  "scope": "Authoring previews only; J was also rendered in a temporary TTF before one formal E705 v1 insert.",
+  "early_tentative_gate": 3.0,
+  "final_gate": 3.4,
+  "final_score": 3.2564178284556133,
+  "gate_note": "Adjusted during authoring before formal dry-run; weak regression guard, not an identity or quality proof."
+}

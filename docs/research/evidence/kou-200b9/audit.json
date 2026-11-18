@@ -1,0 +1,606 @@
+{
+  "checked_at": "2026-11-18",
+  "scope": "Read-only research; no font patch, codepoint allocation or annotation edit",
+  "requested_page": 403,
+  "verified_page": 407,
+  "headword": {
+    "char": "他",
+    "cp": "U+4ED6",
+    "kKangXi": "0092.090",
+    "volume": "子集中",
+    "radical": "人",
+    "site_head_number": 1
+  },
+  "target_description": "⿰口𠂹",
+  "scan": {
+    "path": "docs/research/figures/kou-200b9/scan-original.png",
+    "bytes": 22747,
+    "sha256": "d2acf2e878f54f32764910a59fd2215381cf09ac65d1308d4c203c9fcbcc03cd"
+  },
+  "page": {
+    "path": "/Volumes/WD-2T/guji-ocr/raw/kangxizidian/pages/0407.jpg",
+    "bytes": 535925,
+    "sha256": "ca552b0734084c10d7e25679bb7bd593423e87bef46973d92098740346978d48",
+    "dimensions": [
+      1130,
+      1662
+    ],
+    "context_crop": [
+      670,
+      830,
+      820,
+      1500
+    ],
+    "url": "https://p.kangxizidian.com/kangxi2/0407.jpg"
+  },
+  "websites": {
+    "kangxi-ta": {
+      "path": "var/font-audit/0403/kangxi-ta.html",
+      "bytes": 14021,
+      "sha256": "b0d982b9b0081f8b0f3a75f852eede32c952cb1811a398aa1eb3dcab8b978429",
+      "url": "https://www.kangxizidian.com/search/index_v.php?stype=Word&sword=%E4%BB%96&detail=y",
+      "passage": "他的解释|他的意思|康熙字典“他”的释义 字頭： 他 他 部首：人 部首筆畫：2 部外筆畫：3 總筆畫：5 拼音： tā , tuó 注音： ㄊㄚ , ㄊㄨㄛˊ 倉頡：OPD 统一碼：4ED6 卷別：〈子集中〉 同文書局本 ：92頁，第9字 武英殿本 ：407頁，第1字 廣韻 託何切 正韻 湯何切"
+    },
+    "zd-ta": {
+      "path": "var/font-audit/0403/zd-ta.html",
+      "bytes": 54684,
+      "sha256": "6e8a97878c93802629a6e1205d68e374c73fa2ec85abe313b830c3af40122fe2",
+      "url": "https://www.zdic.net/hans/%E4%BB%96",
+      "passage": "人知其一，莫知其他。 又【玉篇】誰也。 又邪也。【揚子·法言】君子正而不他。 又凡牛馬載物曰負他。 又【集韻】唐佐切，同䭾。亦畜負物也。 又【司馬相如·上林賦】不被創刃，怖而死者，他他藉藉，塡坑滿谷。【註】他音〈口 𠂹 〉。言禽獸僵死交相積也。 又【正字通】方言呼人曰他。讀若塔平聲。 反馈 ↳ 佗 说文解字 （说文解字未收录「他」字头，请参考「 佗 」字：） 说文解字·【卷八】·【人部】 負何也。从人它聲。徒何切〖注〗臣鉉等案：《史記》：“匈奴奇畜有橐佗。”今俗譌誤謂之駱駞，"
+    }
+  },
+  "unicode": {
+    "local_unihan_version": "18.0.0",
+    "unihan_files": [
+      {
+        "path": "var/unihan/Unihan_DictionaryIndices.txt",
+        "bytes": 8921637,
+        "sha256": "b41c7c5ca3a01d833ed4fe0c7b9cdf41c4ec08cb11a0fd1df6e92ed666ce00e1"
+      },
+      {
+        "path": "var/unihan/Unihan_DictionaryLikeData.txt",
+        "bytes": 4129290,
+        "sha256": "cce221e3d4719c9fa7f0068d2a86bd0d8f3bf5725a21a77d00fc4f784d5520ed"
+      },
+      {
+        "path": "var/unihan/Unihan_IRGSources.txt",
+        "bytes": 13379351,
+        "sha256": "e2c484cd22b54f7e0ce896ebb02f33e092b92325accf0fd55e0e14e3863869eb"
+      },
+      {
+        "path": "var/unihan/Unihan_NumericValues.txt",
+        "bytes": 4990,
+        "sha256": "ea986cec09192efa3b527049fca964682b394d42b0ce0e15dbe1321dec2dc7e6"
+      },
+      {
+        "path": "var/unihan/Unihan_OtherMappings.txt",
+        "bytes": 3715847,
+        "sha256": "fc7bbb8f923fa1e922a4d421aa15387d1c68250cc5e7619bdf81f575ab38472b"
+      },
+      {
+        "path": "var/unihan/Unihan_RadicalStrokeCounts.txt",
+        "bytes": 600881,
+        "sha256": "9330f089ebb61426b277951b319775aa6e3a3e56900f6381cab915891cd4fda9"
+      },
+      {
+        "path": "var/unihan/Unihan_Readings.txt",
+        "bytes": 8844571,
+        "sha256": "9d39995b5de714e8ce93716ed5d15eaa0792d68e407cdf8a0add2893b8f4150b"
+      },
+      {
+        "path": "var/unihan/Unihan_Variants.txt",
+        "bytes": 726700,
+        "sha256": "4ccfd34b08ac7b9c14353f6668ba43e3796d85c4cdce7952b635be16015aafa2"
+      }
+    ],
+    "properties": [
+      {
+        "file": "Unihan_DictionaryIndices.txt",
+        "line": "U+4ED6\tkCihaiT\t85.203"
+      },
+      {
+        "file": "Unihan_DictionaryIndices.txt",
+        "line": "U+4ED6\tkCowles\t4282"
+      },
+      {
+        "file": "Unihan_DictionaryIndices.txt",
+        "line": "U+4ED6\tkDaeJaweon\t0195.120"
+      },
+      {
+        "file": "Unihan_DictionaryIndices.txt",
+        "line": "U+4ED6\tkFennIndex\t487.03 531.08"
+      },
+      {
+        "file": "Unihan_DictionaryIndices.txt",
+        "line": "U+4ED6\tkGSR\t0004c'"
+      },
+      {
+        "file": "Unihan_DictionaryIndices.txt",
+        "line": "U+4ED6\tkHanYu\t10115.060"
+      },
+      {
+        "file": "Unihan_DictionaryIndices.txt",
+        "line": "U+4ED6\tkIRGHanyuDaZidian\t10115.060"
+      },
+      {
+        "file": "Unihan_DictionaryIndices.txt",
+        "line": "U+4ED6\tkKangXi\t0092.090"
+      },
+      {
+        "file": "Unihan_DictionaryIndices.txt",
+        "line": "U+4ED6\tkKarlgren\t223"
+      },
+      {
+        "file": "Unihan_DictionaryIndices.txt",
+        "line": "U+4ED6\tkLau\t2983"
+      },
+      {
+        "file": "Unihan_DictionaryIndices.txt",
+        "line": "U+4ED6\tkMatthews\t5961"
+      },
+      {
+        "file": "Unihan_DictionaryIndices.txt",
+        "line": "U+4ED6\tkMeyerWempe\t2916"
+      },
+      {
+        "file": "Unihan_DictionaryIndices.txt",
+        "line": "U+4ED6\tkMorohashi\t00370"
+      },
+      {
+        "file": "Unihan_DictionaryIndices.txt",
+        "line": "U+4ED6\tkNelson\t0361"
+      },
+      {
+        "file": "Unihan_DictionaryIndices.txt",
+        "line": "U+4ED6\tkSBGY\t160.44"
+      },
+      {
+        "file": "Unihan_DictionaryIndices.txt",
+        "line": "U+4ED6\tkSMSZD2003Index\t18.12"
+      },
+      {
+        "file": "Unihan_DictionaryIndices.txt",
+        "line": "U+200B9\tkCihaiT\t48.201"
+      },
+      {
+        "file": "Unihan_DictionaryIndices.txt",
+        "line": "U+200B9\tkHanYu\t10041.030"
+      },
+      {
+        "file": "Unihan_DictionaryIndices.txt",
+        "line": "U+200B9\tkIRGHanyuDaZidian\t10041.030"
+      },
+      {
+        "file": "Unihan_DictionaryIndices.txt",
+        "line": "U+200B9\tkKangXi\t0083.120"
+      },
+      {
+        "file": "Unihan_DictionaryIndices.txt",
+        "line": "U+200B9\tkMorohashi\t00155"
+      },
+      {
+        "file": "Unihan_DictionaryLikeData.txt",
+        "line": "U+4ED6\tkCangjie\tOPD"
+      },
+      {
+        "file": "Unihan_DictionaryLikeData.txt",
+        "line": "U+4ED6\tkFenn\t301A"
+      },
+      {
+        "file": "Unihan_DictionaryLikeData.txt",
+        "line": "U+4ED6\tkFourCornerCode\t2421.2"
+      },
+      {
+        "file": "Unihan_DictionaryLikeData.txt",
+        "line": "U+4ED6\tkGradeLevel\t1"
+      },
+      {
+        "file": "Unihan_DictionaryLikeData.txt",
+        "line": "U+4ED6\tkHKGlyph\t0080"
+      },
+      {
+        "file": "Unihan_DictionaryLikeData.txt",
+        "line": "U+4ED6\tkMojiJoho\tMJ006517"
+      },
+      {
+        "file": "Unihan_DictionaryLikeData.txt",
+        "line": "U+4ED6\tkPhonetic\t1283 1471"
+      },
+      {
+        "file": "Unihan_DictionaryLikeData.txt",
+        "line": "U+4ED6\tkUnihanCore2020\tGHJKMPT"
+      },
+      {
+        "file": "Unihan_DictionaryLikeData.txt",
+        "line": "U+200B9\tkMojiJoho\tMJ030404"
+      },
+      {
+        "file": "Unihan_DictionaryLikeData.txt",
+        "line": "U+2A88A\tkMojiJoho\tMJ057193"
+      },
+      {
+        "file": "Unihan_IRGSources.txt",
+        "line": "U+4ED6\tkIICore\tAGTJHKMP"
+      },
+      {
+        "file": "Unihan_IRGSources.txt",
+        "line": "U+4ED6\tkIRG_GSource\tG0-4B7B"
+      },
+      {
+        "file": "Unihan_IRGSources.txt",
+        "line": "U+4ED6\tkIRG_HSource\tHB1-A54C"
+      },
+      {
+        "file": "Unihan_IRGSources.txt",
+        "line": "U+4ED6\tkIRG_JSource\tJ0-423E"
+      },
+      {
+        "file": "Unihan_IRGSources.txt",
+        "line": "U+4ED6\tkIRG_KPSource\tKP0-EFE6"
+      },
+      {
+        "file": "Unihan_IRGSources.txt",
+        "line": "U+4ED6\tkIRG_KSource\tK0-7662"
+      },
+      {
+        "file": "Unihan_IRGSources.txt",
+        "line": "U+4ED6\tkIRG_TSource\tT1-456C"
+      },
+      {
+        "file": "Unihan_IRGSources.txt",
+        "line": "U+4ED6\tkIRG_VSource\tV1-4A6E"
+      },
+      {
+        "file": "Unihan_IRGSources.txt",
+        "line": "U+4ED6\tkRSUnicode\t9.3"
+      },
+      {
+        "file": "Unihan_IRGSources.txt",
+        "line": "U+4ED6\tkTotalStrokes\t5"
+      },
+      {
+        "file": "Unihan_IRGSources.txt",
+        "line": "U+200B9\tkIRG_GSource\tGKX-0083.12"
+      },
+      {
+        "file": "Unihan_IRGSources.txt",
+        "line": "U+200B9\tkIRG_JSource\tJMJ-030404"
+      },
+      {
+        "file": "Unihan_IRGSources.txt",
+        "line": "U+200B9\tkIRG_KPSource\tKP1-3446"
+      },
+      {
+        "file": "Unihan_IRGSources.txt",
+        "line": "U+200B9\tkIRG_TSource\tT5-2B67"
+      },
+      {
+        "file": "Unihan_IRGSources.txt",
+        "line": "U+200B9\tkRSUnicode\t4.9"
+      },
+      {
+        "file": "Unihan_IRGSources.txt",
+        "line": "U+200B9\tkTotalStrokes\t10"
+      },
+      {
+        "file": "Unihan_IRGSources.txt",
+        "line": "U+2A88A\tkIRG_JSource\tJK-65075"
+      },
+      {
+        "file": "Unihan_IRGSources.txt",
+        "line": "U+2A88A\tkRSUnicode\t30.12"
+      },
+      {
+        "file": "Unihan_IRGSources.txt",
+        "line": "U+2A88A\tkTotalStrokes\t15"
+      },
+      {
+        "file": "Unihan_OtherMappings.txt",
+        "line": "U+4ED6\tkBigFive\tA54C"
+      },
+      {
+        "file": "Unihan_OtherMappings.txt",
+        "line": "U+4ED6\tkCCCII\t213071"
+      },
+      {
+        "file": "Unihan_OtherMappings.txt",
+        "line": "U+4ED6\tkCNS1986\t1-456C"
+      },
+      {
+        "file": "Unihan_OtherMappings.txt",
+        "line": "U+4ED6\tkCNS1992\t1-456C"
+      },
+      {
+        "file": "Unihan_OtherMappings.txt",
+        "line": "U+4ED6\tkEACC\t213071"
+      },
+      {
+        "file": "Unihan_OtherMappings.txt",
+        "line": "U+4ED6\tkGB0\t4391"
+      },
+      {
+        "file": "Unihan_OtherMappings.txt",
+        "line": "U+4ED6\tkGB1\t4391"
+      },
+      {
+        "file": "Unihan_OtherMappings.txt",
+        "line": "U+4ED6\tkJis0\t3430"
+      },
+      {
+        "file": "Unihan_OtherMappings.txt",
+        "line": "U+4ED6\tkJoyoKanji\t2010"
+      },
+      {
+        "file": "Unihan_OtherMappings.txt",
+        "line": "U+4ED6\tkKoreanEducationHanja\t2007"
+      },
+      {
+        "file": "Unihan_OtherMappings.txt",
+        "line": "U+4ED6\tkMainlandTelegraph\t0100"
+      },
+      {
+        "file": "Unihan_OtherMappings.txt",
+        "line": "U+4ED6\tkTGH\t2013:277"
+      },
+      {
+        "file": "Unihan_OtherMappings.txt",
+        "line": "U+4ED6\tkTaiwanTelegraph\t0100"
+      },
+      {
+        "file": "Unihan_OtherMappings.txt",
+        "line": "U+4ED6\tkXerox\t241:050"
+      },
+      {
+        "file": "Unihan_RadicalStrokeCounts.txt",
+        "line": "U+4ED6\tkRSAdobe_Japan1_6\tC+2846+9.2.3"
+      },
+      {
+        "file": "Unihan_Readings.txt",
+        "line": "U+4ED6\tkCantonese\ttaa1"
+      },
+      {
+        "file": "Unihan_Readings.txt",
+        "line": "U+4ED6\tkDefinition\tother, another; he, she, it"
+      },
+      {
+        "file": "Unihan_Readings.txt",
+        "line": "U+4ED6\tkFanqie\t託何"
+      },
+      {
+        "file": "Unihan_Readings.txt",
+        "line": "U+4ED6\tkHangul\t타:0E"
+      },
+      {
+        "file": "Unihan_Readings.txt",
+        "line": "U+4ED6\tkHanyuPinlu\ttā(16038)"
+      },
+      {
+        "file": "Unihan_Readings.txt",
+        "line": "U+4ED6\tkHanyuPinyin\t10115.060:tā,tuó"
+      },
+      {
+        "file": "Unihan_Readings.txt",
+        "line": "U+4ED6\tkJapanese\tタ ほか"
+      },
+      {
+        "file": "Unihan_Readings.txt",
+        "line": "U+4ED6\tkJapaneseKun\tHOKA"
+      },
+      {
+        "file": "Unihan_Readings.txt",
+        "line": "U+4ED6\tkJapaneseOn\tTA"
+      },
+      {
+        "file": "Unihan_Readings.txt",
+        "line": "U+4ED6\tkKorean\tTHA"
+      },
+      {
+        "file": "Unihan_Readings.txt",
+        "line": "U+4ED6\tkMandarin\ttā"
+      },
+      {
+        "file": "Unihan_Readings.txt",
+        "line": "U+4ED6\tkSMSZD2003Readings\ttā粵taa1"
+      },
+      {
+        "file": "Unihan_Readings.txt",
+        "line": "U+4ED6\tkTGHZ2013\t355.010:tā"
+      },
+      {
+        "file": "Unihan_Readings.txt",
+        "line": "U+4ED6\tkTang\t*tɑ tɑ"
+      },
+      {
+        "file": "Unihan_Readings.txt",
+        "line": "U+4ED6\tkVietnamese\ttha"
+      },
+      {
+        "file": "Unihan_Readings.txt",
+        "line": "U+4ED6\tkXHC1983\t1106.010:tā"
+      },
+      {
+        "file": "Unihan_Readings.txt",
+        "line": "U+200B9\tkFanqie\t是爲"
+      },
+      {
+        "file": "Unihan_Readings.txt",
+        "line": "U+200B9\tkJapanese\tスイ ズイ"
+      },
+      {
+        "file": "Unihan_Readings.txt",
+        "line": "U+2A88A\tkJapanese\tかまびすしい"
+      },
+      {
+        "file": "Unihan_Variants.txt",
+        "line": "U+4ED6\tkSemanticVariant\tU+5979<kMatthews U+7260<kMatthews"
+      }
+    ],
+    "chise_files": [
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Basic.txt",
+        "bytes": 448390,
+        "sha256": "2ee31dafadcc7985ae7b29d854bceb906ef587a4feeb4ea3ec1469c7d69428bf"
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Compat-Supplement.txt",
+        "bytes": 16643,
+        "sha256": "c1d265a791a24a8b4d7d963cb7cf31a6a3b1b234b630477d3f27798c9ccab930"
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Compat.txt",
+        "bytes": 5944,
+        "sha256": "7683730c8213ecb3a2b3e85daa6b7b913c43b44a81a9af7900671bca4d091391"
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-A.txt",
+        "bytes": 142270,
+        "sha256": "d58c5b21054d1ba07fd2621f0892b36c088009d7890b136f42f8c5a5af21f495"
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-B-1.txt",
+        "bytes": 235544,
+        "sha256": "3e847635a97e618e447ec25d143c3827640ab9e30e7ff6b58f078009fef113a1"
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-B-2.txt",
+        "bytes": 232228,
+        "sha256": "551150fa2bd8886c17b5af40ad1d7876026d477349e7d636b0fbfc7306d26b81"
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-B-3.txt",
+        "bytes": 230687,
+        "sha256": "33a51a09a18d06fb666e72f13d3854c41a1d06207f0f0c4ac43f3687a0bea6fb"
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-B-4.txt",
+        "bytes": 230499,
+        "sha256": "f68fac9ed5f86953b574eacae17be49c57f270caa4a590339ba4d3f668f6596b"
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-B-5.txt",
+        "bytes": 227430,
+        "sha256": "21cf28e9e4aeb3d98e8c7739899270b13a6d080a2f65f0d4287710d71e72901a"
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-B-6.txt",
+        "bytes": 47916,
+        "sha256": "a732d18a27f418cb4610b7a1e1674487485111734cbd131220caa1baf23b630a"
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-C.txt",
+        "bytes": 112409,
+        "sha256": "74dcff528d54508225e587384f132cac508b97a866969ebbeea848a030910225"
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-D.txt",
+        "bytes": 6497,
+        "sha256": "c300f9ace1ffd9526fe3c17a12c94b3823e1a97cd507bd4b85b784bf269a3234"
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-E.txt",
+        "bytes": 140393,
+        "sha256": "aab22be5a0ba07d3830f37f344b08950c566286171539c08ce6d0d0a5f3a635b"
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-F.txt",
+        "bytes": 189776,
+        "sha256": "dfede4731416ad43a084d0ecdc86562607e9057735e9ac43114870fa5dbf9f5e"
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-G.txt",
+        "bytes": 118027,
+        "sha256": "1f8f8cc7d911ccf86c196ce4de43d7e4ca03689ee83d4e3e380120eac336c64d"
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-H.txt",
+        "bytes": 105724,
+        "sha256": "e239d31373777a953c755ba99ae7a502a33823bddd0fc9af4e61e3cd8f209e0c"
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-I.txt",
+        "bytes": 14587,
+        "sha256": "a84694c801290033b7e3f79303c71fcdcae595afc3a47481496dc051832369d0"
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-J.txt",
+        "bytes": 101733,
+        "sha256": "0910def2870d1e4cb38c4064f060de5efc48bb73fee6d5f7447657fa121fa260"
+      }
+    ],
+    "chise_records": 102894,
+    "babelstone": {
+      "path": "var/font-audit/0373/babelstone-ids.txt",
+      "bytes": 3285669,
+      "sha256": "cc2a0a97e6a51ed6ebe59870ef2af66e83f3c3c27387d79b4441bb2d791d78b1",
+      "declared_version": "Unicode16.0;2025-06-27"
+    },
+    "literal_queries": {
+      "⿰口𠂹": [],
+      "口𠂹": [],
+      "⿰口乑": [],
+      "⿰口㐺": [],
+      "⿰口众": [],
+      "⿰口衆": [
+        {
+          "file": "var/font-audit/0373/ids/IDS-UCS-Ext-C.txt",
+          "line": "U-0002A88A\t𪢊\t⿰口衆"
+        },
+        {
+          "file": "var/font-audit/0373/babelstone-ids.txt",
+          "line": "U+2A88A\t𪢊\t^⿰口衆$(J)"
+        }
+      ],
+      "⿰口⿻⿱㇒丨𠈌": []
+    },
+    "ivd": {
+      "path": "var/font-audit/0373/unicode-ivd.txt",
+      "bytes": 1346150,
+      "sha256": "0052165369b6c8783d19b041f0a70537a69d718d577b9df180453be9d8c10a87",
+      "related_records": [
+        "4ED6 E0100; Adobe-Japan1; CID+2846",
+        "200B9 E0100; Hanyo-Denshi; KS001860",
+        "200B9 E0101; Hanyo-Denshi; TK01000770"
+      ]
+    },
+    "glyphwiki_search": "HTTP403; not evidence of absence"
+  },
+  "font_search": {
+    "algorithm": "PIL96px in128px; bbox normalized to64px max ink58px; symmetric mean EDT",
+    "target_threshold": 120,
+    "mapping_floor": "U+2E80",
+    "eligible_mappings": 132636,
+    "top_saved_per_font": 100,
+    "visually_reviewed_per_font": 48,
+    "mouth_restricted_pool": 3328,
+    "mouth_restricted_reviewed": 48,
+    "unmapped_reviewed_plane0": 96,
+    "unmapped_other_planes": [
+      ".notdef"
+    ],
+    "gsub": "Only vert in plane0; no substitutions for U+53E3,4ED6,55D2,5683,4E51. No GSUB in plane2/F; no format14 cmap in any small font.",
+    "script": {
+      "path": "tools/dataset/guji_font_shape_search.py",
+      "bytes": 2866,
+      "sha256": "5c705eab348dca78e6714ed4702f30c909d39186e1bdf4fa647aabae57281893"
+    }
+  },
+  "findings": {
+    "unicode": "Independent standard encoding for exact source form not confirmed in searched resources",
+    "small_fonts": "No matching existing glyph found in reviewed candidates, related characters or unmapped glyphs",
+    "nearest_structural_standard_character": {
+      "char": "𪢊",
+      "cp": "U+2A88A",
+      "ids": "⿰口衆",
+      "in_plane2": true,
+      "rejected_reason": "Right component has extra blood/eye-shaped top enclosure absent from source"
+    },
+    "supplementation": "Recommended small-only PUA for faithful diplomatic transcription; not executed",
+    "donors": "Existing 口 and entire 𠂹 are plausible native Songti donors; E701 is a different form and must not be reused"
+  },
+  "limitations": [
+    "Full mapping search generated candidates, not exhaustive human inspection of every mapped glyph",
+    "Literal IDS queries do not exhaust all equivalent decompositions",
+    "No independent inspection of original 上林賦 commentaries or all external IVD glyphs",
+    "Negative search is not an official Unicode non-encoding proof"
+  ]
+}

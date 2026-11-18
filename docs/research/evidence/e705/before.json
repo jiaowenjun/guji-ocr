@@ -1,0 +1,35 @@
+{
+  "checked_at": "2026-11-18",
+  "fonts": [
+    {
+      "path": "guji-preview-grid/public/fonts/guji-plane0.ttf",
+      "bytes": 17252348,
+      "sha256": "f7e40e014584f6f4fd73ac1de97b2e9aac414e5eeb0e9c9a3847a78e4c27a20b"
+    },
+    {
+      "path": "guji-preview-grid/public/fonts/guji-plane2.ttf",
+      "bytes": 42717516,
+      "sha256": "80df094a2e63091b222706696a8b244c9dba45219af866226a097d0fbb2bf28d"
+    },
+    {
+      "path": "guji-preview-grid/public/fonts/guji-planef.ttf",
+      "bytes": 26189728,
+      "sha256": "cfeb8527cfc75fe244b1c773056ed8e8896e67918f368999d12f6bd86dee323b"
+    },
+    {
+      "path": "guji-preview-grid/public/fonts/guji-large.ttf",
+      "bytes": 46624948,
+      "sha256": "3973ccbe8bbdb4b91af44269a12f9b9f58daeb0c225d78e3a934f676f1c4c231"
+    },
+    {
+      "path": "/Users/jwj/Library/Fonts/KX_47043_14.ttf",
+      "bytes": 46623752,
+      "sha256": "7d916ab6e4bcc935894cd372997ebc7536e315a1e8ae7270d39e53e2dbb9c4fa"
+    }
+  ],
+  "annotation_path": "kangxi-gold/annotations/0407.gj",
+  "annotation_sha256": "885ab561978197c486701f9b77013f7c105f9bf1a22b94392e580daa1aad2497",
+  "old_cache_version": "e701-4-e704-1",
+  "allocated_cp": "E705",
+  "allocation_check": "Absent from all four font cmaps and registry before insert; E702/E703 remain reserved historical trial codes."
+}

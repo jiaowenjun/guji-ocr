@@ -1,0 +1,13 @@
+{
+  "path": "kangxi-gold/annotations/0407.gj",
+  "replacement": {
+    "before": "〈口𠂹〉",
+    "after": "",
+    "codepoint": "U+E705",
+    "count": 1
+  },
+  "sha256_before": "885ab561978197c486701f9b77013f7c105f9bf1a22b94392e580daa1aad2497",
+  "sha256_after": "b49f7f52d5fe021859d61de1f8b2089b1f58fb7f56b204c53faed05727ee8b3e",
+  "only_single_replacement": true,
+  "commit_scope": "Existing untracked page draft left uncommitted."
+}

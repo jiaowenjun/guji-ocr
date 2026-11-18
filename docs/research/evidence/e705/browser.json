@@ -1,0 +1,23 @@
+{
+  "url": "http://localhost:5173/",
+  "page": 407,
+  "observed_at": "2026-11-18",
+  "matrix": {
+    "selector": ".m-cell",
+    "text": "",
+    "matching_cells": 1,
+    "font_family": "GujiPlane0, GujiPlane2, GujiPlaneF, 中华书局宋体00平面, 中华书局宋体02平面, 中华书局宋体15平面, HanaMinA, serif",
+    "font_size": "17.022px",
+    "cell_width": 21.2734375,
+    "cell_height": 22.0546875,
+    "context": "刃怖而死者他他藉藉塡坑滿谷註他音言禽獸僵死交相"
+  },
+  "cdp_platform_fonts": {
+    "familyName": "ZhongHuaSongPlane00",
+    "glyphCount": 1,
+    "isCustomFont": true,
+    "postScriptName": "FZSONG_ZHSJ_SIP--GB1-5"
+  },
+  "observed_visual_result": "Mouth and complete right component visible in one small-text cell, no missing-glyph box. Editor matches dataset; draft status preserved.",
+  "boundary": "This verifies the target glyph, not full-page proofreading or all layout issues."
+}

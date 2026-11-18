@@ -1,0 +1,606 @@
+{
+  "count": 3328,
+  "method": "Union of Unihan radical 30 and literal IDS left mouth; same chamfer64",
+  "top100": [
+    {
+      "cp": "20C68",
+      "char": "𠱨",
+      "font": "guji-plane2.ttf",
+      "score": 1.3258636500083782
+    },
+    {
+      "cp": "55DB",
+      "char": "嗛",
+      "font": "guji-plane0.ttf",
+      "score": 1.3584488567857067
+    },
+    {
+      "cp": "55F1",
+      "char": "嗱",
+      "font": "guji-plane0.ttf",
+      "score": 1.384191562599252
+    },
+    {
+      "cp": "5519",
+      "char": "唙",
+      "font": "guji-plane0.ttf",
+      "score": 1.3919035554535992
+    },
+    {
+      "cp": "557E",
+      "char": "啾",
+      "font": "guji-plane0.ttf",
+      "score": 1.4016227242781416
+    },
+    {
+      "cp": "54CC",
+      "char": "哌",
+      "font": "guji-plane0.ttf",
+      "score": 1.4289472947110988
+    },
+    {
+      "cp": "2D1F3",
+      "char": "𭇳",
+      "font": "guji-plane2.ttf",
+      "score": 1.4293521791812704
+    },
+    {
+      "cp": "20E46",
+      "char": "𠹆",
+      "font": "guji-plane2.ttf",
+      "score": 1.4305845636106347
+    },
+    {
+      "cp": "20FC1",
+      "char": "𠿁",
+      "font": "guji-plane2.ttf",
+      "score": 1.4372975795495435
+    },
+    {
+      "cp": "2114B",
+      "char": "𡅋",
+      "font": "guji-plane2.ttf",
+      "score": 1.4383058812222171
+    },
+    {
+      "cp": "2D200",
+      "char": "𭈀",
+      "font": "guji-plane2.ttf",
+      "score": 1.4397085839666468
+    },
+    {
+      "cp": "20CAD",
+      "char": "𠲭",
+      "font": "guji-plane2.ttf",
+      "score": 1.4555916198187693
+    },
+    {
+      "cp": "35EA",
+      "char": "㗪",
+      "font": "guji-plane0.ttf",
+      "score": 1.460061092105286
+    },
+    {
+      "cp": "561B",
+      "char": "嘛",
+      "font": "guji-plane0.ttf",
+      "score": 1.4654221838008852
+    },
+    {
+      "cp": "2BB00",
+      "char": "𫬀",
+      "font": "guji-plane2.ttf",
+      "score": 1.4699214535517147
+    },
+    {
+      "cp": "2D26B",
+      "char": "𭉫",
+      "font": "guji-plane2.ttf",
+      "score": 1.4702263946572809
+    },
+    {
+      "cp": "55C9",
+      "char": "嗉",
+      "font": "guji-plane0.ttf",
+      "score": 1.473774353876951
+    },
+    {
+      "cp": "2A857",
+      "char": "𪡗",
+      "font": "guji-plane2.ttf",
+      "score": 1.4800436868672475
+    },
+    {
+      "cp": "2D26C",
+      "char": "𭉬",
+      "font": "guji-plane2.ttf",
+      "score": 1.482540038723616
+    },
+    {
+      "cp": "20EBC",
+      "char": "𠺼",
+      "font": "guji-plane2.ttf",
+      "score": 1.488970474318089
+    },
+    {
+      "cp": "2BB30",
+      "char": "𫬰",
+      "font": "guji-plane2.ttf",
+      "score": 1.4947178238905596
+    },
+    {
+      "cp": "5605",
+      "char": "嘅",
+      "font": "guji-plane0.ttf",
+      "score": 1.4950175375404446
+    },
+    {
+      "cp": "20D2A",
+      "char": "𠴪",
+      "font": "guji-plane2.ttf",
+      "score": 1.4956713276503626
+    },
+    {
+      "cp": "56D0",
+      "char": "囐",
+      "font": "guji-plane0.ttf",
+      "score": 1.4964785326883825
+    },
+    {
+      "cp": "21030",
+      "char": "𡀰",
+      "font": "guji-plane2.ttf",
+      "score": 1.4969956667831243
+    },
+    {
+      "cp": "20CA0",
+      "char": "𠲠",
+      "font": "guji-plane2.ttf",
+      "score": 1.5042233387047435
+    },
+    {
+      "cp": "20FD6",
+      "char": "𠿖",
+      "font": "guji-plane2.ttf",
+      "score": 1.5043913701200564
+    },
+    {
+      "cp": "2BA5B",
+      "char": "𫩛",
+      "font": "guji-plane2.ttf",
+      "score": 1.5055273424394953
+    },
+    {
+      "cp": "2D293",
+      "char": "𭊓",
+      "font": "guji-plane2.ttf",
+      "score": 1.5069258617202377
+    },
+    {
+      "cp": "20C88",
+      "char": "𠲈",
+      "font": "guji-plane2.ttf",
+      "score": 1.5073989426525474
+    },
+    {
+      "cp": "20FCC",
+      "char": "𠿌",
+      "font": "guji-plane2.ttf",
+      "score": 1.5094010043170054
+    },
+    {
+      "cp": "5604",
+      "char": "嘄",
+      "font": "guji-plane0.ttf",
+      "score": 1.5104108454063017
+    },
+    {
+      "cp": "20E45",
+      "char": "𠹅",
+      "font": "guji-plane2.ttf",
+      "score": 1.5115045579271404
+    },
+    {
+      "cp": "20F92",
+      "char": "𠾒",
+      "font": "guji-plane2.ttf",
+      "score": 1.5134175544700814
+    },
+    {
+      "cp": "2D328",
+      "char": "𭌨",
+      "font": "guji-plane2.ttf",
+      "score": 1.5162364032245983
+    },
+    {
+      "cp": "55F2",
+      "char": "嗲",
+      "font": "guji-plane0.ttf",
+      "score": 1.5165840633738492
+    },
+    {
+      "cp": "20E0C",
+      "char": "𠸌",
+      "font": "guji-plane2.ttf",
+      "score": 1.5186145314167039
+    },
+    {
+      "cp": "2118D",
+      "char": "𡆍",
+      "font": "guji-plane2.ttf",
+      "score": 1.520126615132344
+    },
+    {
+      "cp": "21075",
+      "char": "𡁵",
+      "font": "guji-plane2.ttf",
+      "score": 1.5202309347670764
+    },
+    {
+      "cp": "5680",
+      "char": "嚀",
+      "font": "guji-plane0.ttf",
+      "score": 1.5208268665111113
+    },
+    {
+      "cp": "20FD4",
+      "char": "𠿔",
+      "font": "guji-plane2.ttf",
+      "score": 1.5219323454890732
+    },
+    {
+      "cp": "20CD8",
+      "char": "𠳘",
+      "font": "guji-plane2.ttf",
+      "score": 1.521965340095085
+    },
+    {
+      "cp": "5607",
+      "char": "嘇",
+      "font": "guji-plane0.ttf",
+      "score": 1.5239784705907076
+    },
+    {
+      "cp": "2D352",
+      "char": "𭍒",
+      "font": "guji-plane2.ttf",
+      "score": 1.524451125793637
+    },
+    {
+      "cp": "5606",
+      "char": "嘆",
+      "font": "guji-plane0.ttf",
+      "score": 1.525896743423714
+    },
+    {
+      "cp": "20FFB",
+      "char": "𠿻",
+      "font": "guji-plane2.ttf",
+      "score": 1.5278740884860977
+    },
+    {
+      "cp": "54AA",
+      "char": "咪",
+      "font": "guji-plane0.ttf",
+      "score": 1.5351642968435646
+    },
+    {
+      "cp": "20E5E",
+      "char": "𠹞",
+      "font": "guji-plane2.ttf",
+      "score": 1.535748759616478
+    },
+    {
+      "cp": "35CB",
+      "char": "㗋",
+      "font": "guji-plane0.ttf",
+      "score": 1.5357887213305494
+    },
+    {
+      "cp": "20F7F",
+      "char": "𠽿",
+      "font": "guji-plane2.ttf",
+      "score": 1.5371216298094792
+    },
+    {
+      "cp": "20EE0",
+      "char": "𠻠",
+      "font": "guji-plane2.ttf",
+      "score": 1.5389465537301437
+    },
+    {
+      "cp": "56B0",
+      "char": "嚰",
+      "font": "guji-plane0.ttf",
+      "score": 1.5411440395834677
+    },
+    {
+      "cp": "20F43",
+      "char": "𠽃",
+      "font": "guji-plane2.ttf",
+      "score": 1.5426317065681368
+    },
+    {
+      "cp": "20FF6",
+      "char": "𠿶",
+      "font": "guji-plane2.ttf",
+      "score": 1.5430306768208308
+    },
+    {
+      "cp": "55E5",
+      "char": "嗥",
+      "font": "guji-plane0.ttf",
+      "score": 1.5438835407565843
+    },
+    {
+      "cp": "5677",
+      "char": "噷",
+      "font": "guji-plane0.ttf",
+      "score": 1.5443842895896052
+    },
+    {
+      "cp": "20EDE",
+      "char": "𠻞",
+      "font": "guji-plane2.ttf",
+      "score": 1.5447298849342939
+    },
+    {
+      "cp": "2D2FC",
+      "char": "𭋼",
+      "font": "guji-plane2.ttf",
+      "score": 1.5467976833645567
+    },
+    {
+      "cp": "20ECE",
+      "char": "𠻎",
+      "font": "guji-plane2.ttf",
+      "score": 1.5494016682097147
+    },
+    {
+      "cp": "2D358",
+      "char": "𭍘",
+      "font": "guji-plane2.ttf",
+      "score": 1.5499189402827616
+    },
+    {
+      "cp": "56BE",
+      "char": "嚾",
+      "font": "guji-plane0.ttf",
+      "score": 1.5516949022724835
+    },
+    {
+      "cp": "20E66",
+      "char": "𠹦",
+      "font": "guji-plane2.ttf",
+      "score": 1.552786980179432
+    },
+    {
+      "cp": "548F",
+      "char": "咏",
+      "font": "guji-plane0.ttf",
+      "score": 1.5537428216727598
+    },
+    {
+      "cp": "20CF9",
+      "char": "𠳹",
+      "font": "guji-plane2.ttf",
+      "score": 1.5550907516457952
+    },
+    {
+      "cp": "20E30",
+      "char": "𠸰",
+      "font": "guji-plane2.ttf",
+      "score": 1.555646531127752
+    },
+    {
+      "cp": "2104F",
+      "char": "𡁏",
+      "font": "guji-plane2.ttf",
+      "score": 1.5557632194620656
+    },
+    {
+      "cp": "56C1",
+      "char": "囁",
+      "font": "guji-plane0.ttf",
+      "score": 1.5561451792759837
+    },
+    {
+      "cp": "20F1A",
+      "char": "𠼚",
+      "font": "guji-plane2.ttf",
+      "score": 1.5578199104796058
+    },
+    {
+      "cp": "20FDB",
+      "char": "𠿛",
+      "font": "guji-plane2.ttf",
+      "score": 1.5591857389951373
+    },
+    {
+      "cp": "20CBD",
+      "char": "𠲽",
+      "font": "guji-plane2.ttf",
+      "score": 1.5602512038578307
+    },
+    {
+      "cp": "550F",
+      "char": "唏",
+      "font": "guji-plane0.ttf",
+      "score": 1.5621810110900913
+    },
+    {
+      "cp": "210FC",
+      "char": "𡃼",
+      "font": "guji-plane2.ttf",
+      "score": 1.5627258968367186
+    },
+    {
+      "cp": "20D74",
+      "char": "𠵴",
+      "font": "guji-plane2.ttf",
+      "score": 1.5652921039298247
+    },
+    {
+      "cp": "210FE",
+      "char": "𡃾",
+      "font": "guji-plane2.ttf",
+      "score": 1.5671781287474515
+    },
+    {
+      "cp": "54AE",
+      "char": "咮",
+      "font": "guji-plane0.ttf",
+      "score": 1.568324531253175
+    },
+    {
+      "cp": "5665",
+      "char": "噥",
+      "font": "guji-plane0.ttf",
+      "score": 1.569179372811385
+    },
+    {
+      "cp": "21088",
+      "char": "𡂈",
+      "font": "guji-plane2.ttf",
+      "score": 1.569461697881791
+    },
+    {
+      "cp": "20CF8",
+      "char": "𠳸",
+      "font": "guji-plane2.ttf",
+      "score": 1.5699844528345324
+    },
+    {
+      "cp": "21146",
+      "char": "𡅆",
+      "font": "guji-plane2.ttf",
+      "score": 1.571965412453818
+    },
+    {
+      "cp": "5548",
+      "char": "啈",
+      "font": "guji-plane0.ttf",
+      "score": 1.5734963650438658
+    },
+    {
+      "cp": "21161",
+      "char": "𡅡",
+      "font": "guji-plane2.ttf",
+      "score": 1.5737333755662708
+    },
+    {
+      "cp": "550B",
+      "char": "唋",
+      "font": "guji-plane0.ttf",
+      "score": 1.5739577642791676
+    },
+    {
+      "cp": "20D63",
+      "char": "𠵣",
+      "font": "guji-plane2.ttf",
+      "score": 1.5759955239425598
+    },
+    {
+      "cp": "2BA98",
+      "char": "𫪘",
+      "font": "guji-plane2.ttf",
+      "score": 1.576937934525779
+    },
+    {
+      "cp": "20EBE",
+      "char": "𠺾",
+      "font": "guji-plane2.ttf",
+      "score": 1.5783520054105005
+    },
+    {
+      "cp": "56C5",
+      "char": "囅",
+      "font": "guji-plane0.ttf",
+      "score": 1.5796923919895072
+    },
+    {
+      "cp": "20E4A",
+      "char": "𠹊",
+      "font": "guji-plane2.ttf",
+      "score": 1.5806479823322848
+    },
+    {
+      "cp": "21001",
+      "char": "𡀁",
+      "font": "guji-plane2.ttf",
+      "score": 1.5814389456701459
+    },
+    {
+      "cp": "5649",
+      "char": "噉",
+      "font": "guji-plane0.ttf",
+      "score": 1.581875971372264
+    },
+    {
+      "cp": "20FAA",
+      "char": "𠾪",
+      "font": "guji-plane2.ttf",
+      "score": 1.582268548713225
+    },
+    {
+      "cp": "20FA3",
+      "char": "𠾣",
+      "font": "guji-plane2.ttf",
+      "score": 1.5827226922282325
+    },
+    {
+      "cp": "20ED4",
+      "char": "𠻔",
+      "font": "guji-plane2.ttf",
+      "score": 1.5828062430898338
+    },
+    {
+      "cp": "21076",
+      "char": "𡁶",
+      "font": "guji-plane2.ttf",
+      "score": 1.5843113547979613
+    },
+    {
+      "cp": "5637",
+      "char": "嘷",
+      "font": "guji-plane0.ttf",
+      "score": 1.5843392986772302
+    },
+    {
+      "cp": "21193",
+      "char": "𡆓",
+      "font": "guji-plane2.ttf",
+      "score": 1.5853648079777103
+    },
+    {
+      "cp": "20D82",
+      "char": "𠶂",
+      "font": "guji-plane2.ttf",
+      "score": 1.5890270459745737
+    },
+    {
+      "cp": "20E8D",
+      "char": "𠺍",
+      "font": "guji-plane2.ttf",
+      "score": 1.5895731810216107
+    },
+    {
+      "cp": "2117F",
+      "char": "𡅿",
+      "font": "guji-plane2.ttf",
+      "score": 1.5896823957311308
+    },
+    {
+      "cp": "35A6",
+      "char": "㖦",
+      "font": "guji-plane0.ttf",
+      "score": 1.5904297326540116
+    },
+    {
+      "cp": "55C6",
+      "char": "嗆",
+      "font": "guji-plane0.ttf",
+      "score": 1.5906348275910016
+    }
+  ]
+}

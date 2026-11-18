@@ -1,0 +1,190 @@
+[
+  {
+    "font": "guji-preview-grid/public/fonts/guji-large.ttf",
+    "sha256": "3973ccbe8bbdb4b91af44269a12f9b9f58daeb0c225d78e3a934f676f1c4c231",
+    "cmap": 49409,
+    "cmap_formats": [
+      4,
+      6,
+      12
+    ],
+    "unmapped": [
+      ".notdef",
+      ".null",
+      "nonmarkingreturn"
+    ],
+    "gsub_features": [
+      "vert"
+    ],
+    "related": {
+      "U+200B9": "uni200B9",
+      "U+2A88A": null,
+      "U+4ED6": "uni4ED6",
+      "U+55D2": "uni55D2",
+      "U+5683": "uni5683",
+      "U+3A3C": "uni3A3C"
+    }
+  },
+  {
+    "font": "guji-preview-grid/public/fonts/guji-plane0.ttf",
+    "sha256": "f7e40e014584f6f4fd73ac1de97b2e9aac414e5eeb0e9c9a3847a78e4c27a20b",
+    "cmap": 30708,
+    "cmap_formats": [
+      0,
+      4
+    ],
+    "unmapped": [
+      ".notdef",
+      "glyph00220",
+      "glyph00229",
+      "glyph00231",
+      "glyph00279",
+      "glyph00281",
+      "glyph00316",
+      "glyph00479",
+      "glyph00629",
+      "glyph00732",
+      "glyph00733",
+      "glyph00741",
+      "glyph00744",
+      "glyph00746",
+      "glyph01076",
+      "glyph01206",
+      "glyph01244",
+      "glyph01345",
+      "glyph01359",
+      "glyph01362",
+      "glyph01618",
+      "glyph01623",
+      "glyph01641",
+      "glyph01704",
+      "glyph30055",
+      "glyph30731",
+      "glyph30732",
+      "glyph30733",
+      "glyph30734",
+      "glyph30735",
+      "glyph30736",
+      "glyph30737",
+      "glyph30738",
+      "glyph30739",
+      "glyph30740",
+      "glyph30741",
+      "glyph30742",
+      "glyph30743",
+      "glyph30744",
+      "glyph30745",
+      "glyph30746",
+      "glyph30747",
+      "glyph30748",
+      "glyph30749",
+      "glyph30750",
+      "glyph30751",
+      "glyph30752",
+      "glyph30753",
+      "glyph30754",
+      "glyph30755",
+      "glyph30756",
+      "glyph30757",
+      "glyph30758",
+      "glyph30759",
+      "glyph30760",
+      "glyph30761",
+      "glyph30762",
+      "glyph30763",
+      "glyph30764",
+      "glyph30765",
+      "glyph30766",
+      "glyph30767",
+      "glyph30768",
+      "glyph30769",
+      "glyph30770",
+      "glyph30771",
+      "glyph30772",
+      "glyph30773",
+      "glyph30774",
+      "glyph30775",
+      "glyph30776",
+      "glyph30777",
+      "glyph30778",
+      "glyph30779",
+      "glyph30780",
+      "glyph30781",
+      "glyph30782",
+      "glyph30783",
+      "glyph30784",
+      "glyph30785",
+      "glyph30786",
+      "glyph30787",
+      "glyph30788",
+      "glyph30789",
+      "glyph30790",
+      "glyph30791",
+      "glyph30792",
+      "glyph30793",
+      "glyph30794",
+      "glyph30795",
+      "glyph30796",
+      "glyph30797",
+      "glyph30798",
+      "glyph30799",
+      "glyph30800",
+      "glyph30801"
+    ],
+    "gsub_features": [
+      "vert"
+    ],
+    "related": {
+      "U+200B9": null,
+      "U+2A88A": null,
+      "U+4ED6": "uni4ED6",
+      "U+55D2": "uni55D2",
+      "U+5683": "uni5683",
+      "U+3A3C": "uni3A3C"
+    }
+  },
+  {
+    "font": "guji-preview-grid/public/fonts/guji-plane2.ttf",
+    "sha256": "80df094a2e63091b222706696a8b244c9dba45219af866226a097d0fbb2bf28d",
+    "cmap": 61228,
+    "cmap_formats": [
+      0,
+      4,
+      12
+    ],
+    "unmapped": [
+      ".notdef"
+    ],
+    "gsub_features": [],
+    "related": {
+      "U+200B9": "u200B9",
+      "U+2A88A": "u2A88A",
+      "U+4ED6": null,
+      "U+55D2": null,
+      "U+5683": null,
+      "U+3A3C": null
+    }
+  },
+  {
+    "font": "guji-preview-grid/public/fonts/guji-planef.ttf",
+    "sha256": "cfeb8527cfc75fe244b1c773056ed8e8896e67918f368999d12f6bd86dee323b",
+    "cmap": 42620,
+    "cmap_formats": [
+      0,
+      4,
+      12
+    ],
+    "unmapped": [
+      ".notdef"
+    ],
+    "gsub_features": [],
+    "related": {
+      "U+200B9": null,
+      "U+2A88A": null,
+      "U+4ED6": null,
+      "U+55D2": null,
+      "U+5683": null,
+      "U+3A3C": null
+    }
+  }
+]

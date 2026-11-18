@@ -1,0 +1,27 @@
+
+> guji-preview-grid@0.0.0 build
+> tsc -b && vite build
+
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - `__dirname` (vite.config.ts:9:38). Use `import.meta.dirname` instead
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+vite v8.3.7 building client environment for production...
+transforming...
+✓ 2262 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                                0.76 kB │ gzip:   0.53 kB
+dist/assets/geist-cyrillic-ext-wght-normal-DjL33-gN.woff2      7.42 kB
+dist/assets/geist-vietnamese-wght-normal-6IgcOCM7.woff2        8.00 kB
+dist/assets/geist-cyrillic-wght-normal-BEAKL7Jp.woff2         15.08 kB
+dist/assets/geist-latin-ext-wght-normal-DC-KSUi6.woff2        16.51 kB
+dist/assets/geist-latin-wght-normal-BgDaEnEv.woff2            29.40 kB
+dist/assets/index-C6L1KgUV.css                                54.07 kB │ gzip:  10.95 kB
+dist/assets/index-DNGP-y0t.js                              1,045.79 kB │ gzip: 339.75 kB
+
+[plugin builtin:vite-reporter]
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 2.22s

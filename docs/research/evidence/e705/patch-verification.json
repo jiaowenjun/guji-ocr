@@ -1,0 +1,110 @@
+{
+  "patch_event": {
+    "tool": "guji_pua_patch",
+    "cp": "U+E705",
+    "version": 1,
+    "at": "2026-11-18T17:14:41+08:00",
+    "operation": "insert",
+    "results": [
+      {
+        "font": "guji-preview-grid/public/fonts/guji-plane0.ttf",
+        "scheme": "compose",
+        "source": "tools/dataset/font-sources/e705-songti-v1.json",
+        "sha256_before": "f7e40e014584f6f4fd73ac1de97b2e9aac414e5eeb0e9c9a3847a78e4c27a20b",
+        "sha256_after": "d95b07155dd6993f86175cc6ee979403be7fa712b4f79881981011d80d276da8",
+        "bytes_before": 17252348,
+        "bytes_after": 17252900,
+        "chamfer": 3.256,
+        "chamfer_gate": 3.4,
+        "cmap_before": 30708,
+        "cmap_after": 30709,
+        "other_glyphs_and_metrics_unchanged": true,
+        "backup": "var/unencoded/kangxi-unencoded/font-backups/guji-plane0.ttf.f7e40e014584f6f4fd73ac1de97b2e9aac414e5eeb0e9c9a3847a78e4c27a20b.ttf"
+      }
+    ],
+    "cache_version": "e701-4-e704-1-e705-1"
+  },
+  "production_verification": {
+    "glyph_name": "uniE705",
+    "glyph_sha256": "1fe4d3e014eb00135b454eba31cbab7263e1a62aea67105a419d68bbb1cf3ec7",
+    "contours": 7,
+    "points": 176,
+    "bbox": [
+      30,
+      -146,
+      998,
+      848
+    ],
+    "hmtx": [
+      1024,
+      30
+    ],
+    "vmtx": [
+      1024,
+      22
+    ],
+    "existing_glyphs_verified": 30804,
+    "final_glyph_count": 30805,
+    "existing_glyphs_and_metrics_unchanged": true,
+    "previous_pua": {
+      "U+E701": {
+        "before": "0ef6027de1532c8bc037f5944ab4080e7e14651298ba2f61d468a36d898493c4",
+        "after": "0ef6027de1532c8bc037f5944ab4080e7e14651298ba2f61d468a36d898493c4",
+        "unchanged": true
+      },
+      "U+E704": {
+        "before": "f28a8bf767d91fa2ae6cbf73b5ba8ef70869e4e4ddac3487cb00e135555b3604",
+        "after": "f28a8bf767d91fa2ae6cbf73b5ba8ef70869e4e4ddac3487cb00e135555b3604",
+        "unchanged": true
+      }
+    }
+  },
+  "fonts_after": [
+    {
+      "path": "guji-preview-grid/public/fonts/guji-plane0.ttf",
+      "bytes": 17252900,
+      "sha256": "d95b07155dd6993f86175cc6ee979403be7fa712b4f79881981011d80d276da8",
+      "unchanged": false,
+      "contains_E705": true
+    },
+    {
+      "path": "guji-preview-grid/public/fonts/guji-plane2.ttf",
+      "bytes": 42717516,
+      "sha256": "80df094a2e63091b222706696a8b244c9dba45219af866226a097d0fbb2bf28d",
+      "unchanged": true,
+      "contains_E705": false
+    },
+    {
+      "path": "guji-preview-grid/public/fonts/guji-planef.ttf",
+      "bytes": 26189728,
+      "sha256": "cfeb8527cfc75fe244b1c773056ed8e8896e67918f368999d12f6bd86dee323b",
+      "unchanged": true,
+      "contains_E705": false
+    },
+    {
+      "path": "guji-preview-grid/public/fonts/guji-large.ttf",
+      "bytes": 46624948,
+      "sha256": "3973ccbe8bbdb4b91af44269a12f9b9f58daeb0c225d78e3a934f676f1c4c231",
+      "unchanged": true,
+      "contains_E705": false
+    },
+    {
+      "path": "/Users/jwj/Library/Fonts/KX_47043_14.ttf",
+      "bytes": 46623752,
+      "sha256": "7d916ab6e4bcc935894cd372997ebc7536e315a1e8ae7270d39e53e2dbb9c4fa",
+      "unchanged": true,
+      "contains_E705": false
+    }
+  ],
+  "recipe_rebuild": "Passed; complete frozen recipe identical",
+  "build": {
+    "command": "npm run build",
+    "exit_code": 0,
+    "warnings": [
+      "Vite native config future compatibility (__dirname)",
+      "Bundle chunk over 500 kB"
+    ]
+  },
+  "css_cache": "e701-4-e704-1-e705-1",
+  "font_commit": null
+}
