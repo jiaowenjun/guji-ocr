@@ -140,11 +140,34 @@ def _norm(text: str) -> str:
     return "".join(ch for ch in text if ch not in PUNCT_STRIP)
 
 
-def locate_tail(entry_n: str, tail_n: str) -> tuple[int | None, str]:
+def locate_tail(entry_n: str, tail_n: str, *, opening_n: str | None = None) -> tuple[int | None, str]:
     """续入锚定：尾部前缀锚定 + 容差对齐。返回 (库文坐标末界, "") 或
-    (None, 原因)，原因 ∈ {"anchor"} | {"coverage 覆盖/总长"} | {"fully"}——
+    (None, 原因)，原因为 anchor / coverage 覆盖/总长 / fully / short_*。
     前页可能有个别校订增删（如站点文本少一字），整串子串匹配会整体失败，
-    故先按 24→8 字递减锚定再 SequenceMatcher 容差（覆盖率 ≥0.9）。"""
+    故先按 24→8 字递减锚定再 SequenceMatcher 容差（覆盖率 ≥0.9）。
+    不足 8 字（含仅排下字头）只接受词条的精确前缀，并要求本页 OCR 开头
+    证实余文；不能在全文中搜索短串（@370「廣韻」在些条出现两次）。
+    短前缀拒绝原因以 short_ 开头，供调用方提示待核而非误报校订不匹配。"""
+    if len(tail_n) < 8:
+        if not entry_n.startswith(tail_n):
+            return None, "short_prefix"
+        end = len(tail_n)
+        if end >= len(entry_n):
+            return None, "fully"
+        if not opening_n:
+            return None, "short_ocr_missing"
+        # 只比较紧接页界的前 24 字；页中命中不能证明页首存在续文。
+        # 至少 8 字连续匹配、总覆盖率 90%，且匹配须从两串开头开始。
+        prefix = entry_n[end:end + 24]
+        observed = opening_n[:len(prefix)]
+        blocks = [b for b in difflib.SequenceMatcher(None, prefix, observed, autojunk=False)
+                  .get_matching_blocks() if b.size]
+        if (not blocks or blocks[0].a != 0 or blocks[0].b != 0
+                or max(b.size for b in blocks) < 8
+                or sum(b.size for b in blocks) < len(prefix) * 0.9):
+            return None, "short_ocr_mismatch"
+        return end, ""
+
     anchor = -1
     for k in range(min(len(tail_n), 24), 7, -1):
         anchor = entry_n.find(tail_n[:k])
@@ -233,12 +256,7 @@ def continuation_from_prev(
         return [], info
 
     tail_n = _norm(tail_raw)
-    if not tail_n:
-        info["skipped"] = "前页该字头无正文（可能整段在后页）"
-        return [], info
-
     # 全量释义拼接（含归一化坐标 → (段序, 段内原文下标) 映射）
-    full = "\u0001".join(paragraphs)
     norm_chars: list[str] = []
     idx_map: list[tuple[int, int]] = []
     for pi, para in enumerate(paragraphs):
@@ -249,21 +267,36 @@ def continuation_from_prev(
     entry_n = "".join(norm_chars)
 
     # 定位：先锚定（尾部前缀在库文中找起点），再容差对齐到尾串末尾（locate_tail）
-    end, why = locate_tail(entry_n, tail_n)
+    opening_n = None
+    if len(tail_n) < 8:
+        md = _ocr_cache_read(page, store)  # 只读有效缓存；查询/重放不提交识别任务
+        if md:
+            opening_n = _norm("".join(_ocr_groups(md)))
+    end, why = locate_tail(entry_n, tail_n, opening_n=opening_n)
     if end is None:
-        if why == "anchor":
+        if why.startswith("short_"):
+            reason = {
+                "short_prefix": "与词条开头不一致",
+                "short_ocr_missing": "本页无有效 OCR，无法确认续文起点",
+                "short_ocr_mismatch": "本页 OCR 开头不足以确认紧接的续文",
+            }[why]
+            info["skipped"] = f"跨页续文待核：前页「{head}」正文仅 {len(tail_n)} 字，{reason}，未自动续入"
+        elif why == "anchor":
             info["skipped"] = "前页尾部与库内段落不匹配（可能已大幅校订），未自动续入"
         elif why.startswith("coverage"):
             info["skipped"] = f"前页尾部与库内段落对齐覆盖率 {why.partition(' ')[2]} 过低，未自动续入"
         else:  # fully：前页已收全，余段为空
             info["skipped"] = (
                 f"前页 {page - 1} 的 .gj 已完整收录字头「{head}」全部 {len(paragraphs)} 段"
-                f"（前页添加时 OCR 不可用未做页尾裁剪）——请先在校对中把前页裁剪到"
-                f"其物理页界，再添加本页，余段将自动续入"
+                "，无剩余正文可续入；若本页原图仍有该条续文，请核对前页的物理页界"
             )
             info["fully_included"] = True
         return [], info
     pi0, ci0 = idx_map[end]
+    if end == 0 or idx_map[end - 1][0] != pi0:
+        ci0 = 0  # 余文从新段开始（含前页仅字头），保留开书名号等前导标点
+        if tail_raw.rstrip().endswith(("【", "《")) and paragraphs[pi0].startswith(("【", "《")):
+            ci0 = 1  # 开框已排在前页，续页不能再补一次
     out: list[str] = []
     rest = paragraphs[pi0][ci0:].strip()
     if rest:

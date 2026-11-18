@@ -1,11 +1,15 @@
 // @vitest-environment jsdom
 import { act, createElement, type ComponentProps } from "react";
+import { readFileSync } from "node:fs";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import { createRoot, type Root } from "react-dom/client";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { HeadwordStrip } from "../src/components/dataset/HeadwordStrip";
 import { DatasetView } from "../src/components/dataset/DatasetView";
 import { KANGXI_DATASET } from "../src/datasets/kangxi";
 import type { CrawlEntryRecord, CrawlPageHead } from "../src/components/dataset/crawl-entries";
+import { resolvePageContinuation } from "../src/components/dataset/headwords";
 
 // 加页集成用真实 DatasetView/字头栏，只替换与查询无关的三列编辑布局。
 vi.mock("../src/components/dataset/DatasetWorkspace", () => ({
@@ -69,6 +73,22 @@ afterEach(async () => {
 });
 
 describe("字头栏按需查询当前爬取库", () => {
+  it("371 页真实稿件在新字头前显示 370 页些条续文，点击查询宿主全文", async () => {
+    const read = (page: number) => readFileSync(resolve(dirname(fileURLToPath(import.meta.url)),
+      "../../kangxi-gold/annotations", `${String(page).padStart(4, "0")}.gj`), "utf8");
+    const continuation = resolvePageContinuation(read(371), 371, [370, 371], { 370: read(370) });
+    expect(continuation).toMatchObject({ state: "host", fromPage: 370, cluster: { head: "些" } });
+    await render(371, continuation);
+    await reply(0, { ok: true, heads: [head("𠄨"), head("亝"), head("亞")] });
+    const host = container.querySelector<HTMLButtonElement>('button[title*="@370「些」"]');
+    expect(host?.textContent).toContain("@370 ↩些");
+    expect(container.textContent).toContain("爬取 3");
+    await click('button[title*="@370「些」"]');
+    expect(requests[1].body).toEqual({ action: "crawl-entry", codepoint: "些".codePointAt(0) });
+    await reply(1, { ok: true, entry: { ...entry("寫耶切……皆蠻族。"), head: "些" } });
+    expect(container.textContent).toContain("寫耶切……皆蠻族。");
+  });
+
   it("缺字映射失败可重试，使用 API 返回的本地 URL", async () => {
     Object.defineProperty(document, "fonts", {
       configurable: true, value: { load: async () => [], check: () => false },

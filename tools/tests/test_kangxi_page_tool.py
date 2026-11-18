@@ -97,6 +97,39 @@ class TestFindHostMarks(unittest.TestCase):
 
 
 class TestLocateTail(unittest.TestCase):
+    def test_short_prefix_uses_page_opening_not_later_repeated_phrase(self):
+        entry = "廣韻" + distinct_chars(32) + "廣韻" + distinct_chars(32, 0x8000)
+        self.assertEqual(kpt.locate_tail(entry, "廣韻", opening_n=entry[2:]), (2, ""))
+        self.assertEqual(kpt.locate_tail(entry, "廣韻", opening_n=entry[36:]),
+                         (None, "short_ocr_mismatch"))
+
+    def test_short_prefix_tolerates_two_ocr_errors_in_opening(self):
+        entry = "廣韻" + distinct_chars(32)
+        opening = list(entry[2:])
+        opening[8], opening[20] = "甲", "乙"
+        self.assertEqual(kpt.locate_tail(entry, "廣韻", opening_n="".join(opening)), (2, ""))
+
+    def test_short_text_must_be_an_exact_entry_prefix(self):
+        entry = distinct_chars(32) + "廣韻" + distinct_chars(32, 0x8000)
+        self.assertEqual(kpt.locate_tail(entry, "廣韻", opening_n=entry[34:]),
+                         (None, "short_prefix"))
+
+    def test_short_prefix_needs_sufficient_ocr_at_page_start(self):
+        entry = "廣韻" + distinct_chars(32)
+        for opening, reason in [(None, "short_ocr_missing"), ("", "short_ocr_missing"),
+                                (entry[2:9], "short_ocr_mismatch"),
+                                ("甲乙" + entry[2:], "short_ocr_mismatch"),
+                                (distinct_chars(24, 0x8000) + entry[2:], "short_ocr_mismatch")]:
+            with self.subTest(opening=opening):
+                self.assertEqual(kpt.locate_tail(entry, "廣韻", opening_n=opening), (None, reason))
+
+    def test_head_only_can_continue_when_ocr_confirms_entry_start(self):
+        entry = distinct_chars(32)
+        self.assertEqual(kpt.locate_tail(entry, "", opening_n=entry), (0, ""))
+
+    def test_complete_short_entry_has_no_continuation(self):
+        self.assertEqual(kpt.locate_tail("俗字", "俗字"), (None, "fully"))
+
     def test_exact_substring(self):
         entry = distinct_chars(40)
         end, why = kpt.locate_tail(entry, entry[10:28])
