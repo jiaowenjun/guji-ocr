@@ -1014,7 +1014,7 @@
       "width": 1130,
       "height": 1676,
       "downloaded_at": "2026-11-18",
-      "status": "draft",
+      "status": "first",
       "annotations": {
         "gj": "0373.gj",
         "json": "0373.json",
@@ -1070,6 +1070,125 @@
         "gj": "0376.gj",
         "json": "0376.json",
         "txt": "0376.txt"
+      },
+      "origin": "kangxizidian.com 爬取草稿（kangxi_page_tool.py add）"
+    },
+    {
+      "page": 377,
+      "image": "0377.jpg",
+      "url": "https://p.kangxizidian.com/kangxi2/0377.jpg",
+      "size_bytes": 534099,
+      "sha256": "dfcf108f7e804ab76a1ea60d2c6fa03e88606e39b32acc19ee1ea27c22c466ee",
+      "width": 1130,
+      "height": 1674,
+      "downloaded_at": "2026-11-18",
+      "status": "first",
+      "annotations": {
+        "gj": "0377.gj",
+        "json": "0377.json",
+        "txt": "0377.txt"
+      },
+      "origin": "kangxizidian.com 爬取草稿（kangxi_page_tool.py add）"
+    },
+    {
+      "page": 378,
+      "image": "0378.jpg",
+      "url": "https://p.kangxizidian.com/kangxi2/0378.jpg",
+      "size_bytes": 522859,
+      "sha256": "d6340a6b9bee6861cad0f5307fdca5632c39bf9177d23f1c08fe9274d3317bd7",
+      "width": 1130,
+      "height": 1674,
+      "downloaded_at": "2026-11-18",
+      "status": "first",
+      "annotations": {
+        "gj": "0378.gj",
+        "json": "0378.json",
+        "txt": "0378.txt"
+      },
+      "origin": "kangxizidian.com 爬取草稿（kangxi_page_tool.py add）"
+    },
+    {
+      "page": 379,
+      "image": "0379.jpg",
+      "url": "https://p.kangxizidian.com/kangxi2/0379.jpg",
+      "size_bytes": 532726,
+      "sha256": "5a6919effd32fdd0fb26a37af44253b2c9bca0b0f2e14bc4690a6d4ac1e2f21d",
+      "width": 1130,
+      "height": 1666,
+      "downloaded_at": "2026-11-18",
+      "status": "first",
+      "annotations": {
+        "gj": "0379.gj",
+        "json": "0379.json",
+        "txt": "0379.txt"
+      },
+      "origin": "kangxizidian.com 爬取草稿（kangxi_page_tool.py add）"
+    },
+    {
+      "page": 380,
+      "image": "0380.jpg",
+      "url": "https://p.kangxizidian.com/kangxi2/0380.jpg",
+      "size_bytes": 515769,
+      "sha256": "f81c689ff606de703edda2412b4c40499fdf56b692883c25c4cb3ae5e147335a",
+      "width": 1130,
+      "height": 1666,
+      "downloaded_at": "2026-11-18",
+      "status": "first",
+      "annotations": {
+        "gj": "0380.gj",
+        "json": "0380.json",
+        "txt": "0380.txt"
+      },
+      "origin": "kangxizidian.com 爬取草稿（kangxi_page_tool.py add）"
+    },
+    {
+      "page": 381,
+      "image": "0381.jpg",
+      "url": "https://p.kangxizidian.com/kangxi2/0381.jpg",
+      "size_bytes": 525148,
+      "sha256": "b27a80956f93f4be4c632773d6e594328acfc141c02984d2decfde67e6862c53",
+      "width": 1130,
+      "height": 1667,
+      "downloaded_at": "2026-11-18",
+      "status": "first",
+      "annotations": {
+        "gj": "0381.gj",
+        "json": "0381.json",
+        "txt": "0381.txt"
+      },
+      "origin": "kangxizidian.com 爬取草稿（kangxi_page_tool.py add）"
+    },
+    {
+      "page": 382,
+      "image": "0382.jpg",
+      "url": "https://p.kangxizidian.com/kangxi2/0382.jpg",
+      "size_bytes": 512940,
+      "sha256": "47fd2b6da1f1757eb4d130feee3a3119551d1eb01cb069311aef1e762234e20a",
+      "width": 1130,
+      "height": 1667,
+      "downloaded_at": "2026-11-18",
+      "status": "first",
+      "annotations": {
+        "gj": "0382.gj",
+        "json": "0382.json",
+        "txt": "0382.txt"
+      },
+      "origin": "kangxizidian.com 爬取草稿（kangxi_page_tool.py add）"
+    },
+    {
+      "page": 383,
+      "image": "0383.jpg",
+      "url": "https://p.kangxizidian.com/kangxi2/0383.jpg",
+      "size_bytes": 364567,
+      "sha256": "d75d5d2c7eb96bcbf744517aad1cbe4b627d316d5a7c6f91c333cf317481b574",
+      "width": 1130,
+      "height": 1668,
+      "downloaded_at": "2026-11-18",
+      "status": "first",
+      "annotations": {
+        "gj": "0383.gj",
+        "json": "0383.json",
+        "txt": "0383.txt"
       },
       "origin": "kangxizidian.com 爬取草稿（kangxi_page_tool.py add）"
     }

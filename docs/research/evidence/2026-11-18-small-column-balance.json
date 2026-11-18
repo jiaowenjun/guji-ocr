@@ -1,0 +1,2653 @@
+{
+  "schema": "kangxi-small-column-audit/1",
+  "auditedAt": "2026-11-18T05:29:23.992Z",
+  "node": "v26.13.0",
+  "scope": "Current manifest and .gj; counts include only explicitly recorded blanks; no scan verification by this script",
+  "manifestSha256": "1446e14ba7bf4c5cec1932f0e3611eb8eefc56626c85271f461045a8eab5f974",
+  "implementationSha256": {
+    "tools/eval/audit_small_column_balance.mjs": "d6093e1e960dcfdcb26861ab5bfe38a5695d7679d4ddf5a075a8470753b4dc72",
+    "kangxi-gold/dataset-config.json": "384db3d3a8efe8364cfbab1295b43709ee52ce374d242527926b48d866227419",
+    "guji-preview-grid/src/datasets/kangxi.ts": "49e373c6c0b8b52074b8e38cc4ee2277ab0c5a91db7fec9f5f7dca3aa95c8dbc",
+    "guji-preview-grid/src/ir/gj2ir.ts": "29a5344510a7cc32881c6e48adc806cf658d6bef9544e4b85a6b5fd287bba0bd",
+    "guji-preview-grid/src/ir/layout3.ts": "b9c09449032ba836dfc0c0ad39c241859b921d2d7346b3ee9da66383b180c3ad",
+    "guji-preview-grid/src/ir/profile.ts": "6add6242b498a4bf5946b62e21414cd01a09654b672e0f1a44c0d3cd10f3557c",
+    "guji-preview-grid/src/ir/types.ts": "cf98ee5b25b889ec77c73978a3210548ce38dccaeeeca4959c1de3e22346714d",
+    "guji-preview-grid/src/parser/inline-tokens.ts": "035e3cb0e010555477313fdf8c1ef04f96c83810106a15429cdf5f12a59406b2"
+  },
+  "summary": {
+    "pages": 70,
+    "statuses": {
+      "first": 69,
+      "draft": 1
+    },
+    "bands": 531,
+    "groups": 753,
+    "runsPerGroup": {
+      "1": 34,
+      "2": 714,
+      "3": 3,
+      "4": 1,
+      "5": 1
+    },
+    "pairedCellDiff": {
+      "0": 595,
+      "1": 117,
+      "8": 1,
+      "-21": 1
+    },
+    "pairedCharDiff": {
+      "0": 399,
+      "1": 183,
+      "2": 20,
+      "3": 1,
+      "8": 1,
+      "-1": 102,
+      "-2": 7,
+      "-21": 1
+    },
+    "cellBalanced": 712,
+    "charBalanced": 582,
+    "pairsWithExplicitSpaces": 312,
+    "pairsBeforeLargeGlyph": 221
+  },
+  "firstSummary": {
+    "pages": 69,
+    "statuses": {
+      "first": 69
+    },
+    "bands": 523,
+    "groups": 743,
+    "runsPerGroup": {
+      "1": 34,
+      "2": 709
+    },
+    "pairedCellDiff": {
+      "0": 593,
+      "1": 116
+    },
+    "pairedCharDiff": {
+      "0": 396,
+      "1": 183,
+      "2": 20,
+      "3": 1,
+      "-1": 102,
+      "-2": 7
+    },
+    "cellBalanced": 709,
+    "charBalanced": 579,
+    "pairsWithExplicitSpaces": 310,
+    "pairsBeforeLargeGlyph": 219
+  },
+  "pages": [
+    {
+      "page": 312,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0312.gj",
+      "sha256": "545cbc1669e17d10c51747f4ec5184265f2ee8d5b427f22b51f2594fd7d8da5c",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 313,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0313.gj",
+      "sha256": "89943a1232acaadbc50822e0975fb3a79d1ec50ad2367e5b7b38db7fcdc84824",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 314,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0314.gj",
+      "sha256": "62c443a238892c0a7493ddc9196e2722aff398ca902e7d29dad2d6f0ae072325",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 315,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0315.gj",
+      "sha256": "5503d49d743e29f9bf1d82bc0554b2ee403a4d97dfaec9a54fabca4c11729a0f",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 316,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0316.gj",
+      "sha256": "27ed73660d3e396b7825212dcef1c4c4e2ccf3d422b21d43a01cc23ca1bf4b08",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 317,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0317.gj",
+      "sha256": "fe8f60b065c6ddbd45e6045e5f364c77a114ebfbfca4985292ed26d783987aed",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 318,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0318.gj",
+      "sha256": "b5fd061820ee2c9736c35a96113d7ac72c50ef2a46c955a2aa3b54dd60282f4b",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 319,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0319.gj",
+      "sha256": "db0cd6526abab9a0ff8d2d2b2166c9638ecf5a43b308fdc7d3fc8cd91ca1f028",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 320,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0320.gj",
+      "sha256": "a4b40a222fb911ef20c7a72e949d26ca279f3888d0ce018576522f6ea7090214",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 321,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0321.gj",
+      "sha256": "d888d8949289a1f166f6e9dfe21f3b977d820afcf84521d5151a268729b35e0f",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 322,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0322.gj",
+      "sha256": "38f0a4517ef65f97fb92aefca5487b5b747dcca14ceaf482b0b0ed10940d3e9c",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 323,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0323.gj",
+      "sha256": "ed5c906e0450a8fa3c392b29f4744acc2cbf95ea442a093d7e28d51daa035f80",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 324,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0324.gj",
+      "sha256": "304425b97f948dfda8b775f8ba0cdd164c6384282999e30bdcb2a85d57afd2be",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 325,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0325.gj",
+      "sha256": "0fcbbcb8cc83bceb46159afbb41d98f9b7ca4a16d552fc7980019422eaf2abcf",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 326,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0326.gj",
+      "sha256": "bc89aa07080060c79c22c4f32d6b9c723c784367dd663b90060a1ff84ceb73bf",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 327,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0327.gj",
+      "sha256": "9d35969ad509482e5306036005cb7e0a78a6db9355d6f56a75376b7de01ee2de",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 328,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0328.gj",
+      "sha256": "cc9377aa16cf77b13204712de96382ffab5fcff93e9e2cfb1969dec86fbb1248",
+      "bands": 7,
+      "diagnostics": []
+    },
+    {
+      "page": 330,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0330.gj",
+      "sha256": "8477f24c79eba23586be8527ef4aba30bfb1d1b5ffb8b8f4f1779f71a2c9474b",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 331,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0331.gj",
+      "sha256": "5162313997bfc3324b32b174eac5be5c9b274aa1a53bf81c45e22d154e478f6c",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 332,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0332.gj",
+      "sha256": "19f362b36ec133254b2a1b94bb3ad8219324f7e2f76ca17c56090fe2b696c6b2",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 333,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0333.gj",
+      "sha256": "b374a6eb7f41d4dd41f04766ea2df5ea53a66c1ed5e61dae8ce7e0ca1714c84b",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 334,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0334.gj",
+      "sha256": "c4b6b170ff501feb8a3862755deee254fc36f3bbc7dc9e53b89d8844ea672036",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 335,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0335.gj",
+      "sha256": "124fa6faac719f57d1884502f04e1b96b92ef32faf7abbcae374204611870a08",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 336,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0336.gj",
+      "sha256": "700d6fcf7e4b60cddefab3a8b8add1ca1fc8bf58a20a1ee16a5aa45b4a1d93f5",
+      "bands": 4,
+      "diagnostics": []
+    },
+    {
+      "page": 338,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0338.gj",
+      "sha256": "43c480b5b18cdef60966ad8d7021d5cc3b5953e9908f7ea9b254fd492c956706",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 339,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0339.gj",
+      "sha256": "93d1a56bc4a87a4475dd918f201c380672fc4728086dec15feb08929076cf398",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 340,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0340.gj",
+      "sha256": "f0be8242183259e9d3247418188669fe5285cf4feb949075228921dbea579ad2",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 341,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0341.gj",
+      "sha256": "41a6459bdd3632836db261c864dd16788dcb6ee3ee272c2c539baac294b170a4",
+      "bands": 6,
+      "diagnostics": []
+    },
+    {
+      "page": 342,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0342.gj",
+      "sha256": "963eb5ae05a787f9597f0650e84e9c5331b042eb4ef446c0a11e4e1828387d28",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 343,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0343.gj",
+      "sha256": "52fe42ed8456837d5f0737675c83be96aeb035a948fde8b203630a8a33c10f9b",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 344,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0344.gj",
+      "sha256": "9dcae4d325f845df3046b37923265de97cc5d58dad9f65f4aae4721bec490579",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 345,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0345.gj",
+      "sha256": "793e59d7711efba0e56a4ffc8c874414de2fcd3d114dbce47e4effad424db5b2",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 346,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0346.gj",
+      "sha256": "e8ef64707263a834c9e695c1d18353116c7a0f5c3149c8847f8175877340dfaa",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 347,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0347.gj",
+      "sha256": "cf70eebb92f2d04aa3f708d05ed847f405d8d22d933d64a15ad0d527b1eb7cb6",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 348,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0348.gj",
+      "sha256": "cc6e3b882e8d3d8eb3957a71dcb69aed4f9ee352d89f45a3bdec80120f65e7c2",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 349,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0349.gj",
+      "sha256": "7541d97ce42835e0768b1e349a9cce80b49b512e37a0f3ae4559561a5d6e28ea",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 350,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0350.gj",
+      "sha256": "d789eda9848e4b93f1851c8a2f663f38547608c2764b0d593cf719d9490eeb15",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 351,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0351.gj",
+      "sha256": "a4884f5a68cd041cd4852f1d0225a530ad15681b00cdf629b62e6fa18b9e5949",
+      "bands": 7,
+      "diagnostics": []
+    },
+    {
+      "page": 352,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0352.gj",
+      "sha256": "b517c4c039b6017e9f1d290e4b6c89294763de577076a46f61e3f433c633553a",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 353,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0353.gj",
+      "sha256": "cd979577ac385593f9aad63ff3f6360f054f96b3ac7f973e3279ae2a0c8391bd",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 354,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0354.gj",
+      "sha256": "939b3dddc1d555c4da7027a2bb387cea7803fd2a4029ea09269e188f107fd2cb",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 355,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0355.gj",
+      "sha256": "df9918c7513d5b38a88f161ea4445b006df4468e97aa62d3eaeafb2e68fdfa67",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 356,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0356.gj",
+      "sha256": "352c6de4dc98b639ff6528da13289eaca397d0dc713839ee291294f19b988dcf",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 357,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0357.gj",
+      "sha256": "0d5f0deb527ef47c956c4f17c0c688064d8bfa7f9ae754e35ee40d9689f12c65",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 358,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0358.gj",
+      "sha256": "b581733f7212a567fc6a65da93e728e396c9205551743f9490bd0b83766d1f9f",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 359,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0359.gj",
+      "sha256": "3966dabe076510b6e2adbb5f653c71f8a9b65e37a3ccad1fb973b798cf04eec7",
+      "bands": 7,
+      "diagnostics": []
+    },
+    {
+      "page": 360,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0360.gj",
+      "sha256": "121f0fac9e9475df5cf32ffe15e12049c65faf42f39cd4cbe43fa399f1f0e66c",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 361,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0361.gj",
+      "sha256": "9710324d3c145d2a7d90b93f521a4a61e21cdb5945896d243238f12d7fa6bf3f",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 362,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0362.gj",
+      "sha256": "e1f98d254af0ec6fb30417e1d9e0387e2a762b573491a7b33fd2ebed52d2d3a9",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 363,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0363.gj",
+      "sha256": "f32f025412df6d37d0d27cd8fde6f193f879261b8cdbc3ff9dde869cf2e86cb3",
+      "bands": 1,
+      "diagnostics": []
+    },
+    {
+      "page": 364,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0364.gj",
+      "sha256": "8dd372de9e26e24f62879fda68343e388dc5c1b17d098e4e8de6a5930bfeaebf",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 365,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0365.gj",
+      "sha256": "dbaf8296cd48fc7d27f8b55be71794d82c26a779dabf729f3547ff4dbe63b56b",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 366,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0366.gj",
+      "sha256": "332abb2c24bd47cdf4e2f5cf92b480cd1187ede2c557abd633e2ab3928525281",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 367,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0367.gj",
+      "sha256": "50022d2d90efb7468c6c086f4a8ed14696dcf856c7062c18c421845a40d584b1",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 368,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0368.gj",
+      "sha256": "a5475e8052d2f075939f9f9a2a6031a22ac0f36493a19b95c0e10eb97f235e5a",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 369,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0369.gj",
+      "sha256": "437ed720593b6f3c2182b3dbf8276674aa83c37cb58250df7851bacb006456ec",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 370,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0370.gj",
+      "sha256": "4b54cd490f8dcda58ece2d8f4ae3697973c235a48cdca5ea8f1b79e674ebfa7b",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 371,
+      "status": "draft",
+      "file": "kangxi-gold/annotations/0371.gj",
+      "sha256": "791e1f52089f8f7c690ea5e02071c9806a1ca7925b12604df3eeb3cd13a1db31",
+      "bands": 8,
+      "diagnostics": [
+        {
+          "code": "page-width",
+          "severity": "warning",
+          "page": 371,
+          "message": "页宽 24 格，版框 16 格，左侧 8 小列已隐藏"
+        },
+        {
+          "code": "band-width",
+          "severity": "warning",
+          "page": 371,
+          "bandId": "p0371-b0",
+          "message": "此大列宽 4 格，预期 2 格"
+        },
+        {
+          "code": "band-width",
+          "severity": "warning",
+          "page": 371,
+          "bandId": "p0371-b1",
+          "message": "此大列宽 3 格，预期 2 格"
+        },
+        {
+          "code": "band-width",
+          "severity": "warning",
+          "page": 371,
+          "bandId": "p0371-b2",
+          "message": "此大列宽 5 格，预期 2 格"
+        },
+        {
+          "code": "band-width",
+          "severity": "warning",
+          "page": 371,
+          "bandId": "p0371-b4",
+          "message": "此大列宽 3 格，预期 2 格"
+        },
+        {
+          "code": "band-width",
+          "severity": "warning",
+          "page": 371,
+          "bandId": "p0371-b7",
+          "message": "此大列宽 3 格，预期 2 格"
+        }
+      ]
+    },
+    {
+      "page": 372,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0372.gj",
+      "sha256": "83801ca75ae3df61604ac1eee1be7edf9c563dcda08a96abc68dea76feba2a0f",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 373,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0373.gj",
+      "sha256": "1ae24fc8f1186e2953845fbc2695fdc82273918919f44e43dc50ad69237acca7",
+      "bands": 2,
+      "diagnostics": []
+    },
+    {
+      "page": 374,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0374.gj",
+      "sha256": "110a4253729a15af9aad9d3dababda5c37b8492262406094f2c711e6e83d89df",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 375,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0375.gj",
+      "sha256": "34731a61b6d9354654adb5b5b65c700dc517fd6eb74d2052d752400ec97e1073",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 376,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0376.gj",
+      "sha256": "eec8c9af8b3ace657327a5bdb7fc1c0e8e58e4b7b54b2c441c358d47cb8032c2",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 377,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0377.gj",
+      "sha256": "59930b3bc081b71e9026597f20b4e090f92e03c6571f70c8ec58f629aa5dc34a",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 378,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0378.gj",
+      "sha256": "f3f03b5352073999a19c2dbb8b155fe64418443e6e8faed2a71dfa5d08a6879d",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 379,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0379.gj",
+      "sha256": "7277d0a6eb52a17a617eecfbf6f7a93c021e3dffb6bc98027aa33837fcb0f54b",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 380,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0380.gj",
+      "sha256": "246de05796ec852e5af75282816980eff6b3d3f2ff4d970067ca09bdc651869b",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 381,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0381.gj",
+      "sha256": "ca2e753ce1507f9368871ca1f2130186ddca50793378ba6507dc83a3a384e1af",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 382,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0382.gj",
+      "sha256": "d0facddd4a8e821e5ad10fb1129f8f28a97eef2631a6f281bef4f59fe589967f",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 383,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0383.gj",
+      "sha256": "4748baf4c42e3a03bd2dc68486ffd4cce50e782b20c98e86f367728084c4810d",
+      "bands": 1,
+      "diagnostics": []
+    }
+  ],
+  "pairedCellExceptions": [
+    {
+      "id": "371-6-1",
+      "page": 371,
+      "status": "draft",
+      "band": 6,
+      "startRow": 1,
+      "endRow": 13,
+      "previous": null,
+      "next": null,
+      "runs": [
+        {
+          "text": "史記盧綰傳綰孫他人封亞谷侯",
+          "cells": 13,
+          "characters": 13,
+          "sourceLine": 32,
+          "lineId": "p0371-b5-l0"
+        },
+        {
+          "text": "漢書作惡谷",
+          "cells": 5,
+          "characters": 5,
+          "sourceLine": 33,
+          "lineId": "p0371-b5-l1"
+        }
+      ],
+      "cellBalanced": false,
+      "charBalanced": false,
+      "review": {
+        "classification": "draft-structure-not-scan-evidence"
+      }
+    },
+    {
+      "id": "371-7-1",
+      "page": 371,
+      "status": "draft",
+      "band": 7,
+      "startRow": 1,
+      "endRow": 24,
+      "previous": null,
+      "next": null,
+      "runs": [
+        {
+          "text": "語林宋",
+          "cells": 3,
+          "characters": 3,
+          "sourceLine": 35,
+          "lineId": "p0371-b6-l0"
+        },
+        {
+          "text": "人有獲玉印文曰周惡夫印劉原父曰漢條侯印古亞惡二字",
+          "cells": 24,
+          "characters": 24,
+          "sourceLine": 36,
+          "lineId": "p0371-b6-l1"
+        }
+      ],
+      "cellBalanced": false,
+      "charBalanced": false,
+      "review": {
+        "classification": "draft-structure-not-scan-evidence"
+      }
+    }
+  ],
+  "nonPairedGroups": [
+    {
+      "id": "312-4-1",
+      "page": 312,
+      "status": "first",
+      "band": 4,
+      "startRow": 3,
+      "endRow": 4,
+      "previous": "一",
+      "next": "弌",
+      "runs": [
+        {
+          "text": "古文",
+          "cells": 2,
+          "characters": 2,
+          "sourceLine": 10,
+          "lineId": "p0312-b3-l1"
+        }
+      ],
+      "cellBalanced": false,
+      "charBalanced": false
+    },
+    {
+      "id": "313-7-2",
+      "page": 313,
+      "status": "first",
+      "band": 7,
+      "startRow": 23,
+      "endRow": 24,
+      "previous": "丁",
+      "next": null,
+      "runs": [
+        {
+          "text": "古文",
+          "cells": 2,
+          "characters": 2,
+          "sourceLine": 24,
+          "lineId": "p0313-b6-l3"
+        }
+      ],
+      "cellBalanced": false,
+      "charBalanced": false
+    },
+    {
+      "id": "317-4-2",
+      "page": 317,
+      "status": "first",
+      "band": 4,
+      "startRow": 13,
+      "endRow": 14,
+      "previous": "三",
+      "next": "弎",
+      "runs": [
+        {
+          "text": "古文",
+          "cells": 2,
+          "characters": 2,
+          "sourceLine": 15,
+          "lineId": "p0317-b3-l3"
+        }
+      ],
+      "cellBalanced": false,
+      "charBalanced": false
+    },
+    {
+      "id": "318-2-2",
+      "page": 318,
+      "status": "first",
+      "band": 2,
+      "startRow": 4,
+      "endRow": 5,
+      "previous": "上",
+      "next": "丄",
+      "runs": [
+        {
+          "text": "古文",
+          "cells": 2,
+          "characters": 2,
+          "sourceLine": 9,
+          "lineId": "p0318-b1-l3"
+        }
+      ],
+      "cellBalanced": false,
+      "charBalanced": false
+    },
+    {
+      "id": "319-2-2",
+      "page": 319,
+      "status": "first",
+      "band": 2,
+      "startRow": 24,
+      "endRow": 24,
+      "previous": "下",
+      "next": null,
+      "runs": [
+        {
+          "text": "古",
+          "cells": 1,
+          "characters": 1,
+          "sourceLine": 9,
+          "lineId": "p0319-b1-l3"
+        }
+      ],
+      "cellBalanced": false,
+      "charBalanced": false
+    },
+    {
+      "id": "319-3-1",
+      "page": 319,
+      "status": "first",
+      "band": 3,
+      "startRow": 1,
+      "endRow": 1,
+      "previous": null,
+      "next": "丅",
+      "runs": [
+        {
+          "text": "文",
+          "cells": 1,
+          "characters": 1,
+          "sourceLine": 11,
+          "lineId": "p0319-b2-l0"
+        }
+      ],
+      "cellBalanced": false,
+      "charBalanced": false
+    },
+    {
+      "id": "320-1-3",
+      "page": 320,
+      "status": "first",
+      "band": 1,
+      "startRow": 24,
+      "endRow": 24,
+      "previous": "不",
+      "next": null,
+      "runs": [
+        {
+          "text": "古",
+          "cells": 1,
+          "characters": 1,
+          "sourceLine": 9,
+          "lineId": "p0320-b0-l6"
+        }
+      ],
+      "cellBalanced": false,
+      "charBalanced": false
+    },
+    {
+      "id": "320-2-1",
+      "page": 320,
+      "status": "first",
+      "band": 2,
+      "startRow": 1,
+      "endRow": 1,
+      "previous": null,
+      "next": "𠀚",
+      "runs": [
+        {
+          "text": "文",
+          "cells": 1,
+          "characters": 1,
+          "sourceLine": 11,
+          "lineId": "p0320-b1-l0"
+        }
+      ],
+      "cellBalanced": false,
+      "charBalanced": false
+    },
+    {
+      "id": "322-5-2",
+      "page": 322,
+      "status": "first",
+      "band": 5,
+      "startRow": 14,
+      "endRow": 15,
+      "previous": "且",
+      "next": "𠀇",
+      "runs": [
+        {
+          "text": "古文",
+          "cells": 2,
+          "characters": 2,
+          "sourceLine": 30,
+          "lineId": "p0322-b4-l3"
+        }
+      ],
+      "cellBalanced": false,
+      "charBalanced": false
+    },
+    {
+      "id": "324-3-2",
+      "page": 324,
+      "status": "first",
+      "band": 3,
+      "startRow": 19,
+      "endRow": 20,
+      "previous": "世",
+      "next": "卋",
+      "runs": [
+        {
+          "text": "古文",
+          "cells": 2,
+          "characters": 2,
+          "sourceLine": 12,
+          "lineId": "p0324-b2-l3"
+        }
+      ],
+      "cellBalanced": false,
+      "charBalanced": false
+    },
+    {
+      "id": "324-8-1",
+      "page": 324,
+      "status": "first",
+      "band": 8,
+      "startRow": 1,
+      "endRow": 2,
+      "previous": null,
+      "next": "㘳",
+      "runs": [
+        {
+          "text": "古文",
+          "cells": 2,
+          "characters": 2,
+          "sourceLine": 33,
+          "lineId": "p0324-b7-l0"
+        }
+      ],
+      "cellBalanced": false,
+      "charBalanced": false
+    },
+    {
+      "id": "326-7-2",
+      "page": 326,
+      "status": "first",
+      "band": 7,
+      "startRow": 9,
+      "endRow": 10,
+      "previous": "㐁",
+      "next": "𠀬",
+      "runs": [
+        {
+          "text": "古文",
+          "cells": 2,
+          "characters": 2,
+          "sourceLine": 30,
+          "lineId": "p0326-b6-l3"
+        }
+      ],
+      "cellBalanced": false,
+      "charBalanced": false
+    },
+    {
+      "id": "331-7-2",
+      "page": 331,
+      "status": "first",
+      "band": 7,
+      "startRow": 8,
+      "endRow": 9,
+      "previous": "中",
+      "next": "𠁧",
+      "runs": [
+        {
+          "text": "古文",
+          "cells": 2,
+          "characters": 2,
+          "sourceLine": 30,
+          "lineId": "p0331-b6-l3"
+        }
+      ],
+      "cellBalanced": false,
+      "charBalanced": false
+    },
+    {
+      "id": "334-5-2",
+      "page": 334,
+      "status": "first",
+      "band": 5,
+      "startRow": 17,
+      "endRow": 18,
+      "previous": "丰",
+      "next": "𫵮",
+      "runs": [
+        {
+          "text": "古文",
+          "cells": 2,
+          "characters": 2,
+          "sourceLine": 24,
+          "lineId": "p0334-b4-l3"
+        }
+      ],
+      "cellBalanced": false,
+      "charBalanced": false
+    },
+    {
+      "id": "339-3-3",
+      "page": 339,
+      "status": "first",
+      "band": 3,
+      "startRow": 19,
+      "endRow": 20,
+      "previous": "丹",
+      "next": "𠁿",
+      "runs": [
+        {
+          "text": "古文",
+          "cells": 2,
+          "characters": 2,
+          "sourceLine": 15,
+          "lineId": "p0339-b2-l6"
+        }
+      ],
+      "cellBalanced": false,
+      "charBalanced": false
+    },
+    {
+      "id": "340-3-2",
+      "page": 340,
+      "status": "first",
+      "band": 3,
+      "startRow": 24,
+      "endRow": 24,
+      "previous": "主",
+      "next": null,
+      "runs": [
+        {
+          "text": "古",
+          "cells": 1,
+          "characters": 1,
+          "sourceLine": 12,
+          "lineId": "p0340-b2-l3"
+        }
+      ],
+      "cellBalanced": false,
+      "charBalanced": false
+    },
+    {
+      "id": "340-4-1",
+      "page": 340,
+      "status": "first",
+      "band": 4,
+      "startRow": 1,
+      "endRow": 1,
+      "previous": null,
+      "next": "丶",
+      "runs": [
+        {
+          "text": "文",
+          "cells": 1,
+          "characters": 1,
+          "sourceLine": 14,
+          "lineId": "p0340-b3-l0"
+        }
+      ],
+      "cellBalanced": false,
+      "charBalanced": false
+    },
+    {
+      "id": "343-2-2",
+      "page": 343,
+      "status": "first",
+      "band": 2,
+      "startRow": 5,
+      "endRow": 6,
+      "previous": "乃",
+      "next": "𠄎",
+      "runs": [
+        {
+          "text": "古文",
+          "cells": 2,
+          "characters": 2,
+          "sourceLine": 12,
+          "lineId": "p0343-b1-l3"
+        }
+      ],
+      "cellBalanced": false,
+      "charBalanced": false
+    },
+    {
+      "id": "345-7-1",
+      "page": 345,
+      "status": "first",
+      "band": 7,
+      "startRow": 1,
+      "endRow": 2,
+      "previous": null,
+      "next": "㞢",
+      "runs": [
+        {
+          "text": "古文",
+          "cells": 2,
+          "characters": 2,
+          "sourceLine": 31,
+          "lineId": "p0345-b6-l0"
+        }
+      ],
+      "cellBalanced": false,
+      "charBalanced": false
+    },
+    {
+      "id": "347-2-2",
+      "page": 347,
+      "status": "first",
+      "band": 2,
+      "startRow": 5,
+      "endRow": 6,
+      "previous": "乎",
+      "next": "虖",
+      "runs": [
+        {
+          "text": "古文",
+          "cells": 2,
+          "characters": 2,
+          "sourceLine": 9,
+          "lineId": "p0347-b1-l3"
+        }
+      ],
+      "cellBalanced": false,
+      "charBalanced": false
+    },
+    {
+      "id": "347-6-2",
+      "page": 347,
+      "status": "first",
+      "band": 6,
+      "startRow": 16,
+      "endRow": 17,
+      "previous": "乏",
+      "next": "𠓟",
+      "runs": [
+        {
+          "text": "古文",
+          "cells": 2,
+          "characters": 2,
+          "sourceLine": 29,
+          "lineId": "p0347-b5-l3"
+        }
+      ],
+      "cellBalanced": false,
+      "charBalanced": false
+    },
+    {
+      "id": "350-1-2",
+      "page": 350,
+      "status": "first",
+      "band": 1,
+      "startRow": 8,
+      "endRow": 9,
+      "previous": "乖",
+      "next": "𦮃",
+      "runs": [
+        {
+          "text": "古文",
+          "cells": 2,
+          "characters": 2,
+          "sourceLine": 6,
+          "lineId": "p0350-b0-l3"
+        }
+      ],
+      "cellBalanced": false,
+      "charBalanced": false
+    },
+    {
+      "id": "350-5-2",
+      "page": 350,
+      "status": "first",
+      "band": 5,
+      "startRow": 9,
+      "endRow": 10,
+      "previous": "乘",
+      "next": "𠅞",
+      "runs": [
+        {
+          "text": "古文",
+          "cells": 2,
+          "characters": 2,
+          "sourceLine": 30,
+          "lineId": "p0350-b4-l3"
+        }
+      ],
+      "cellBalanced": false,
+      "charBalanced": false
+    },
+    {
+      "id": "355-1-2",
+      "page": 355,
+      "status": "first",
+      "band": 1,
+      "startRow": 16,
+      "endRow": 17,
+      "previous": "也",
+      "next": "𠃟",
+      "runs": [
+        {
+          "text": "古文",
+          "cells": 2,
+          "characters": 2,
+          "sourceLine": 6,
+          "lineId": "p0355-b0-l3"
+        }
+      ],
+      "cellBalanced": false,
+      "charBalanced": false
+    },
+    {
+      "id": "357-3-3",
+      "page": 357,
+      "status": "first",
+      "band": 3,
+      "startRow": 17,
+      "endRow": 18,
+      "previous": "乾",
+      "next": "漧",
+      "runs": [
+        {
+          "text": "古文",
+          "cells": 2,
+          "characters": 2,
+          "sourceLine": 24,
+          "lineId": "p0357-b2-l6"
+        }
+      ],
+      "cellBalanced": false,
+      "charBalanced": false
+    },
+    {
+      "id": "358-4-1",
+      "page": 358,
+      "status": "first",
+      "band": 4,
+      "startRow": 1,
+      "endRow": 2,
+      "previous": null,
+      "next": "𠧎",
+      "runs": [
+        {
+          "text": "古文",
+          "cells": 2,
+          "characters": 2,
+          "sourceLine": 26,
+          "lineId": "p0358-b3-l0"
+        }
+      ],
+      "cellBalanced": false,
+      "charBalanced": false
+    },
+    {
+      "id": "362-1-2",
+      "page": 362,
+      "status": "first",
+      "band": 1,
+      "startRow": 14,
+      "endRow": 15,
+      "previous": "事",
+      "next": "叓",
+      "runs": [
+        {
+          "text": "古文",
+          "cells": 2,
+          "characters": 2,
+          "sourceLine": 6,
+          "lineId": "p0362-b0-l3"
+        }
+      ],
+      "cellBalanced": false,
+      "charBalanced": false
+    },
+    {
+      "id": "364-2-1",
+      "page": 364,
+      "status": "first",
+      "band": 2,
+      "startRow": 3,
+      "endRow": 4,
+      "previous": "二",
+      "next": "弍",
+      "runs": [
+        {
+          "text": "古文",
+          "cells": 2,
+          "characters": 2,
+          "sourceLine": 6,
+          "lineId": "p0364-b1-l1"
+        }
+      ],
+      "cellBalanced": false,
+      "charBalanced": false
+    },
+    {
+      "id": "368-2-2",
+      "page": 368,
+      "status": "first",
+      "band": 2,
+      "startRow": 8,
+      "endRow": 9,
+      "previous": "五",
+      "next": "𠄡",
+      "runs": [
+        {
+          "text": "古文",
+          "cells": 2,
+          "characters": 2,
+          "sourceLine": 12,
+          "lineId": "p0368-b1-l3"
+        }
+      ],
+      "cellBalanced": false,
+      "charBalanced": false
+    },
+    {
+      "id": "371-1-2",
+      "page": 371,
+      "status": "draft",
+      "band": 1,
+      "startRow": 11,
+      "endRow": 16,
+      "previous": "亝",
+      "next": null,
+      "runs": [
+        {
+          "text": "玉篇古文齊字",
+          "cells": 6,
+          "characters": 6,
+          "sourceLine": 7,
+          "lineId": "p0371-b0-l4"
+        },
+        {
+          "text": "說文禾麥",
+          "cells": 4,
+          "characters": 4,
+          "sourceLine": 8,
+          "lineId": "p0371-b0-l5"
+        },
+        {
+          "text": "吐穂上平也",
+          "cells": 5,
+          "characters": 5,
+          "sourceLine": 9,
+          "lineId": "p0371-b0-l6"
+        },
+        {
+          "text": "徐曰生而齊",
+          "cells": 5,
+          "characters": 5,
+          "sourceLine": 10,
+          "lineId": "p0371-b0-l7"
+        }
+      ],
+      "cellBalanced": false,
+      "charBalanced": false
+    },
+    {
+      "id": "371-2-2",
+      "page": 371,
+      "status": "draft",
+      "band": 2,
+      "startRow": 16,
+      "endRow": 24,
+      "previous": "亞",
+      "next": null,
+      "runs": [
+        {
+          "text": "唐韻集韻𠀤衣駕切鴉",
+          "cells": 9,
+          "characters": 9,
+          "sourceLine": 15,
+          "lineId": "p0371-b1-l3"
+        },
+        {
+          "text": "去聲",
+          "cells": 2,
+          "characters": 2,
+          "sourceLine": 16,
+          "lineId": "p0371-b1-l4"
+        },
+        {
+          "text": "說文醜也象人局",
+          "cells": 7,
+          "characters": 7,
+          "sourceLine": 17,
+          "lineId": "p0371-b1-l5"
+        }
+      ],
+      "cellBalanced": false,
+      "charBalanced": false
+    },
+    {
+      "id": "371-3-1",
+      "page": 371,
+      "status": "draft",
+      "band": 3,
+      "startRow": 1,
+      "endRow": 19,
+      "previous": null,
+      "next": null,
+      "runs": [
+        {
+          "text": "背之形 又爾雅釋言亞次也",
+          "cells": 12,
+          "characters": 11,
+          "sourceLine": 19,
+          "lineId": "p0371-b2-l0"
+        },
+        {
+          "text": "蜀志諸葛亮管蕭之亞 又增",
+          "cells": 12,
+          "characters": 11,
+          "sourceLine": 20,
+          "lineId": "p0371-b2-l1"
+        },
+        {
+          "text": "韻少也",
+          "cells": 3,
+          "characters": 3,
+          "sourceLine": 21,
+          "lineId": "p0371-b2-l2"
+        },
+        {
+          "text": "廣韻就也 又姻亞壻之父曰姻兩壻相謂曰亞",
+          "cells": 19,
+          "characters": 18,
+          "sourceLine": 22,
+          "lineId": "p0371-b2-l3"
+        },
+        {
+          "text": "詩小",
+          "cells": 2,
+          "characters": 2,
+          "sourceLine": 23,
+          "lineId": "p0371-b2-l4"
+        }
+      ],
+      "cellBalanced": false,
+      "charBalanced": false
+    },
+    {
+      "id": "371-5-1",
+      "page": 371,
+      "status": "draft",
+      "band": 5,
+      "startRow": 1,
+      "endRow": 13,
+      "previous": null,
+      "next": null,
+      "runs": [
+        {
+          "text": "曰亞俗作丫椏 又正韻烏落切",
+          "cells": 13,
+          "characters": 12,
+          "sourceLine": 28,
+          "lineId": "p0371-b4-l0"
+        },
+        {
+          "text": "正譌與堊同塗飾牆也 又",
+          "cells": 11,
+          "characters": 10,
+          "sourceLine": 29,
+          "lineId": "p0371-b4-l1"
+        },
+        {
+          "text": "與惡同",
+          "cells": 3,
+          "characters": 3,
+          "sourceLine": 30,
+          "lineId": "p0371-b4-l2"
+        }
+      ],
+      "cellBalanced": false,
+      "charBalanced": false
+    },
+    {
+      "id": "371-8-1",
+      "page": 371,
+      "status": "draft",
+      "band": 8,
+      "startRow": 1,
+      "endRow": 9,
+      "previous": null,
+      "next": null,
+      "runs": [
+        {
+          "text": "通用 又與滹通滹沱",
+          "cells": 9,
+          "characters": 8,
+          "sourceLine": 38,
+          "lineId": "p0371-b7-l0"
+        },
+        {
+          "text": "禮禮器作惡池",
+          "cells": 6,
+          "characters": 6,
+          "sourceLine": 39,
+          "lineId": "p0371-b7-l1"
+        },
+        {
+          "text": "秦詛楚文作亞駝 又",
+          "cells": 9,
+          "characters": 8,
+          "sourceLine": 40,
+          "lineId": "p0371-b7-l2"
+        }
+      ],
+      "cellBalanced": false,
+      "charBalanced": false
+    },
+    {
+      "id": "375-5-2",
+      "page": 375,
+      "status": "first",
+      "band": 5,
+      "startRow": 24,
+      "endRow": 24,
+      "previous": "交",
+      "next": null,
+      "runs": [
+        {
+          "text": "古",
+          "cells": 1,
+          "characters": 1,
+          "sourceLine": 21,
+          "lineId": "p0375-b4-l3"
+        }
+      ],
+      "cellBalanced": false,
+      "charBalanced": false
+    },
+    {
+      "id": "375-6-1",
+      "page": 375,
+      "status": "first",
+      "band": 6,
+      "startRow": 1,
+      "endRow": 1,
+      "previous": null,
+      "next": "䢒",
+      "runs": [
+        {
+          "text": "文",
+          "cells": 1,
+          "characters": 1,
+          "sourceLine": 23,
+          "lineId": "p0375-b5-l0"
+        }
+      ],
+      "cellBalanced": false,
+      "charBalanced": false
+    },
+    {
+      "id": "376-6-2",
+      "page": 376,
+      "status": "first",
+      "band": 6,
+      "startRow": 10,
+      "endRow": 11,
+      "previous": "亦",
+      "next": "𠅃",
+      "runs": [
+        {
+          "text": "古文",
+          "cells": 2,
+          "characters": 2,
+          "sourceLine": 24,
+          "lineId": "p0376-b5-l3"
+        }
+      ],
+      "cellBalanced": false,
+      "charBalanced": false
+    },
+    {
+      "id": "377-1-2",
+      "page": 377,
+      "status": "first",
+      "band": 1,
+      "startRow": 12,
+      "endRow": 13,
+      "previous": "亨",
+      "next": "亯",
+      "runs": [
+        {
+          "text": "古文",
+          "cells": 2,
+          "characters": 2,
+          "sourceLine": 7,
+          "lineId": "p0377-b0-l4"
+        }
+      ],
+      "cellBalanced": false,
+      "charBalanced": false
+    },
+    {
+      "id": "377-7-1",
+      "page": 377,
+      "status": "first",
+      "band": 7,
+      "startRow": 5,
+      "endRow": 6,
+      "previous": "享",
+      "next": "𠅠",
+      "runs": [
+        {
+          "text": "古文",
+          "cells": 2,
+          "characters": 2,
+          "sourceLine": 34,
+          "lineId": "p0377-b6-l1"
+        }
+      ],
+      "cellBalanced": false,
+      "charBalanced": false
+    }
+  ],
+  "controlGroups": [
+    {
+      "id": "380-2-1",
+      "page": 380,
+      "status": "first",
+      "band": 2,
+      "startRow": 1,
+      "endRow": 24,
+      "previous": null,
+      "next": null,
+      "runs": [
+        {
+          "text": "諒同信也孟子君子不亮惡乎執古詩十九首君亮執高節賤",
+          "cells": 24,
+          "characters": 24,
+          "sourceLine": 9,
+          "lineId": "p0380-b1-l0"
+        },
+        {
+          "text": "妾亦奚爲 又明也 又姓 又集韻呂張切音良書說命亮",
+          "cells": 24,
+          "characters": 21,
+          "sourceLine": 10,
+          "lineId": "p0380-b1-l1"
+        }
+      ],
+      "cellBalanced": true,
+      "charBalanced": false
+    },
+    {
+      "id": "381-1-1",
+      "page": 381,
+      "status": "first",
+      "band": 1,
+      "startRow": 1,
+      "endRow": 24,
+      "previous": null,
+      "next": null,
+      "runs": [
+        {
+          "text": "志山陽郡有薄縣註湯居亳說文亳京兆杜陵亭名則又一亳",
+          "cells": 24,
+          "characters": 24,
+          "sourceLine": 3,
+          "lineId": "p0381-b0-l0"
+        },
+        {
+          "text": "也又書立政三亳阪尹傳與皇甫說同孔安國云亳人歸文王",
+          "cells": 24,
+          "characters": 24,
+          "sourceLine": 4,
+          "lineId": "p0381-b0-l1"
+        }
+      ],
+      "cellBalanced": true,
+      "charBalanced": true
+    },
+    {
+      "id": "381-2-1",
+      "page": 381,
+      "status": "first",
+      "band": 2,
+      "startRow": 1,
+      "endRow": 19,
+      "previous": null,
+      "next": "增",
+      "runs": [
+        {
+          "text": "者三所爲之立監故爲三亳 又廣韻亳國名春",
+          "cells": 19,
+          "characters": 18,
+          "sourceLine": 6,
+          "lineId": "p0381-b1-l0"
+        },
+        {
+          "text": "秋𨻰地漢爲沛之譙縣晉爲南兗州後周爲亳州",
+          "cells": 19,
+          "characters": 19,
+          "sourceLine": 7,
+          "lineId": "p0381-b1-l1"
+        }
+      ],
+      "cellBalanced": true,
+      "charBalanced": false
+    },
+    {
+      "id": "381-2-2",
+      "page": 381,
+      "status": "first",
+      "band": 2,
+      "startRow": 24,
+      "endRow": 24,
+      "previous": "𠅖",
+      "next": null,
+      "runs": [
+        {
+          "text": "集",
+          "cells": 1,
+          "characters": 1,
+          "sourceLine": 9,
+          "lineId": "p0381-b1-l3"
+        },
+        {
+          "text": "韻",
+          "cells": 1,
+          "characters": 1,
+          "sourceLine": 10,
+          "lineId": "p0381-b1-l4"
+        }
+      ],
+      "cellBalanced": true,
+      "charBalanced": true
+    },
+    {
+      "id": "381-3-1",
+      "page": 381,
+      "status": "first",
+      "band": 3,
+      "startRow": 1,
+      "endRow": 10,
+      "previous": null,
+      "next": "九",
+      "runs": [
+        {
+          "text": "亨古作𠅖又烹古亦作𠅖",
+          "cells": 10,
+          "characters": 10,
+          "sourceLine": 12,
+          "lineId": "p0381-b2-l0"
+        },
+        {
+          "text": "互詳六畫及火部七畫註",
+          "cells": 10,
+          "characters": 10,
+          "sourceLine": 13,
+          "lineId": "p0381-b2-l1"
+        }
+      ],
+      "cellBalanced": true,
+      "charBalanced": true
+    },
+    {
+      "id": "381-3-2",
+      "page": 381,
+      "status": "first",
+      "band": 3,
+      "startRow": 15,
+      "endRow": 20,
+      "previous": "𠅞",
+      "next": "增",
+      "runs": [
+        {
+          "text": "集韻乗古作𠅞",
+          "cells": 6,
+          "characters": 6,
+          "sourceLine": 15,
+          "lineId": "p0381-b2-l3"
+        },
+        {
+          "text": "註詳丿部九畫",
+          "cells": 6,
+          "characters": 6,
+          "sourceLine": 16,
+          "lineId": "p0381-b2-l4"
+        }
+      ],
+      "cellBalanced": true,
+      "charBalanced": true
+    },
+    {
+      "id": "381-4-1",
+      "page": 381,
+      "status": "first",
+      "band": 4,
+      "startRow": 1,
+      "endRow": 2,
+      "previous": null,
+      "next": "𠅠",
+      "runs": [
+        {
+          "text": "集韻",
+          "cells": 2,
+          "characters": 2,
+          "sourceLine": 19,
+          "lineId": "p0381-b3-l0"
+        },
+        {
+          "text": "同乘",
+          "cells": 2,
+          "characters": 2,
+          "sourceLine": 20,
+          "lineId": "p0381-b3-l1"
+        }
+      ],
+      "cellBalanced": true,
+      "charBalanced": true
+    },
+    {
+      "id": "381-4-2",
+      "page": 381,
+      "status": "first",
+      "band": 4,
+      "startRow": 5,
+      "endRow": 9,
+      "previous": "𠅠",
+      "next": "𠅡",
+      "runs": [
+        {
+          "text": "集韻享古作",
+          "cells": 5,
+          "characters": 5,
+          "sourceLine": 22,
+          "lineId": "p0381-b3-l3"
+        },
+        {
+          "text": "𠅠註詳六畫",
+          "cells": 5,
+          "characters": 5,
+          "sourceLine": 23,
+          "lineId": "p0381-b3-l4"
+        }
+      ],
+      "cellBalanced": true,
+      "charBalanced": true
+    },
+    {
+      "id": "381-4-3",
+      "page": 381,
+      "status": "first",
+      "band": 4,
+      "startRow": 12,
+      "endRow": 17,
+      "previous": "𠅡",
+      "next": "十",
+      "runs": [
+        {
+          "text": "集韻克古作𠅡",
+          "cells": 6,
+          "characters": 6,
+          "sourceLine": 25,
+          "lineId": "p0381-b3-l6"
+        },
+        {
+          "text": "註詳儿部五畫",
+          "cells": 6,
+          "characters": 6,
+          "sourceLine": 26,
+          "lineId": "p0381-b3-l7"
+        }
+      ],
+      "cellBalanced": true,
+      "charBalanced": true
+    },
+    {
+      "id": "381-4-4",
+      "page": 381,
+      "status": "first",
+      "band": 4,
+      "startRow": 22,
+      "endRow": 24,
+      "previous": "𠅩",
+      "next": null,
+      "runs": [
+        {
+          "text": "正字通",
+          "cells": 3,
+          "characters": 3,
+          "sourceLine": 28,
+          "lineId": "p0381-b3-l9"
+        },
+        {
+          "text": "同孰",
+          "cells": 2,
+          "characters": 2,
+          "sourceLine": 29,
+          "lineId": "p0381-b3-l10"
+        }
+      ],
+      "cellBalanced": true,
+      "charBalanced": true
+    },
+    {
+      "id": "381-5-1",
+      "page": 381,
+      "status": "first",
+      "band": 5,
+      "startRow": 5,
+      "endRow": 11,
+      "previous": "𠅪",
+      "next": "𠅫",
+      "runs": [
+        {
+          "text": "字彙補古文聒字",
+          "cells": 7,
+          "characters": 7,
+          "sourceLine": 32,
+          "lineId": "p0381-b4-l1"
+        },
+        {
+          "text": "註詳耳部六畫",
+          "cells": 6,
+          "characters": 6,
+          "sourceLine": 33,
+          "lineId": "p0381-b4-l2"
+        }
+      ],
+      "cellBalanced": true,
+      "charBalanced": true
+    },
+    {
+      "id": "381-5-2",
+      "page": 381,
+      "status": "first",
+      "band": 5,
+      "startRow": 14,
+      "endRow": 19,
+      "previous": "𠅫",
+      "next": "𠅬",
+      "runs": [
+        {
+          "text": "集韻勝古作𠅫",
+          "cells": 6,
+          "characters": 6,
+          "sourceLine": 35,
+          "lineId": "p0381-b4-l4"
+        },
+        {
+          "text": "註詳力部十畫",
+          "cells": 6,
+          "characters": 6,
+          "sourceLine": 36,
+          "lineId": "p0381-b4-l5"
+        }
+      ],
+      "cellBalanced": true,
+      "charBalanced": true
+    },
+    {
+      "id": "381-5-3",
+      "page": 381,
+      "status": "first",
+      "band": 5,
+      "startRow": 22,
+      "endRow": 24,
+      "previous": "𠅬",
+      "next": null,
+      "runs": [
+        {
+          "text": "集韻博",
+          "cells": 3,
+          "characters": 3,
+          "sourceLine": 38,
+          "lineId": "p0381-b4-l7"
+        },
+        {
+          "text": "毛切音",
+          "cells": 3,
+          "characters": 3,
+          "sourceLine": 39,
+          "lineId": "p0381-b4-l8"
+        }
+      ],
+      "cellBalanced": true,
+      "charBalanced": true
+    },
+    {
+      "id": "381-6-1",
+      "page": 381,
+      "status": "first",
+      "band": 6,
+      "startRow": 1,
+      "endRow": 11,
+      "previous": null,
+      "next": "亴",
+      "runs": [
+        {
+          "text": "褒吳景帝第四子名吳志作",
+          "cells": 11,
+          "characters": 11,
+          "sourceLine": 41,
+          "lineId": "p0381-b5-l0"
+        },
+        {
+          "text": "𠅨通志作𠅬桯史作𨻰王𡨷",
+          "cells": 11,
+          "characters": 11,
+          "sourceLine": 42,
+          "lineId": "p0381-b5-l1"
+        }
+      ],
+      "cellBalanced": true,
+      "charBalanced": true
+    },
+    {
+      "id": "381-6-2",
+      "page": 381,
+      "status": "first",
+      "band": 6,
+      "startRow": 14,
+      "endRow": 18,
+      "previous": "亴",
+      "next": "十一",
+      "runs": [
+        {
+          "text": "字彙補魚救",
+          "cells": 5,
+          "characters": 5,
+          "sourceLine": 44,
+          "lineId": "p0381-b5-l3"
+        },
+        {
+          "text": "切音右飛也",
+          "cells": 5,
+          "characters": 5,
+          "sourceLine": 45,
+          "lineId": "p0381-b5-l4"
+        }
+      ],
+      "cellBalanced": true,
+      "charBalanced": true
+    },
+    {
+      "id": "381-6-3",
+      "page": 381,
+      "status": "first",
+      "band": 6,
+      "startRow": 23,
+      "endRow": 24,
+      "previous": "亶",
+      "next": null,
+      "runs": [
+        {
+          "text": "唐韻",
+          "cells": 2,
+          "characters": 2,
+          "sourceLine": 47,
+          "lineId": "p0381-b5-l6"
+        },
+        {
+          "text": "多旱",
+          "cells": 2,
+          "characters": 2,
+          "sourceLine": 48,
+          "lineId": "p0381-b5-l7"
+        }
+      ],
+      "cellBalanced": true,
+      "charBalanced": true
+    },
+    {
+      "id": "381-7-1",
+      "page": 381,
+      "status": "first",
+      "band": 7,
+      "startRow": 1,
+      "endRow": 24,
+      "previous": null,
+      "next": null,
+      "runs": [
+        {
+          "text": "切集韻韻會黨旱切正韻多𥳑切𠀤音僤信也書盤庚誕告用",
+          "cells": 24,
+          "characters": 24,
+          "sourceLine": 50,
+          "lineId": "p0381-b6-l0"
+        },
+        {
+          "text": "亶詩小雅是究是圖亶其然乎儀禮士冠禮醮辭曰旨酒旣淸",
+          "cells": 24,
+          "characters": 24,
+          "sourceLine": 51,
+          "lineId": "p0381-b6-l1"
+        }
+      ],
+      "cellBalanced": true,
+      "charBalanced": true
+    },
+    {
+      "id": "381-8-1",
+      "page": 381,
+      "status": "first",
+      "band": 8,
+      "startRow": 1,
+      "endRow": 24,
+      "previous": null,
+      "next": null,
+      "runs": [
+        {
+          "text": "嘉薦亶時註誠也 又姓東漢亶誦善律曆 又海外國名韓",
+          "cells": 24,
+          "characters": 22,
+          "sourceLine": 53,
+          "lineId": "p0381-b7-l0"
+        },
+        {
+          "text": "愈送鄭尚書序夷亶之州註夷州亶州𠀤國名 又集韻張連",
+          "cells": 24,
+          "characters": 23,
+          "sourceLine": 54,
+          "lineId": "p0381-b7-l1"
+        }
+      ],
+      "cellBalanced": true,
+      "charBalanced": false
+    },
+    {
+      "id": "383-1-1",
+      "page": 383,
+      "status": "first",
+      "band": 1,
+      "startRow": 1,
+      "endRow": 12,
+      "previous": null,
+      "next": null,
+      "runs": [
+        {
+          "text": "崔靈恩改易詩亹作娓周伯琦",
+          "cells": 12,
+          "characters": 12,
+          "sourceLine": 3,
+          "lineId": "p0383-b0-l0"
+        },
+        {
+          "text": "亦从娓廢亹皆臆說不足信",
+          "cells": 11,
+          "characters": 11,
+          "sourceLine": 4,
+          "lineId": "p0383-b0-l1"
+        }
+      ],
+      "cellBalanced": true,
+      "charBalanced": true
+    }
+  ],
+  "imageReview": {
+    "method": "Full source census; targeted visual review of all six first-status paired-slot anomalies, 371 draft scan, and controls. Not a character-by-character scan recollation of all 70 pages.",
+    "visuallyReviewedPages": [
+      346,
+      355,
+      368,
+      371,
+      372,
+      379,
+      380,
+      381,
+      382,
+      383
+    ],
+    "figureSources": [
+      {
+        "page": 346,
+        "image": "0346.jpg",
+        "sha256": "cf90d1e8ed73581b508da63619994432bb9b03f677ed47922be8b3db1ecaadd7",
+        "cropXYXY": [
+          176,
+          145,
+          301,
+          1590
+        ],
+        "labelCounts": "Historical pre-correction transcription slots; see correction.changes for current counts"
+      },
+      {
+        "page": 355,
+        "image": "0355.jpg",
+        "sha256": "1b09f94287395c1ca7bb4d7b5ee6b585b92e62209a192cdd85159d510393dc87",
+        "cropXYXY": [
+          120,
+          155,
+          245,
+          650
+        ],
+        "labelCounts": "Historical pre-correction transcription slots; see correction.changes for current counts"
+      },
+      {
+        "page": 368,
+        "image": "0368.jpg",
+        "sha256": "61efaae43d9439450390dbe5c758efc9f2c62969fe3810596556d32d20419a78",
+        "cropXYXY": [
+          665,
+          150,
+          797,
+          1565
+        ],
+        "labelCounts": "Historical pre-correction transcription slots; see correction.changes for current counts"
+      },
+      {
+        "page": 372,
+        "image": "0372.jpg",
+        "sha256": "d301c7c75fe3d54e3691184d19bafc262fec6275acc9e786225439856e1e3e72",
+        "cropXYXY": [
+          179,
+          178,
+          299,
+          1170
+        ],
+        "labelCounts": "Historical pre-correction transcription slots; see correction.changes for current counts"
+      },
+      {
+        "page": 379,
+        "image": "0379.jpg",
+        "sha256": "5a6919effd32fdd0fb26a37af44253b2c9bca0b0f2e14bc4690a6d4ac1e2f21d",
+        "cropXYXY": [
+          127,
+          155,
+          247,
+          1560
+        ],
+        "labelCounts": "Historical pre-correction transcription slots; see correction.changes for current counts"
+      },
+      {
+        "page": 382,
+        "image": "0382.jpg",
+        "sha256": "47fd2b6da1f1757eb4d130feee3a3119551d1eb01cb069311aef1e762234e20a",
+        "cropXYXY": [
+          179,
+          145,
+          299,
+          1535
+        ],
+        "labelCounts": "Historical pre-correction transcription slots; see correction.changes for current counts"
+      }
+    ],
+    "draft371": "原图8大列，前两大列为前条续文；当前草稿从原图第3大列的𠄨起录，且折行碎裂成3/4/5小列。草稿形态不能据为原版流式反例。"
+  },
+  "correction": {
+    "date": "2026-11-18",
+    "basis": "用户纠正：新释义或补充释义之前的空格应计入排版。*又 可跨小列，空位在前列末尾；355页通雅所引补充释义前也有一格间隔。",
+    "conclusion": "六处均为转写漏写空位，现已全部补齐。五处列尾 * 按用户要求补入，346页内部 * 由用户补入。初校709组普通双列释文全部满足占格均分条件。",
+    "changes": [
+      {
+        "id": "355-8-1",
+        "before": {
+          "id": "355-8-1",
+          "page": 355,
+          "status": "first",
+          "band": 8,
+          "startRow": 1,
+          "endRow": 7,
+          "previous": null,
+          "next": "增",
+          "runs": [
+            {
+              "text": "卜師謂之廝乩",
+              "cells": 6,
+              "characters": 6,
+              "sourceLine": 44,
+              "lineId": "p0355-b7-l0"
+            },
+            {
+              "text": "通雅乩當與卟同",
+              "cells": 7,
+              "characters": 7,
+              "sourceLine": 45,
+              "lineId": "p0355-b7-l1"
+            }
+          ],
+          "cellBalanced": false,
+          "charBalanced": false
+        },
+        "after": {
+          "id": "355-8-1",
+          "page": 355,
+          "status": "first",
+          "band": 8,
+          "startRow": 1,
+          "endRow": 7,
+          "previous": null,
+          "next": "增",
+          "runs": [
+            {
+              "text": "卜師謂之廝乩 ",
+              "cells": 7,
+              "characters": 6,
+              "sourceLine": 44,
+              "lineId": "p0355-b7-l0"
+            },
+            {
+              "text": "通雅乩當與卟同",
+              "cells": 7,
+              "characters": 7,
+              "sourceLine": 45,
+              "lineId": "p0355-b7-l1"
+            }
+          ],
+          "cellBalanced": true,
+          "charBalanced": false
+        },
+        "classification": "transcription-omitted-terminal-blank-corrected"
+      },
+      {
+        "id": "368-3-1",
+        "before": {
+          "id": "368-3-1",
+          "page": 368,
+          "status": "first",
+          "band": 3,
+          "startRow": 1,
+          "endRow": 24,
+          "previous": null,
+          "next": null,
+          "runs": [
+            {
+              "text": "易繫辭天數五地數五書武成列爵惟五詩鄘風良馬五之",
+              "cells": 23,
+              "characters": 23,
+              "sourceLine": 17,
+              "lineId": "p0368-b2-l0"
+            },
+            {
+              "text": "又格五後漢梁冀傳能挽滿彈棊格五六博蹴鞠意錢之戲註",
+              "cells": 24,
+              "characters": 24,
+              "sourceLine": 18,
+              "lineId": "p0368-b2-l1"
+            }
+          ],
+          "cellBalanced": false,
+          "charBalanced": false
+        },
+        "after": {
+          "id": "368-3-1",
+          "page": 368,
+          "status": "first",
+          "band": 3,
+          "startRow": 1,
+          "endRow": 24,
+          "previous": null,
+          "next": null,
+          "runs": [
+            {
+              "text": "易繫辭天數五地數五書武成列爵惟五詩鄘風良馬五之 ",
+              "cells": 24,
+              "characters": 23,
+              "sourceLine": 17,
+              "lineId": "p0368-b2-l0"
+            },
+            {
+              "text": "又格五後漢梁冀傳能挽滿彈棊格五六博蹴鞠意錢之戲註",
+              "cells": 24,
+              "characters": 24,
+              "sourceLine": 18,
+              "lineId": "p0368-b2-l1"
+            }
+          ],
+          "cellBalanced": true,
+          "charBalanced": false
+        },
+        "classification": "transcription-omitted-terminal-blank-corrected"
+      },
+      {
+        "id": "372-7-1",
+        "before": {
+          "id": "372-7-1",
+          "page": 372,
+          "status": "first",
+          "band": 7,
+          "startRow": 1,
+          "endRow": 17,
+          "previous": null,
+          "next": "七",
+          "runs": [
+            {
+              "text": "其欲 又與革通禮檀弓夫人之病革矣",
+              "cells": 16,
+              "characters": 15,
+              "sourceLine": 24,
+              "lineId": "p0372-b6-l0"
+            },
+            {
+              "text": "又與極通荀子賦論反覆甚極註極與亟同",
+              "cells": 17,
+              "characters": 17,
+              "sourceLine": 25,
+              "lineId": "p0372-b6-l1"
+            }
+          ],
+          "cellBalanced": false,
+          "charBalanced": false
+        },
+        "after": {
+          "id": "372-7-1",
+          "page": 372,
+          "status": "first",
+          "band": 7,
+          "startRow": 1,
+          "endRow": 17,
+          "previous": null,
+          "next": "七",
+          "runs": [
+            {
+              "text": "其欲 又與革通禮檀弓夫人之病革矣 ",
+              "cells": 17,
+              "characters": 15,
+              "sourceLine": 24,
+              "lineId": "p0372-b6-l0"
+            },
+            {
+              "text": "又與極通荀子賦論反覆甚極註極與亟同",
+              "cells": 17,
+              "characters": 17,
+              "sourceLine": 25,
+              "lineId": "p0372-b6-l1"
+            }
+          ],
+          "cellBalanced": true,
+          "charBalanced": false
+        },
+        "classification": "transcription-omitted-terminal-blank-corrected"
+      },
+      {
+        "id": "379-8-1",
+        "before": {
+          "id": "379-8-1",
+          "page": 379,
+          "status": "first",
+          "band": 8,
+          "startRow": 1,
+          "endRow": 24,
+          "previous": null,
+          "next": null,
+          "runs": [
+            {
+              "text": "卽直午之義 又古今注蜻蜓一名靑亭色靑而大者是也",
+              "cells": 23,
+              "characters": 22,
+              "sourceLine": 24,
+              "lineId": "p0379-b7-l0"
+            },
+            {
+              "text": "又水止曰亭與渟同前漢西域傳其水亭居 又韻補叶徒陽",
+              "cells": 24,
+              "characters": 23,
+              "sourceLine": 25,
+              "lineId": "p0379-b7-l1"
+            }
+          ],
+          "cellBalanced": false,
+          "charBalanced": false
+        },
+        "after": {
+          "id": "379-8-1",
+          "page": 379,
+          "status": "first",
+          "band": 8,
+          "startRow": 1,
+          "endRow": 24,
+          "previous": null,
+          "next": null,
+          "runs": [
+            {
+              "text": "卽直午之義 又古今注蜻蜓一名靑亭色靑而大者是也 ",
+              "cells": 24,
+              "characters": 22,
+              "sourceLine": 24,
+              "lineId": "p0379-b7-l0"
+            },
+            {
+              "text": "又水止曰亭與渟同前漢西域傳其水亭居 又韻補叶徒陽",
+              "cells": 24,
+              "characters": 23,
+              "sourceLine": 25,
+              "lineId": "p0379-b7-l1"
+            }
+          ],
+          "cellBalanced": true,
+          "charBalanced": false
+        },
+        "classification": "transcription-omitted-terminal-blank-corrected"
+      },
+      {
+        "id": "382-7-1",
+        "before": {
+          "id": "382-7-1",
+          "page": 382,
+          "status": "first",
+          "band": 7,
+          "startRow": 1,
+          "endRow": 24,
+          "previous": null,
+          "next": null,
+          "runs": [
+            {
+              "text": "雅亹亹文王令聞不已又禮禮器天時雨澤君子達亹亹焉",
+              "cells": 23,
+              "characters": 23,
+              "sourceLine": 37,
+              "lineId": "p0382-b6-l0"
+            },
+            {
+              "text": "又集韻正韻𠀤謨奔切音門詩大雅鳧鷖在亹註水流峽中兩",
+              "cells": 24,
+              "characters": 24,
+              "sourceLine": 38,
+              "lineId": "p0382-b6-l1"
+            }
+          ],
+          "cellBalanced": false,
+          "charBalanced": false
+        },
+        "after": {
+          "id": "382-7-1",
+          "page": 382,
+          "status": "first",
+          "band": 7,
+          "startRow": 1,
+          "endRow": 24,
+          "previous": null,
+          "next": null,
+          "runs": [
+            {
+              "text": "雅亹亹文王令聞不已又禮禮器天時雨澤君子達亹亹焉 ",
+              "cells": 24,
+              "characters": 23,
+              "sourceLine": 37,
+              "lineId": "p0382-b6-l0"
+            },
+            {
+              "text": "又集韻正韻𠀤謨奔切音門詩大雅鳧鷖在亹註水流峽中兩",
+              "cells": 24,
+              "characters": 24,
+              "sourceLine": 38,
+              "lineId": "p0382-b6-l1"
+            }
+          ],
+          "cellBalanced": true,
+          "charBalanced": false
+        },
+        "classification": "transcription-omitted-terminal-blank-corrected"
+      },
+      {
+        "id": "346-7-1",
+        "before": {
+          "id": "346-7-1",
+          "page": 346,
+          "status": "first",
+          "band": 7,
+          "startRow": 1,
+          "endRow": 24,
+          "previous": null,
+          "next": null,
+          "runs": [
+            {
+              "text": "繆兮世孰云而知之叶上牛下求周伯琦曰古人因物制字",
+              "cells": 23,
+              "characters": 23,
+              "sourceLine": 21,
+              "lineId": "p0346-b6-l0"
+            },
+            {
+              "text": "如之本芝草乎本吁氣焉本鳶後人借爲助語助語之用旣多",
+              "cells": 24,
+              "characters": 24,
+              "sourceLine": 22,
+              "lineId": "p0346-b6-l1"
+            }
+          ],
+          "cellBalanced": false,
+          "charBalanced": false
+        },
+        "after": {
+          "id": "346-7-1",
+          "page": 346,
+          "status": "first",
+          "band": 7,
+          "startRow": 1,
+          "endRow": 24,
+          "previous": null,
+          "next": null,
+          "runs": [
+            {
+              "text": "繆兮世孰云而知之叶上牛下求 周伯琦曰古人因物制字",
+              "cells": 24,
+              "characters": 23,
+              "sourceLine": 21,
+              "lineId": "p0346-b6-l0"
+            },
+            {
+              "text": "如之本芝草乎本吁氣焉本鳶後人借爲助語助語之用旣多",
+              "cells": 24,
+              "characters": 24,
+              "sourceLine": 22,
+              "lineId": "p0346-b6-l1"
+            }
+          ],
+          "cellBalanced": true,
+          "charBalanced": false
+        },
+        "classification": "transcription-omitted-interior-blank-corrected",
+        "correctedBy": "user"
+      }
+    ]
+  }
+}
