@@ -14,7 +14,9 @@ import { bandCursorTarget, buildCharIndex, charCursorTarget, charHighlightAt, hi
 import type { CharHighlight } from "@/ir/types";
 import { resolvePageScan, type DatasetConfig } from "@/datasets/config";
 import type { PageEntry } from "./DatasetView";
-import { ScanGridOverlay } from "./ScanGridOverlay";
+import { ScanGridOverlay, ScanGridStatus } from "./ScanGridOverlay";
+import { useScanGrid } from "./use-scan-grid";
+import { compareBlankCells } from "./scan-grid";
 
 const SAVE_SHORTCUT_HINT = /Mac|iPod|iPhone|iPad/.test(navigator.platform) ? "⌘S" : "Ctrl+S";
 const stem = (page: number) => String(page).padStart(4, "0");
@@ -61,7 +63,7 @@ function ColumnHeader({ children }: { children: ReactNode }) {
 }
 
 export function DatasetWorkspace({
-  entry, config, text, originalLoaded, dirty, busy, rules, cells, scanCells,
+  entry, config, text, originalLoaded, dirty, busy, cells, scanCells, blanksOnly,
   editorTheme, vimMode, onChange, onSave, onReset, onFormat,
 }: {
   entry?: PageEntry;
@@ -70,9 +72,9 @@ export function DatasetWorkspace({
   originalLoaded: boolean;
   dirty: boolean;
   busy: boolean;
-  rules: boolean;
   cells: boolean;
   scanCells: boolean;
+  blanksOnly: boolean;
   editorTheme: "light" | "dark";
   vimMode: boolean;
   onChange: (text: string) => void;
@@ -88,6 +90,14 @@ export function DatasetWorkspace({
     return config ? applyBookLayout(parsed, config.layout) : parsed;
   }, [text, config]);
   const laidPages = useMemo(() => config ? layout3(irDoc) : [], [irDoc, config]);
+  // 空格高亮与格线独立；两栏共用一次识别，所有显示开关关闭才取消。
+  const showRenderBlanks = cells || blanksOnly;
+  const scanGrid = useScanGrid(entry, laidPages[0], showRenderBlanks || scanCells);
+  const blankCells = useMemo(() => {
+    const current = laidPages[0];
+    return showRenderBlanks && scanGrid.grid && current?.no === page
+      ? new Map([[current, compareBlankCells(current, scanGrid.grid)]]) : undefined;
+  }, [showRenderBlanks, scanGrid.grid, laidPages, page]);
   const frame = laidPages[0] ? getPageFrame(laidPages[0]) : null;
   const cols = frame?.cols ?? 0;
 
@@ -169,7 +179,7 @@ export function DatasetWorkspace({
                   className="block w-full select-none"
                   draggable={false}
                 />
-                {scanCells ? <ScanGridOverlay entry={entry} layout={laidPages[0]} /> : null}
+                {scanCells || blanksOnly ? <ScanGridOverlay state={scanGrid} cells={!blanksOnly} /> : null}
               </div>
             ) : null}
           </div>
@@ -184,13 +194,15 @@ export function DatasetWorkspace({
             矩阵 · {cols / (laidPages[0]?.config.smallColumnsPerBand ?? 1)} 大列 × {(frame?.rows ?? 0) / (laidPages[0]?.config.largeRows ?? 1)} 大字格 · 字格 {unit.toFixed(1)}px · 与原图版框对齐
           </ColumnHeader>
           <ScrollArea className="min-h-0 flex-1" ref={scrollVPRef}>
-            <div className="flex justify-center p-2">
+            <div className="relative flex justify-center p-2">
+              {entry && showRenderBlanks && !scanGrid.grid ? <ScanGridStatus state={scanGrid} label="空格对照" /> : null}
               {laidPages.length > 0 ? (
                 <MatrixPages
                   pages={laidPages}
                   overlays={irDoc.overlays}
-                  rules={rules}
-                  cells={cells}
+                  rules={false}
+                  cells={cells && !blanksOnly}
+                  blankCells={blankCells}
                   highlight={highlight}
                   onBandClick={onBandClick}
                   onCharDoubleClick={onCharDoubleClick}

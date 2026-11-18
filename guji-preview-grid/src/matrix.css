@@ -120,6 +120,20 @@
   box-shadow: inset 0 0 0 1px rgb(5 150 105 / 35%);
 }
 
+/* 空白小格对照：绝对定位到实际 Grid 轨道，在格线与文字下方，不拦截编辑联动。 */
+.m-blank-cell {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+}
+.m-blank-cell-match {
+  background: rgb(96 165 250 / 45%);
+}
+.m-blank-cell-mismatch {
+  background: rgb(248 113 113 / 40%);
+}
+
 /* 超当前版式 rowCap 的溢出警示：不整条大列染色——标记（.m-over-mark，
    渲染层挂在 band 内）只落在实际溢出的小列（含大字列），方便定位哪一小列超长。
    占该列最后一格轨道、贴底 2px 即裁剪边（版框下线内侧）；

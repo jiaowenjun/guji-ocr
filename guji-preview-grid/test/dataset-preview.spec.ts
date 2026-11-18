@@ -143,6 +143,87 @@ describe("数据集预览使用当前文档快照", () => {
     expect(container.querySelector(".m-lines")?.getAttribute("data-cells")).toBe("on");
   });
 
+  it("渲染空格对照独立显示、与原图共用请求，同占格编辑即时更新且切页清除旧结果", async () => {
+    const originalFetch = fetch;
+    const pending: { signal: AbortSignal; resolve: (response: unknown) => void }[] = [];
+    vi.stubGlobal("fetch", vi.fn((url: string, init?: RequestInit) => url === "/dataset/scan-grid"
+      ? new Promise(resolve => pending.push({ signal: init!.signal!, resolve }))
+      : originalFetch(url, init)));
+    const source = `@1\n${"甲".repeat(22)}*甲\n${"乙".repeat(23)}*`;
+    await act(async () => editor.onChange(source));
+    const button = (label: string) => [...document.querySelectorAll<HTMLButtonElement>("button")].find(b => b.textContent === label)!;
+    expect([...document.querySelectorAll("button")].some(b => b.textContent?.startsWith("界栏"))).toBe(false);
+    // 两个格线开关全关时，也能一键打开两栏空格。
+    await act(async () => button("仅显示空格").click());
+    expect(button("仅显示空格").getAttribute("aria-pressed")).toBe("true");
+    expect(button("字格关").disabled).toBe(true);
+    expect(button("原图字格关").disabled).toBe(true);
+    expect(container.textContent).toContain("正在识别原图空格");
+    expect(container.querySelector("[data-render-blank]")).toBeNull();
+    await act(async () => { await vi.advanceTimersByTimeAsync(250); });
+    const respond = (index: number, ok = true) => act(async () => pending[index].resolve({
+      ok, json: async () => ok ? {
+        ok: true, width: 1130, height: 1679,
+        bands: Array.from({ length: 8 }, (_, i) => [880 - i * 120, 168, 1000 - i * 120, 1564]),
+        blank_cells: [{ band: 0, col: 1, row: 22 }],
+      } : { ok: false, error: "定位失败" },
+    }));
+    await respond(0);
+    const match = (key: string) => container.querySelector(`[data-render-blank="${key}"]`)?.getAttribute("data-blank-match");
+    expect(match("15:22")).toBe("yes");
+    expect(match("14:23")).toBe("no");
+    expect(container.querySelectorAll("[data-scan-blank]")).toHaveLength(1);
+    expect(container.querySelector(".scan-cell-rule")).toBeNull();
+    expect(container.querySelector(".m-lines")?.getAttribute("data-cells")).toBe("off");
+    expect(container.querySelector(".m-lines")?.getAttribute("data-rules")).toBe("off");
+    expect(editor.value).toBe(source);
+    await act(async () => button("仅显示空格").click());
+    expect(button("字格关").disabled).toBe(false);
+    expect(button("原图字格关").disabled).toBe(false);
+    expect(container.querySelector("[data-render-blank], [data-scan-blank]")).toBeNull();
+    await act(async () => button("字格关").click());
+    expect(match("15:22")).toBe("yes");
+    expect(container.querySelector("[data-scan-grid]")).toBeNull();
+    await act(async () => button("原图字格关").click());
+    await act(async () => { await vi.advanceTimersByTimeAsync(250); });
+    expect(pending).toHaveLength(1);
+    expect(container.querySelectorAll("[data-scan-blank]")).toHaveLength(1);
+    // 已打开的格线临时隐藏，退出后恢复；高亮和识别请求不中断。
+    await act(async () => button("仅显示空格").click());
+    expect(container.querySelector(".scan-cell-rule")).toBeNull();
+    expect(container.querySelector(".m-lines")?.getAttribute("data-cells")).toBe("off");
+    expect(match("15:22")).toBe("yes");
+    expect(container.querySelectorAll("[data-scan-blank]")).toHaveLength(1);
+    await act(async () => button("仅显示空格").click());
+    expect(button("字格开").getAttribute("aria-pressed")).toBe("true");
+    expect(button("原图字格开").getAttribute("aria-pressed")).toBe("true");
+    expect(container.querySelectorAll(".scan-cell-rule")).toHaveLength(8 * 28);
+    expect(container.querySelector(".m-lines")?.getAttribute("data-cells")).toBe("on");
+    await act(async () => button("原图字格开").click());
+    await act(async () => editor.onChange(`@1\n${"甲".repeat(23)}*\n${"乙".repeat(22)}*乙`));
+    expect(match("15:22")).toBe("no"); // 原图为空，但此处已改为文字。
+    expect(match("14:23")).toBeUndefined();
+    expect(match("15:23")).toBe("no");
+    expect(match("14:22")).toBe("no");
+    await act(async () => { await vi.advanceTimersByTimeAsync(250); });
+    expect(pending).toHaveLength(1);
+
+    await act(async () => document.querySelector<HTMLButtonElement>('[aria-label="下一页"]')!.click());
+    expect(container.querySelector("[data-render-blank]")).toBeNull();
+    await act(async () => { await vi.advanceTimersByTimeAsync(250); });
+    await respond(1, false);
+    expect(container.textContent).toContain("空格对照：定位失败");
+    expect(container.querySelector("[data-render-blank]")).toBeNull();
+    await act(async () => button("重试").click());
+    await act(async () => { await vi.advanceTimersByTimeAsync(250); });
+    expect(pending).toHaveLength(3);
+    await act(async () => button("字格开").click());
+    expect(pending[2].signal.aborted).toBe(true);
+    await respond(2);
+    expect(container.querySelector("[data-render-blank]")).toBeNull();
+    expect(container.querySelector('[role="status"]')).toBeNull();
+  });
+
   it("插字和插入大列后，布局、高亮与点击定位同时更新", async () => {
     expect(container.querySelector(".m-band")?.textContent).toBe("甲乙");
     const inserted = "@1\n\n#丙甲乙\n";

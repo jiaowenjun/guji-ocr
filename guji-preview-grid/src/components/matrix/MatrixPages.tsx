@@ -17,6 +17,7 @@ export function MatrixPages({
   overlays = [],
   rules = true,
   cells = false,
+  blankCells,
   highlight,
   onBandClick,
   onCharDoubleClick,
@@ -27,6 +28,8 @@ export function MatrixPages({
   rules?: boolean;
   /** 整页字格（含空白区域，纯视觉叠加，不占布局空间） */
   cells?: boolean;
+  /** 双向空格对照结果（含原图空而渲染有字的格子），显隐独立于格线。 */
+  blankCells?: ReadonlyMap<L3Page, readonly { col: number; row: number; match: boolean }[]>;
   highlight?: RenderHighlight;
   onBandClick?: (page: number, index: number) => void;
   onCharDoubleClick?: (char: CharHighlight) => void;
@@ -51,6 +54,7 @@ export function MatrixPages({
             page={pg}
             rules={rules}
             cells={cells}
+            blankCells={blankCells?.get(pg)}
             circled={circled}
             boxes={boxes.get(pg) ?? []}
             activeCell={activeCell}
@@ -68,6 +72,7 @@ function MatrixPageView({
   page,
   rules,
   cells,
+  blankCells,
   circled,
   boxes,
   activeCell,
@@ -78,6 +83,7 @@ function MatrixPageView({
   page: L3Page;
   rules: boolean;
   cells: boolean;
+  blankCells?: readonly { col: number; row: number; match: boolean }[];
   circled: Set<string>;
   boxes: BookBox[];
   activeCell: ReturnType<typeof locateCell>;
@@ -112,6 +118,12 @@ function MatrixPageView({
         } as CSSProperties
       }
     >
+      {blankCells?.map(({ col, row, match }) => (
+        <span key={`blank-${col}-${row}`} aria-hidden="true"
+          className={`m-blank-cell m-blank-cell-${match ? "match" : "mismatch"}`}
+          data-render-blank={`${col}:${row}`} data-blank-match={match ? "yes" : "no"}
+          style={{ gridColumn: `${col + 1} / ${col + 2}`, gridRow: `${row + 1} / ${row + 2}` }} />
+      ))}
       <CellRules cols={cols} rows={rows} largeCols={largeCols} largeRows={largeRows} />
       <div
         className="m-content"
