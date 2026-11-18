@@ -44,6 +44,20 @@ describe("vim 关闭（默认）：emacs 键位原样", () => {
     ctrlJ(view);
     expect(doc(view)).toBe("一行字二行字\n");
   });
+
+  it.each([
+    ["甲　\n乙", "甲　乙"],
+    ["甲\n　乙", "甲　乙"],
+    ["甲　\n　乙", "甲　　乙"],
+    ["甲\u00a0\n\u2009乙", "甲\u00a0\u2009乙"],
+    ["甲*\n*乙", "甲**乙"],
+    ["甲　 \t\n \t　乙", "甲　　乙"],
+    ["甲 \t\n \t乙", "甲乙"],
+  ])("Ctrl-J 保留占位空格：%j", (source, expected) => {
+    const view = track(new EditorView({ doc: source, parent: document.body, extensions: [gujiKeymap] }));
+    ctrlJ(view);
+    expect(doc(view)).toBe(expected);
+  });
 });
 
 describe("vim 开启：模态协议", () => {
@@ -69,6 +83,13 @@ describe("vim 开启：模态协议", () => {
     expect(doc(view)).toBe("一行字二行字\n");
     key(view, "z", { altKey: true, code: "KeyZ" });
     expect(doc(view)).toContain("#(增)");
+  });
+
+  it("insert 模态 Ctrl-J 同样保留全角占位空格", () => {
+    const view = track(new EditorView({ doc: "甲　\n　乙", parent: document.body, extensions: [vim(), gujiKeymap] }));
+    key(view, "i");
+    ctrlJ(view);
+    expect(doc(view)).toBe("甲　　乙");
   });
 
   it("normal 模态 Alt-Z 让位（不插入糖）", () => {

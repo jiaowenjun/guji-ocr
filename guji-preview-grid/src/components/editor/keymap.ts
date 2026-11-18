@@ -1,8 +1,8 @@
 // 编辑器快捷键（insert 模态方案；vim 开启后仅 insert 模态生效，normal 模态
 // 让位给 vim 引擎——Ctrl-J/O/U 在 vim normal 下分别是下移一行/跳转列表/
 // 上滚半屏）：
-// Ctrl-J 下一行并入本行末尾——先去本行行尾空格与下一行行首空格（含全角），
-//   删除中间换行完成拼接，光标落在接缝处。
+// Ctrl-J 下一行并入本行末尾——只去接缝两侧的半角空格和 Tab，
+//   保留全角及其他 Unicode 占位空格；删除换行完成拼接，光标落在接缝处。
 // Ctrl-O 光标后插换行、光标不动（emacs open-line / 原生 NSTextView 语义，
 //   新空行在下方；行中按即劈行）；Ctrl-Alt-O 本行上方插空行，光标不动
 //   （列不变，随本行下移）。
@@ -13,14 +13,12 @@
 //   swallowVimNormal——防止原生 ^K 杀行尾等在 normal 模态破坏文档）。
 // Alt/Option-Z 插入 #(增)，Alt/Option-X 插入 □，Alt/Option-数字插入 #(数字)
 //   （如 Alt-1 → #(1)）；原生布局字符（≈/Ω/¡…）经 beforeinput 兜底吞掉。
-// \s 含 U+3000 全角空格，无需另列。
 import { Prec } from "@codemirror/state";
 import { EditorView, keymap, type Command } from "@codemirror/view";
 import { Vim, getCM } from "@replit/codemirror-vim";
 
-// vim normal 模态 J → gJ：合并下一行时不在本行末尾插空格（.gj 行密排无行
-// 首尾空白，与 gJ「保留下行行首空白」的差异实际不可见；count 前缀与 . 重
-// 复随 keyToKey 重放保留）。ctx 限定 normal，visual J 维持引擎默认。
+// vim normal 模态 J → gJ：合并下一行时不额外插空格；count 前缀与 . 重复
+// 随 keyToKey 重放保留。ctx 限定 normal，visual J 维持引擎默认。
 // keyToKey 映射经 unshift 进全局 keymap，所有编辑器实例按键时实时查表；
 // 模块重复求值（HMR）会重复 unshift 同映射，命中首个，无害。
 Vim.map("J", "gJ", "normal");
@@ -62,10 +60,10 @@ const joinNextLine: Command = (view) => {
   const line = state.doc.lineAt(state.selection.main.head);
   if (line.to === state.doc.length) return false; // 已是末行
   const next = state.doc.lineAt(line.to + 1);
-  const trailing = line.text.match(/\s+$/)?.[0].length ?? 0;
-  const leading = next.text.match(/^\s+/)?.[0].length ?? 0;
+  const trailing = line.text.match(/[ \t]+$/)?.[0].length ?? 0;
+  const leading = next.text.match(/^[ \t]+/)?.[0].length ?? 0;
   const joinAt = line.to - trailing;
-  // 一次删除：行尾空格 + 换行 + 下行行首空格
+  // 一次删除：行尾半角空白 + 换行 + 下行行首半角空白
   view.dispatch({
     changes: { from: joinAt, to: next.from + leading },
     selection: { anchor: joinAt },

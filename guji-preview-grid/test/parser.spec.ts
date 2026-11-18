@@ -74,6 +74,7 @@ import { fileURLToPath } from "node:url";
 import { formatGj } from "../src/parser/split-line";
 import { parseKangxiDocument as gj2ir } from "../src/datasets/kangxi";
 import type { IRDocument } from "../src/ir/types";
+import { visibleLayout } from "./helpers/visible-layout";
 
 describe("formatGj", () => {
   it("removes redundant # and closes circle tokens without moving size boundaries", () => {
@@ -127,6 +128,7 @@ describe("formatGj 全语料不变量：清洗字符流/大字/overlay/带数不
       const src = readFileSync(`${dir}/${f}`, "utf-8");
       const a = gj2ir(src);
       const b = gj2ir(formatGj(src));
+      expect(visibleLayout(b)).toEqual(visibleLayout(a));
       expect(charStream(b)).toBe(charStream(a));
       expect(largeSeq(b)).toBe(largeSeq(a));
       expect(bandCounts(b)).toBe(bandCounts(a));

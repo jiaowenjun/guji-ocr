@@ -278,7 +278,7 @@ export function DatasetView({
     return () => window.removeEventListener("keydown", onKey);
   }, [save, dirty, busy]);
 
-  /** 格式化（一键）：行内空格→*、行尾空格清除（不再转 *）、◎→〇、全角括号/速记归一、
+  /** 格式化（一键）：全角空格及行内半角空格→*、行尾半角空白清除、◎→〇、全角括号/速记归一、
    *  #(X 补右括号、同行重复 # 合并、行首逗号回贴前行大字、自动流式＋均式折行，保留大小字边界与显式 $ 换列。
    *  格式化即保存（2026-11-15）：缓冲与磁盘同形，省去手动「保存回数据集」；
    *  保存失败时缓冲保持未保存态，可 ⌘S 重试 */
@@ -291,7 +291,7 @@ export function DatasetView({
     }
     setEdits((prev) => ({ ...prev, [page]: formatted }));
     const detail = [
-      spaces > 0 ? `行内空格→* ${spaces} 处` : "",
+      spaces > 0 ? `占位空格→* ${spaces} 处` : "",
       circles > 0 ? `◎→〇 ${circles} 处` : "",
       dots > 0 ? `•→· ${dots} 处` : "",
       "流式＋均式排版、括号归一、字头独占一行",

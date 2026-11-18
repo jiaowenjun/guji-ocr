@@ -4,12 +4,12 @@ import { scanInline } from "./inline-tokens";
 
 /** Keep a leading comma with the preceding large glyph, before its newline/comment. */
 export function attachLeadingCommas(text: string): string {
-  const lines = text.split("\n");
+  const lines = text.split(/\r?\n/);
   for (let i = 1; i < lines.length; i++) {
     const match = /^([ \t]*)(，+)/.exec(lines[i]);
     if (!match) continue;
     let previousIndex = i - 1;
-    while (previousIndex >= 0 && !lines[previousIndex].trim()) previousIndex--;
+    while (previousIndex >= 0 && /^[ \t]*$/.test(lines[previousIndex])) previousIndex--;
     if (previousIndex < 0) continue;
     const previous = lines[previousIndex];
     const tokens = scanInline(previous).tokens;
@@ -19,16 +19,23 @@ export function attachLeadingCommas(text: string): string {
     const comment = tokens.find((t) => t.kind === "comment" || t.kind === "break");
     const end = previous.slice(0, comment?.from ?? previous.length).replace(/[ \t]+$/, "").length;
     lines[previousIndex] = previous.slice(0, end) + match[2] + previous.slice(end);
-    lines[i] = match[1] + lines[i].slice(match[0].length);
-    // A punctuation-only line must not turn into a new band separator.
-    if (!lines[i].trim()) lines.splice(i--, 1);
+    let rest = lines[i].slice(match[0].length);
+    // A space after the comma was an occupied cell. Once moved to line start,
+    // it would look like indentation, so preserve the lexer token explicitly.
+    const first = scanInline(rest).tokens[0];
+    if (first?.kind === "text" && first.text === " " && /^[ \t]+$/.test(rest.slice(first.from, first.to))) {
+      rest = "*" + rest.slice(first.to);
+    }
+    lines[i] = match[1] + rest;
+    // Only cosmetic ASCII whitespace is empty; Unicode spaces still occupy cells.
+    if (/^[ \t]*$/.test(lines[i])) lines.splice(i--, 1);
   }
   return lines.join("\n");
 }
 
 /** Normalize circle spelling only; never infer type size from content or insert a newline. */
 export function normalizeInput(text: string): string {
-  return text.split("\n").map((line) => {
+  return text.split(/\r?\n/).map((line) => {
     let out = "", last = 0;
     for (const t of scanInline(line).tokens) if (t.kind === "circle") {
       out += line.slice(last, t.from) + `(${t.text.replace(/ /g, "*")})`;

@@ -29,7 +29,7 @@ export function formatFlow(source: string, book: BookLayout = KANGXI_DATASET.lay
       if (t.kind === "size" || t.kind === "break") continue;
       if (t.kind === "comment") {
         const leading = line.text.slice(0, t.from);
-        append(`${leading.trim() ? /[ \t]*$/.exec(leading)![0] : last === undefined ? "" : "\n"}${line.text.slice(t.from)}\n`);
+        append(`${/[^ \t\r]/.test(leading) ? /[ \t]*$/.exec(leading)![0] : last === undefined ? "" : "\n"}${line.text.slice(t.from)}\n`);
         continue;
       }
       if (t.kind === "book-open") { prefix += "【"; continue; }
@@ -52,10 +52,11 @@ export function formatFlow(source: string, book: BookLayout = KANGXI_DATASET.lay
           atoms.push(spellings.get(pos) ?? ""); previous = pos;
         }
         let value = atoms.join("");
-        if (large) value = value.split("\n").map(s => s && !s.trimStart().startsWith("//") ? "#" + s : s).join("\n");
+        if (large) value = value.split("\n").map(s => s && !/^[ \t\r]*\/\//.test(s) ? "#" + s : s).join("\n");
         // An internal literal $/¥ must not turn into a command after cosmetic
         // wrapping. A trailing empty # scope keeps that spelling non-terminal.
-        return value.trimEnd().replace(/([$¥])$/u, "$1#");
+        // Unicode whitespace is source content, including at an automatic fold.
+        return value.replace(/[ \t\r\n]+$/, "").replace(/([$¥])$/u, "$1#");
       }).filter(Boolean);
       if (band.breakAfter && lines.length) {
         const end = lines.length - 1;
@@ -64,7 +65,7 @@ export function formatFlow(source: string, book: BookLayout = KANGXI_DATASET.lay
         const at = parts.findLastIndex(s => scanInline(s).tokens.some(t => t.kind === "text" || t.kind === "circle"));
         if (at >= 0) {
           const comment = parts[at].indexOf("//");
-          parts[at] = comment < 0 ? parts[at] + "$" : parts[at].slice(0, comment).trimEnd() + "$ " + parts[at].slice(comment);
+          parts[at] = comment < 0 ? parts[at] + "$" : parts[at].slice(0, comment).replace(/[ \t\r]+$/, "") + "$ " + parts[at].slice(comment);
           lines[end] = parts.join("\n");
         }
       }
@@ -73,6 +74,6 @@ export function formatFlow(source: string, book: BookLayout = KANGXI_DATASET.lay
     const heading = hasPage ? headers.get(page.src![0]) ?? `@${page.no}` : "";
     return [heading, ...bands, emptyContent.get(page.src![0])].filter(Boolean).join("\n\n");
   });
-  const result = (pages.join("\n\n") || prefix).trim();
+  const result = (pages.join("\n\n") || prefix).replace(/^[ \t\r\n]+|[ \t\r\n]+$/g, "");
   return result ? result + "\n" : "";
 }

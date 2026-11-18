@@ -1208,6 +1208,23 @@
         "txt": "0383.txt"
       },
       "origin": "kangxizidian.com 爬取草稿（kangxi_page_tool.py add）"
+    },
+    {
+      "page": 403,
+      "image": "0403.jpg",
+      "url": "https://p.kangxizidian.com/kangxi2/0403.jpg",
+      "size_bytes": 543091,
+      "sha256": "74a4654a5cf7239d1742fb78e3debb6b9ce4a9aab2506fc048b79eaa2fa09664",
+      "width": 1130,
+      "height": 1663,
+      "downloaded_at": "2026-11-18",
+      "status": "first",
+      "annotations": {
+        "gj": "0403.gj",
+        "json": "0403.json",
+        "txt": "0403.txt"
+      },
+      "origin": "kangxizidian.com 爬取草稿（kangxi_page_tool.py add）"
     }
   ],
   "annotation_source": "annotations/*.gj 为逐页转写源；初始 17 页源自 guji-preview-grid/src/samples/kangxi-yibu.gj，后续含人工修订及扩页；JSON/TXT 由 IR v3 派生",
