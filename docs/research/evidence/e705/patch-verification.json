@@ -106,5 +106,15 @@
     ]
   },
   "css_cache": "e701-4-e704-1-e705-1",
-  "font_commit": null
+  "font_commit": "5943c3eb75e6fe62d0dd3283fcc82174f38a0621",
+  "commit_registration": {
+    "at": "2026-11-18T17:26:51+08:00",
+    "operation": "register-font-commit",
+    "codepoint": "U+E705",
+    "font": "guji-preview-grid/public/fonts/guji-plane0.ttf",
+    "sha256_after": "d95b07155dd6993f86175cc6ee979403be7fa712b4f79881981011d80d276da8",
+    "font_commit": "5943c3eb75e6fe62d0dd3283fcc82174f38a0621",
+    "parent_font_sha256": "f7e40e014584f6f4fd73ac1de97b2e9aac414e5eeb0e9c9a3847a78e4c27a20b",
+    "report": "docs/research/2026-11-18-U+E705口𠂹调研核验与补录报告.md"
+  }
 }
