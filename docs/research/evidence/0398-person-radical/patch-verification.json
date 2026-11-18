@@ -45,5 +45,6 @@
     863.964824120603
   ],
   "glyph_sha256": "8ededa8fd2ea8f117542abdb9015a8e768152913618c554e4ebbec4eabce952d",
-  "backup": "var/unencoded/kangxi-unencoded/font-backups/guji-large.ttf.99be6a77b93afa746b2d29e37d6014cab9f9c21471f685a2392426760a17dabf.ttf"
+  "backup": "var/unencoded/kangxi-unencoded/font-backups/guji-large.ttf.99be6a77b93afa746b2d29e37d6014cab9f9c21471f685a2392426760a17dabf.ttf",
+  "font_commit": "81959da16c6e99f0ade87b2f2e53b5e77108d87b"
 }

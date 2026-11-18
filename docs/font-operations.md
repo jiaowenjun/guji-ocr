@@ -39,20 +39,21 @@
 | 5 | 2026-11-15T14:37:18+08:00 | U+E701 仅限小字，撤销大字补录；缓存戳 `001015-2bd6e-no-e701` | guji-large.ttf | cmap 49,409→49,408；其余 glyf 字节/度量一致；U+2BD6E 保留；小字哈希不变 | 8fd8063 | [范围修订](research/2026-11-15-U+E701仅限小字.md) |
 | 6 | 2026-11-15T16:03:48+08:00 | U+E701 顶撇与中竖整体取自𠂹；四部件构形；缓存戳 `e701-4-joined` | guji-plane0.ttf；plane2 仅只读来源 | chamfer 0.558（本方案闸 0.6）；其余字形与度量不变；来源轮廓完整、浏览器及构建通过 | 859ad28 | [整体取件报告](research/2026-11-15-U+E701顶撇中竖整体取件.md) |
 | 7 | 2026-11-18T10:09:09+08:00 | 新增 U+E704〈二心支〉，@373 𠄹条；宋体部件构形 v1；缓存戳 `e701-4-e704-1` | 仅 guji-plane0.ttf；plane2 只读取件 | chamfer 1.717（回归闸 1.8，非描摹质量证明）；cmap 30,707→30,708；既有 30,803 个字形／度量不变；453 测试、构建与浏览器通过 | 5280746 | [全过程报告](research/2026-11-18-U+E704二心支调研核验与补录报告.md) |
+| 8 | 2026-11-18T15:54:59+08:00 | 新增标准部首 U+2E85 ⺅，@398 人部卷首；截图→SVG→刻形；缓存戳 `001016-2bd6e-2e85` | 仅 guji-large.ttf | cmap 49,408→49,409；49,411 个既有字形／度量不变；SVG chamfer 0.079、截图 0.021 | 81959da | [补录报告](research/2026-11-18-U+2E85补录报告.md) |
 
 ## 哈希基线（2026-11-18 更新，SHA-256 全量）
 
 - `guji-preview-grid/public/fonts/guji-plane0.ttf`（17,252,348 B，E701 v4 + E704 v1，操作 #7）
   `f7e40e014584f6f4fd73ac1de97b2e9aac414e5eeb0e9c9a3847a78e4c27a20b`
   （#7 前：`b4433eb2cb5218d3e507dd1757398813ac105d6c384dbbf8a841a60107b53c0f`，17,251,780 B；自动备份及完整历史见 #7 详报）
-- `guji-preview-grid/public/fonts/guji-large.ttf`（46,623,752 B，#5 移除 E701，保留 U+2BD6E）
-  `99be6a77b93afa746b2d29e37d6014cab9f9c21471f685a2392426760a17dabf`
-  （#5 前：`f79d2765b6900a90822971eea286631e93f08f43080d1b8f3e2b8b20af63b9f0`，46,624,036 B）
+- `guji-preview-grid/public/fonts/guji-large.ttf`（46,624,948 B，#8 新增 U+2E85，保留 U+2BD6E）
+  `3973ccbe8bbdb4b91af44269a12f9b9f58daeb0c225d78e3a934f676f1c4c231`
+  （#8 前：`99be6a77b93afa746b2d29e37d6014cab9f9c21471f685a2392426760a17dabf`，46,623,752 B；按哈希备份及历史见 #8 详报）
 - `guji-preview-grid/public/fonts/guji-plane2.ttf`（原始入库，未动）
   `80df094a2e63091b222706696a8b244c9dba45219af866226a097d0fbb2bf28d`
 - `guji-preview-grid/public/fonts/guji-planef.ttf`（原始入库，未动）
   `cfeb8527cfc75fe244b1c773056ed8e8896e67918f368999d12f6bd86dee323b`
-- `~/Library/Fonts/KX_47043_14.ttf`（46,623,752 B，补录后 #1；与仓库版 3 字节头部校验和区差异，无功能影响）
+- `~/Library/Fonts/KX_47043_14.ttf`（46,623,752 B，补录后 #1；与 #1 当时的仓库版仅有 3 字节头部校验和区差异；未同步 #8 的 U+2E85）
   `7d916ab6e4bcc935894cd372997ebc7536e315a1e8ae7270d39e53e2dbb9c4fa`
 - `~/.kx-font-backup/KX_47043_14-v001014-orig.ttf`（46,698,456 B，**补录前原件**＝git 80cea9a blob，回滚点）
   `dfc5876c1a580922798e5da3f7b58d6bdcf419c294622d67a8a07cf3256da87f`
