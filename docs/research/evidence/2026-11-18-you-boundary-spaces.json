@@ -1,0 +1,1839 @@
+{
+  "schema": "kangxi-you-boundary-spaces/1",
+  "date": "2026-11-18",
+  "scope": "Current 70 first-status pages; small-column, band and adjacent-page boundaries whose following small run starts with 又 after trimming spaces. Large glyphs interrupt continuity. Punctuation/overlays are excluded using the production parser.",
+  "manifestSha256": "fcdff8e53f25fc501870397b0ecd31ef71e7b0af3fe0f48f170c0d5f5f08f3a2",
+  "sourceFiles": [
+    {
+      "page": 312,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0312.gj",
+      "sha256": "545cbc1669e17d10c51747f4ec5184265f2ee8d5b427f22b51f2594fd7d8da5c",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 313,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0313.gj",
+      "sha256": "89943a1232acaadbc50822e0975fb3a79d1ec50ad2367e5b7b38db7fcdc84824",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 314,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0314.gj",
+      "sha256": "62c443a238892c0a7493ddc9196e2722aff398ca902e7d29dad2d6f0ae072325",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 315,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0315.gj",
+      "sha256": "5503d49d743e29f9bf1d82bc0554b2ee403a4d97dfaec9a54fabca4c11729a0f",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 316,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0316.gj",
+      "sha256": "1b78e2652212d29fe6fc29327ff136ea8fd42cd14a2b5c7650e7bcabba090176",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 317,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0317.gj",
+      "sha256": "fe8f60b065c6ddbd45e6045e5f364c77a114ebfbfca4985292ed26d783987aed",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 318,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0318.gj",
+      "sha256": "b5fd061820ee2c9736c35a96113d7ac72c50ef2a46c955a2aa3b54dd60282f4b",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 319,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0319.gj",
+      "sha256": "db0cd6526abab9a0ff8d2d2b2166c9638ecf5a43b308fdc7d3fc8cd91ca1f028",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 320,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0320.gj",
+      "sha256": "3a18b4721a0b5858af9afbe770ba1a5a722f4d549f2533a0228c2d0d0c473857",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 321,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0321.gj",
+      "sha256": "d888d8949289a1f166f6e9dfe21f3b977d820afcf84521d5151a268729b35e0f",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 322,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0322.gj",
+      "sha256": "38f0a4517ef65f97fb92aefca5487b5b747dcca14ceaf482b0b0ed10940d3e9c",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 323,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0323.gj",
+      "sha256": "7f175bbdc887c2c0393d841a5d8cda375e8790af1bde427b938a56e07d412ca5",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 324,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0324.gj",
+      "sha256": "6a4742d5fedb0c7aee856f3561cf089f080db888c0d945ccc9a7f3f843dad121",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 325,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0325.gj",
+      "sha256": "0fcbbcb8cc83bceb46159afbb41d98f9b7ca4a16d552fc7980019422eaf2abcf",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 326,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0326.gj",
+      "sha256": "bc89aa07080060c79c22c4f32d6b9c723c784367dd663b90060a1ff84ceb73bf",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 327,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0327.gj",
+      "sha256": "9d35969ad509482e5306036005cb7e0a78a6db9355d6f56a75376b7de01ee2de",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 328,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0328.gj",
+      "sha256": "cc9377aa16cf77b13204712de96382ffab5fcff93e9e2cfb1969dec86fbb1248",
+      "bands": 7,
+      "diagnostics": []
+    },
+    {
+      "page": 330,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0330.gj",
+      "sha256": "8477f24c79eba23586be8527ef4aba30bfb1d1b5ffb8b8f4f1779f71a2c9474b",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 331,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0331.gj",
+      "sha256": "5162313997bfc3324b32b174eac5be5c9b274aa1a53bf81c45e22d154e478f6c",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 332,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0332.gj",
+      "sha256": "19f362b36ec133254b2a1b94bb3ad8219324f7e2f76ca17c56090fe2b696c6b2",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 333,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0333.gj",
+      "sha256": "b374a6eb7f41d4dd41f04766ea2df5ea53a66c1ed5e61dae8ce7e0ca1714c84b",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 334,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0334.gj",
+      "sha256": "c4b6b170ff501feb8a3862755deee254fc36f3bbc7dc9e53b89d8844ea672036",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 335,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0335.gj",
+      "sha256": "124fa6faac719f57d1884502f04e1b96b92ef32faf7abbcae374204611870a08",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 336,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0336.gj",
+      "sha256": "700d6fcf7e4b60cddefab3a8b8add1ca1fc8bf58a20a1ee16a5aa45b4a1d93f5",
+      "bands": 4,
+      "diagnostics": []
+    },
+    {
+      "page": 338,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0338.gj",
+      "sha256": "9ba0e9033c80b151e01cab956c5a517c8490f6791c66a689e2fefdc061a8ab43",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 339,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0339.gj",
+      "sha256": "93d1a56bc4a87a4475dd918f201c380672fc4728086dec15feb08929076cf398",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 340,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0340.gj",
+      "sha256": "f0be8242183259e9d3247418188669fe5285cf4feb949075228921dbea579ad2",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 341,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0341.gj",
+      "sha256": "41a6459bdd3632836db261c864dd16788dcb6ee3ee272c2c539baac294b170a4",
+      "bands": 6,
+      "diagnostics": []
+    },
+    {
+      "page": 342,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0342.gj",
+      "sha256": "963eb5ae05a787f9597f0650e84e9c5331b042eb4ef446c0a11e4e1828387d28",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 343,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0343.gj",
+      "sha256": "52fe42ed8456837d5f0737675c83be96aeb035a948fde8b203630a8a33c10f9b",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 344,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0344.gj",
+      "sha256": "9dcae4d325f845df3046b37923265de97cc5d58dad9f65f4aae4721bec490579",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 345,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0345.gj",
+      "sha256": "793e59d7711efba0e56a4ffc8c874414de2fcd3d114dbce47e4effad424db5b2",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 346,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0346.gj",
+      "sha256": "e8ef64707263a834c9e695c1d18353116c7a0f5c3149c8847f8175877340dfaa",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 347,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0347.gj",
+      "sha256": "cf70eebb92f2d04aa3f708d05ed847f405d8d22d933d64a15ad0d527b1eb7cb6",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 348,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0348.gj",
+      "sha256": "cc6e3b882e8d3d8eb3957a71dcb69aed4f9ee352d89f45a3bdec80120f65e7c2",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 349,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0349.gj",
+      "sha256": "7541d97ce42835e0768b1e349a9cce80b49b512e37a0f3ae4559561a5d6e28ea",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 350,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0350.gj",
+      "sha256": "d789eda9848e4b93f1851c8a2f663f38547608c2764b0d593cf719d9490eeb15",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 351,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0351.gj",
+      "sha256": "a4884f5a68cd041cd4852f1d0225a530ad15681b00cdf629b62e6fa18b9e5949",
+      "bands": 7,
+      "diagnostics": []
+    },
+    {
+      "page": 352,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0352.gj",
+      "sha256": "b517c4c039b6017e9f1d290e4b6c89294763de577076a46f61e3f433c633553a",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 353,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0353.gj",
+      "sha256": "cd979577ac385593f9aad63ff3f6360f054f96b3ac7f973e3279ae2a0c8391bd",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 354,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0354.gj",
+      "sha256": "939b3dddc1d555c4da7027a2bb387cea7803fd2a4029ea09269e188f107fd2cb",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 355,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0355.gj",
+      "sha256": "df9918c7513d5b38a88f161ea4445b006df4468e97aa62d3eaeafb2e68fdfa67",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 356,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0356.gj",
+      "sha256": "352c6de4dc98b639ff6528da13289eaca397d0dc713839ee291294f19b988dcf",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 357,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0357.gj",
+      "sha256": "0d5f0deb527ef47c956c4f17c0c688064d8bfa7f9ae754e35ee40d9689f12c65",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 358,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0358.gj",
+      "sha256": "b581733f7212a567fc6a65da93e728e396c9205551743f9490bd0b83766d1f9f",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 359,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0359.gj",
+      "sha256": "3966dabe076510b6e2adbb5f653c71f8a9b65e37a3ccad1fb973b798cf04eec7",
+      "bands": 7,
+      "diagnostics": []
+    },
+    {
+      "page": 360,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0360.gj",
+      "sha256": "121f0fac9e9475df5cf32ffe15e12049c65faf42f39cd4cbe43fa399f1f0e66c",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 361,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0361.gj",
+      "sha256": "9710324d3c145d2a7d90b93f521a4a61e21cdb5945896d243238f12d7fa6bf3f",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 362,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0362.gj",
+      "sha256": "76cd7bf74499b25989f21db808a306380022086c31cc24851f81e9589fc88923",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 363,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0363.gj",
+      "sha256": "f32f025412df6d37d0d27cd8fde6f193f879261b8cdbc3ff9dde869cf2e86cb3",
+      "bands": 1,
+      "diagnostics": []
+    },
+    {
+      "page": 364,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0364.gj",
+      "sha256": "8dd372de9e26e24f62879fda68343e388dc5c1b17d098e4e8de6a5930bfeaebf",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 365,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0365.gj",
+      "sha256": "dbaf8296cd48fc7d27f8b55be71794d82c26a779dabf729f3547ff4dbe63b56b",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 366,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0366.gj",
+      "sha256": "332abb2c24bd47cdf4e2f5cf92b480cd1187ede2c557abd633e2ab3928525281",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 367,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0367.gj",
+      "sha256": "069bb0d94ca889f241440f66540df2f4e1c4635f70b002603f175020599aa47e",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 368,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0368.gj",
+      "sha256": "a5475e8052d2f075939f9f9a2a6031a22ac0f36493a19b95c0e10eb97f235e5a",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 369,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0369.gj",
+      "sha256": "437ed720593b6f3c2182b3dbf8276674aa83c37cb58250df7851bacb006456ec",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 370,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0370.gj",
+      "sha256": "4b54cd490f8dcda58ece2d8f4ae3697973c235a48cdca5ea8f1b79e674ebfa7b",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 371,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0371.gj",
+      "sha256": "678f79c0b70a9eb1e581dc8e5c3ac05cfc7ff75ec8a04aa66128d5df0e6c1c68",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 372,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0372.gj",
+      "sha256": "83801ca75ae3df61604ac1eee1be7edf9c563dcda08a96abc68dea76feba2a0f",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 373,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0373.gj",
+      "sha256": "1ae24fc8f1186e2953845fbc2695fdc82273918919f44e43dc50ad69237acca7",
+      "bands": 2,
+      "diagnostics": []
+    },
+    {
+      "page": 374,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0374.gj",
+      "sha256": "110a4253729a15af9aad9d3dababda5c37b8492262406094f2c711e6e83d89df",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 375,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0375.gj",
+      "sha256": "34731a61b6d9354654adb5b5b65c700dc517fd6eb74d2052d752400ec97e1073",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 376,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0376.gj",
+      "sha256": "eec8c9af8b3ace657327a5bdb7fc1c0e8e58e4b7b54b2c441c358d47cb8032c2",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 377,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0377.gj",
+      "sha256": "59930b3bc081b71e9026597f20b4e090f92e03c6571f70c8ec58f629aa5dc34a",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 378,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0378.gj",
+      "sha256": "f3f03b5352073999a19c2dbb8b155fe64418443e6e8faed2a71dfa5d08a6879d",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 379,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0379.gj",
+      "sha256": "7277d0a6eb52a17a617eecfbf6f7a93c021e3dffb6bc98027aa33837fcb0f54b",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 380,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0380.gj",
+      "sha256": "246de05796ec852e5af75282816980eff6b3d3f2ff4d970067ca09bdc651869b",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 381,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0381.gj",
+      "sha256": "ca2e753ce1507f9368871ca1f2130186ddca50793378ba6507dc83a3a384e1af",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 382,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0382.gj",
+      "sha256": "d0facddd4a8e821e5ad10fb1129f8f28a97eef2631a6f281bef4f59fe589967f",
+      "bands": 8,
+      "diagnostics": []
+    },
+    {
+      "page": 383,
+      "status": "first",
+      "file": "kangxi-gold/annotations/0383.gj",
+      "sha256": "4748baf4c42e3a03bd2dc68486ffd4cce50e782b20c98e86f367728084c4810d",
+      "bands": 1,
+      "diagnostics": []
+    }
+  ],
+  "beforeSummary": {
+    "pages": 70,
+    "statuses": {
+      "first": 70
+    },
+    "bands": 531,
+    "groups": 754,
+    "runsPerGroup": {
+      "1": 34,
+      "2": 720
+    },
+    "pairedCellDiff": {
+      "0": 603,
+      "1": 117
+    },
+    "pairedCharDiff": {
+      "0": 403,
+      "1": 184,
+      "2": 21,
+      "3": 1,
+      "-1": 103,
+      "-2": 8
+    },
+    "cellBalanced": 720,
+    "charBalanced": 587,
+    "pairsWithExplicitSpaces": 317,
+    "pairsBeforeLargeGlyph": 222
+  },
+  "afterSummary": {
+    "pages": 70,
+    "statuses": {
+      "first": 70
+    },
+    "bands": 531,
+    "groups": 754,
+    "runsPerGroup": {
+      "1": 34,
+      "2": 720
+    },
+    "pairedCellDiff": {
+      "0": 610,
+      "1": 110
+    },
+    "pairedCharDiff": {
+      "0": 403,
+      "1": 184,
+      "2": 21,
+      "3": 1,
+      "-1": 103,
+      "-2": 8
+    },
+    "cellBalanced": 720,
+    "charBalanced": 587,
+    "pairsWithExplicitSpaces": 320,
+    "pairsBeforeLargeGlyph": 222
+  },
+  "method": {
+    "previousRunCapacity": "Same parallel group: group height. Next band/page: page rowCap (24) minus previous group startRow plus 1.",
+    "missingPreviousTrailingSpace": "Following run starts with 又, neither side records a space, previous run occupies fewer slots than capacity. Candidate only; check original scan.",
+    "semanticReview": "Do not globally insert before 又; verify original blank and distinguish a glyph component from a new sense."
+  },
+  "beforeBoundaries": [
+    {
+      "kind": "small-column",
+      "fromGroup": "313-5-1",
+      "fromLine": 15,
+      "toGroup": "313-5-1",
+      "toLine": 16,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": true,
+      "nextLeadingSpace": false,
+      "previous": "著 又姓明一炫宗又三字姓北魏有一那婁氏後改婁氏 ",
+      "next": "又一二三作壹貳叄大學壹是皆以修身爲本史記禮書總一"
+    },
+    {
+      "kind": "band",
+      "fromGroup": "316-6-3",
+      "fromLine": 30,
+      "toGroup": "316-7-1",
+      "toLine": 32,
+      "unusedPreviousSlots": 1,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": false,
+      "previous": "會𡘋同萬",
+      "next": "又三字姓西魏有柱國万紐于謹 又廣韻莫北切集韻"
+    },
+    {
+      "kind": "band",
+      "fromGroup": "317-2-1",
+      "fromLine": 7,
+      "toGroup": "317-3-1",
+      "toLine": 9,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": true,
+      "previous": "貞丈人吉又朋友尊稱長編富鄭公稱范文正公曰范十二丈",
+      "next": " 又釋氏所居曰方丈杜甫詩方丈渾連水 又杜甫詩百丈"
+    },
+    {
+      "kind": "small-column",
+      "fromGroup": "317-6-1",
+      "fromLine": 23,
+      "toGroup": "317-6-1",
+      "toLine": 24,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": false,
+      "previous": "始於一終於十成於三又周禮冬官考工記凡兵無過三其身",
+      "next": "又左傳昭七年士文伯曰政不可不愼務三而已一擇人二因"
+    },
+    {
+      "kind": "small-column",
+      "fromGroup": "320-1-1",
+      "fromLine": 3,
+      "toGroup": "320-1-1",
+      "toLine": 4,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": true,
+      "previous": "其古作丌註詳八部六畫",
+      "next": " 又姓唐丌實丌士能"
+    },
+    {
+      "kind": "band",
+      "fromGroup": "320-4-1",
+      "fromLine": 20,
+      "toGroup": "320-5-1",
+      "toLine": 22,
+      "unusedPreviousSlots": 1,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": false,
+      "previous": "猶天也象形 又玉篇甫負切廣韻甫救切𡘋缶去聲義同",
+      "next": "又廣韻甫鳩切集韻韻會正韻方鳩切𡘋音浮夫不䳡也亦作"
+    },
+    {
+      "kind": "page",
+      "fromGroup": "323-8-1",
+      "fromLine": 28,
+      "toGroup": "324-1-1",
+      "toLine": 3,
+      "unusedPreviousSlots": 1,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": false,
+      "previous": "丕績 又奉也前漢郊祀志丕天之大律註奉天之大法也",
+      "next": "又姓春秋晉大夫丕鄭亦作㔻 又同岯山名大邳山史記作"
+    },
+    {
+      "kind": "band",
+      "fromGroup": "324-5-1",
+      "fromLine": 21,
+      "toGroup": "324-6-1",
+      "toLine": 23,
+      "unusedPreviousSlots": 1,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": false,
+      "previous": "天地之閒界謂各有彼此之別 又姓風俗通秦大夫世鈞",
+      "next": "又與生同列子天瑞篇亦如人自世之老皮膚爪髮隨世隨落"
+    },
+    {
+      "kind": "small-column",
+      "fromGroup": "325-4-1",
+      "fromLine": 12,
+      "toGroup": "325-4-1",
+      "toLine": 13,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": true,
+      "previous": "羣仙所居 又前漢𠛬法志四井爲邑四邑爲丘丘十六井也",
+      "next": " 又春秋成元年作丘甲胡傳益兵也卽丘出一甲則一甸之"
+    },
+    {
+      "kind": "band",
+      "fromGroup": "326-1-1",
+      "fromLine": 4,
+      "toGroup": "326-2-1",
+      "toLine": 6,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": true,
+      "previous": "之左傳僖十五年史蘇占之曰不利行師敗於宗丘叶上姬旗",
+      "next": " 又叶苦高切音尻楚辭九懷玄鳥兮辭歸飛翔兮靈丘望谿"
+    },
+    {
+      "kind": "small-column",
+      "fromGroup": "326-6-1",
+      "fromLine": 24,
+      "toGroup": "326-6-1",
+      "toLine": 25,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": true,
+      "previous": "其處故有文明之象 又周髀算經上天名靑丙下地曰靑戊",
+      "next": " 又張衡東京賦大丙弭節風后陪乗註大丙神名 又集韻"
+    },
+    {
+      "kind": "small-column",
+      "fromGroup": "330-6-1",
+      "fromLine": 27,
+      "toGroup": "330-6-1",
+      "toLine": 28,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": true,
+      "nextLeadingSpace": false,
+      "previous": "數周禮冬官考工記匠人廟門容大扃七个註每个長三尺 ",
+      "next": "又四面偏室禮月令孟春天子居靑陽左个季春居右个註明"
+    },
+    {
+      "kind": "band",
+      "fromGroup": "333-4-1",
+      "fromLine": 13,
+      "toGroup": "333-5-1",
+      "toLine": 15,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": true,
+      "nextLeadingSpace": false,
+      "previous": "合也左傳定元年季孫曰子家亟言於我未嘗不中吾志也 ",
+      "next": "又類篇正韻𠀤直衆切與仲通禮月令中呂卽仲呂 又讀作"
+    },
+    {
+      "kind": "band",
+      "fromGroup": "333-6-1",
+      "fromLine": 19,
+      "toGroup": "333-7-1",
+      "toLine": 21,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": true,
+      "nextLeadingSpace": false,
+      "previous": "綜傳黃龍大牙賦四靈旣布黃龍處中周制日月是曰太常 ",
+      "next": "又叶諸仍切音征劉貢父詩話關中讀中爲𤇏詩大雅泉之竭"
+    },
+    {
+      "kind": "small-column",
+      "fromGroup": "338-2-1",
+      "fromLine": 6,
+      "toGroup": "338-2-1",
+      "toLine": 7,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": false,
+      "previous": "唐韻知庾切集韻冢庾切𠀤音主有所絕止丶而識之也",
+      "next": "又六書正譌古文主字鐙中火丶也象形借爲主宰字"
+    },
+    {
+      "kind": "band",
+      "fromGroup": "338-5-1",
+      "fromLine": 20,
+      "toGroup": "338-6-1",
+      "toLine": 22,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": true,
+      "previous": "斫武吏黑𠁽者斫文吏白𠁽者主治喪賞收捕數百人納虎穴",
+      "next": " 又屑米麪摶如彈𠁽煑烝噉之曰牢𠁽俗譌作九束皙餠賦"
+    },
+    {
+      "kind": "small-column",
+      "fromGroup": "340-6-1",
+      "fromLine": 22,
+      "toGroup": "340-6-1",
+      "toLine": 23,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": true,
+      "nextLeadingSpace": false,
+      "previous": "曰主左傳昭二十八年成鱄對魏舒曰主之舉也近文德矣 ",
+      "next": "又天子女曰公主周制天子嫁女諸侯不自主婚使諸侯同姓"
+    },
+    {
+      "kind": "small-column",
+      "fromGroup": "341-4-1",
+      "fromLine": 15,
+      "toGroup": "341-4-1",
+      "toLine": 16,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": true,
+      "previous": "古者以瓶𦉥汲本作丼省作井 又姓",
+      "next": " 又集韻都感切音黕投物井中聲"
+    },
+    {
+      "kind": "band",
+      "fromGroup": "343-5-1",
+      "fromLine": 24,
+      "toGroup": "343-6-1",
+      "toLine": 26,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": true,
+      "previous": "註用費誓礪乃鋒刃語也又王禕詩兹焉舍我去契闊將無乃",
+      "next": " 又爾汝之稱書大禹謨惟乃之休註乃猶汝也 又某也禮"
+    },
+    {
+      "kind": "band",
+      "fromGroup": "343-6-1",
+      "fromLine": 27,
+      "toGroup": "343-7-1",
+      "toLine": 29,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": true,
+      "nextLeadingSpace": false,
+      "previous": "雜記祝稱卜葬虞子孫曰哀夫曰乃註乃某卜葬其妻某氏 ",
+      "next": "又彼也莊子大宗師孟孫氏人哭亦哭是自其所以乃 又唐"
+    },
+    {
+      "kind": "band",
+      "fromGroup": "346-4-1",
+      "fromLine": 13,
+      "toGroup": "346-5-1",
+      "toLine": 15,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": true,
+      "nextLeadingSpace": false,
+      "previous": "君子註言行道者貴乎及身乃載以遺後世 又姓出姓苑 ",
+      "next": "又郝敬讀書通凡言之者物有所指事有所屬地有所往連屬"
+    },
+    {
+      "kind": "band",
+      "fromGroup": "350-2-1",
+      "fromLine": 12,
+      "toGroup": "350-3-1",
+      "toLine": 14,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": true,
+      "previous": "故受之以睽睽者乖也左傳昭三十年伍員曰楚執政衆而乖",
+      "next": " 又貴州夷寨有乖西 又韻補叶公回切音規前"
+    },
+    {
+      "kind": "small-column",
+      "fromGroup": "350-8-1",
+      "fromLine": 41,
+      "toGroup": "350-8-1",
+      "toLine": 42,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": true,
+      "previous": "實證切集韻石證切𠀤音剩車也詩小雅元戎十乘以先啓行",
+      "next": " 又物雙曰乘左傳僖三十三年弦高以乘韋先牛十二犒師"
+    },
+    {
+      "kind": "band",
+      "fromGroup": "354-6-1",
+      "fromLine": 26,
+      "toGroup": "354-7-1",
+      "toLine": 28,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": true,
+      "nextLeadingSpace": false,
+      "previous": "王翦傳將軍之乞貸亦已甚矣後漢李通傳以病上書乞身 ",
+      "next": "又釋典比丘者華言乞士謂內乞法資心外乞食資身也 又"
+    },
+    {
+      "kind": "band",
+      "fromGroup": "355-2-1",
+      "fromLine": 12,
+      "toGroup": "355-3-1",
+      "toLine": 14,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": true,
+      "previous": "而盡玉篇所以窮上成文也廣韻語助之終柳宗元曰決辭也",
+      "next": " 又發語辭岑參詩也知鄕信曰應疎 又姓明也伯先 又"
+    },
+    {
+      "kind": "band",
+      "fromGroup": "355-3-1",
+      "fromLine": 15,
+      "toGroup": "355-4-1",
+      "toLine": 17,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": true,
+      "nextLeadingSpace": false,
+      "previous": "劉攽曰詞人多以也字作夜音讀杜甫詩靑袍也自公是也 ",
+      "next": "又正韻養里切同迤 又六書"
+    },
+    {
+      "kind": "band",
+      "fromGroup": "356-2-1",
+      "fromLine": 16,
+      "toGroup": "356-3-1",
+      "toLine": 18,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": true,
+      "nextLeadingSpace": false,
+      "previous": "四乳是謂至仁又禮月令註燕以施生時來巢人堂宇孚乳 ",
+      "next": "又天乳星名在氐宿北列星圖天乳明則甘露降 又馬乳蒲"
+    },
+    {
+      "kind": "small-column",
+      "fromGroup": "360-4-1",
+      "fromLine": 18,
+      "toGroup": "360-4-1",
+      "toLine": 19,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": false,
+      "previous": "解也後漢孔融傳融年十二聰慧𨻰煒曰小而了了大未必奇",
+      "next": "又宋書戴法興傳彭城王覓一了了令史得法興使爲之 又"
+    },
+    {
+      "kind": "band",
+      "fromGroup": "362-5-1",
+      "fromLine": 21,
+      "toGroup": "362-6-1",
+      "toLine": 23,
+      "unusedPreviousSlots": 1,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": false,
+      "previous": "百司 又叶詩紙切音始詩召南于以用之公侯之事叶沚",
+      "next": "又叶疎語切書上聲韓非子揚權篇使雞司夜令狸執鼠皆用"
+    },
+    {
+      "kind": "band",
+      "fromGroup": "365-2-1",
+      "fromLine": 7,
+      "toGroup": "365-3-1",
+      "toLine": 9,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": true,
+      "previous": "賓之禮而爲之財也又司馬相如長門賦敘因于解悲愁之辭",
+      "next": " 又未定之辭公羊傳僖二十八年歸于者何歸于者罪未定"
+    },
+    {
+      "kind": "band",
+      "fromGroup": "365-5-1",
+      "fromLine": 16,
+      "toGroup": "365-6-1",
+      "toLine": 18,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": true,
+      "previous": "百里內刺史縣令以聲樂集德秀惟樂工十人聮袂歌于蔿于",
+      "next": " 又草名爾雅釋草茜蔓于註生水中一名軒于司馬相如子"
+    },
+    {
+      "kind": "small-column",
+      "fromGroup": "365-8-1",
+      "fromLine": 24,
+      "toGroup": "365-8-1",
+      "toLine": 25,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": true,
+      "previous": "于多于𨷖于皆複姓又三氏姓勿忸于阿伏于見魏書官氏志",
+      "next": " 又助語辭詩召南于沼于沚朱傳于於也周易毛詩於皆作"
+    },
+    {
+      "kind": "band",
+      "fromGroup": "367-3-2",
+      "fromLine": 13,
+      "toGroup": "367-4-1",
+      "toLine": 15,
+      "unusedPreviousSlots": 1,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": false,
+      "previous": "胡故切𠀤音護差也",
+      "next": "又交互周禮天官司會以參互考日成又鼈人掌取互物註龜"
+    },
+    {
+      "kind": "small-column",
+      "fromGroup": "368-3-1",
+      "fromLine": 17,
+      "toGroup": "368-3-1",
+      "toLine": 18,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": true,
+      "nextLeadingSpace": false,
+      "previous": "易繫辭天數五地數五書武成列爵惟五詩鄘風良馬五之 ",
+      "next": "又格五後漢梁冀傳能挽滿彈棊格五六博蹴鞠意錢之戲註"
+    },
+    {
+      "kind": "small-column",
+      "fromGroup": "368-4-1",
+      "fromLine": 20,
+      "toGroup": "368-4-1",
+      "toLine": 21,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": true,
+      "previous": "行棊相塞謂之簺簺有四采簺白乗五是也至五卽格不得行",
+      "next": " 又辛氏三秦記城南韋杜去天尺五 又十五夜曰三五謝"
+    },
+    {
+      "kind": "small-column",
+      "fromGroup": "372-4-1",
+      "fromLine": 15,
+      "toGroup": "372-4-1",
+      "toLine": 16,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": false,
+      "previous": "紀力切集韻韻會訖力切𠀤音棘敏也疾也說文从人从口从",
+      "next": "又从二二天地也徐鍇曰承天之時因地之利口謀之手執之"
+    },
+    {
+      "kind": "small-column",
+      "fromGroup": "372-7-1",
+      "fromLine": 24,
+      "toGroup": "372-7-1",
+      "toLine": 25,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": true,
+      "nextLeadingSpace": false,
+      "previous": "其欲 又與革通禮檀弓夫人之病革矣 ",
+      "next": "又與極通荀子賦論反覆甚極註極與亟同"
+    },
+    {
+      "kind": "band",
+      "fromGroup": "374-3-1",
+      "fromLine": 13,
+      "toGroup": "374-4-1",
+      "toLine": 15,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": true,
+      "previous": "坐少焉楚左右曰凡亡者三凡君曰凡之亡也不足以喪吾存",
+      "next": " 又周禮春官大宗伯以喪禮哀死亡 又逃也大學舅犯曰"
+    },
+    {
+      "kind": "small-column",
+      "fromGroup": "379-6-1",
+      "fromLine": 18,
+      "toGroup": "379-6-1",
+      "toLine": 19,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": true,
+      "previous": "高山盤石其上亭亭 又黃庭經九原之山何亭亭註猶心也",
+      "next": " 又亭毒化育也老子道德經亭之毒之註亭謂品其形毒謂"
+    },
+    {
+      "kind": "small-column",
+      "fromGroup": "379-8-1",
+      "fromLine": 24,
+      "toGroup": "379-8-1",
+      "toLine": 25,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": true,
+      "nextLeadingSpace": false,
+      "previous": "卽直午之義 又古今注蜻蜓一名靑亭色靑而大者是也 ",
+      "next": "又水止曰亭與渟同前漢西域傳其水亭居 又韻補叶徒陽"
+    },
+    {
+      "kind": "small-column",
+      "fromGroup": "382-7-1",
+      "fromLine": 37,
+      "toGroup": "382-7-1",
+      "toLine": 38,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": true,
+      "nextLeadingSpace": false,
+      "previous": "雅亹亹文王令聞不已又禮禮器天時雨澤君子達亹亹焉 ",
+      "next": "又集韻正韻𠀤謨奔切音門詩大雅鳧鷖在亹註水流峽中兩"
+    }
+  ],
+  "afterBoundaries": [
+    {
+      "kind": "small-column",
+      "fromGroup": "313-5-1",
+      "fromLine": 15,
+      "toGroup": "313-5-1",
+      "toLine": 16,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": true,
+      "nextLeadingSpace": false,
+      "previous": "著 又姓明一炫宗又三字姓北魏有一那婁氏後改婁氏 ",
+      "next": "又一二三作壹貳叄大學壹是皆以修身爲本史記禮書總一"
+    },
+    {
+      "kind": "band",
+      "fromGroup": "316-6-3",
+      "fromLine": 30,
+      "toGroup": "316-7-1",
+      "toLine": 32,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": true,
+      "nextLeadingSpace": false,
+      "previous": "會𡘋同萬 ",
+      "next": "又三字姓西魏有柱國万紐于謹 又廣韻莫北切集韻"
+    },
+    {
+      "kind": "band",
+      "fromGroup": "317-2-1",
+      "fromLine": 7,
+      "toGroup": "317-3-1",
+      "toLine": 9,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": true,
+      "previous": "貞丈人吉又朋友尊稱長編富鄭公稱范文正公曰范十二丈",
+      "next": " 又釋氏所居曰方丈杜甫詩方丈渾連水 又杜甫詩百丈"
+    },
+    {
+      "kind": "small-column",
+      "fromGroup": "317-6-1",
+      "fromLine": 23,
+      "toGroup": "317-6-1",
+      "toLine": 24,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": false,
+      "previous": "始於一終於十成於三又周禮冬官考工記凡兵無過三其身",
+      "next": "又左傳昭七年士文伯曰政不可不愼務三而已一擇人二因"
+    },
+    {
+      "kind": "small-column",
+      "fromGroup": "320-1-1",
+      "fromLine": 3,
+      "toGroup": "320-1-1",
+      "toLine": 4,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": true,
+      "previous": "其古作丌註詳八部六畫",
+      "next": " 又姓唐丌實丌士能"
+    },
+    {
+      "kind": "band",
+      "fromGroup": "320-4-1",
+      "fromLine": 20,
+      "toGroup": "320-5-1",
+      "toLine": 22,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": true,
+      "nextLeadingSpace": false,
+      "previous": "猶天也象形 又玉篇甫負切廣韻甫救切𡘋缶去聲義同 ",
+      "next": "又廣韻甫鳩切集韻韻會正韻方鳩切𡘋音浮夫不䳡也亦作"
+    },
+    {
+      "kind": "page",
+      "fromGroup": "323-8-1",
+      "fromLine": 28,
+      "toGroup": "324-1-1",
+      "toLine": 3,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": true,
+      "nextLeadingSpace": false,
+      "previous": "丕績 又奉也前漢郊祀志丕天之大律註奉天之大法也 ",
+      "next": "又姓春秋晉大夫丕鄭亦作㔻 又同岯山名大邳山史記作"
+    },
+    {
+      "kind": "band",
+      "fromGroup": "324-5-1",
+      "fromLine": 21,
+      "toGroup": "324-6-1",
+      "toLine": 23,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": true,
+      "nextLeadingSpace": false,
+      "previous": "天地之閒界謂各有彼此之別 又姓風俗通秦大夫世鈞 ",
+      "next": "又與生同列子天瑞篇亦如人自世之老皮膚爪髮隨世隨落"
+    },
+    {
+      "kind": "small-column",
+      "fromGroup": "325-4-1",
+      "fromLine": 12,
+      "toGroup": "325-4-1",
+      "toLine": 13,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": true,
+      "previous": "羣仙所居 又前漢𠛬法志四井爲邑四邑爲丘丘十六井也",
+      "next": " 又春秋成元年作丘甲胡傳益兵也卽丘出一甲則一甸之"
+    },
+    {
+      "kind": "band",
+      "fromGroup": "326-1-1",
+      "fromLine": 4,
+      "toGroup": "326-2-1",
+      "toLine": 6,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": true,
+      "previous": "之左傳僖十五年史蘇占之曰不利行師敗於宗丘叶上姬旗",
+      "next": " 又叶苦高切音尻楚辭九懷玄鳥兮辭歸飛翔兮靈丘望谿"
+    },
+    {
+      "kind": "small-column",
+      "fromGroup": "326-6-1",
+      "fromLine": 24,
+      "toGroup": "326-6-1",
+      "toLine": 25,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": true,
+      "previous": "其處故有文明之象 又周髀算經上天名靑丙下地曰靑戊",
+      "next": " 又張衡東京賦大丙弭節風后陪乗註大丙神名 又集韻"
+    },
+    {
+      "kind": "small-column",
+      "fromGroup": "330-6-1",
+      "fromLine": 27,
+      "toGroup": "330-6-1",
+      "toLine": 28,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": true,
+      "nextLeadingSpace": false,
+      "previous": "數周禮冬官考工記匠人廟門容大扃七个註每个長三尺 ",
+      "next": "又四面偏室禮月令孟春天子居靑陽左个季春居右个註明"
+    },
+    {
+      "kind": "band",
+      "fromGroup": "333-4-1",
+      "fromLine": 13,
+      "toGroup": "333-5-1",
+      "toLine": 15,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": true,
+      "nextLeadingSpace": false,
+      "previous": "合也左傳定元年季孫曰子家亟言於我未嘗不中吾志也 ",
+      "next": "又類篇正韻𠀤直衆切與仲通禮月令中呂卽仲呂 又讀作"
+    },
+    {
+      "kind": "band",
+      "fromGroup": "333-6-1",
+      "fromLine": 19,
+      "toGroup": "333-7-1",
+      "toLine": 21,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": true,
+      "nextLeadingSpace": false,
+      "previous": "綜傳黃龍大牙賦四靈旣布黃龍處中周制日月是曰太常 ",
+      "next": "又叶諸仍切音征劉貢父詩話關中讀中爲𤇏詩大雅泉之竭"
+    },
+    {
+      "kind": "small-column",
+      "fromGroup": "338-2-1",
+      "fromLine": 6,
+      "toGroup": "338-2-1",
+      "toLine": 7,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": true,
+      "previous": "唐韻知庾切集韻冢庾切𠀤音主有所絕止丶而識之也",
+      "next": " 又六書正譌古文主字鐙中火丶也象形借爲主宰字"
+    },
+    {
+      "kind": "band",
+      "fromGroup": "338-5-1",
+      "fromLine": 20,
+      "toGroup": "338-6-1",
+      "toLine": 22,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": true,
+      "previous": "斫武吏黑𠁽者斫文吏白𠁽者主治喪賞收捕數百人納虎穴",
+      "next": " 又屑米麪摶如彈𠁽煑烝噉之曰牢𠁽俗譌作九束皙餠賦"
+    },
+    {
+      "kind": "small-column",
+      "fromGroup": "340-6-1",
+      "fromLine": 22,
+      "toGroup": "340-6-1",
+      "toLine": 23,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": true,
+      "nextLeadingSpace": false,
+      "previous": "曰主左傳昭二十八年成鱄對魏舒曰主之舉也近文德矣 ",
+      "next": "又天子女曰公主周制天子嫁女諸侯不自主婚使諸侯同姓"
+    },
+    {
+      "kind": "small-column",
+      "fromGroup": "341-4-1",
+      "fromLine": 15,
+      "toGroup": "341-4-1",
+      "toLine": 16,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": true,
+      "previous": "古者以瓶𦉥汲本作丼省作井 又姓",
+      "next": " 又集韻都感切音黕投物井中聲"
+    },
+    {
+      "kind": "band",
+      "fromGroup": "343-5-1",
+      "fromLine": 24,
+      "toGroup": "343-6-1",
+      "toLine": 26,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": true,
+      "previous": "註用費誓礪乃鋒刃語也又王禕詩兹焉舍我去契闊將無乃",
+      "next": " 又爾汝之稱書大禹謨惟乃之休註乃猶汝也 又某也禮"
+    },
+    {
+      "kind": "band",
+      "fromGroup": "343-6-1",
+      "fromLine": 27,
+      "toGroup": "343-7-1",
+      "toLine": 29,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": true,
+      "nextLeadingSpace": false,
+      "previous": "雜記祝稱卜葬虞子孫曰哀夫曰乃註乃某卜葬其妻某氏 ",
+      "next": "又彼也莊子大宗師孟孫氏人哭亦哭是自其所以乃 又唐"
+    },
+    {
+      "kind": "band",
+      "fromGroup": "346-4-1",
+      "fromLine": 13,
+      "toGroup": "346-5-1",
+      "toLine": 15,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": true,
+      "nextLeadingSpace": false,
+      "previous": "君子註言行道者貴乎及身乃載以遺後世 又姓出姓苑 ",
+      "next": "又郝敬讀書通凡言之者物有所指事有所屬地有所往連屬"
+    },
+    {
+      "kind": "band",
+      "fromGroup": "350-2-1",
+      "fromLine": 12,
+      "toGroup": "350-3-1",
+      "toLine": 14,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": true,
+      "previous": "故受之以睽睽者乖也左傳昭三十年伍員曰楚執政衆而乖",
+      "next": " 又貴州夷寨有乖西 又韻補叶公回切音規前"
+    },
+    {
+      "kind": "small-column",
+      "fromGroup": "350-8-1",
+      "fromLine": 41,
+      "toGroup": "350-8-1",
+      "toLine": 42,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": true,
+      "previous": "實證切集韻石證切𠀤音剩車也詩小雅元戎十乘以先啓行",
+      "next": " 又物雙曰乘左傳僖三十三年弦高以乘韋先牛十二犒師"
+    },
+    {
+      "kind": "band",
+      "fromGroup": "354-6-1",
+      "fromLine": 26,
+      "toGroup": "354-7-1",
+      "toLine": 28,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": true,
+      "nextLeadingSpace": false,
+      "previous": "王翦傳將軍之乞貸亦已甚矣後漢李通傳以病上書乞身 ",
+      "next": "又釋典比丘者華言乞士謂內乞法資心外乞食資身也 又"
+    },
+    {
+      "kind": "band",
+      "fromGroup": "355-2-1",
+      "fromLine": 12,
+      "toGroup": "355-3-1",
+      "toLine": 14,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": true,
+      "previous": "而盡玉篇所以窮上成文也廣韻語助之終柳宗元曰決辭也",
+      "next": " 又發語辭岑參詩也知鄕信曰應疎 又姓明也伯先 又"
+    },
+    {
+      "kind": "band",
+      "fromGroup": "355-3-1",
+      "fromLine": 15,
+      "toGroup": "355-4-1",
+      "toLine": 17,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": true,
+      "nextLeadingSpace": false,
+      "previous": "劉攽曰詞人多以也字作夜音讀杜甫詩靑袍也自公是也 ",
+      "next": "又正韻養里切同迤 又六書"
+    },
+    {
+      "kind": "band",
+      "fromGroup": "356-2-1",
+      "fromLine": 16,
+      "toGroup": "356-3-1",
+      "toLine": 18,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": true,
+      "nextLeadingSpace": false,
+      "previous": "四乳是謂至仁又禮月令註燕以施生時來巢人堂宇孚乳 ",
+      "next": "又天乳星名在氐宿北列星圖天乳明則甘露降 又馬乳蒲"
+    },
+    {
+      "kind": "small-column",
+      "fromGroup": "360-4-1",
+      "fromLine": 18,
+      "toGroup": "360-4-1",
+      "toLine": 19,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": false,
+      "previous": "解也後漢孔融傳融年十二聰慧𨻰煒曰小而了了大未必奇",
+      "next": "又宋書戴法興傳彭城王覓一了了令史得法興使爲之 又"
+    },
+    {
+      "kind": "band",
+      "fromGroup": "362-5-1",
+      "fromLine": 21,
+      "toGroup": "362-6-1",
+      "toLine": 23,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": true,
+      "nextLeadingSpace": false,
+      "previous": "百司 又叶詩紙切音始詩召南于以用之公侯之事叶沚 ",
+      "next": "又叶疎語切書上聲韓非子揚權篇使雞司夜令狸執鼠皆用"
+    },
+    {
+      "kind": "band",
+      "fromGroup": "365-2-1",
+      "fromLine": 7,
+      "toGroup": "365-3-1",
+      "toLine": 9,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": true,
+      "previous": "賓之禮而爲之財也又司馬相如長門賦敘因于解悲愁之辭",
+      "next": " 又未定之辭公羊傳僖二十八年歸于者何歸于者罪未定"
+    },
+    {
+      "kind": "band",
+      "fromGroup": "365-5-1",
+      "fromLine": 16,
+      "toGroup": "365-6-1",
+      "toLine": 18,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": true,
+      "previous": "百里內刺史縣令以聲樂集德秀惟樂工十人聮袂歌于蔿于",
+      "next": " 又草名爾雅釋草茜蔓于註生水中一名軒于司馬相如子"
+    },
+    {
+      "kind": "small-column",
+      "fromGroup": "365-8-1",
+      "fromLine": 24,
+      "toGroup": "365-8-1",
+      "toLine": 25,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": true,
+      "previous": "于多于𨷖于皆複姓又三氏姓勿忸于阿伏于見魏書官氏志",
+      "next": " 又助語辭詩召南于沼于沚朱傳于於也周易毛詩於皆作"
+    },
+    {
+      "kind": "band",
+      "fromGroup": "367-3-2",
+      "fromLine": 13,
+      "toGroup": "367-4-1",
+      "toLine": 15,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": true,
+      "nextLeadingSpace": false,
+      "previous": "胡故切𠀤音護差也 ",
+      "next": "又交互周禮天官司會以參互考日成又鼈人掌取互物註龜"
+    },
+    {
+      "kind": "small-column",
+      "fromGroup": "368-3-1",
+      "fromLine": 17,
+      "toGroup": "368-3-1",
+      "toLine": 18,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": true,
+      "nextLeadingSpace": false,
+      "previous": "易繫辭天數五地數五書武成列爵惟五詩鄘風良馬五之 ",
+      "next": "又格五後漢梁冀傳能挽滿彈棊格五六博蹴鞠意錢之戲註"
+    },
+    {
+      "kind": "small-column",
+      "fromGroup": "368-4-1",
+      "fromLine": 20,
+      "toGroup": "368-4-1",
+      "toLine": 21,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": true,
+      "previous": "行棊相塞謂之簺簺有四采簺白乗五是也至五卽格不得行",
+      "next": " 又辛氏三秦記城南韋杜去天尺五 又十五夜曰三五謝"
+    },
+    {
+      "kind": "small-column",
+      "fromGroup": "372-4-1",
+      "fromLine": 15,
+      "toGroup": "372-4-1",
+      "toLine": 16,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": false,
+      "previous": "紀力切集韻韻會訖力切𠀤音棘敏也疾也說文从人从口从",
+      "next": "又从二二天地也徐鍇曰承天之時因地之利口謀之手執之"
+    },
+    {
+      "kind": "small-column",
+      "fromGroup": "372-7-1",
+      "fromLine": 24,
+      "toGroup": "372-7-1",
+      "toLine": 25,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": true,
+      "nextLeadingSpace": false,
+      "previous": "其欲 又與革通禮檀弓夫人之病革矣 ",
+      "next": "又與極通荀子賦論反覆甚極註極與亟同"
+    },
+    {
+      "kind": "band",
+      "fromGroup": "374-3-1",
+      "fromLine": 13,
+      "toGroup": "374-4-1",
+      "toLine": 15,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": true,
+      "previous": "坐少焉楚左右曰凡亡者三凡君曰凡之亡也不足以喪吾存",
+      "next": " 又周禮春官大宗伯以喪禮哀死亡 又逃也大學舅犯曰"
+    },
+    {
+      "kind": "small-column",
+      "fromGroup": "379-6-1",
+      "fromLine": 18,
+      "toGroup": "379-6-1",
+      "toLine": 19,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": true,
+      "previous": "高山盤石其上亭亭 又黃庭經九原之山何亭亭註猶心也",
+      "next": " 又亭毒化育也老子道德經亭之毒之註亭謂品其形毒謂"
+    },
+    {
+      "kind": "small-column",
+      "fromGroup": "379-8-1",
+      "fromLine": 24,
+      "toGroup": "379-8-1",
+      "toLine": 25,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": true,
+      "nextLeadingSpace": false,
+      "previous": "卽直午之義 又古今注蜻蜓一名靑亭色靑而大者是也 ",
+      "next": "又水止曰亭與渟同前漢西域傳其水亭居 又韻補叶徒陽"
+    },
+    {
+      "kind": "small-column",
+      "fromGroup": "382-7-1",
+      "fromLine": 37,
+      "toGroup": "382-7-1",
+      "toLine": 38,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": true,
+      "nextLeadingSpace": false,
+      "previous": "雅亹亹文王令聞不已又禮禮器天時雨澤君子達亹亹焉 ",
+      "next": "又集韻正韻𠀤謨奔切音門詩大雅鳧鷖在亹註水流峽中兩"
+    }
+  ],
+  "changes": [
+    {
+      "id": "316-6-3",
+      "page": 316,
+      "file": "kangxi-gold/annotations/0316.gj",
+      "sourceLine": 30,
+      "beforeLine": "會】𡘋同萬。",
+      "afterLine": "會】𡘋同萬。*",
+      "beforeCells": [
+        5,
+        4
+      ],
+      "afterCells": [
+        5,
+        5
+      ],
+      "placement": "previous-trailing"
+    },
+    {
+      "id": "320-4-1",
+      "page": 320,
+      "file": "kangxi-gold/annotations/0320.gj",
+      "sourceLine": 20,
+      "beforeLine": "猶天也。象形。*又【玉篇】甫負切【廣韻】甫救切，𡘋缶去聲。義同。",
+      "afterLine": "猶天也。象形。*又【玉篇】甫負切【廣韻】甫救切，𡘋缶去聲。義同。*",
+      "beforeCells": [
+        24,
+        23
+      ],
+      "afterCells": [
+        24,
+        24
+      ],
+      "placement": "previous-trailing"
+    },
+    {
+      "id": "323-8-1",
+      "page": 323,
+      "file": "kangxi-gold/annotations/0323.gj",
+      "sourceLine": 28,
+      "beforeLine": "丕績。*又奉也。【前漢·郊祀志】丕天之大律。【註】奉天之大法也。",
+      "afterLine": "丕績。*又奉也。【前漢·郊祀志】丕天之大律。【註】奉天之大法也。*",
+      "beforeCells": [
+        24,
+        23
+      ],
+      "afterCells": [
+        24,
+        24
+      ],
+      "placement": "previous-trailing"
+    },
+    {
+      "id": "324-5-1",
+      "page": 324,
+      "file": "kangxi-gold/annotations/0324.gj",
+      "sourceLine": 21,
+      "beforeLine": "天地之閒，界謂各有彼此之別。*又姓。【風俗通】秦大夫世鈞。",
+      "afterLine": "天地之閒，界謂各有彼此之別。*又姓。【風俗通】秦大夫世鈞。*",
+      "beforeCells": [
+        24,
+        23
+      ],
+      "afterCells": [
+        24,
+        24
+      ],
+      "placement": "previous-trailing"
+    },
+    {
+      "id": "338-2-1",
+      "page": 338,
+      "file": "kangxi-gold/annotations/0338.gj",
+      "sourceLine": 7,
+      "beforeLine": "又【六書正譌】古文主字。鐙中火丶也。象形。借爲主宰字。",
+      "afterLine": "*又【六書正譌】古文主字。鐙中火丶也。象形。借爲主宰字。",
+      "beforeCells": [
+        22,
+        21
+      ],
+      "afterCells": [
+        22,
+        22
+      ],
+      "placement": "next-leading"
+    },
+    {
+      "id": "362-5-1",
+      "page": 362,
+      "file": "kangxi-gold/annotations/0362.gj",
+      "sourceLine": 21,
+      "beforeLine": "百司。*又叶詩紙切，音始。【詩·召南】于以用之，公侯之事。叶沚。",
+      "afterLine": "百司。*又叶詩紙切，音始。【詩·召南】于以用之，公侯之事。叶沚。*",
+      "beforeCells": [
+        24,
+        23
+      ],
+      "afterCells": [
+        24,
+        24
+      ],
+      "placement": "previous-trailing"
+    },
+    {
+      "id": "367-3-2",
+      "page": 367,
+      "file": "kangxi-gold/annotations/0367.gj",
+      "sourceLine": 13,
+      "beforeLine": "胡故切，𠀤音護。差也。",
+      "afterLine": "胡故切，𠀤音護。差也。*",
+      "beforeCells": [
+        9,
+        8
+      ],
+      "afterCells": [
+        9,
+        9
+      ],
+      "placement": "previous-trailing"
+    }
+  ],
+  "unchangedUnmarkedBoundaries": [
+    {
+      "kind": "small-column",
+      "fromGroup": "317-6-1",
+      "fromLine": 23,
+      "toGroup": "317-6-1",
+      "toLine": 24,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": false,
+      "previous": "始於一終於十成於三又周禮冬官考工記凡兵無過三其身",
+      "next": "又左傳昭七年士文伯曰政不可不愼務三而已一擇人二因",
+      "reason": "原图双列24/24，后列首又左傳前无空格，不能追加一格挤出页框。"
+    },
+    {
+      "kind": "small-column",
+      "fromGroup": "360-4-1",
+      "fromLine": 18,
+      "toGroup": "360-4-1",
+      "toLine": 19,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": false,
+      "previous": "解也後漢孔融傳融年十二聰慧𨻰煒曰小而了了大未必奇",
+      "next": "又宋書戴法興傳彭城王覓一了了令史得法興使爲之 又",
+      "reason": "原图双列24/24，后列首又宋書前无空格，不属于末尾尚有余格的遗漏。"
+    },
+    {
+      "kind": "small-column",
+      "fromGroup": "372-4-1",
+      "fromLine": 15,
+      "toGroup": "372-4-1",
+      "toLine": 16,
+      "unusedPreviousSlots": 0,
+      "previousTrailingSpace": false,
+      "nextLeadingSpace": false,
+      "previous": "紀力切集韻韻會訖力切𠀤音棘敏也疾也說文从人从口从",
+      "next": "又从二二天地也徐鍇曰承天之時因地之利口謀之手執之",
+      "reason": "从人从口从又从二中的又为字形部件，并非引出另一释义，不应插入释义间隔。"
+    }
+  ],
+  "scanReview": [
+    {
+      "page": 316,
+      "image": "/Volumes/WD-2T/guji-ocr/raw/kangxizidian/pages/0316.jpg",
+      "sha256": "32a091e5a44bdf19d554b5f516091f3f60b1609e954a5a5bbdd3e4b61ff8d093"
+    },
+    {
+      "page": 317,
+      "image": "/Volumes/WD-2T/guji-ocr/raw/kangxizidian/pages/0317.jpg",
+      "sha256": "4c69275f254441a9c84ca68662f2f01463b4c4eb3889e10af624edcd293ce153"
+    },
+    {
+      "page": 320,
+      "image": "/Volumes/WD-2T/guji-ocr/raw/kangxizidian/pages/0320.jpg",
+      "sha256": "56a06513892dc04521c3ba8a580cbcb41533537c9dc02d6dc072119a7b3f4ba8"
+    },
+    {
+      "page": 323,
+      "image": "/Volumes/WD-2T/guji-ocr/raw/kangxizidian/pages/0323.jpg",
+      "sha256": "cc9cbc95637950befc2d4b4b5576a119bd8cfc80dffcbe71c6a2473e9df12eaf"
+    },
+    {
+      "page": 324,
+      "image": "/Volumes/WD-2T/guji-ocr/raw/kangxizidian/pages/0324.jpg",
+      "sha256": "2d592bcdbf367fce867466a17c935c93d25572ba26ff466f97a7b1a5f43ee4de"
+    },
+    {
+      "page": 338,
+      "image": "/Volumes/WD-2T/guji-ocr/raw/kangxizidian/pages/0338.jpg",
+      "sha256": "7add33f14232d1a3fdf098b0e447008f946ed5ffa56f2013182e8bb156073de3"
+    },
+    {
+      "page": 360,
+      "image": "/Volumes/WD-2T/guji-ocr/raw/kangxizidian/pages/0360.jpg",
+      "sha256": "63b69b80b3dfaabfd0c9ee85ca4b8529d0f19d5c8637edf6952a1cc34c1ce420"
+    },
+    {
+      "page": 362,
+      "image": "/Volumes/WD-2T/guji-ocr/raw/kangxizidian/pages/0362.jpg",
+      "sha256": "07ee032e597eedc4453f7bb6e1f5501278802429dfa5f2a9f179bdfe6ed0023a"
+    },
+    {
+      "page": 367,
+      "image": "/Volumes/WD-2T/guji-ocr/raw/kangxizidian/pages/0367.jpg",
+      "sha256": "d8a7dd81f0008885a555b2ba33878f6631fac0ee4aaa55a9d33548052db3a95c"
+    },
+    {
+      "page": 372,
+      "image": "/Volumes/WD-2T/guji-ocr/raw/kangxizidian/pages/0372.jpg",
+      "sha256": "d301c7c75fe3d54e3691184d19bafc262fec6275acc9e786225439856e1e3e72"
+    }
+  ],
+  "validation": {
+    "checkedBoundaries": 41,
+    "unresolvedWithPreviousRoom": 0,
+    "nonblankTextUnchanged": true,
+    "allGroupRowsUnchanged": true,
+    "geometryWarnings": 0,
+    "datasetVerification": "70 pages / 70 images / 22858 non-whitespace characters; passed"
+  }
+}
