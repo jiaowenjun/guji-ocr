@@ -91,6 +91,18 @@ export function buildCharIndex(doc: IRDocument): CharIndex {
   return entries;
 }
 
+/** 渲染字格 → 源码字符之后。合字按整格定位到首个源字符之后；
+ *  显示字与源码可不同（* 空位、〇→○、圈内数字），始终按源码计算 UTF-16 长度。 */
+export function charCursorTarget(index: CharIndex, text: string, target: CharHighlight): number | null {
+  const entry = index.find(({ target: candidate }) =>
+    target.kind === "large"
+      ? candidate.kind === "large" && candidate.elId === target.elId
+      : candidate.kind === "cell" && candidate.lineId === target.lineId && candidate.cp === target.cp,
+  );
+  if (!entry || entry.src < 0 || entry.src >= text.length) return null;
+  return entry.src + String.fromCodePoint(text.codePointAt(entry.src)!).length;
+}
+
 
 /** 光标前一字符 → 单字定位（large=大字/合字格元素；cell=小字格行+码点）。
  *  前一字符不产出（#、【】、换行、@页声明、注释）或已被清洗（标点）时

@@ -3,8 +3,8 @@
 // 圆环修饰大字格（元素 id 定位）；书名框为覆盖其小字格的跨行矩形（按行+码点
 // 区间定位，跨大行 wrap 的连接边开口，与旧 book-start/middle/end 状态无关）。
 // 不依赖任何 src 偏移（无 .gj 源的 IR 同样可渲染）。
-import { memo, useMemo, type CSSProperties } from "react";
-import type { IROverlay, RenderHighlight } from "@/ir/types";
+import { memo, useMemo, type CSSProperties, type DOMAttributes } from "react";
+import type { CharHighlight, IROverlay, RenderHighlight } from "@/ir/types";
 import type { L3Band, L3Item, L3Page } from "@/ir/layout3";
 import { indexLayout, projectBooks, locateCell, type BookBox } from "@/ir/projection";
 import { getPageFrame } from "@/ir/page-frame";
@@ -19,6 +19,7 @@ export function MatrixPages({
   cells = false,
   highlight,
   onBandClick,
+  onCharDoubleClick,
   paper,
 }: {
   pages: L3Page[];
@@ -28,6 +29,7 @@ export function MatrixPages({
   cells?: boolean;
   highlight?: RenderHighlight;
   onBandClick?: (page: number, index: number) => void;
+  onCharDoubleClick?: (char: CharHighlight) => void;
   paper?: PagePaperLayout;
 }) {
   const circled = new Set(
@@ -54,6 +56,7 @@ export function MatrixPages({
             activeCell={activeCell}
             highlight={highlight}
             onBandClick={onBandClick}
+            onCharDoubleClick={onCharDoubleClick}
           />
         </PagePaper>
       ))}
@@ -70,6 +73,7 @@ function MatrixPageView({
   activeCell,
   highlight,
   onBandClick,
+  onCharDoubleClick,
 }: {
   page: L3Page;
   rules: boolean;
@@ -79,6 +83,7 @@ function MatrixPageView({
   activeCell: ReturnType<typeof locateCell>;
   highlight?: RenderHighlight;
   onBandClick?: (page: number, index: number) => void;
+  onCharDoubleClick?: (char: CharHighlight) => void;
 }) {
   const { largeRows, largeCols } = page.config;
   const { cols, rows, colOffset } = getPageFrame(page);
@@ -131,6 +136,7 @@ function MatrixPageView({
               activeItem={activeItem}
               activeCell={activeItem?.kind === "run" ? activeCell?.index : undefined}
               onBandClick={onBandClick}
+              onCharDoubleClick={onCharDoubleClick}
             />
           );
         })}
@@ -180,7 +186,7 @@ function MatrixPageView({
 /** 每列仅接收自己的高亮；memo 跳过 map 中高亮未变的列。 */
 const MatrixBand = memo(function MatrixBand({
   band, config, pageNo, bandIndex, colStart, atLeftEdge, warning,
-  circled, active, activeItem, activeCell, onBandClick,
+  circled, active, activeItem, activeCell, onBandClick, onCharDoubleClick,
 }: {
   band: L3Band;
   config: IRLayoutConfig;
@@ -194,6 +200,7 @@ const MatrixBand = memo(function MatrixBand({
   activeItem: L3Item | null;
   activeCell?: number;
   onBandClick?: (page: number, index: number) => void;
+  onCharDoubleClick?: (char: CharHighlight) => void;
 }) {
   const overCols = new Set<number>();
   if (band.rows > config.rowCap) {
@@ -222,6 +229,7 @@ const MatrixBand = memo(function MatrixBand({
           rowCap={config.rowCap}
           largeRows={config.largeRows}
           largeCols={config.largeCols}
+          onCharDoubleClick={onCharDoubleClick}
         />
       ))}
       {[...overCols].map((c) => (
@@ -281,6 +289,7 @@ function ItemView({
   rowCap,
   largeRows,
   largeCols,
+  onCharDoubleClick,
 }: {
   item: L3Item;
   circled: Set<string>;
@@ -292,7 +301,21 @@ function ItemView({
   rowCap: number;
   largeRows: number;
   largeCols: number;
+  onCharDoubleClick?: (char: CharHighlight) => void;
 }) {
+  const charEvents = (char: CharHighlight): DOMAttributes<HTMLDivElement> => onCharDoubleClick ? {
+    // 双击前的两次 click 不冒泡到列首定位；列内背景仍保留单击定位。
+    onClick: (event) => event.stopPropagation(),
+    onMouseDown: (event) => {
+      // 浏览器在第二次按下时选择词语；保留首次按下及拖动的普通文本选择。
+      if (event.detail > 1) event.preventDefault();
+    },
+    onDoubleClick: (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      onCharDoubleClick(char);
+    },
+  } : {};
   // 注意：ItemView 是 .m-band（subgrid 项）的子元素，列号用 band 局部坐标；
   // 页级换算（colStarts）只用于书名框等 .m-content 直接子元素
   if (item.kind === "large") {
@@ -309,13 +332,13 @@ function ItemView({
     const cut = clipped ? " m-clipped" : "";
     if (circled.has(item.elId)) {
       return (
-        <div className={`m-circle${active}${cut}`} style={gridPos}>
+        <div className={`m-circle${active}${cut}`} style={gridPos} {...charEvents({ kind: "large", elId: item.elId })}>
           <div className="m-ring">{stacked ? <span className="stack">{text}</span> : text}</div>
         </div>
       );
     }
     return (
-      <div className={`m-large${active}${cut}`} style={gridPos}>
+      <div className={`m-large${active}${cut}`} style={gridPos} {...charEvents({ kind: "large", elId: item.elId })}>
         {stacked ? <span className="stack">{text}</span> : text}
       </div>
     );
@@ -338,7 +361,11 @@ function ItemView({
       }
     >
       {item.cells.map((ch, i) => (
-        <div key={i} className={i === activeCell ? "m-cell m-char-active" : "m-cell"}>
+        <div
+          key={i}
+          className={i === activeCell ? "m-cell m-char-active" : "m-cell"}
+          {...charEvents({ kind: "cell", lineId: item.lineId, cp: item.rawRanges[i][0] })}
+        >
           {ch}
         </div>
       ))}

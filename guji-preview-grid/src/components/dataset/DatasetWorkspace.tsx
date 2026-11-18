@@ -10,7 +10,8 @@ import { getPageFrame } from "@/ir/page-frame";
 import { gj2ir } from "@/ir/gj2ir";
 import { applyBookLayout } from "@/ir/document-layout";
 import { layout3 } from "@/ir/layout3";
-import { bandCursorTarget, buildCharIndex, charHighlightAt, highlightAt } from "@/ir/linkage";
+import { bandCursorTarget, buildCharIndex, charCursorTarget, charHighlightAt, highlightAt } from "@/ir/linkage";
+import type { CharHighlight } from "@/ir/types";
 import { resolvePageScan, type DatasetConfig } from "@/datasets/config";
 import type { PageEntry } from "./DatasetView";
 
@@ -107,6 +108,13 @@ export function DatasetWorkspace({
     },
     [irDoc, text],
   );
+  const onCharDoubleClick = useCallback(
+    (char: CharHighlight) => {
+      const target = charCursorTarget(charIndex, text ?? "", char);
+      if (target !== null) editorRef.current?.revealPosition(target);
+    },
+    [charIndex, text],
+  );
   // 渲染 unit 对齐版框内容宽（而非整图宽），矩阵视图下渲染页宽 = frameWidth
 
   // 原图列内容宽高 → 显示宽 → 渲染 unit（同宽联动）
@@ -182,6 +190,7 @@ export function DatasetWorkspace({
                   cells={cells}
                   highlight={highlight}
                   onBandClick={onBandClick}
+                  onCharDoubleClick={onCharDoubleClick}
                   paper={{
                     width: displayWidth,
                     minHeight: Math.max(0, scrollVPH - 16),

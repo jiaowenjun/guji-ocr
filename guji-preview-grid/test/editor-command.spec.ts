@@ -34,7 +34,10 @@ afterEach(async () => {
 });
 
 describe("编辑器定位命令", () => {
-  it("重复定位同一 UTF-16 位置可恢复光标、折叠选区并重新聚焦", async () => {
+  it.each([false, true])("重复定位同一 UTF-16 位置可恢复光标、折叠选区并重新聚焦（Vim=%s）", async (vimMode) => {
+    await act(async () => root.render(createElement(GujiEditor, {
+      ref: editor, value: source, onChange: () => {}, onCursor, vimMode,
+    })));
     const view = EditorView.findFromDOM(container.querySelector(".cm-content")!)!;
     const target = source.indexOf("𠀤") + 2;
     await act(async () => editor.current!.revealPosition(target));

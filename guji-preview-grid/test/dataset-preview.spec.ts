@@ -69,7 +69,65 @@ afterEach(async () => {
 
 const activeText = () => container.querySelector(".m-char-active")?.textContent;
 
+// 浏览器双击的真实事件顺序；可抓住先冒泡到列首、再定位单字的闪跳。
+async function doubleClick(element: Element) {
+  for (const detail of [1, 2]) {
+    for (const type of ["mousedown", "mouseup", "click"]) {
+      await act(async () => {
+        element.dispatchEvent(new MouseEvent(type, { bubbles: true, cancelable: true, detail }));
+      });
+      expect(revealPosition).not.toHaveBeenCalled();
+    }
+  }
+  await act(async () => {
+    element.dispatchEvent(new MouseEvent("dblclick", { bubbles: true, cancelable: true, detail: 2 }));
+  });
+}
+
 describe("数据集预览使用当前文档快照", () => {
+  it.each([
+    ["大字扩展区", "@1\n#甲𠀤乙", ".m-large", "𠀤", "𠀤"],
+    ["书名中的重复字", "@1\n#甲\n甲。乙【甲】丙", ".m-cell", "甲", "甲"],
+    ["小字扩展区", "@1\n#甲\n乙。𠀀丙", ".m-cell", "𠀀", "𠀀"],
+    ["小字空位", "@1\n#甲\n乙。*丙", ".m-cell", " ", "*"],
+    ["大字空位", "@1\n#甲*乙", ".m-large", " ", "*"],
+    ["归一圈号", "@1\n#甲\n乙。〇丙", ".m-cell", "○", "〇"],
+    ["圈内数字合字", "@1\n#甲(15)乙", ".m-ring .stack", "十五", "1"],
+    ["圈内扩展区合字", "@1\n#甲(𠀀乙)丙", ".m-ring .stack", "𠀀乙", "𠀀"],
+    ["自动跨列", `@1\n${"甲".repeat(48)}。\n【𠀀】乙丙`, ".m-cell", "𠀀", "𠀀"],
+  ])("双击%s定位到准确源码，且不触发列首定位", async (_name, source, selector, glyph, raw) => {
+    await act(async () => editor.onChange(source));
+    const element = [...container.querySelectorAll(selector)].filter(el => el.textContent === glyph).at(-1)!;
+    expect(element).toBeDefined();
+    await doubleClick(element);
+    expect(revealPosition.mock.calls).toEqual([[source.lastIndexOf(raw) + raw.length]]);
+    expect(activeText()).toBe(glyph);
+    expect(editor.value).toBe(source);
+  });
+
+  it("重复双击、插字重排后使用当前源码；页面留白不触发字符定位", async () => {
+    const initial = "@1\n#甲\n【甲乙】丙";
+    await act(async () => editor.onChange(initial));
+    const target = () => [...container.querySelectorAll(".m-cell")].find(el => el.textContent === "乙")!;
+    await doubleClick(target());
+    expect(revealPosition).toHaveBeenLastCalledWith(initial.indexOf("乙") + 1);
+    expect(container.querySelector(".m-book-active")).not.toBeNull();
+    revealPosition.mockClear();
+    await act(async () => editor.onCursor!(initial.length));
+    await doubleClick(target());
+    expect(revealPosition.mock.calls).toEqual([[initial.indexOf("乙") + 1]]);
+
+    const edited = "@1\n#𠀀$\n#甲\n甲" + "丙".repeat(48) + "【甲乙】丁";
+    await act(async () => editor.onChange(edited));
+    revealPosition.mockClear();
+    await doubleClick(target());
+    expect(revealPosition.mock.calls).toEqual([[edited.indexOf("乙") + 1]]);
+    expect(activeText()).toBe("乙");
+    revealPosition.mockClear();
+    await doubleClick(container.querySelector(".m-lines")!);
+    expect(revealPosition).not.toHaveBeenCalled();
+  });
+
   it("插字和插入大列后，布局、高亮与点击定位同时更新", async () => {
     expect(container.querySelector(".m-band")?.textContent).toBe("甲乙");
     const inserted = "@1\n\n#丙甲乙\n";
@@ -115,6 +173,8 @@ describe("数据集预览使用当前文档快照", () => {
     expect(editor.value).toBe(sources[2]);
     expect(container.querySelector(".page-title")?.textContent).toBe("2");
     expect(container.querySelector(".m-band")?.textContent).toBe("戊己");
+    await doubleClick(container.querySelectorAll(".m-large")[1]);
+    expect(revealPosition.mock.calls).toEqual([[sources[2].indexOf("己") + 1]]);
     await act(async () => document.querySelector<HTMLButtonElement>('[aria-label="上一页"]')!.click());
     expect(editor.value).toBe(edited);
     expect(container.querySelector(".page-title")?.textContent).toBe("1");
