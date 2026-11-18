@@ -143,17 +143,21 @@ def detect_grid(dark):
             'lines_evidence': f"{fit['n_ev']}/17", 'fishtail_x': tail, 'majors': majors}
 
 
-def _has_ink_stroke(mask):
-    """Keep even a thin 一/丶; ignore only tiny, disconnected paper specks."""
+def _has_ink_stroke(mask, minimum_span=0):
+    """Require enough connected ink, optionally with an extended stroke span."""
     remaining = {tuple(point) for point in np.argwhere(mask)}
     minimum = max(6, int(np.ceil(mask.size * .006)))
     while remaining:
         stack = [remaining.pop()]
         area = 0
+        ymin = ymax = stack[0][0]
+        xmin = xmax = stack[0][1]
         while stack:
             y, x = stack.pop()
             area += 1
-            if area >= minimum:
+            ymin, ymax = min(ymin, y), max(ymax, y)
+            xmin, xmax = min(xmin, x), max(xmax, x)
+            if area >= minimum and max(ymax - ymin + 1, xmax - xmin + 1) >= minimum_span:
                 return True
             for dy, dx in ((-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)):
                 neighbor = (y + dy, x + dx)
@@ -169,7 +173,8 @@ def detect_blank_cells(gray, band_boxes, row_spans):
     Row spans only exclude occupied large glyphs (their white quarters are not
     small-cell spaces). Blank decisions otherwise use scan pixels, including
     untranscribed empty areas. Inset 16% avoids frame/book rules and adjacent ink;
-    local paper tone limits the dark threshold, and coherent strokes veto blank.
+    local paper tone limits the dark threshold. Sparse compact marks need a
+    darker coherent core; extended fine strokes retain the softer threshold.
     """
     height, width = gray.shape
     blanks = []
@@ -191,7 +196,13 @@ def detect_blank_cells(gray, band_boxes, row_spans):
                     continue
                 threshold = np.clip(np.percentile(core, 80) - 35, 70, segmentation.DARK_THR)
                 ink = core < threshold
-                if ink.mean() < .015 and not _has_ink_stroke(ink):
+                # A fleck's gray fringe can just reach the component-size cutoff
+                # (@415, before 又). Keep dense/faint glyphs at the original
+                # threshold, and preserve even pale thin strokes spanning 1/4
+                # of the core; compact dots must also have a coherent dark core.
+                if (ink.mean() < .015
+                        and not _has_ink_stroke(core < threshold - 20)
+                        and not _has_ink_stroke(ink, minimum_span=np.ceil(min(core.shape) * .25))):
                     blanks.append({'band': band, 'col': col, 'row': row})
     return blanks
 

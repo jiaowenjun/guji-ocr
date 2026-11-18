@@ -134,6 +134,26 @@ class ScanGridTests(unittest.TestCase):
         self.assertEqual(len(cells), 24)
         self.assertTrue(all(c['col'] == 1 for c in cells))
 
+    def test_p415_leading_space_with_paper_fleck(self):
+        # Original grayscale pixels from @415: the top three rows of band 6.
+        # The speck before 又 must be blank; 女/王/充 and 又/集 remain ink.
+        fixture = Path(__file__).parent / 'fixtures' / 'kangxi-0415-leading-space.png'
+        with Image.open(fixture) as image:
+            gray = np.asarray(image.convert('L'))
+        cells = detect_blank_cells(gray, [[0, .5, 118, 1405.46]], [[]])
+        self.assertEqual(cells, [{'band': 0, 'col': 1, 'row': 0}])
+
+    def test_sparse_faint_line_and_dark_dot_remain_ink(self):
+        gray = np.full((1440, 120), 220, dtype=np.uint8)
+        gray[25, 20:40] = 130  # Pale, one-pixel 一 below the ink-density cutoff.
+        gray[85:89, 25:28] = 110  # Small coherent 丶 still counts as ink.
+        gray[145:150, 20:40] = 130  # A pale glyph body uses the softer threshold.
+        cells = detect_blank_cells(gray, [[0, 0, 120, 1440]], [[]])
+        found = {(c['col'], c['row']) for c in cells}
+        for row in range(3):
+            self.assertNotIn((0, row), found)
+            self.assertIn((1, row), found)
+
 
 if __name__ == '__main__':
     unittest.main()
