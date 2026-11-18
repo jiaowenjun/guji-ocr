@@ -15,7 +15,7 @@ export function ScanGridOverlay({ entry, layout }: { entry: PageEntry; layout?: 
     layoutError = error instanceof Error ? error.message : String(error);
   }
   // 随定位算法修订失效，避免热更新后继续显示旧的版心错位结果。
-  const key = `body-grid-v3-blanks:${entry.image}:${entry.width}:${entry.height}:${request}`;
+  const key = `body-grid-v4-slanted:${entry.image}:${entry.width}:${entry.height}:${request}`;
   const [result, setResult] = useState<{ key: string; grid?: ScanGrid; error?: string } | null>(null);
   const [retry, setRetry] = useState(0);
   const grid = cache.get(key) ?? (result?.key === key ? result.grid : undefined);

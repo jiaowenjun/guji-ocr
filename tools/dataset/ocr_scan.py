@@ -69,6 +69,42 @@ def select_body_grid(fits):
     return max(body_fits, key=lambda pair: pair[1]['n_ev'])
 
 
+def slanted_body_candidates(dark, box, fit):
+    """Recover a thin body rule missed by the straight-column projection.
+
+    Only retry when a measured left frame loses over half a small column. A
+    slightly slanted rule (@405) can have <50% ink at every fixed x, but remains
+    present on >90% of rows within a +/-6 px corridor. Search one small column
+    inside the selected right frame; do not reinterpret cropped left edges or
+    distant rules in sparse pages as a missing body boundary.
+    """
+    left, top, right, bottom = box
+    pitch = fit['pitch']
+    if left <= segmentation.SMOOTH_K or fit['lines'][-1] <= pitch * .5:
+        return []
+    height, width = dark.shape
+    band = dark[int(height * .2):int(height * .8)] > 0
+    nearby = np.zeros_like(band)
+    radius = 6
+    for offset in range(-radius, radius + 1):
+        dst = slice(max(0, offset), min(width, width + offset))
+        src = slice(max(0, -offset), min(width, width - offset))
+        nearby[:, dst] |= band[:, src]
+    xs = np.flatnonzero(nearby.mean(axis=0) > .9)
+    groups = []
+    for x in xs:
+        if not groups or x > groups[-1][-1] + 3:
+            groups.append([])
+        groups[-1].append(int(x))
+    candidates = []
+    for group in groups:
+        inner = int(np.mean(group))
+        if (.5 * pitch <= right - inner <= 1.5 * pitch
+                and inner - left >= segmentation.N_SLOTS * segmentation.PITCH_RANGE[0]):
+            candidates.append((left, top, inner, bottom))
+    return candidates
+
+
 def detect_grid(dark):
     """Use frame evidence only, explicitly exclude the spine/fishtail strip."""
     height, width = dark.shape
@@ -78,6 +114,11 @@ def detect_grid(dark):
     fits = [(b, segmentation._fit_for_block(dark, b, segmentation.PITCH_RANGE)) for b in candidates]
     fits = [(b, f) for b, f in fits if f]
     if not fits: raise ValueError('No scan frame/grid evidence; provide a reviewed page with supported layout')
+    box, fit = select_body_grid(fits)
+    for candidate in slanted_body_candidates(dark, box, fit):
+        recovered = segmentation._fit_for_block(dark, candidate, segmentation.PITCH_RANGE)
+        if recovered and 0 <= recovered['lines'][-1] <= recovered['pitch'] * .5:
+            fits.append((candidate, recovered))
     box, fit = select_body_grid(fits)
     # The old locator may pick the footer as bottom; locate long horizontal frame strokes.
     left, _, right, _ = box

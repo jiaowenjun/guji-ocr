@@ -7,14 +7,55 @@ import unittest
 from unittest.mock import patch
 
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageDraw
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'dataset'))
 from scan_grid import scan_grid
-from ocr_scan import detect_blank_cells, select_body_grid
+from ocr_scan import detect_blank_cells, detect_grid, select_body_grid, slanted_body_candidates
 
 
 class ScanGridTests(unittest.TestCase):
+    def test_slanted_body_rule_recovers_grid_from_spine_frame(self):
+        # @405: the thin body rule slopes across x=1026..1040, so no fixed
+        # column reaches 50% ink. Only the outer spine frame was detected.
+        image = Image.new('L', (1130, 1665), 255)
+        draw = ImageDraw.Draw(image)
+        for line in ((78, 116, 78, 1540), (1108, 116, 1108, 1540),
+                     (78, 116, 1108, 116), (78, 1540, 1108, 1540)):
+            draw.line(line, fill=0, width=8)
+        draw.line((1026, 120, 1040, 1536), fill=0, width=2)
+        # Sixteen text columns plus ink in the spine; no OCR/text prior.
+        for col in range(17):
+            for row in range(24):
+                x, y = 108 + 58 * col, 138 + 58 * row
+                draw.rectangle((x, y, x + 25, y + 12), fill=0)
+        dark = (np.asarray(image) < 140).astype(float)
+        with patch('ocr_scan.slanted_body_candidates', return_value=[]):
+            before = detect_grid(dark)
+        after = detect_grid(dark)
+        self.assertEqual(before['block'][2], 1108)
+        self.assertAlmostEqual(after['block'][2], 1034, delta=3)
+        self.assertLess(after['majors'][-1]['x1'], 110)
+        self.assertLess(after['majors'][0]['x2'], 1040)
+        self.assertGreater(before['majors'][-1]['x1'] - after['majors'][-1]['x1'], 29)
+        self.assertEqual(len(after['majors']), 8)
+
+    def test_slanted_rule_recovery_rejects_unsupported_or_distant_edges(self):
+        box = (78, 116, 1108, 1646)
+        fit = {'lines': [72], 'pitch': 58.6}
+        dark = np.zeros((1665, 1130))
+        for y in range(120, 1536):
+            x = round(1026 + (y - 120) * 14 / 1416)
+            dark[y, x:x + 2] = 1
+        self.assertEqual(len(slanted_body_candidates(dark, box, fit)), 1)
+        self.assertEqual(slanted_body_candidates(dark, (1, 116, 1108, 1646), fit), [])
+        self.assertEqual(slanted_body_candidates(dark, box, {'lines': [15], 'pitch': 58.6}), [])
+        # A distant rule must not shrink a sparse page to an unrelated frame.
+        self.assertEqual(slanted_body_candidates(
+            np.roll(dark, -153, axis=1), (53, 136, 1012, 1554), {'lines': [90], 'pitch': 53}), [])
+        dark[::2] = 0  # Disconnected glyph strokes cannot stand in for a rule.
+        self.assertEqual(slanted_body_candidates(dark, box, fit), [])
+
     def test_spine_valleys_cannot_displace_leftmost_body_column(self):
         # Measured @313 and @323 candidates. The spine's extra valleys used to
         # win 13:10 / 13:11 even though the leftmost small column was omitted.
