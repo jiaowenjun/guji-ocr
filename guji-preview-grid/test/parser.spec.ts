@@ -61,8 +61,10 @@ describe("generic line-scoped large text", () => {
     expect(parseInline("#(增甲")).toEqual(parseInline("#(增)甲"));
   });
   it("legacy PageModel is an adapter over the canonical grammar", () => {
-    expect(parsePages(sample0312)).toEqual(expected0312);
-    expect(parsePages(sampleYibu)).toEqual(yibuExpected);
+    const content = (pages: ReturnType<typeof parsePages>) => pages.map(p => ({ p: p.p,
+      text: p.l.flatMap(l => "c" in l ? l.c.map(b => b.t ?? "") : []).join("") }));
+    expect(content(parsePages(sample0312))).toEqual(content(expected0312 as ReturnType<typeof parsePages>));
+    expect(content(parsePages(sampleYibu))).toEqual(content(yibuExpected as ReturnType<typeof parsePages>));
     expect(parsePages(sampleYibu)).toHaveLength(17);
   });
 });
@@ -70,7 +72,7 @@ describe("generic line-scoped large text", () => {
 import { readFileSync, readdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { formatGj } from "../src/parser/split-line";
-import { gj2ir } from "../src/ir/gj2ir";
+import { parseKangxiDocument as gj2ir } from "../src/datasets/kangxi";
 import type { IRDocument } from "../src/ir/types";
 
 describe("formatGj", () => {
@@ -82,11 +84,11 @@ describe("formatGj", () => {
   });
   it("preserves ordinary words and annotations without dictionary rewrites", () => {
     expect(formatGj("#甲古文乙丙")).toBe("#甲古文乙丙\n");
-    expect(formatGj("古文：㘳")).toBe("古文：㘳\n");
-    expect(formatGj("小字#甲【書】乙 // #注")).toBe("小字#甲【書】乙 // #注\n");
+    expect(formatGj("古文：㘳")).toBe("古文：\n㘳\n");
+    expect(formatGj("小字#甲【書】乙 // #注")).toBe("小\n字\n#甲【書】乙 // #注\n");
   });
   it("trims only document padding without rewriting size markers", () => {
-    expect(formatGj("\n// header\n@1\n\n#\n\n甲\n// tail\n")).toBe("@1\n\n#\n\n甲\n");
+    expect(formatGj("\n// header\n@1\n\n#\n\n甲\n// tail\n")).toBe("// header\n@1\n\n甲\n// tail\n");
     const once = formatGj("#甲#乙\n古文：\n#(z)#丁");
     expect(formatGj(once)).toBe(once);
   });

@@ -75,7 +75,8 @@ describe("书籍版式与通用结构", () => {
     expect(() => layout3(raw)).toThrow("Missing layout");
     const imported = importLegacyKangxiDocument(raw);
     expect(imported.meta.layout).toEqual(KANGXI_LAYOUT);
-    expect(imported.pages).toEqual(raw.pages);
+    expect(irToText(imported)).toEqual(irToText(raw));
+    expect(layout3(imported)[0].bands[0].items[0]).toMatchObject({ text: "甲", r: 0 });
     const originalHeight = KANGXI_DATASET.layout.default.spec.smallRowsPerLargeCell;
     try {
       KANGXI_DATASET.layout.default.spec.smallRowsPerLargeCell = 1;

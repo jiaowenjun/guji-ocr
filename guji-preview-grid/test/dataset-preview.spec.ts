@@ -80,7 +80,7 @@ describe("数据集预览使用当前文档快照", () => {
     expect(container.querySelector(".m-band")?.textContent).toBe("丙甲乙");
     expect(activeText()).toBe("甲");
 
-    const restructured = "@1\n\n#𠀤\n\n#丙甲乙\n";
+    const restructured = "@1\n\n#𠀤$\n\n#丙甲乙\n";
     await act(async () => {
       editor.onChange(restructured);
       editor.onCursor!(restructured.indexOf("甲") + 1);

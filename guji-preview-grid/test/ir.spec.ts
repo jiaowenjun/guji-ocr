@@ -105,22 +105,21 @@ describe("v3 骨架独立（核心原则）", () => {
     expect(stable(stripNo(a))).toBe(stable(stripNo(b)));
   });
 
-  it("跨行书名不吞换行：三行各为小行，书名 overlay 引用三行", () => {
+  it("跨行书名按均式重排，overlay 随字重新分段", () => {
     const doc = gj2ir("@4\n\n【開於甲\n帶內折行\n後段】終\n");
     const band = doc.pages[0].bands[0];
-    expect(band.lines).toHaveLength(3);
+    expect(band.lines).toHaveLength(2);
     expect(band.lines.map((l) => l.elements.map((e) => e.text).join(""))).toEqual([
-      "開於甲",
-      "帶內折行",
-      "後段終",
+      "開於甲帶內",
+      "折行後段終",
     ]);
     const books = doc.overlays.filter((o) => o.kind === "book-title");
     expect(books).toHaveLength(1);
-    expect(books[0]).toMatchObject({ spans: [{ range: [0, 3] }, { range: [0, 4] }, { range: [0, 2] }] });
-    // 布局：三个小行各占一列（k=3），未被书名吞并
+    expect(books[0]).toMatchObject({ spans: [{ range: [0, 5] }, { range: [0, 4] }] });
+    // 三条物理行归并为两条均分小列
     const laid = layout3(doc)[0];
     const runCols = new Set(laid.bands[0].items.filter((i) => i.kind === "run").map((i) => i.c));
-    expect(runCols.size).toBe(3);
+    expect(runCols.size).toBe(2);
   });
 
   it("相邻书名保持各自身份", () => {
@@ -128,7 +127,8 @@ describe("v3 骨架独立（核心原则）", () => {
     const books = doc.overlays.filter((o) => o.kind === "book-title");
     expect(books).toHaveLength(2);
     expect(books[0].spans[0].range).toEqual([0, 1]);
-    expect(books[1].spans[0].range).toEqual([2, 3]);
+    expect(books[1].spans[0].range).toEqual([0, 1]);
+    expect(books[1].spans[0].line).not.toBe(books[0].spans[0].line);
   });
 });
 
@@ -141,8 +141,8 @@ describe("v3 合字", () => {
     const laid = layout3(doc)[0];
     const band = laid.bands[0];
     const largeItems = band.items.filter((i) => i.kind === "large");
-    // 甲 + 合字 = 2 个大字格；十一 为第 2 个；音義 小字组再占 2 行
-    expect(band.rows).toBe(6);
+    // 甲 + 合字 = 2 个大字格；十一 为第 2 个；音義 小字组均分占 1 行
+    expect(band.rows).toBe(5);
     expect(largeItems).toHaveLength(2);
     expect(doc.overlays.some((o) => o.kind === "circle")).toBe(true);
     // 文本抽取保留两个字符
@@ -163,9 +163,9 @@ describe("v3 标题入骨架与码点区间", () => {
   it("扩展 B 区字符按码点计（range 不切开代理对）", () => {
     const doc = gj2ir("@8\n\n𠀤甲【書】乙\n");
     const books = doc.overlays.filter((o) => o.kind === "book-title");
-    expect(books[0].spans[0].range).toEqual([2, 3]); // 𠀤(1) 甲(1) 書 0-based=2
-    const line = doc.pages[0].bands[0].lines[0];
-    expect([...line.elements.map((e) => e.text).join("")][2]).toBe("書");
+    expect(books[0].spans[0].range).toEqual([0, 1]); // 書在第二小列首格
+    const line = doc.pages[0].bands[0].lines[1];
+    expect([...line.elements.map((e) => e.text).join("")][0]).toBe("書");
   });
 });
 

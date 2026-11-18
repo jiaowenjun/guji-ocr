@@ -84,6 +84,7 @@ function planBand(band: IRBand, clean: ReturnType<typeof compileProfile>): BandP
     runs = [];
   };
   for (const line of band.lines) {
+    if (line.emptyRun) runs.push({ lineId: line.id, cpStart: 0, cells: [], ranges: [] });
     let cp = 0;
     for (const el of line.elements) {
       const { cells, ranges } = clean(el.text);

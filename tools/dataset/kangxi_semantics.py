@@ -27,12 +27,13 @@ def _line_tokens(line: str):
     while i < len(line):
         ch = line[i]
         if line.startswith('//', i): break
+        if ch in '$¥' and re.fullmatch(r'[ \t\r]*(?://.*)?', line[i+1:]): i += 1; continue
         if ch == '#': large = True; i += 1; continue
         if ch == '【': book = True; i += 1; continue
         if ch == '】': book = False; i += 1; continue
         if large and ch in '(（':
-            closed = re.match(r'([^()（）#【】\n]{1,2})[)）]', line[i+1:])
-            inner = closed.group(1) if closed else (line[i+1:i+2] if line[i+1:i+2] not in ('', '#', '【', '】', '(', ')', '（', '）') else '')
+            closed = re.match(r'([^()（）#【】$¥\n]{1,2})[)）]', line[i+1:])
+            inner = closed.group(1) if closed else (line[i+1:i+2] if line[i+1:i+2] not in ('', '#', '【', '】', '(', ')', '（', '）', '$', '¥') else '')
             if inner:
                 i += 1 + (len(closed.group(0)) if closed else len(inner))
                 yield inner, large, i, True, book

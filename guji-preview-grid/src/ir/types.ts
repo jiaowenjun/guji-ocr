@@ -7,7 +7,7 @@
 //   - 大字元素：恰好占一个大字格（宽度两小列，高度由书籍版式决定）；合字 ligature:true 时 n 个文本字符合占
 //     一个大字格（如 #(十一)）——合字是骨架事实，与圆圈样式无关
 //   - 小字元素：每字符占一个小字格（1×1）
-//   - 小行 = .gj 内一条物理折行（换行是一等结构；meta.lineLayout 声明来源）
+//   - 小行 = 排版后的一条小列；auto 模式从字流生成，fold 为历史显式折行
 //   - 大字与空位显式入骨架；标题/字头身份由书籍专用语义层解释
 // overlay（文档级，单向引用骨架）：
 //   - circle：圆圈样式，target 指向元素 id（修饰该元素的字格）
@@ -43,8 +43,8 @@ export interface IRMeta {
   layout?: IRLayoutConfig;
   /** 溯源标识；渲染以 layout 数值快照为准。 */
   layoutPreset?: LayoutPresetRef;
-  /** 小行切分来源：fold = 转写折行（≠ 扫描图检测行，不含坐标） */
-  lineLayout: "fold";
+  /** 小行切分来源：auto = 流式＋均式；fold = 历史转写折行 */
+  lineLayout: "fold" | "auto";
   orientation: "vertical-rtl";
   /** 行内 range 的单位（码点，半开区间） */
   rangeUnit: "codepoint";
@@ -65,6 +65,8 @@ export interface IRElement {
 
 /** 小行（转写折行；不是带图像坐标的检测行） */
 export interface IRLine {
+  /** Empty trailing small column in an automatic 1/0 group; preserves alignment. */
+  emptyRun?: true;
   id: string; // p0312-b3-l0
   ord: number;
   src?: [number, number]; // UTF-16，原文该行区间
@@ -75,6 +77,8 @@ export interface IRLine {
 }
 
 export interface IRBand {
+  /** Explicit $ / ¥ boundary; automatic column boundaries can be reflowed. */
+  breakAfter?: boolean;
   id: string; // p0312-b3
   ord: number;
   src?: [number, number];

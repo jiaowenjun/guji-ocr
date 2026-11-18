@@ -1,5 +1,5 @@
 import type { PageModel } from "../components/flex/model";
-import { gj2ir } from "../ir/gj2ir";
+import { parseKangxiDocument as gj2ir } from "../datasets/kangxi";
 import { bandToBlocks } from "./parse-inline";
 /** Legacy view model, backed by the same grammar/profile as the matrix renderer. */
 export function parsePages(text: string): PageModel[] {

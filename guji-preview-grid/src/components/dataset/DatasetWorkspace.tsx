@@ -216,7 +216,7 @@ export function DatasetWorkspace({
               variant="outline"
               disabled={text === undefined || busy}
               onClick={onFormat}
-              title="规范化为校对标准写法并自动保存：行内空格→*（半角连续空格合并为一个）；按语 ◎→〇；#（X）→#(X)；括号内 z→增、数字→汉字；#(X 补右括号；同行重复 # 合并、行首逗号回贴前行大字、保留正文的换行和大小字边界；首尾空行/注释行删除；快捷键 Ctrl-⌥-F"
+              title="规范化为校对标准写法并自动保存：行内空格→*（半角连续空格合并为一个）；按语 ◎→〇；#（X）→#(X)；括号内 z→增、数字→汉字；#(X 补右括号；同行重复 # 合并、行首逗号回贴前行大字；按流式＋均式自动折行分列，保留 $ 强制换列；快捷键 Ctrl-⌥-F"
             >
               <Wand2 data-icon="inline-start" />
               格式化

@@ -6,6 +6,7 @@ import { kangxiHeading } from "../../semantics/kangxi";
 
 export type GujiTokenName = "comment" | "keyword" | "meta" | "heading" | "link" | "strong" | "escape";
 const category = (t: InlineToken): GujiTokenName | null => {
+  if (t.kind === "break") return "keyword";
   if (t.kind === "comment") return "comment";
   if (t.kind === "book-open" || t.kind === "book-close" || t.book) return "link";
   if (t.kind === "text" && /^[，。·•：:、《》]+$/u.test(t.text)) return "comment";

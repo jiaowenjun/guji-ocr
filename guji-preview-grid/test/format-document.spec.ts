@@ -3,7 +3,7 @@ import { readFileSync, readdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { formatDocument } from "../src/components/dataset/format-document";
-import { gj2ir } from "../src/ir/gj2ir";
+import { parseKangxiDocument as gj2ir } from "../src/datasets/kangxi";
 import type { IRDocument } from "../src/ir/types";
 import yibu from "../src/samples/kangxi-yibu.gj?raw";
 
@@ -12,7 +12,7 @@ const fmt = (s: string) => formatDocument(s).text;
 describe("formatDocument preserves type-size scopes", () => {
   it("normalizes blanks without moving them to another size scope", () => {
     expect(fmt("@1\n\n#丶　【唐韻】知庾切。\n")).toBe("@1\n\n#丶*【唐韻】知庾切。\n");
-    expect(fmt("@1\n\n甲　　乙\n")).toBe("@1\n\n甲**乙\n");
+    expect(fmt("@1\n\n甲　　乙\n")).toBe("@1\n\n甲*\n*乙\n");
   });
   it("normalizes circle shorthand and redundant size markers", () => {
     expect(fmt("@1\n\n#（z）#丹\n古文：\n#𠁿#㣋\n")).toBe("@1\n\n#(增)丹\n古文：\n#𠁿㣋\n");
@@ -28,9 +28,10 @@ describe("formatDocument preserves type-size scopes", () => {
     expect(fmt(after)).toBe(after);
     expect(fmt("#(十)𠀀 // 字头\n，古文：\n#乙\n")).toBe("#(十)𠀀， // 字头\n古文：\n#乙\n");
   });
-  it("does not move commas across bands, comments, small text or explicit blanks", () => {
-    for (const source of ["#甲\n\n，古文：", "#甲\n// 注\n，古文：", "正文\n，續文", "#甲*\n，古文："])
-      expect(fmt(source)).toBe(source + "\n");
+  it("ignores cosmetic blank lines and keeps explicit blank slots", () => {
+    expect(fmt("#甲\n\n，古文：")).toBe("#甲，\n古文：\n");
+    expect(fmt("正文\n，續文")).toBe("正文，\n續文\n");
+    expect(fmt("#甲*\n，古文：")).toBe("#甲*\n，古文：\n");
   });
   it("does not create a band when moving a punctuation-only line", () => {
     const source = "@1\n\n#甲\n，\n古文：\n#乙\n";
@@ -39,7 +40,7 @@ describe("formatDocument preserves type-size scopes", () => {
   });
   it("reports normalization counts and is idempotent", () => {
     const r = formatDocument("@2\n\n甲　乙◎丙　丁•戊\n");
-    expect(r).toEqual({ text: "@2\n\n甲*乙〇丙*丁·戊\n", spaces: 2, circles: 1, dots: 1 });
+    expect(r).toEqual({ text: "@2\n\n甲*乙〇\n丙*丁·戊\n", spaces: 2, circles: 1, dots: 1 });
     expect(formatDocument(r.text)).toEqual({ text: r.text, spaces: 0, circles: 0, dots: 0 });
   });
 });

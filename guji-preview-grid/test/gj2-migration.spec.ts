@@ -6,34 +6,18 @@ import { describe, expect, it } from "vitest";
 import baseline from "./fixtures/gj2-migration-baseline.json";
 import cases from "./fixtures/kangxi-semantics.json";
 import { parseKangxiDocument as gj2ir } from "../src/datasets/kangxi";
-import { layout3 } from "../src/ir/layout3";
-import { projectBooks } from "../src/ir/projection";
-import { irToText } from "../src/ir/text";
 import { kangxiEntries, kangxiHeading } from "../src/semantics/kangxi";
 const root = fileURLToPath(new URL("../../", import.meta.url));
 const sha = (s: string) => createHash("sha256").update(s).digest("hex");
 
-// Expected hashes came from the OLD parser before migration, including existing user edits.
-// Removing trailing padding bands refreshes their hashes after verifying unchanged framed glyphs/books.
-// Source IDs and line indices can change; visible cells and decoration geometry must not.
-function geometry(source: string) {
-  const doc = gj2ir(source), laid = layout3(doc), books = projectBooks(laid, doc.overlays);
-  return laid.map((p) => ({ page: p.no, cols: p.totalCols, bands: p.bands.map((b) => ({
-    cols: b.cols, rows: b.rows,
-    cells: b.items.flatMap((i) => i.kind === "large" ? (i.text?.trim() ? [{
-      r: i.r, c: i.c, text: i.text, size: "large", ligature: !!i.ligature,
-      circle: doc.overlays.some((o) => o.kind === "circle" && o.target === i.elId),
-    }] : []) : i.cells!.flatMap((ch, k) => ch.trim() ? [{ r: i.r + k, c: i.c + (i.halfShift ?? 0), text: ch, size: "small" }] : []))
-      .sort((a, b) => a.r - b.r || a.c - b.c || a.size.localeCompare(b.size)),
-  })), books: (books.get(p) ?? []).map((b) => ({ band: b.bandIdx, r: b.rowStart, end: b.rowEnd,
-    c: b.col + (b.halfShift ?? 0), width: b.cols ?? 1, openTop: b.openTop, openBottom: b.openBottom })) }));
-}
-
-describe(".gj/2 migration preserves visible layout and content", () => {
-  for (const row of baseline) it(row.file, () => {
-    const source = readFileSync(`${root}/${row.file}`, "utf8");
-    expect(sha(JSON.stringify(geometry(source)))).toBe(row.geometrySha256);
-    expect(sha(irToText(gj2ir(source)).replace(/\s/g, ""))).toBe(row.textSha256);
+// Pinned from the former explicit-fold parser before this implementation, including
+// reviewed blank corrections. Book overlay order/IDs are not visual differences.
+import automaticBaseline from "./fixtures/auto-flow-baseline.json";
+import { visibleLayout } from "./helpers/visible-layout";
+describe("automatic layout preserves reviewed pages", () => {
+  for (const row of automaticBaseline) it(`@${row.page}`, () => {
+    const source = readFileSync(`${root}/kangxi-gold/annotations/${String(row.page).padStart(4, "0")}.gj`, "utf8");
+    expect(sha(JSON.stringify(visibleLayout(gj2ir(source))))).toBe(row.sha256);
   });
 });
 

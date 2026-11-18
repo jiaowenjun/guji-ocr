@@ -1,3 +1,4 @@
+import { flowDocument } from "./auto-flow";
 import { resolveLayoutConfig, resolveLayoutPreset, resolvePageLayout, type BookLayout } from "./layout-config";
 import type { IRDocument } from "./types";
 
@@ -5,7 +6,7 @@ import type { IRDocument } from "./types";
  *  已有快照的文档应直接布局，切换书籍版式时才显式重新调用此函数。 */
 export function applyBookLayout(doc: IRDocument, book: BookLayout): IRDocument {
   const base = resolveLayoutPreset(book.default);
-  return {
+  return flowDocument({
     ...doc,
     meta: { ...doc.meta, layout: base.config, layoutPreset: base.preset },
     pages: doc.pages.map((page) => {
@@ -14,7 +15,7 @@ export function applyBookLayout(doc: IRDocument, book: BookLayout): IRDocument {
       const selected = resolvePageLayout(book, page.no);
       return { ...content, layout: selected.config, layoutPreset: selected.preset };
     }),
-  };
+  });
 }
 
 /** 只补无配置的旧数据；调用方必须先确认书籍身份。已有 v1 快照原样验证保留。 */

@@ -7,7 +7,9 @@ export function formatSpaces(text: string): { text: string; count: number } {
       const stripped = line.replace(/[ \t　]+$/, ""); // 行尾空格（全角/半角/tab）清除，不再转 *
       if (/^\s*\/\//.test(stripped)) return stripped; // 整行注释
       const ci = stripped.indexOf("//");
-      const head = ci >= 0 ? stripped.slice(0, ci) : stripped;
+      const body = ci >= 0 ? stripped.slice(0, ci) : stripped;
+      const forced = /[ \t]*([$¥])[ \t]*$/.exec(body);
+      const head = forced ? body.slice(0, forced.index) : body;
       const tail = ci >= 0 ? stripped.slice(ci) : "";
       const full = head.replace(/　/g, () => {
         count += 1;
@@ -18,7 +20,7 @@ export function formatSpaces(text: string): { text: string; count: number } {
         count += 1;
         return lead + "*";
       });
-      return half + tail;
+      return half + (forced ? forced[1] : "") + tail;
     })
     .join("\n");
   return { text: out, count };

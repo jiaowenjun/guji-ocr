@@ -3,7 +3,7 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { MatrixPages } from "../src/components/matrix/MatrixPages";
-import { parseKangxiDocument as gj2ir } from "../src/datasets/kangxi";
+import { foldedDocument as gj2ir } from "./helpers/folded-document";
 import { layout3 } from "../src/ir/layout3";
 import { getPageFrame } from "../src/ir/page-frame";
 import { KANGXI_LAYOUT } from "../src/datasets/kangxi";
@@ -25,7 +25,7 @@ function expectFullPage(root: HTMLElement) {
   expect(grid.style.gridTemplateRows).toBe("repeat(24, calc(var(--guji-unit-v, var(--guji-default-unit-v)) * 1))");
 }
 
-describe("整页字格版框", () => {
+describe("整页字格版框（含历史显式骨架的异常布局）", () => {
   it("每页纸张各自拥有页码和外观，矩阵内不再放置页码", () => {
     const doc = gj2ir("@1\n\n#甲\n\n@2\n\n#乙\n");
     const root = document.createElement("div");
