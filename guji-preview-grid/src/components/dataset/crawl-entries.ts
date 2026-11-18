@@ -1,6 +1,6 @@
+import { usePageToolQuery } from "@/hooks/use-page-tool-query";
 // 爬取数据按页/码位查询本地 SQLite；查询本身不抓取，不依赖静态快照。
 // 不保存模块级缓存：切页/重开弹窗读取当前库，编辑器重渲染不会重复请求。
-import { useCallback, useEffect, useState } from "react";
 
 /** 版本页位（同文書局本 / 武英殿本） */
 export interface CrawlEdition {
@@ -39,57 +39,23 @@ export interface CrawlPageHead {
   entry_no?: string | null;
 }
 
-type QueryResult<T> =
-  | { status: "loading" }
-  | { status: "ready"; data: T }
-  | { status: "error"; error: string };
-
-const LOADING = { status: "loading" } as const;
-
-/** 请求身份随参数或重试次数变化；取消后的响应不能覆盖当前页/当前字头。 */
-function useCrawlQuery<T>(body: string | null) {
-  const [attempt, setAttempt] = useState(0);
-  const [snap, setSnap] = useState<{ body: string; attempt: number; result: QueryResult<T> } | null>(null);
-  const retry = useCallback(() => setAttempt((n) => n + 1), []);
-  // 参数改变时即丢弃旧结果；快速切回原页也保持加载态，直到新查询完成。
-  if (snap !== null && (snap.body !== body || snap.attempt !== attempt)) setSnap(null);
-  useEffect(() => {
-    if (body === null) return;
-    const controller = new AbortController();
-    fetch("/dataset/page-tool", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body,
-      cache: "no-store",
-      signal: controller.signal,
-    })
-      .then(async (res) => {
-        const data = await res.json() as T & { ok?: boolean; error?: string };
-        if (!res.ok || data.ok !== true) throw new Error(data.error ?? `HTTP ${res.status}`);
-        if (!controller.signal.aborted) setSnap({ body, attempt, result: { status: "ready", data } });
-      })
-      .catch((error: unknown) => {
-        if (!controller.signal.aborted) setSnap({
-          body, attempt,
-          result: { status: "error", error: error instanceof Error ? error.message : String(error) },
-        });
-      });
-    return () => controller.abort();
-  }, [body, attempt]);
-  const result = snap?.body === body && snap.attempt === attempt ? snap.result : LOADING;
-  return { result, retry };
-}
-
 /** 弹窗每次打开查询单字全文；entry=null 表示库中未收录。 */
 export function useCrawlEntry(head: string) {
-  return useCrawlQuery<{ entry: CrawlEntryRecord | null }>(
+  return usePageToolQuery<{ entry: CrawlEntryRecord | null }>(
     JSON.stringify({ action: "crawl-entry", codepoint: head.codePointAt(0) }),
   );
 }
 
 /** heads=null 表示尚未采集；[] 才是已采集但本页没有新字头。 */
 export function useCrawlPageHeads(page: number | undefined) {
-  return useCrawlQuery<{ heads: CrawlPageHead[] | null }>(
+  return usePageToolQuery<{ heads: CrawlPageHead[] | null }>(
     page === undefined ? null : JSON.stringify({ action: "crawl-heads", page }),
+  );
+}
+
+/** 字体缺字时查询当前身份映射及已缓存 SVG，失败可重试。 */
+export function useCrawlGlyphs(chars: Set<string>) {
+  return usePageToolQuery<{ glyphs: Record<string, string> }>(
+    chars.size ? JSON.stringify({ action: "crawl-glyphs", codepoints: [...chars].map(ch => ch.codePointAt(0)).sort() }) : null,
   );
 }

@@ -1,6 +1,7 @@
 # kangxi-gold：康熙字典自建精标金标
 
-康熙字典**武英殿版** 45 页（@312–@358，不含 329、337）的文本级开发语料。
+康熙字典**武英殿版**文本级开发语料。以下规模为 2026-11-16 的 45 页基线
+（@312–@358，不含 329、337）；当前页数与校对状态以 manifest 为准。
 最初 17 页（@312–@328）来自一部样例，现已逐页扩充并完成初校；manifest 中均为 `first`，
 不表示已经完成独立终校。评测协议见 [综合调研报告 §11](../docs/research/README.md#evaluation)。
 
@@ -9,7 +10,7 @@
 | 规模 | 45 页，正文 15,266 个非空白 Unicode 码点（含扩展 B 区） |
 | 图片 | 整页扫描 JPEG（1130px 宽），共 22.80 MiB，存于 WD-2T（见下） |
 | 标注来源 | 初始样例加逐页扩充／人工修订；`annotations/*.gj` 为转写源 |
-| 标注格式 | Guji IR v3，JSON/TXT 均与当前 `.gj` 同步 |
+| 标注格式 | `.gj` 为源，IR/TXT 按需派生；磁盘 JSON/TXT 为显式导出快照 |
 | 当前版式 | 360 band；45 页均为 8 大列、16 格宽、24 格高 |
 
 2026-11-16：用户修复了 318／320／322／325／327 的分段错误，对应 JSON/TXT 已同步，
@@ -26,7 +27,7 @@ kangxi-gold/
   annotations/NNNN.json    结构化金标（IR v3 骨架 + overlays）
   annotations/NNNN.txt     阅读序纯文本（CER 参考文本）
   scripts/download_pages.py   下载扫描图（限速、校验、断点续传、维护 manifest）
-  scripts/build_annotations.ts 拆页 + IR 派生 + 样例与旧解析器对照
+  scripts/build_annotations.ts 从当前 .gj 显式导出 JSON/TXT（不修改源或清单）
   scripts/verify_dataset.py    数据集一致性校验
   scripts/eval_cer.py          严格 CER 评测（对接 paddleocr-baseline 输出）
 图片不在 git 内：/Volumes/WD-2T/guji-ocr/raw/kangxizidian/pages/NNNN.jpg
@@ -49,14 +50,15 @@ kangxi-gold/
 
 - 经 guji-preview-grid「添加新页」录入：`tools/dataset/kangxi_page_tool.py` 以 sqlite
   （`var/crawl/kangxi-crawl.sqlite3`，已有数据零联网）+ 站点增量爬取生成 .gj 草稿，
-  manifest 记 `status`；草稿页校对完成后跑 `build_annotations.ts --allow-drift`
-  同步 json/txt（样例外附加页自动处理），`verify_dataset.py` 默认按 manifest 页清单校验
+  manifest 记 `status`；校对保存只写 `.gj`。`verify_dataset.py` 和默认 CER 评测
+  按 manifest 逐页读取 `.gj`，缺源或页号不符直接报错，不依赖快照是否齐全
 - 页标签：`draft` 草稿（爬取生成）→ `first` 初校（人工校对过）→ `final` 精校
   （复核确认）；v1 的 17 页（312–328）定为初校
 - `NNNN.json` 为 **Guji IR v3**（骨架/overlay 双层：页→大行→小行，大字/小字/合字元素；圆圈与书名为文档级 overlay（行+码点区间），
   text 保留标点，清洗口径在 `meta.profile`，`lineLayout: fold` 声明小行=转写折行；设计见
   [docs/design/guji-ir.md](../docs/design/guji-ir.md)），manifest 记
-  `annotations_schema: guji-ir/3`；`eval_cer.py --from-ir` 可直接读 IR 作参考文本
+  `annotations_schema: guji-ir/3`；`eval_cer.py --from-ir` 显式评测历史 IR 快照，
+  `--snapshot` 显式评测 TXT 快照，默认对有 manifest 的数据集使用当前 `.gj`
 
 ## 标注规范
 
@@ -84,16 +86,11 @@ kangxi-gold/
 # 1. 下载/补齐图片（WD-2T 需挂载；可用 --images-dir 换路径）
 python3 scripts/download_pages.py
 
-# 2. 重建标注
-#    严格模式（默认）：以 guji-preview-grid 样例为唯一源重新生成三件套，
-#    与 fixture 零漂移校验；检测到人工修订页会拒绝执行（防覆盖）
+# 2. 可选：显式导出 JSON/TXT。始终以 manifest 指定的 .gj 为源；不改写源或清单。
+#    --pages 312,367 可只导出选定页；旧 --allow-drift 参数仅兼容，不改变行为。
 npx -y tsx scripts/build_annotations.ts
-#    --allow-drift：人工修订模式——annotations/NNNN.gj（如经 guji-preview-grid
-#    数据集对照页保存的校对）视为源，不被样例覆盖，json/txt 从修订版重新生成，
-#    修订页列入 drift 清单供 git diff 审查
-npx -y tsx scripts/build_annotations.ts --allow-drift
 
-# 3. 校验数据集一致性
+# 3. 校验当前源和图片；--snapshots 额外检查导出快照是否与当前源一致。
 python3 -I scripts/verify_dataset.py
 # 另在仓库根目录执行派生文件与几何检查（不修改语料）
 # node tools/eval/audit_gj_layout.mjs --check --strict-layout

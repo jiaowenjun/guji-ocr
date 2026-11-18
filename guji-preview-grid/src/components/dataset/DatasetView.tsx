@@ -1,5 +1,6 @@
+import { callPageTool } from "@/lib/page-tool";
 // 数据集对照视图：扫描原图 | 刻本渲染 | .gj 编辑器 三列对照
-// 数据访问层由 scripts/link-dataset.sh 生成（public/dataset/ 符号链接 + index.json），
+// 清单经本地 API 读取 manifest；scripts/link-dataset.sh 只准备资源符号链接，
 // 保存经 vite.config.ts 的 datasetSave dev 中间件写回 kangxi-gold/annotations/NNNN.gj。
 // 渲染列宽度跟随原图列显示宽：unit = (显示宽 − 2px) / 横向字格数（pageColumns）。
 import {
@@ -47,7 +48,7 @@ const STATUS_META: Record<PageEntry["status"] & string, { label: string; dot: st
 
 const stem = (page: number) => String(page).padStart(4, "0");
 
-/** 页清单（public/dataset/index.json） */
+/** 当前 manifest 页清单及配置（只读 API） */
 function useDatasetIndex() {
   const [config, setConfig] = useState<DatasetConfig | null>(null);
   const [index, setIndex] = useState<PageEntry[] | null>(null);
@@ -55,8 +56,7 @@ function useDatasetIndex() {
   const [reloadKey, setReloadKey] = useState(0);
   useEffect(() => {
     let alive = true;
-    fetch("/dataset/index.json")
-      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
+    callPageTool<{ source?: string; config?: unknown; pages: PageEntry[] }>({ action: "dataset-index" })
       .then((data: { source?: string; config?: unknown; pages: PageEntry[] }) => {
         const selected = resolveDatasetIndexConfig(data.config, data.source);
         if (alive) {
@@ -210,18 +210,10 @@ export function DatasetView({
     setAddBusy(true);
     setStatus(null);
     try {
-      const res = await fetch("/dataset/page-tool", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ action: "add", page: n }),
-      });
-      const data = (await res.json().catch(() => ({}))) as {
-        ok?: boolean;
-        error?: string;
+      const data = await callPageTool<{
         counts?: { chars: number; unencoded: number; with_text: number };
         summaries?: string[];
-      };
-      if (!res.ok || !data.ok) throw new Error(data.error ?? `HTTP ${res.status}`);
+      }>({ action: "add", page: n });
       const { counts, summaries } = data;
       reload();
       setJumpTo(n);
@@ -238,17 +230,11 @@ export function DatasetView({
     }
   };
 
-  /** 改页标签（kangxi_page_tool.py 写 manifest + index.json），成功后刷新清单 */
+  /** 改页标签（只写 manifest），成功后重新查询清单 */
   const setStatusOf = async (to: NonNullable<PageEntry["status"]>) => {
     if (page === undefined) return;
     try {
-      const res = await fetch("/dataset/page-tool", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ action: "status", page, status: to }),
-      });
-      const data = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string };
-      if (!res.ok || !data.ok) throw new Error(data.error ?? `HTTP ${res.status}`);
+      await callPageTool({ action: "status", page, status: to });
       reload();
       setStatus({ ok: true, msg: `@${page} 标签已改为「${STATUS_META[to].label}」` });
     } catch (e) {
@@ -273,7 +259,7 @@ export function DatasetView({
       if (!res.ok || !data.ok) throw new Error(data.error ?? `HTTP ${res.status}`);
       put(page, body); // 立即可见，避免再等 fetch
       setEdits(({ [page]: _drop, ...rest }) => rest);
-      setStatus({ ok: true, msg: okMsg ?? `已保存 ${stem(page)}.gj；重跑 build_annotations.ts 同步 json/txt` });
+      setStatus({ ok: true, msg: okMsg ?? `已保存 ${stem(page)}.gj` });
     } catch (e) {
       setStatus({ ok: false, msg: e instanceof Error ? e.message : String(e) });
     } finally {
@@ -313,7 +299,7 @@ export function DatasetView({
     ]
       .filter(Boolean)
       .join("；");
-    void save(formatted, `@${page} 已格式化（${detail}）并保存 ${stem(page)}.gj；重跑 build_annotations.ts 同步 json/txt`);
+    void save(formatted, `@${page} 已格式化（${detail}）并保存 ${stem(page)}.gj`);
   };
 
   /** 显示 OCR 结果：弹窗展示该页 OCR markdown */
@@ -321,13 +307,7 @@ export function DatasetView({
     if (page === undefined) return;
     setStatus(null);
     try {
-      const res = await fetch("/dataset/page-tool", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ action: "ocr-view", page }),
-      });
-      const data = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string; markdown?: string | null; hint?: string };
-      if (!res.ok || !data.ok) throw new Error(data.error ?? `HTTP ${res.status}`);
+      const data = await callPageTool<{ markdown: string | null; hint?: string }>({ action: "ocr-view", page });
       setOcrView(data.markdown ?? data.hint ?? "（无内容）");
     } catch (e) {
       setStatus({ ok: false, msg: e instanceof Error ? e.message : String(e) });
@@ -341,8 +321,7 @@ export function DatasetView({
         <p>{error ? "数据集访问层读取失败" : "正在读取数据集清单…"}</p>
         {error ? (
           <p className="text-xs">
-            先运行 <code className="bg-muted rounded px-1">bash scripts/link-dataset.sh</code>
-            （需挂载存放扫描图的外置盘），再刷新页面
+            {error}；请确认本地开发服务可用后刷新页面
           </p>
         ) : null}
       </div>

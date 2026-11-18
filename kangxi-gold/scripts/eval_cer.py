@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""严格 CER 评测：kangxi-gold 金标 TXT vs OCR 输出文本。
+"""严格 CER 评测：当前 manifest 的 .gj 派生文本 vs OCR 输出文本。
+
+默认通过 Node 生产解析器派生；--snapshot / --from-ir 显式评测已导出的历史文件。
+无 manifest 的外部目录仍按 TXT 快照读取。
 
 对接 paddleocr-baseline 批量输出约定（batch_ocr.py 每图产出 <stem>.md），
 图片名为 NNNN.jpg → OCR 文件 NNNN.md，页码即 int(stem)。
@@ -16,14 +19,18 @@
 用法：
   python3 -I eval_cer.py --ocr-dir <目录> [--gold-dir kangxi-gold/annotations] [--json OUT]
   python3 -I eval_cer.py --self-test
-退出码：0 评测完成；2 用法错误。仅依赖标准库。
+退出码：0 评测完成；2 用法错误。Python 使用标准库，实时派生需 Node。
 """
 from __future__ import annotations
 
 import argparse
 import json
 import sys
+
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from annotation_source import derive_annotations
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_GOLD = REPO_ROOT / "kangxi-gold" / "annotations"
@@ -105,14 +112,18 @@ def ir_reference(path: Path) -> str:
     return "\n".join(lines) + "\n" if lines else ""
 
 
-def evaluate(gold_dir: Path, ocr_dir: Path, from_ir: bool = False):
-    pattern = "*.json" if from_ir else "*.txt"
-    gold_pages = {int(p.stem): p for p in sorted(gold_dir.glob(pattern)) if p.stem.isdigit()}
+def evaluate(gold_dir: Path, ocr_dir: Path, from_ir: bool = False, snapshot: bool = False):
+    if not snapshot and not from_ir and (gold_dir.parent / "manifest.json").is_file():
+        gold_pages = {page: row["text"] for page, row in derive_annotations(gold_dir.parent).items()}
+    else:
+        pattern = "*.json" if from_ir else "*.txt"
+        gold_pages = {int(p.stem): ir_reference(p) if from_ir else p.read_text(encoding="utf-8")
+                      for p in sorted(gold_dir.glob(pattern)) if p.stem.isdigit()}
     if not gold_pages:
-        sys.exit(f"2 金标目录无 NNNN.{ 'json' if from_ir else 'txt' }：{gold_dir}")
+        raise ValueError(f"No reference pages: {gold_dir}")
     rows = []
-    for page, gold_path in sorted(gold_pages.items()):
-        ref = clean(ir_reference(gold_path) if from_ir else gold_path.read_text(encoding="utf-8"))
+    for page, reference in sorted(gold_pages.items()):
+        ref = clean(reference)
         md = ocr_dir / f"{page:04d}.md"
         status = "ok"
         if not md.is_file():
@@ -163,6 +174,7 @@ def main() -> int:
     ap.add_argument("--ocr-dir", type=Path)
     ap.add_argument("--from-ir", action="store_true",
                     help="参考文本取 NNNN.json（Guji IR，含自带 profile）而非 NNNN.txt")
+    ap.add_argument("--snapshot", action="store_true", help="Evaluate explicitly exported TXT snapshots")
     ap.add_argument("--json", type=Path, help="机器可读结果输出路径")
     ap.add_argument("--self-test", action="store_true")
     args = ap.parse_args()
@@ -172,7 +184,7 @@ def main() -> int:
     if not args.ocr_dir:
         ap.error("需要 --ocr-dir（或 --self-test）")
 
-    rows = evaluate(args.gold_dir, args.ocr_dir, from_ir=args.from_ir)
+    rows = evaluate(args.gold_dir, args.ocr_dir, from_ir=args.from_ir, snapshot=args.snapshot)
     total_n = sum(r["n_ref"] for r in rows)
     total_ops = sum(r["S"] + r["D"] + r["I"] for r in rows)
     micro = total_ops / total_n if total_n else 0.0

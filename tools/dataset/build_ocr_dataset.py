@@ -59,7 +59,7 @@ def implementation_fingerprint():
     files += sorted((root/'guji-preview-grid/src/datasets').glob('*.ts'))
     files += [root/'kangxi-gold/dataset-config.json']
     files += [HERE/'kangxi_semantics.py']
-    files += [HERE/name for name in ('build_ocr_dataset.py', 'export_ocr_layout.mjs', 'ocr_render.py', 'ocr_scan.py')]
+    files += [HERE/name for name in ('build_ocr_dataset.py', 'export_ocr_layout.mjs', 'annotation_source.mjs', 'ocr_render.py', 'ocr_scan.py')]
     files += [root/'tools/eval/kangxi_column_seg.py', root/'guji-preview-grid/src/pua-registry.json']
     files += [root/'guji-preview-grid/public/fonts'/name for name in FONT_NAMES]
     versions = {'python': sys.version.split()[0], 'pillow': PIL.__version__, 'numpy': np.__version__,

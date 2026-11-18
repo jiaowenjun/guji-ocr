@@ -6,7 +6,7 @@
 page_ocr 均零等待命中。
 
 复用 kangxi_page_tool.page_ocr(page, model="paddle")：内部已含
-进程缓存 → 持久缓存（sha256 绑定扫描图）→ 服务在线时提交新 job 并回写；
+有效持久缓存（图片指纹、模型、正文完整性）→ 未命中则提交 job 并回写；
 本脚本只做跟随编排：
 - 待办 = 已爬有图且缓存缺失/失效的页，按页码升序（断点续跑天然成立）；
 - 每页间隔 1.2s（对本地服务礼貌，与 prefetch_ocr 同口径）；
@@ -35,9 +35,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import kangxi_log  # noqa: E402
 import kangxi_store  # noqa: E402
 import paths  # noqa: E402
-import kangxi_page_tool as kpt  # noqa: E402
 from kangxi_page_tool import ocr_service_up, page_ocr  # noqa: E402
-from prefetch_ocr import cache_valid  # noqa: E402
+from kangxi_page_tool import ocr_cache_valid as cache_valid  # noqa: E402
 
 RESTART_HINT = (
     "paddleocr-baseline 服务未运行（127.0.0.1:8010/health）。重启法见 "
@@ -56,7 +55,7 @@ def pending_pages(store: kangxi_store.KangxiStore) -> list[int]:
     with store._conn() as c:
         crawled = [r[0] for r in c.execute(
             "SELECT page FROM pages WHERE scan_sha256 IS NOT NULL ORDER BY page")]
-    return [p for p in crawled if not cache_valid(p)]
+    return [p for p in crawled if not cache_valid(p, store)]
 
 
 def main() -> int:
@@ -81,7 +80,7 @@ def main() -> int:
     events = kangxi_log.setup(args.events_file)
     kangxi_log.emit("worker_start", pid=__import__("os").getpid(), db=str(args.db),
                     idle_s=args.idle_seconds, breaker=args.breaker, once=args.once)
-    store = kangxi_store.KangxiStore()
+    store = kangxi_store.KangxiStore(args.db, readonly=True)
 
     done = fails = idle_rounds = 0
     consecutive = 0
@@ -89,10 +88,6 @@ def main() -> int:
     print(f"[{stamp()}] OCR 跟随任务启动：事件 {events}，空闲重扫 {args.idle_seconds:.0f}s", flush=True)
     try:
         while True:
-            # 每遍重扫先清 page_tool 的进程级负缓存：_ocr_markdown 会把失败页
-            # 记 ""（交互式短进程的设计），长驻 worker 不清则瞬断永久毒化、
-            # 上游恢复后也不再重试（2026-11-16 实测 3.4 万次空转）
-            kpt._OCR_CACHE.clear()
             pass_done = 0
             todo = pending_pages(store)
             if not todo:
@@ -110,7 +105,7 @@ def main() -> int:
             for page in todo:
                 t0 = time.monotonic()
                 try:
-                    md = page_ocr(page, model="paddle")
+                    md = page_ocr(page, model="paddle", store=store)
                 except Exception as e:  # 单页异常不断任务
                     md = None
                     kangxi_log.emit("ocr_error", page=page, error=f"{type(e).__name__}: {e}")
@@ -133,9 +128,9 @@ def main() -> int:
                     done += 1
                     pass_done += 1
                     secs = round(time.monotonic() - t0, 1)
-                    note = "无文本哨兵" if md == "" else f"{len(md)} 字符"
+                    note = f"{len(md)} 字符"
                     kangxi_log.emit("ocr_done", page=page, chars=len(md), seconds=secs,
-                                    cached=cache_valid(page))
+                                    cached=cache_valid(page, store))
                     print(f"[{stamp()}] @{page:04d} ✓ {note}（{secs}s）", flush=True)
                     if args.max_pages and done >= args.max_pages:
                         kangxi_log.emit("worker_exit", reason="max_pages", done=done)
@@ -143,7 +138,7 @@ def main() -> int:
                         return 0
                 time.sleep(1.2)  # 与 prefetch_ocr 同口径的页间限速
             # 整遍零成功 = 上游故障（本地 health 正常但 aistudio 报错/残缺）；
-            # 连续两遍即退出，避免清缓存后仍无限热空转
+            # 连续两遍即退出，避免上游残缺结果导致无限热空转
             if len(todo) > 20 and pass_done == 0:
                 dry_passes += 1
                 kangxi_log.emit("dry_pass", dry_passes=dry_passes, todo=len(todo))

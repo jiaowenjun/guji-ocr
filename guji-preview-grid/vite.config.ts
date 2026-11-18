@@ -97,15 +97,21 @@ function datasetPageTool(): Plugin {
     req.on('end', () => {
       let args: string[] | null = null
       try {
-        const { action, page, status, tail, codepoint } = JSON.parse(body) as {
+        const { action, page, status, tail, codepoint, codepoints } = JSON.parse(body) as {
           action?: unknown
           page?: unknown
           status?: unknown
           tail?: unknown
           codepoint?: unknown
+          codepoints?: unknown
         }
         const pageOk = /^\d{1,4}$/.test(String(page))
-        if (action === 'add' && pageOk) {
+        if (action === 'dataset-index') {
+          args = ['dataset-index']
+        } else if (action === 'crawl-glyphs' && Array.isArray(codepoints) && codepoints.length > 0 && codepoints.length <= 64
+          && codepoints.every(cp => Number.isInteger(cp) && cp >= 1 && cp <= 0x10FFFF && !(cp >= 0xD800 && cp <= 0xDFFF))) {
+          args = ['crawl-glyphs', '--codepoints', ...codepoints.map(String)]
+        } else if (action === 'add' && pageOk) {
           args = ['add', '--page', String(page)]
         } else if (action === 'crawl-heads' && pageOk && Number(page) >= 1 && Number(page) <= 7738) {
           args = ['crawl-heads', '--page', String(page)]

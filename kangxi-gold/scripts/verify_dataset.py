@@ -2,17 +2,15 @@
 """kangxi-gold 金标数据集一致性校验。
 
 校验项：
-  1. manifest.json 存在，pages 为连续页码（默认 312–328），字段齐全；
+  1. manifest.json 存在，页码唯一，字段齐全；
   2. 每页图片存在于 images_dir，sha256 与尺寸（JPEG 标记流现读）与 manifest 一致；
-  3. 每页三个标注文件存在：NNNN.gj / NNNN.json / NNNN.txt；
-  4. .gj 首个非空行是 @页码；
-  5. .json 可解析为 {p, l} 且 p == 页码；
-  6. .txt 非空、不含解析器剔除集内的标点（空白允许：* 转来的空格标记义项边界，
-     评测时两侧同规则去除）、不含制表符/控制字符。
+  3. manifest 指定的 .gj 必须存在，且解析后恰为对应单页；
+  4. 派生文本非空、不含解析器剔除的标点及控制字符；
+  5. --snapshots 额外检查显式导出的 JSON/TXT 是否与当前源一致。
 
 用法：
   python3 -I verify_dataset.py [--root kangxi-gold] [--pages 312-328]
-退出码：0 全部通过；1 存在失败项（逐条列出）。仅依赖标准库。
+退出码：0 全部通过；1 存在失败项（逐条列出）。派生复用 Node 生产解析器。
 """
 from __future__ import annotations
 
@@ -21,6 +19,9 @@ import hashlib
 import json
 import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from annotation_source import derive_annotations
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 PARSER_STRIP_SET = '。，·":：、《》'  # 与 guji-preview-grid/src/parser/split-line.ts 剔除集一致
@@ -49,6 +50,7 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--root", type=Path, default=REPO_ROOT / "kangxi-gold")
     ap.add_argument("--pages", default=None, help="默认取 manifest.json 的页清单（含新增页）")
+    ap.add_argument("--snapshots", action="store_true", help="Also check explicit JSON/TXT exports for freshness")
     args = ap.parse_args()
 
     manifest_path = args.root / "manifest.json"
@@ -65,6 +67,12 @@ def main() -> int:
         print("✗ manifest 页清单为空", file=sys.stderr)
         return 1
     errors: list[str] = []
+
+    try:
+        derived = derive_annotations(args.root)
+    except Exception as error:
+        print(f"Source derivation failed: {error}", file=sys.stderr)
+        return 1
 
     pages = {e["page"]: e for e in manifest.get("pages", [])}
 
@@ -85,9 +93,6 @@ def main() -> int:
             if key not in entry:
                 errors.append(f"{stem}: manifest 缺字段 {key}")
         ann = entry.get("annotations") or {}
-        for key in ("gj", "json", "txt"):
-            if key not in ann:
-                errors.append(f"{stem}: manifest.annotations 缺 {key}")
 
         img = images_dir / entry.get("image", f"{stem}.jpg")
         if img.is_file():
@@ -103,47 +108,23 @@ def main() -> int:
         else:
             errors.append(f"{stem}: 图片缺失 {img}")
 
-        gj = args.root / "annotations" / ann.get("gj", f"{stem}.gj")
-        js = args.root / "annotations" / ann.get("json", f"{stem}.json")
-        txt = args.root / "annotations" / ann.get("txt", f"{stem}.txt")
-        for p in (gj, js, txt):
-            if not p.is_file():
-                errors.append(f"{stem}: 标注缺失 {p}")
-        if gj.is_file():
-            # 首个非空、非注释行应是 @页码（与解析器语义一致：// 行会被剔除）
-            first = next(
-                (l.strip() for l in gj.read_text(encoding="utf-8").splitlines()
-                 if l.strip() and not l.strip().startswith("//")),
-                "",
-            )
-            if first != f"@{page}":
-                errors.append(f"{stem}: .gj 首个非空行 {first!r} ≠ @{page}")
-        if js.is_file():
-            try:
-                obj = json.loads(js.read_text(encoding="utf-8"))
-                # Guji IR v3：{version:3, meta, pages:[{no, bands:[{lines}]}], overlays[]}
-                ir_pages = obj.get("pages") if isinstance(obj, dict) else None
-                bands = ir_pages[0].get("bands") if ir_pages else None
-                if (
-                    obj.get("version") != 3
-                    or not isinstance(ir_pages, list)
-                    or len(ir_pages) != 1
-                    or ir_pages[0].get("no") != page
-                    or not isinstance(bands, list)
-                    or not all(isinstance(b.get("lines"), list) for b in bands)
-                    or not isinstance(obj.get("overlays"), list)
-                ):
-                    errors.append(f"{stem}: .json 非 guji-ir/1 结构（version={obj.get('version')}）")
-            except json.JSONDecodeError as e:
-                errors.append(f"{stem}: .json 解析失败：{e}")
-        if txt.is_file():
-            text = txt.read_text(encoding="utf-8")
-            if not text.strip():
-                errors.append(f"{stem}: .txt 为空")
-            hit = {ch for ch in text if ch in PARSER_STRIP_SET or ch == "\t" or (ord(ch) < 32 and ch != "\n")}
-            if hit:
-                errors.append(f"{stem}: .txt 含不应出现的字符 {sorted(hit)!r}")
-            total_chars += len("".join(text.split()))
+        row = derived[page]
+        text = row["text"]
+        if not text.strip():
+            errors.append(f"{stem}: empty derived text")
+        hit = {ch for ch in text if ch in PARSER_STRIP_SET or ch == "\t" or (ord(ch) < 32 and ch != "\n")}
+        if hit:
+            errors.append(f"{stem}: unexpected text characters {sorted(hit)!r}")
+        total_chars += len("".join(text.split()))
+        if args.snapshots:
+            for ext, expected in (("json", row["ir"]), ("txt", text)):
+                path = args.root / "annotations" / f"{stem}.{ext}"
+                try:
+                    actual = json.loads(path.read_text(encoding="utf-8")) if ext == "json" else path.read_text(encoding="utf-8")
+                    if actual != expected:
+                        errors.append(f"{stem}: stale {ext} snapshot; run explicit export")
+                except (OSError, ValueError) as error:
+                    errors.append(f"{stem}: {error}")
 
     for e in errors:
         print(f"✗ {e}", file=sys.stderr)

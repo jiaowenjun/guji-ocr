@@ -302,6 +302,16 @@ class KangxiStore:
             )
         return len(items)
 
+    def glyph_paths(self, codepoints: list[int]) -> list[dict]:
+        """按码位取本地缩略图候选，优先全典首见位置。"""
+        if not codepoints:
+            return []
+        with self._conn() as c:
+            return [dict(row) for row in c.execute(
+                f"SELECT codepoint, svg FROM page_chars WHERE codepoint IN ({','.join('?' for _ in codepoints)}) ORDER BY page, ord",
+                codepoints,
+            )]
+
     def get_page_chars(self, page: int) -> list[dict]:
         with self._conn() as c:
             return [dict(r) for r in c.execute(

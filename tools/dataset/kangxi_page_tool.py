@@ -12,17 +12,19 @@
                         「#头 / 古文 / #AB」，不匹配时 #□ 占位紧跟主字头；2 段名伴随
                         字形只留注释；OCR 标尺把溢出到下页的尾段裁掉，下页添加
                         时自动续入）→ 回补本页未编码字形 svg 缓存 →
-                        manifest.json 追加该页（status=draft）→ 重写
-                        guji-preview-grid/public/dataset/index.json
+                        manifest.json 追加该页（status=draft）
                         → 后台预取 N+1（独立进程 prefetch-run，不阻塞 add 退出）
   status --page N --to draft|first|final
-                        改页标签（草稿/初校/精校）并同步 manifest 与 index.json
+                        改页标签（草稿/初校/精校），只写 manifest
+  dataset-index         只读当前 manifest 和 dataset-config.json
+  crawl-glyphs --codepoints N ...
+                        按码位解析当前人工身份映射及本地 SVG
   crawl-heads --page N   只读查询本页爬取字头；heads=null 表示阅读页尚未采集
   crawl-entry --codepoint N
                         只读查询单个码位的词条详情；entry=null 表示未收录
   ocr-pages             各页 OCR/预取浅状态清单（预取调试视图数据源）：
                         数据集页 ∪ 已爬页 ∪ OCR 缓存页，每页含采集完整度、
-                        OCR 缓存三态（valid/stale/none）与元数据
+                        OCR 缓存状态（valid/stale/invalid/none）与元数据
   prefetch-status --page N
                         单页预取四步深查（只读现状，不抓取）：爬取/字头详情/
                         OCR/svg 存在性
@@ -41,14 +43,14 @@
                         库文蓝本对齐替换→按列切段终稿→金标对照——
                         OCR 骨架范式的各步骤与实证弱点展示
 
-按页码只读查询（供 import 的消费者 API，不走子命令）：
+按页码访问（供 import 的消费者 API，不走子命令）：
   page_image(page)       → PageImage(path, sha256) | None（扫描图，两级定位同 _scan_for）
   page_image_bytes(page) → bytes | None
   page_heads(page)       → list[dict]（char/codepoint/k_code/svg…，页面顺序，含未编码字形）
   entry_detail(head)     → dict | None（字头详情：pinyin/guwen/text_paragraphs…，收单字或码位）
-  page_ocr(page, model)  → str | None（OCR markdown；model 预留换引擎，当前仅 paddle）
+  page_ocr(page, model)  → str | None（执行识别：优先缓存，未命中提交服务并写缓存）
   page_columns(page)     → dict（列分割坐标：majors[8]/minors[16] 像素范围；失败含 error 键）
-  page_column_ocr(page)  → list[8] | None（按大列裁图分批 OCR：index/x1/x2/markdown，阅读序右→左）
+  page_column_ocr(page)  → list[8] | None（执行列级识别：持久保存部分成功，下次补失败列）
 用法：python3 kangxi_page_tool.py add --page 329
       sys.path.insert(0, "tools/dataset"); from kangxi_page_tool import page_image, page_heads
 仅依赖标准库。
@@ -59,6 +61,8 @@ import argparse
 import difflib
 import io
 import json
+import os
+import tempfile
 import time
 import uuid
 import re
@@ -80,7 +84,6 @@ EVAL = HERE.parent / "eval"
 REPO = HERE.parents[1]
 MANIFEST = REPO / "kangxi-gold" / "manifest.json"
 ANNOTATIONS = REPO / "kangxi-gold" / "annotations"
-INDEX_JSON = REPO / "guji-preview-grid" / "public" / "dataset" / "index.json"
 
 STATUS_LABELS = {"draft": "草稿", "first": "初校", "final": "精校"}
 
@@ -304,22 +307,24 @@ def parse_gj_bands(raw: str) -> tuple[list[str], list[list[str]]]:
     return head, bands
 
 
-def page_prefetch_state(page: int, store: kangxi_store.KangxiStore | None = None) -> dict:
+def page_prefetch_state(page: int, store: kangxi_store.KangxiStore | None = None, *, include_markdown: bool = False) -> dict:
     """给定页码 → 预取四步现状（只读，不抓取）：fetch/entries/ocr/svg。
 
     与 _prefetch_pipeline 四步一一对应，调试视图与 prefetch-status 子命令
     共用。svg 口径 = codepoint 为空的未编码字形（与回补 scope 同口径）。"""
-    s = store or kangxi_store.KangxiStore()
+    s = store or kangxi_store.KangxiStore(readonly=True)
     missing = s.page_missing(page, ("reading", "scan"))
     chars = page_heads(page, s)
     miss_entries = s.coded_chars_missing_entries(page)
-    ocr = _ocr_cache_meta(page, _page_sha(page, s))
+    snapshot = ocr_cache_snapshot(page, _page_sha(page, s))
+    ocr = {k: v for k, v in snapshot.items() if k != "markdown"}
     wanted = [c["svg"] for c in chars if c["codepoint"] is None and c.get("svg")]
     have = sum(1 for rel in wanted if (paths.RAW_KANGXI_SVG / rel).is_file())
     ocr_detail = {
         "valid": f"缓存有效（{ocr['chars']} 字，{ocr['fetched_at']}）",
         "stale": f"缓存失效（图已变或无图可比对，{ocr['chars']} 字）",
-        "none": "无 OCR 缓存（需预取或启动服务现算）",
+        "none": "无 OCR 缓存（需预取）",
+        "invalid": ocr["reason"],
     }[ocr["state"]]
     return {
         "page": page,
@@ -335,11 +340,11 @@ def page_prefetch_state(page: int, store: kangxi_store.KangxiStore | None = None
                                else "本页无未编码字形")},
         },
         "ocr": ocr,
+        **({"markdown": snapshot["markdown"], "hint": snapshot["reason"] + "；请执行预取"}
+           if include_markdown else {}),
     }
 
 
-_OCR_CACHE: dict[int, str] = {}
-_OCR_CACHE_DIR = paths.OCR_CACHE_DIR
 _MIN_OCR_CHARS = 20  # 整页 OCR 归一化下限：低于此视为服务残缺结果，不落缓存
 
 
@@ -375,7 +380,7 @@ def _page_sha(page: int, store: kangxi_store.KangxiStore) -> str:
 
 # ---- 按页码只读查询 API（供消费者 import；定位/数据口径与 add/OCR 链路一致）----
 # store 可选注入共享实例（add 链路逐函数传同一 store）；缺省现开——
-# KangxiStore.__init__ 每次跑建表脚本（executescript SCHEMA），循环调用务必注入。
+# 缺省只读连接，不初始化数据库；循环调用可注入共享 store。
 
 
 class PageImage(NamedTuple):
@@ -389,7 +394,7 @@ def page_image(page: int, store: kangxi_store.KangxiStore | None = None) -> Page
     定位两级回退同 _scan_for：crawl store 的 scan_file 优先，未登记页
     （如直接下载入库的 312–328）回退 manifest 的 images_dir；sha256 供缓存键。
     """
-    img, sha = _scan_for(page, store or kangxi_store.KangxiStore())
+    img, sha = _scan_for(page, store or kangxi_store.KangxiStore(readonly=True))
     return PageImage(img, sha) if img else None
 
 
@@ -406,7 +411,7 @@ def page_heads(page: int, store: kangxi_store.KangxiStore | None = None) -> list
     svg、page_seq…。快速展示：[c["char"] or "□" for c in page_heads(n)]。
     纯延续页（如 @332）站点不标字头，返回 []；金标页的人工校订以 .gj 为准。
     """
-    return (store or kangxi_store.KangxiStore()).get_page_chars(page)
+    return (store or kangxi_store.KangxiStore(readonly=True)).get_page_chars(page)
 
 
 def entry_detail(head: str | int, store: kangxi_store.KangxiStore | None = None) -> dict | None:
@@ -417,7 +422,7 @@ def entry_detail(head: str | int, store: kangxi_store.KangxiStore | None = None)
     「、」分隔）/text_paragraphs（释义段，有序）/juan/unihan/cangjie 等。
     raw_html 不含（体积），需要原始页走 KangxiStore.get_entry。
     """
-    s = store or kangxi_store.KangxiStore()
+    s = store or kangxi_store.KangxiStore(readonly=True)
     row = s.get_entry(head) if isinstance(head, int) else s.get_entry_by_char(head)
     if row is None:
         return None
@@ -425,20 +430,19 @@ def entry_detail(head: str | int, store: kangxi_store.KangxiStore | None = None)
 
 
 def page_ocr(page: int, model: str = "paddle",
-             store: kangxi_store.KangxiStore | None = None) -> str | None:
+             store: kangxi_store.KangxiStore | None = None, *, force: bool = False) -> str | None:
     """给定页码 → 该页扫描图的 OCR 文本（markdown）；不可得返回 None。
 
     model 预留换 OCR 引擎，当前仅 "paddle"（本地 paddleocr-baseline 服务，
     http://127.0.0.1:8010），其他值抛 NotImplementedError。
-    读取顺序与 add/折行链路一致（_ocr_markdown）：进程内缓存 → 持久缓存
+    读取顺序与 add/折行链路一致（_ocr_markdown）：持久缓存
     （sha256 校验，prefetch_ocr.py 预填）→ 服务在线时提交新 job 现算并
     回写缓存；无图 / 服务未运行 / 超时 → None。
-    注意：持久缓存以图 sha256 校验、未区分模型——接入新模型时须把模型名
-    纳入缓存键与校验，避免 paddle 结果被新引擎误读。
+    持久缓存同时校验图片指纹、模型和正文完整性。
     """
     if model != "paddle":
         raise NotImplementedError(f"OCR 模型 {model} 暂不可用（当前仅 paddle）")
-    return _ocr_markdown(page, store or kangxi_store.KangxiStore())
+    return _ocr_markdown(page, store or kangxi_store.KangxiStore(readonly=True), force=force)
 
 
 def _column_seg():
@@ -471,125 +475,142 @@ def page_columns(page: int, store: kangxi_store.KangxiStore | None = None) -> di
     return _column_seg().segment(page, img_path=str(img.path))
 
 
-_COLUMN_CACHE: dict[int, list[dict]] = {}
+def _atomic_json(path: Path, value: dict) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=path.parent,
+                                     prefix=f".{path.name}.", delete=False) as f:
+        tmp = Path(f.name)
+        try:
+            f.write(json.dumps(value, ensure_ascii=False) + "\n")
+            f.close()
+            os.replace(tmp, path)
+        finally:
+            tmp.unlink(missing_ok=True)
+
+
+def _read_cache(path: Path) -> dict | None:
+    try:
+        value = json.loads(path.read_text(encoding="utf-8"))
+        return value if isinstance(value, dict) else None
+    except (OSError, ValueError):
+        return None
+
+
+def _column_cache_read(page: int, sha: str, model: str = "paddle") -> list[dict] | None:
+    entry = _read_cache(paths.OCR_CACHE_DIR / "columns" / f"{page:04d}.json")
+    if not entry or not sha or entry.get("sha256") != sha or entry.get("model") != model:
+        return None
+    cols = entry.get("columns")
+    if (not isinstance(cols, list) or len(cols) != 8
+            or any(not isinstance(c, dict) or c.get("index") != i + 1
+                   or not isinstance(c.get("x1"), (int, float))
+                   or not isinstance(c.get("x2"), (int, float))
+                   or "markdown" not in c
+                   or (c["markdown"] is not None and not isinstance(c["markdown"], str))
+                   for i, c in enumerate(cols))):
+        return None
+    return cols
+
+
+def column_ocr_complete(columns: list[dict] | None) -> bool:
+    # 空串是成功但无文字；None 是提交失败，必须重试。
+    return bool(columns and len(columns) == 8
+                and all(isinstance(c.get("markdown"), str) for c in columns))
+
+
+def column_cache_valid(page: int, store: kangxi_store.KangxiStore | None = None) -> bool:
+    store = store or kangxi_store.KangxiStore(readonly=True)
+    return column_ocr_complete(_column_cache_read(page, _page_sha(page, store)))
 
 
 def page_column_ocr(page: int, model: str = "paddle",
                     store: kangxi_store.KangxiStore | None = None) -> list[dict] | None:
-    """给定页码 → 按大列分割成批 OCR：8 列各自的识别结果（阅读序，右→左）。
-
-    复用 page_columns 的分割坐标，把原图裁成 8 个大列条带（y 取 block 范围，
-    x 两侧各留 4px 余量防切笔画），逐列提交本地 OCR 服务（串行）。
-    返回 list[8]：{index（1=最右…8=最左）, x1, x2, markdown}；
-    markdown="" 为「成功终态但整列漏识」（@345 列6 wide 大字列实测：墨迹
-    ~44 字、输出空——确定性结果，照常缓存）；None 才是该列提交失败。
-    分割失败 / 无图 / 服务离线 / 全列失败 → None。
-    缓存 var/ocr-cache/columns/NNNN.json（图 sha256 + model 校验，命中零网络）；
-    存在 None 列不落盘（重跑只补失败列）；model 预留换引擎，当前仅 paddle。
-    """
+    """按列识别；持久保存部分成功结果，后续只补失败列。没有进程级负缓存。"""
     if model != "paddle":
         raise NotImplementedError(f"OCR 模型 {model} 暂不可用（当前仅 paddle）")
-    if page in _COLUMN_CACHE:
-        return _COLUMN_CACHE[page]
+    store = store or kangxi_store.KangxiStore(readonly=True)
+    cached = _column_cache_read(page, _page_sha(page, store), model)
+    if column_ocr_complete(cached):
+        return cached
     img_found = page_image(page, store)
-    if img_found is None:
+    if img_found is None or not ocr_service_up():
+        return cached
+    if img_found.sha256 != _page_sha(page, store):
+        cached = None
+    seg = page_columns(page, store)
+    if "error" in seg or len(seg.get("majors", [])) != 8:
         return None
-    cache_f = paths.OCR_CACHE_DIR / "columns" / f"{page:04d}.json"
-    if cache_f.exists():
-        try:
-            entry = json.loads(cache_f.read_text(encoding="utf-8"))
-        except (json.JSONDecodeError, OSError):
-            entry = None
-        if entry and entry.get("sha256") == img_found.sha256 and entry.get("model") == model:
-            _COLUMN_CACHE[page] = entry["columns"]
-            return entry["columns"]
-    if not ocr_service_up():
-        return None
-    seg = page_columns(page)
-    if "error" in seg:
-        return None
-    import io
-
     from PIL import Image
 
-    g = Image.open(img_found.path)
-    W = g.size[0]
-    _, by0, _, by1 = seg["block"]
     out: list[dict] = []
-    for j, maj in enumerate(seg["majors"]):
-        box = (max(0, maj["x1"] - 4), by0, min(W, maj["x2"] + 4), by1)
-        buf = io.BytesIO()
-        g.crop(box).save(buf, format="JPEG", quality=92)
-        md = ocr_submit_markdown(buf.getvalue(), f"{page:04d}-c{j + 1}.jpg")
-        out.append({"index": j + 1, "x1": maj["x1"], "x2": maj["x2"], "markdown": md})
+    with Image.open(img_found.path) as g:
+        _, by0, _, by1 = seg["block"]
+        for j, maj in enumerate(seg["majors"]):
+            box = [max(0, maj["x1"] - 4), by0, min(g.width, maj["x2"] + 4), by1]
+            old = cached[j] if cached else None
+            if old and old.get("box") == box and isinstance(old["markdown"], str):
+                out.append(old)
+                continue
+            buf = io.BytesIO()
+            g.crop(box).save(buf, format="JPEG", quality=92)
+            md = ocr_submit_markdown(buf.getvalue(), f"{page:04d}-c{j + 1}.jpg")
+            out.append({"index": j + 1, "x1": maj["x1"], "x2": maj["x2"],
+                        "box": box, "markdown": md})
     if all(c["markdown"] is None for c in out):
         return None
-    _COLUMN_CACHE[page] = out
-    if any(c["markdown"] is None for c in out):
-        return out  # 有提交失败列：不落盘，重跑只补失败列
-    cache_f.parent.mkdir(parents=True, exist_ok=True)
-    cache_f.write_text(
-        json.dumps({"page": page, "sha256": img_found.sha256, "model": model,
-                    "columns": out, "fetched_at": date.today().isoformat()},
-                   ensure_ascii=False) + "\n",
-        encoding="utf-8",
-    )
+    _atomic_json(paths.OCR_CACHE_DIR / "columns" / f"{page:04d}.json",
+                 {"page": page, "sha256": img_found.sha256, "model": model,
+                  "columns": out, "fetched_at": date.today().isoformat()})
     return out
 
 
-def _ocr_cache_read(page: int, store: kangxi_store.KangxiStore) -> str | None:
-    """持久缓存命中（sha256 与扫描图一致）→ markdown；空串哨兵=None；未命中=None。
+def ocr_text_valid(markdown: str) -> bool:
+    return len(_norm("".join(_ocr_groups(markdown)))) >= _MIN_OCR_CHARS
 
-    残缓存的 sha 也会匹配（图没变），但内容是服务侧残缺结果（@358 整页
-    只识别出单字「寧」）——归一化不足 _MIN_OCR_CHARS 视同未缓存，触发重试。
-    """
-    f = _OCR_CACHE_DIR / f"{page:04d}.json"
-    if not f.exists():
-        return None
-    try:
-        entry = json.loads(f.read_text(encoding="utf-8"))
-    except (json.JSONDecodeError, OSError):
-        return None
-    _, cur_sha = _scan_for(page, store)
-    if not entry.get("sha256") or entry["sha256"] != cur_sha:
-        return None  # 图已变（重爬），缓存失效
-    md = entry.get("markdown") or ""
-    if len(_norm("".join(_ocr_groups(md)))) < _MIN_OCR_CHARS:
-        return None
-    return md or None
+
+def ocr_cache_snapshot(page: int, cur_sha: str) -> dict:
+    """所有读侧、状态页、预取共用的有效性判定；旧缓存缺 model 按 paddle 解释。"""
+    f = paths.OCR_CACHE_DIR / f"{page:04d}.json"
+    entry = _read_cache(f)
+    state = "none"
+    reason = "尚无 OCR 缓存"
+    md = entry.get("markdown") if entry else None
+    if f.exists() and entry is None:
+        state, reason = "invalid", "OCR 缓存损坏"
+    elif entry is not None:
+        if not cur_sha or entry.get("sha256") != cur_sha or entry.get("model", "paddle") != "paddle":
+            state, reason = "stale", "图片或模型已变化"
+        elif not isinstance(md, str) or not ocr_text_valid(md):
+            state, reason = "invalid", "OCR 正文不足或结果残缺，需重新预取"
+        else:
+            state, reason = "valid", "缓存有效"
+    return {"state": state, "reason": reason,
+            "fetched_at": entry.get("fetched_at") if entry else None,
+            "chars": len(md) if isinstance(md, str) else 0,
+            "markdown": md if state == "valid" else None}
 
 
 def _ocr_cache_meta(page: int, cur_sha: str) -> dict:
-    """缓存三态与元数据（预取调试视图）：state ∈ valid|stale|none。
-
-    判据同 _ocr_cache_read（sha256 与当前图一致才 valid）；markdown 本身
-    不返回（体积），详情展示走 ocr-view。
-    """
-    f = paths.OCR_CACHE_DIR / f"{page:04d}.json"
-    if not f.exists():
-        return {"state": "none", "fetched_at": None, "chars": 0}
-    try:
-        entry = json.loads(f.read_text(encoding="utf-8"))
-    except (json.JSONDecodeError, OSError):
-        return {"state": "none", "fetched_at": None, "chars": 0}
-    state = "valid" if (entry.get("sha256") and cur_sha and entry["sha256"] == cur_sha) else "stale"
-    return {
-        "state": state,
-        "fetched_at": entry.get("fetched_at"),
-        "chars": len(entry.get("markdown") or ""),
-    }
+    return {k: v for k, v in ocr_cache_snapshot(page, cur_sha).items() if k != "markdown"}
 
 
-def ocr_cache_write(page: int, store: kangxi_store.KangxiStore, markdown: str) -> None:
-    _, sha = _scan_for(page, store)
-    if not sha:
-        return
-    _OCR_CACHE_DIR.mkdir(parents=True, exist_ok=True)
-    (_OCR_CACHE_DIR / f"{page:04d}.json").write_text(
-        json.dumps({"page": page, "sha256": sha, "markdown": markdown,
-                    "fetched_at": date.today().isoformat()}, ensure_ascii=False) + "\n",
-        encoding="utf-8",
-    )
+def _ocr_cache_read(page: int, store: kangxi_store.KangxiStore) -> str | None:
+    return ocr_cache_snapshot(page, _page_sha(page, store))["markdown"]
+
+
+def ocr_cache_valid(page: int, store: kangxi_store.KangxiStore | None = None) -> bool:
+    store = store or kangxi_store.KangxiStore(readonly=True)
+    return ocr_cache_snapshot(page, _page_sha(page, store))["state"] == "valid"
+
+
+def ocr_cache_write(page: int, store: kangxi_store.KangxiStore, markdown: str, *, sha: str | None = None) -> bool:
+    sha = sha or _page_sha(page, store)
+    if not sha or not ocr_text_valid(markdown):
+        return False
+    _atomic_json(paths.OCR_CACHE_DIR / f"{page:04d}.json",
+                 {"page": page, "sha256": sha, "model": "paddle", "markdown": markdown,
+                  "fetched_at": date.today().isoformat()})
+    return True
 
 
 def ocr_service_up() -> bool:
@@ -659,35 +680,19 @@ def ocr_submit_markdown(payload: bytes, filename: str) -> str | None:
     return md_text
 
 
-def _ocr_markdown(page: int, store: kangxi_store.KangxiStore) -> str | None:
-    """取该页扫描图的 OCR markdown（本地 paddleocr-baseline 服务）。
-
-    读取顺序：进程内缓存 → 本地持久缓存（scripts/prefetch_ocr.py 预填，
-    sha256 校验）→ 提交新 job（成功后回写持久缓存）。全程 ~0 网络等待当缓存命中。
-    服务未运行 / 提交失败 / 轮询超时 / 无文本 → 返回 None（调用方按需回退）。
-    """
-    cached = _OCR_CACHE.get(page)
-    if cached is not None:
-        return cached if cached != "" else None
-    persistent = _ocr_cache_read(page, store)
-    if persistent is not None:
-        _OCR_CACHE[page] = persistent
-        return persistent
+def _ocr_markdown(page: int, store: kangxi_store.KangxiStore, *, force: bool = False) -> str | None:
+    """执行路径：先读有效持久缓存，未命中才识别。失败不缓存，下次调用可重试。"""
+    if not force:
+        cached = _ocr_cache_read(page, store)
+        if cached is not None:
+            return cached
     img, sha = _scan_for(page, store)
     if img is None:
-        _OCR_CACHE[page] = ""
         return None
-    md_text = ocr_submit_markdown(img.read_bytes(), img.name)
-    if not md_text or len(_norm("".join(_ocr_groups(md_text)))) < _MIN_OCR_CHARS:
-        # 整页归一化后不足 20 字 = 服务侧残缺结果（@358 实测整页只返回
-        # 单字「寧」），视同无文本且绝不落持久缓存，避免坏结果长期遮蔽重试
-        _OCR_CACHE[page] = ""
+    md = ocr_submit_markdown(img.read_bytes(), img.name)
+    if not md or not ocr_cache_write(page, store, md, sha=sha):
         return None
-    _OCR_CACHE[page] = md_text
-    ocr_cache_write(page, store, md_text)
-    return md_text
-
-
+    return md
 
 
 _SIDE_STRIP_RE = re.compile(r"康熙字典|[子丑寅卯辰巳午未申酉戌亥]集[上中下]?")
@@ -785,7 +790,7 @@ def ocr_page_cut(
     调用方不应裁剪。文本始终以库内转写为准，OCR 只作范围标尺（全量测试：
     21 页 micro-CER 5.65%；干净链路 @332→333 裁剪与人工初校差 1 字）。
     判信规则见 _align_cut。"""
-    md_text = _ocr_markdown(page, store)
+    md_text = _ocr_cache_read(page, store)
     cand_n = _norm(text)
     if md_text is None:
         return None, len(cand_n), "OCR 不可用"
@@ -989,7 +994,7 @@ def ocr_fold_page_lines(page: int, bands: list[list[str]], store: kangxi_store.K
     纯逻辑在 _flatten_band/_structural_spans/_map_group_offsets/_apply_folds/
     _rebuild_bands（可单测），本函数只做 OCR 读取、对齐判信与组装。
     """
-    md_text = _ocr_markdown(page, store)
+    md_text = _ocr_cache_read(page, store)
     if md_text is None:
         return bands, "OCR 不可用，未折行"
     groups = _ocr_groups(md_text)
@@ -1336,7 +1341,7 @@ def cmd_ocr_fold(page: int, fold: bool = True) -> dict:
     build_draft_gj 内自动折行）。
 
     读取该页 .gj 的现有大行结构，按 OCR 行组插入换行——只插入换行、不改字符；
-    页面已有折行会被先去掉再按 OCR 重折（幂等）。写回 .gj 并刷新 json/txt。
+    页面已有折行会被先去掉再按 OCR 重折（幂等）。只写回 .gj，按需派生。
     """
     gj_path = ANNOTATIONS / f"{page:04d}.gj"
     raw = page_gj(page)
@@ -1346,6 +1351,7 @@ def cmd_ocr_fold(page: int, fold: bool = True) -> dict:
 
     head, bands = parse_gj_bands(raw)  # 头部（注释 + @页码 行）与正文大列带
 
+    page_ocr(page, store=store)
     folded, note = ocr_fold_page_lines(page, bands, store)
     if folded is not bands and fold:
         folded, rnote = ocr_regroup_bands(page, folded)
@@ -1363,30 +1369,15 @@ def cmd_ocr_fold(page: int, fold: bool = True) -> dict:
         parts.extend(lines)
     gj_path.write_text("\n".join(parts).rstrip() + "\n", encoding="utf-8")
 
-    # 同步 json/txt（build 的运行时断言管 IR 口径）
-    import subprocess as sp
-
-    r = sp.run(
-        ["npx", "-y", "tsx", str(REPO / "kangxi-gold/scripts/build_annotations.ts"), "--allow-drift"],
-        capture_output=True, text=True, timeout=900,
-        cwd=str(REPO),
-    )
-    if r.returncode != 0:
-        raise RuntimeError(f"build 同步失败：{r.stderr[-300:]}")
     return {"ok": True, "page": page, "note": note, "changed": True}
 
 
 def cmd_ocr_view(page: int) -> dict:
-    """返回该页的 OCR markdown（供前端弹窗展示）。"""
-    store = kangxi_store.KangxiStore()
-    found = page_image(page, store)
-    if found is None or not found.sha256:
-        raise RuntimeError(f"页 {page} 无扫描图（crawl store 与数据集清单均未登记）")
-    entry = page_ocr(page, "paddle", store)
-    if entry is None:
-        return {"ok": True, "page": page, "markdown": None,
-                "hint": "OCR 缓存未命中且服务未运行——先跑 tools/eval/prefetch_ocr.py 或启动服务"}
-    return {"ok": True, "page": page, "markdown": entry}
+    """只读 OCR 缓存。打开弹窗不提交识别任务。"""
+    store = kangxi_store.KangxiStore(readonly=True)
+    snapshot = ocr_cache_snapshot(page, _page_sha(page, store))
+    return {"ok": True, "page": page, "markdown": snapshot["markdown"],
+            "hint": f"{snapshot['reason']}；请在 OCR 预取页执行预取" if snapshot["state"] != "valid" else None}
 
 
 def cmd_ocr_pages() -> dict:
@@ -1396,7 +1387,7 @@ def cmd_ocr_pages() -> dict:
     （体积控制，详情走 ocr-view / prefetch-status）。当前图 sha 库内优先，
     未爬但有缓存的页回退 manifest（同 _scan_for 口径）。
     """
-    store = kangxi_store.KangxiStore()
+    store = kangxi_store.KangxiStore(readonly=True)
     rows = {r["page"]: r for r in store.page_rows()}
     manifest = load_manifest()
     ds_status = {p["page"]: p.get("status", "first") for p in manifest.get("pages", [])}
@@ -1427,7 +1418,7 @@ def cmd_ocr_pages() -> dict:
 
 def cmd_prefetch_status(page: int) -> dict:
     """单页预取四步深查（只读现状，不执行任何抓取）——薄壳，逻辑在 page_prefetch_state。"""
-    return {"ok": True, **page_prefetch_state(page)}
+    return {"ok": True, **page_prefetch_state(page, include_markdown=True)}
 
 
 def cmd_prefetch_run(page: int) -> dict:
@@ -1439,7 +1430,7 @@ def cmd_prefetch_run(page: int) -> dict:
     if not 1 <= page <= 7738:
         raise RuntimeError(f"页码 {page} 超出站点范围 1-7738")
     steps = _prefetch_pipeline(page)
-    return {"ok": all(s["ok"] for s in steps), "page": page, "steps": steps}
+    return {"ok": True, "completed": all(s["ok"] for s in steps), "page": page, "steps": steps}
 
 
 def cmd_prefetch_log(tail_n: int = 50) -> dict:
@@ -1530,7 +1521,7 @@ def cmd_pipeline_replay(page: int) -> dict:
     零写盘：不爬取、不落 .gj/manifest、不触发预取；数据补齐步只报现状。
     前页 .gj 用初校版（人工校订后的真值）——与当年 add 时的草稿前页不同，
     重放结果代表「管线对干净输入的行为」，供观察/调试/找错。"""
-    store = kangxi_store.KangxiStore()
+    store = kangxi_store.KangxiStore(readonly=True)
 
     # ① 数据现状（add 的补齐步只读版）
     chars = page_heads(page, store)
@@ -1594,19 +1585,19 @@ def cmd_ocr_skeleton_replay(page: int) -> dict:
     演示要点（评估实证）：替换完全的终稿字符≡蓝本（殊途同归）；分段为
     累计偏移推断，空列/漏识会雪崩（后续列界全错）；折行证据缺位
     （分列行组真值率仅 32%，见实验记录）。"""
-    store = kangxi_store.KangxiStore()
+    store = kangxi_store.KangxiStore(readonly=True)
 
     # ① 底稿：整页 OCR（剥邊題）
-    md = page_ocr(page, store=store)
+    md = _ocr_cache_read(page, store)
     if md is None:
-        raise RuntimeError(f"@{page} 整页 OCR 不可用（缓存未命中且服务未运行）")
+        raise RuntimeError(f"@{page} 整页 OCR 缓存不可用，请先执行预取")
     groups = _ocr_groups(md)
     ocr_n = _norm("".join(groups))
 
     # ② 分段：分列 OCR（列界 = 带界）
-    cols = page_column_ocr(page, store=store)
-    if cols is None:
-        raise RuntimeError(f"@{page} 分列 OCR 不可用（分割失败或服务未运行）")
+    cols = _column_cache_read(page, _page_sha(page, store))
+    if not column_ocr_complete(cols):
+        raise RuntimeError(f"@{page} 分列 OCR 缓存不完整，请先执行列级预取")
     _, gold_bands = parse_gj_bands(page_gj(page) or "")
     col_infos = []
     for j, c in enumerate(cols):
@@ -1754,14 +1745,10 @@ def _index_from_manifest(manifest: dict) -> dict:
     }
 
 
-def write_index(manifest: dict) -> None:
-    INDEX_JSON.parent.mkdir(parents=True, exist_ok=True)
-    config = json.loads((REPO / "kangxi-gold/dataset-config.json").read_text(encoding="utf-8"))
-    index = {**_index_from_manifest(manifest), "config": config}
-    INDEX_JSON.write_text(
-        json.dumps(index, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
+def cmd_dataset_index() -> dict:
+    """直接读取当前清单和配置；没有需要随写的前端快照。"""
+    config = json.loads((MANIFEST.parent / "dataset-config.json").read_text(encoding="utf-8"))
+    return {"ok": True, **_index_from_manifest(load_manifest()), "config": config}
 
 
 def _prefetch_pipeline(nxt: int) -> list[dict]:
@@ -1813,17 +1800,16 @@ def _prefetch_pipeline(nxt: int) -> list[dict]:
                 done("entries", False, f"退出码 {e.returncode}: {e.stderr[-200:]}")
             else:
                 rest = store.coded_chars_missing_entries(nxt)
-                done("entries", True, f"补抓 {len(missing)} 个字头详情，余缺 {len(rest)}")
+                done("entries", not rest, f"补抓 {len(missing)} 个字头详情，余缺 {len(rest)}")
         else:
             done("entries", True, "字头详情齐全（或该页无字头）")
-        # ③ OCR 预取（服务可用才跑；缓存命中则秒过）
-        pre = subprocess.run(
-            [sys.executable, str(EVAL / "prefetch_ocr.py"), "--pages", str(nxt), "--limit", "1"],
-            capture_output=True, text=True, timeout=900,
-        )
-        last = pre.stdout.strip().splitlines()[-1] if pre.stdout.strip() else pre.stderr[-200:]
-        logging.info(f"@{nxt} prefetch 完成: {last}")
-        done("ocr", pre.returncode == 0, last)
+        # ③ 直接复用识别入口，不再启动批量 CLI 子进程。
+        try:
+            markdown = page_ocr(nxt, store=store)
+            done("ocr", markdown is not None,
+                 f"正文 {len(markdown)} 字符" if markdown is not None else "识别失败或正文残缺，可重试")
+        except Exception as e:
+            done("ocr", False, f"异常 {type(e).__name__}: {e}")
         # ④ 字头 svg 回补（未编码字形图；缓存命中则零网络，失败仅记日志）
         try:
             import kangxi_svg_cache
@@ -1928,6 +1914,7 @@ def cmd_add(page: int) -> dict:
         scan_file = target
 
     # 前页未完字头续入（只读前页 .gj，不回写；站点 page_chars 不标延续字头）
+    page_ocr(page, store=store)
     continuation, cont_info = continuation_from_prev(page, store)
     if cont_info.get("skipped"):
         summaries.append(f"前页续入跳过：{cont_info['skipped']}")
@@ -1965,8 +1952,7 @@ def cmd_add(page: int) -> dict:
         key=lambda p: p["page"],
     )
     MANIFEST.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    write_index(manifest)
-    _log_ts(f"草稿+manifest+index 写盘完成（{gj_path.name}）")
+    _log_ts(f"草稿+manifest 写盘完成（{gj_path.name}）")
 
     # 后台预取 n+1：独立进程，不阻塞本进程退出（HTTP 响应 ~1s 内返回）
     prefetch_next_page(page)
@@ -1993,7 +1979,6 @@ def cmd_status(page: int, to: str) -> dict:
     else:
         raise RuntimeError(f"页 {page} 不在数据集中")
     MANIFEST.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    write_index(manifest)
     return {"ok": True, "page": page, "status": to, "label": STATUS_LABELS[to]}
 
 
@@ -2016,9 +2001,20 @@ def cmd_crawl_entry(codepoint: int, *, db_path: Path | None = None) -> dict:
     return {"ok": True, "codepoint": codepoint, "entry": entry_detail(codepoint, store)}
 
 
+def cmd_crawl_glyphs(codepoints: list[int], *, db_path: Path | None = None) -> dict:
+    if len(codepoints) > 64 or any(not 1 <= cp <= 0x10FFFF or 0xD800 <= cp <= 0xDFFF for cp in codepoints):
+        raise ValueError("无效 SVG 查询码位（最多 64 字）")
+    from crawl_glyphs import glyph_urls
+    store = kangxi_store.KangxiStore(db_path or kangxi_store.DEFAULT_DB, readonly=True)
+    return {"ok": True, "glyphs": glyph_urls(codepoints, store)}
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
+    sub.add_parser("dataset-index")
+    cg = sub.add_parser("crawl-glyphs")
+    cg.add_argument("--codepoints", type=int, nargs="+", required=True)
     a = sub.add_parser("add")
     a.add_argument("--page", type=int, required=True)
     s = sub.add_parser("status")
@@ -2047,12 +2043,16 @@ def main() -> int:
     args = ap.parse_args()
 
     try:
-        if args.cmd == "add":
+        if args.cmd == "dataset-index":
+            result = cmd_dataset_index()
+        elif args.cmd == "add":
             result = cmd_add(args.page)
         elif args.cmd == "crawl-heads":
             result = cmd_crawl_heads(args.page)
         elif args.cmd == "crawl-entry":
             result = cmd_crawl_entry(args.codepoint)
+        elif args.cmd == "crawl-glyphs":
+            result = cmd_crawl_glyphs(args.codepoints)
         elif args.cmd == "ocr-fold":
             result = cmd_ocr_fold(args.page)
         elif args.cmd == "ocr-view":

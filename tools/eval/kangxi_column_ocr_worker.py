@@ -5,9 +5,9 @@
 columns/NNNN.json——8 大列各自的识别结果（阅读序右→左），供列级对齐/
 折行分析零等待使用。
 
-复用 kangxi_page_tool.page_column_ocr(page, model="paddle")：内部已含
-进程缓存 → 列级持久缓存（图 sha256 + model 校验；存在失败列不落盘，
-重跑只补失败列）→ 服务在线时逐列提交；本脚本只做跟随编排：
+复用 kangxi_page_tool.page_column_ocr(page, model="paddle", store=store)：内部已含
+列级持久缓存（图 sha256 + model 校验，部分成功持久保存）→ 服务在线时
+只补失败列；本脚本只做跟随编排：
 - 待办 = 已爬有图且列缓存缺失/失效的页，按页码升序（断点续跑成立）；
 - 每页间隔 1.2s（与 prefetch_ocr 同口径；页内 8 列由 page_column_ocr 串行）；
 - 无待办时休眠 --idle-seconds 重扫（新页由爬虫持续供给）；
@@ -34,7 +34,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import kangxi_log  # noqa: E402
 import kangxi_store  # noqa: E402
 import paths  # noqa: E402
-from kangxi_page_tool import ocr_service_up, page_column_ocr, page_image  # noqa: E402
+from kangxi_page_tool import ocr_service_up, page_column_ocr, column_cache_valid, column_ocr_complete  # noqa: E402
 
 RESTART_HINT = (
     "paddleocr-baseline 服务未运行（127.0.0.1:8010/health）。重启法见 "
@@ -42,26 +42,10 @@ RESTART_HINT = (
     "cd paddleocr-baseline && OCR_TOKEN=$TOKEN nohup .venv/bin/python "
     "-m paddleocr_baseline >> data/service.log 2>&1 &"
 )
-COLUMN_CACHE_DIR = paths.OCR_CACHE_DIR / "columns"
 
 
 def stamp() -> str:
     return datetime.now().strftime("%H:%M:%S")
-
-
-def column_cache_valid(page: int) -> bool:
-    """列缓存存在且 sha256/model 与当前扫描图一致（与 page_column_ocr 读侧同口径）。"""
-    f = COLUMN_CACHE_DIR / f"{page:04d}.json"
-    if not f.exists():
-        return False
-    try:
-        entry = json.loads(f.read_text(encoding="utf-8"))
-    except (json.JSONDecodeError, OSError):
-        return False
-    img = page_image(page)
-    return bool(entry and img is not None
-                and entry.get("sha256") == img.sha256
-                and entry.get("model") == "paddle")
 
 
 def pending_pages(store: kangxi_store.KangxiStore) -> list[int]:
@@ -69,7 +53,7 @@ def pending_pages(store: kangxi_store.KangxiStore) -> list[int]:
     with store._conn() as c:
         crawled = [r[0] for r in c.execute(
             "SELECT page FROM pages WHERE scan_sha256 IS NOT NULL ORDER BY page")]
-    return [p for p in crawled if not column_cache_valid(p)]
+    return [p for p in crawled if not column_cache_valid(p, store)]
 
 
 def main() -> int:
@@ -94,7 +78,7 @@ def main() -> int:
     events = kangxi_log.setup(args.events_file)
     kangxi_log.emit("worker_start", pid=__import__("os").getpid(), db=str(args.db),
                     idle_s=args.idle_seconds, breaker=args.breaker, once=args.once)
-    store = kangxi_store.KangxiStore()
+    store = kangxi_store.KangxiStore(args.db, readonly=True)
 
     done = fails = 0
     consecutive = 0
@@ -118,12 +102,12 @@ def main() -> int:
             for page in todo:
                 t0 = time.monotonic()
                 try:
-                    cols = page_column_ocr(page, model="paddle")
+                    cols = page_column_ocr(page, model="paddle", store=store)
                 except Exception as e:  # 单页异常不断任务
                     cols = None
                     kangxi_log.emit("ocr_error", page=page, error=f"{type(e).__name__}: {e}")
                     print(f"[{stamp()}] @{page:04d} ✗ 异常 {type(e).__name__}: {e}", file=sys.stderr, flush=True)
-                if cols is None:
+                if not column_ocr_complete(cols):
                     fails += 1
                     consecutive += 1
                     kangxi_log.emit("ocr_fail", page=page, consecutive=consecutive)
@@ -144,7 +128,7 @@ def main() -> int:
                     chars = sum(len(c.get("markdown") or "") for c in cols)
                     kangxi_log.emit("ocr_done", page=page, columns=len(cols), chars=chars,
                                     empty_columns=empty, seconds=secs,
-                                    cached=column_cache_valid(page))
+                                    cached=column_cache_valid(page, store))
                     print(f"[{stamp()}] @{page:04d} ✓ {len(cols)} 列 / {chars} 字符"
                           f"（空列 {empty}，{secs}s）", flush=True)
                     if args.max_pages and done >= args.max_pages:

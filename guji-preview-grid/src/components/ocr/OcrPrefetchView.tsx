@@ -1,6 +1,8 @@
+import { usePageToolQuery } from "@/hooks/use-page-tool-query";
+import { callPageTool as callTool } from "@/lib/page-tool";
 // OCR 预取调试视图：多页 OCR 结果对照浏览 + prefetch_next_page 链路可视化。
 // 数据源全部走 /dataset/page-tool（dev 中间件 → tools/dataset/kangxi_page_tool.py）：
-//   ocr-pages 列表浅状态 / prefetch-status 单页四步深查 / ocr-view 单页 markdown /
+//   ocr-pages 列表浅状态 / prefetch-status 单页状态与 markdown /
 //   prefetch-run 手动执行链路（同步等待）/ prefetch-log 日志时间线（10s 轮询）。
 // 与校对视图（DatasetView）共用状态配色；本视图只读展示 + 手动预取，不写 .gj。
 import { useCallback, useEffect, useState } from "react";
@@ -32,6 +34,7 @@ const STATUS_META: Record<string, { label: string; dot: string }> = {
 const OCR_STATE_META: Record<string, { label: string; text: string }> = {
   valid: { label: "OCR ✓", text: "text-emerald-600" },
   stale: { label: "OCR ⚠ 失效", text: "text-amber-600" },
+  invalid: { label: "OCR ⚠ 残缺", text: "text-amber-600" },
   none: { label: "OCR ✗", text: "text-muted-foreground" },
 };
 
@@ -42,7 +45,7 @@ type PageRow = {
   has_scan: boolean;
   chars_n: number;
   entries_missing_n: number;
-  ocr_state: "valid" | "stale" | "none";
+  ocr_state: "valid" | "stale" | "invalid" | "none";
   ocr_fetched_at: string | null;
   ocr_chars: number;
 };
@@ -51,6 +54,8 @@ type StepInfo = { ok: boolean; detail: string };
 
 type PrefetchStatus = {
   page: number;
+  markdown: string | null;
+  hint?: string;
   steps: { fetch: StepInfo; entries: StepInfo; ocr: StepInfo; svg: StepInfo };
 };
 
@@ -64,18 +69,6 @@ const FILTERS: { value: Filter; label: string }[] = [
 ];
 
 const stem = (page: number) => String(page).padStart(4, "0");
-
-/** 统一调 page-tool：非 2xx / ok:false 抛异常（消息直接进状态条） */
-async function callTool<T>(body: Record<string, unknown>): Promise<T> {
-  const res = await fetch("/dataset/page-tool", {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify(body),
-  });
-  const data = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string };
-  if (!res.ok || !data.ok) throw new Error(data.error ?? `HTTP ${res.status}`);
-  return data as T;
-}
 
 function StepBadge({ label, step }: { label: string; step: StepInfo }) {
   const Icon = step.ok ? CheckCircle2 : XCircle;
@@ -97,18 +90,13 @@ export function OcrPrefetchView() {
   const [reloadKey, setReloadKey] = useState(0);
   const [filter, setFilter] = useState<Filter>("all");
   const [selected, setSelected] = useState<number | null>(null);
-  // 选中页深查结果带页码（渲染时按页取用）：切换页码无需在 effect 里同步
-  // 清空旧值，避免 set-state-in-effect 级联渲染
-  const [status, setStatus] = useState<{ page: number; data: PrefetchStatus } | null>(null);
-  const [md, setMd] = useState<{ page: number; text: string | null; hint: string | null } | null>(
-    null,
+  const { result: detail } = usePageToolQuery<PrefetchStatus>(
+    selected === null ? null : JSON.stringify({ action: "prefetch-status", page: selected }), reloadKey,
   );
   const [log, setLog] = useState<{ total: number; lines: string[] } | null>(null);
   const [runInput, setRunInput] = useState("");
   const [runBusy, setRunBusy] = useState(false);
   const [runTarget, setRunTarget] = useState<number | null>(null);
-  // 选中页状态的强制刷新键：手动预取完成后 selected 不变，effect 需外部键触发重拉
-  const [statusKey, setStatusKey] = useState(0);
   const [msg, setMsg] = useState<{ ok: boolean; msg: string } | null>(null);
 
   const reload = useCallback(() => setReloadKey((k) => k + 1), []);
@@ -120,18 +108,14 @@ export function OcrPrefetchView() {
     return () => clearTimeout(t);
   }, [msg]);
 
-  // 页清单 + 日志首次加载；清单就绪后默认选数据集末页（预取调试关注点）
+  // 清单就绪后默认选数据集末页（预取调试关注点）
   useEffect(() => {
     let alive = true;
     (async () => {
       try {
-        const [list, lg] = await Promise.all([
-          callTool<{ pages: PageRow[] }>({ action: "ocr-pages" }),
-          callTool<{ total: number; lines: string[] }>({ action: "prefetch-log", tail: 50 }),
-        ]);
+        const list = await callTool<{ pages: PageRow[] }>({ action: "ocr-pages" });
         if (!alive) return;
         setPages(list.pages);
-        setLog(lg);
         setLoadError(null);
         setSelected((cur) => {
           if (cur !== null && list.pages.some((p) => p.page === cur)) return cur;
@@ -147,49 +131,23 @@ export function OcrPrefetchView() {
     };
   }, [reloadKey]);
 
-  // 选中页深查：四步状态 + OCR markdown（命中缓存零开销）
-  useEffect(() => {
-    if (selected === null) return;
-    let alive = true;
-    (async () => {
-      try {
-        const [st, view] = await Promise.all([
-          callTool<PrefetchStatus>({ action: "prefetch-status", page: selected }),
-          callTool<{ markdown: string | null; hint?: string }>({ action: "ocr-view", page: selected }),
-        ]);
-        if (!alive) return;
-        setStatus({ page: selected, data: st });
-        setMd({
-          page: selected,
-          text: view.markdown,
-          hint: view.markdown ? null : (view.hint ?? "（无内容）"),
-        });
-      } catch (e) {
-        if (!alive) return;
-        setMd({
-          page: selected,
-          text: null,
-          hint: e instanceof Error ? e.message : String(e),
-        });
-      }
-    })();
-    return () => {
-      alive = false;
-    };
-  }, [selected, statusKey]);
-
   // 日志轮询（挂载期间 10s；手动预取完成后立即刷一次）
   useEffect(() => {
+    const controller = new AbortController();
+    let id: ReturnType<typeof setTimeout>;
     const tick = async () => {
       try {
-        setLog(await callTool<{ total: number; lines: string[] }>({ action: "prefetch-log", tail: 50 }));
+        const result = await callTool<{ total: number; lines: string[] }>({ action: "prefetch-log", tail: 50 }, controller.signal);
+        if (!controller.signal.aborted) setLog(result);
       } catch {
         /* 轮询失败静默（清单加载的错误提示已覆盖桥接故障场景） */
+      } finally {
+        if (!controller.signal.aborted) id = setTimeout(tick, 10_000);
       }
     };
-    const id = setInterval(tick, 10_000);
-    return () => clearInterval(id);
-  }, []);
+    void tick();
+    return () => { controller.abort(); clearTimeout(id); };
+  }, [reloadKey]);
 
   /** 手动预取：同步执行四步链路，完成后刷新该页状态与日志（未爬页会联网爬取） */
   const runPrefetch = async (page: number) => {
@@ -204,12 +162,10 @@ export function OcrPrefetchView() {
       const detail = r.steps.map((s) => `${s.step}${s.ok ? "✓" : "✗"} ${s.detail}`).join("；");
       setMsg({ ok: r.steps.every((s) => s.ok), msg: `@${page} 预取完成：${detail}` });
       setSelected(page);
-      setStatusKey((k) => k + 1);
-      reload();
-      setLog(await callTool<{ total: number; lines: string[] }>({ action: "prefetch-log", tail: 50 }));
     } catch (e) {
       setMsg({ ok: false, msg: e instanceof Error ? e.message : String(e) });
     } finally {
+      reload();
       setRunBusy(false);
       setRunTarget(null);
     }
@@ -238,14 +194,16 @@ export function OcrPrefetchView() {
   const visible = pages.filter((p) => {
     if (filter === "dataset") return !!p.dataset_status;
     if (filter === "no-ocr") return p.ocr_state === "none";
-    if (filter === "stale") return p.ocr_state === "stale";
+    if (filter === "stale") return p.ocr_state === "stale" || p.ocr_state === "invalid";
     return true;
   });
   const validCount = pages.filter((p) => p.ocr_state === "valid").length;
   const entry = pages.find((p) => p.page === selected) ?? null;
   // 深查结果按选中页取用（页码不匹配 = 切换中，显示加载态）
-  const curStatus = status?.page === selected ? status.data : null;
-  const curMd = md?.page === selected ? md : null;
+  const curStatus = detail.status === "ready" ? detail.data : null;
+  const curMd = detail.status === "loading" ? null : detail.status === "error"
+    ? { text: null, hint: detail.error }
+    : { text: detail.data.markdown, hint: detail.data.hint };
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
@@ -300,7 +258,7 @@ export function OcrPrefetchView() {
       ) : null}
 
       <div className="flex min-h-0 flex-1">
-        {/* 左：页清单（状态点 + OCR 三态） */}
+        {/* 左：页清单与 OCR 状态 */}
         <div className="w-52 shrink-0 border-r">
           <ScrollArea className="h-full">
             {visible.map((p) => {

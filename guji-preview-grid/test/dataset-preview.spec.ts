@@ -39,10 +39,10 @@ beforeEach(async () => {
     unobserve() {}
     disconnect() {}
   });
-  vi.stubGlobal("fetch", vi.fn(async (url: string) => {
-    if (url === "/dataset/index.json") return {
+  vi.stubGlobal("fetch", vi.fn(async (url: string, init?: RequestInit) => {
+    if (url === "/dataset/page-tool" && JSON.parse(String(init?.body)).action === "dataset-index") return {
       ok: true,
-      json: async () => ({ config: KANGXI_DATASET, pages: [1, 2].map((page) => ({
+      json: async () => ({ ok: true, config: KANGXI_DATASET, pages: [1, 2].map((page) => ({
         page, image: `${page}.jpg`, width: 1130, height: 1679,
       })) }),
     };

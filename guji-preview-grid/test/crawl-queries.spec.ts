@@ -69,12 +69,24 @@ afterEach(async () => {
 });
 
 describe("字头栏按需查询当前爬取库", () => {
+  it("缺字映射失败可重试，使用 API 返回的本地 URL", async () => {
+    Object.defineProperty(document, "fonts", {
+      configurable: true, value: { load: async () => [], check: () => false },
+    });
+    await render(367);
+    await reply(0, { ok: true, heads: [head()] });
+    expect(requests[1].body).toEqual({ action: "crawl-glyphs", codepoints: [0x4e92] });
+    await reply(1, { ok: false, error: "temporary" }, false);
+    await click('button[title="temporary"]');
+    await reply(2, { ok: true, glyphs: { 互: "/dataset/head-svg/current.svg" } });
+    expect(container.querySelector('img[src="/dataset/head-svg/current.svg"]')).not.toBeNull();
+  });
   it("添加新页后直接查到新字头，返回旧页仍保留未保存编辑", async () => {
     let added = false;
     const queries: object[] = [];
     vi.stubGlobal("fetch", vi.fn(async (url: string, init?: RequestInit) => {
-      if (url === "/dataset/index.json") return {
-        ok: true, json: async () => ({ config: KANGXI_DATASET, pages: (added ? [366, 367] : [366]).map((page) => ({
+      if (url === "/dataset/page-tool" && JSON.parse(String(init?.body)).action === "dataset-index") return {
+        ok: true, json: async () => ({ ok: true, config: KANGXI_DATASET, pages: (added ? [366, 367] : [366]).map((page) => ({
           page, image: `${page}.jpg`, gj: `${page}.gj`, width: 1130, height: 1679,
         })) }),
       };
@@ -199,7 +211,7 @@ describe("字头栏按需查询当前爬取库", () => {
     await reply(0, { ok: true, heads: [{ ...head(), char: null, codepoint: null, k_code: "K123" }] });
     expect(container.textContent).toContain("前页取文中");
     expect(container.textContent).toContain("爬取 1");
-    expect(container.querySelector('img[src="/dataset/head-svg/互.svg"]')).not.toBeNull();
+    expect(container.querySelector('img[src="/dataset/head-svg/%E4%BA%92.svg"]')).not.toBeNull();
     expect(container.querySelector('button[title^="爬取字头详情"]')).toBeNull();
   });
 });

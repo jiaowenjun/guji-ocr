@@ -1,32 +1,20 @@
 // Canonical OCR geometry in grid units. Uses the production parser and layout.
 // stdin: {manifest: absolutePath, pages: [312, ...]}; stdout: JSON array.
-import { registerHooks } from 'node:module';
-import { readFileSync, existsSync } from 'node:fs';
-import { dirname, resolve } from 'node:path';
-import { createHash } from 'node:crypto';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
-
-registerHooks({ resolve(s, c, next) {
-  try { return next(s, c); } catch (error) {
-    if (s.startsWith('.') && !/\.[a-z]+$/.test(s)) return next(`${s}.ts`, c);
-    throw error;
-  }
-} });
-const { applyBookLayout } = await import('../../guji-preview-grid/src/ir/document-layout.ts');
+import { compileAnnotation, readAnnotations } from './annotation_source.mjs';
 const { resolveDatasetConfig, resolvePageScan } = await import('../../guji-preview-grid/src/datasets/config.ts');
-const { resolveDatasetIndexConfig } = await import('../../guji-preview-grid/src/datasets/kangxi.ts');
-const { gj2ir } = await import('../../guji-preview-grid/src/ir/gj2ir.ts');
 const { layout3, planLayoutBand } = await import('../../guji-preview-grid/src/ir/layout3.ts');
 const { getPageFrame } = await import('../../guji-preview-grid/src/ir/page-frame.ts');
 const { getItemBounds } = await import('../../guji-preview-grid/src/ir/layout-geometry.ts');
 const { projectBooks } = await import('../../guji-preview-grid/src/ir/projection.ts');
 const { kangxiBandHeading } = await import('../../guji-preview-grid/src/semantics/kangxi.ts');
-const { irToText } = await import('../../guji-preview-grid/src/ir/text.ts');
 const compact = s => s.replace(/\s/gu, '');
 
-export function exportLayout(source, pageNo, datasetConfig) {
+export function exportLayout(source, pageNo, datasetConfig, compiled) {
   const dataset = resolveDatasetConfig(datasetConfig);
-  const ir = applyBookLayout(gj2ir(source), dataset.layout);
+  const { ir, text: transcription, source_sha256 } = compiled ?? compileAnnotation(source, pageNo, dataset);
   if (ir.pages.length !== 1 || ir.pages[0].no !== pageNo) throw Error(`Page marker mismatch: ${pageNo}`);
   const page = ir.pages[0], laid = layout3(ir)[0];
   const { cols, rows, colOffset } = getPageFrame(laid);
@@ -34,9 +22,9 @@ export function exportLayout(source, pageNo, datasetConfig) {
   if (warnings.length) throw Error(`Layout ${pageNo}: ${warnings.map(d => d.message).join('; ')}`);
   const circles = new Map(ir.overlays.filter(o => o.kind === 'circle').map(o => [o.target, o.id]));
   const result = {
-    page: pageNo, source, source_sha256: createHash('sha256').update(source).digest('hex'),
+    page: pageNo, source, source_sha256,
     ir, config: laid.config, scan: resolvePageScan(dataset, pageNo), cols, rows,
-    transcription: irToText(ir), text: compact(irToText(ir)),
+    transcription, text: compact(transcription),
     bands: [], regions: [], glyphs: [], gaps: [], decorations: [],
   };
   let offset = 0;
@@ -106,16 +94,8 @@ export function exportLayout(source, pageNo, datasetConfig) {
 
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
   const request = JSON.parse(readFileSync(0, 'utf8'));
-  const manifest = JSON.parse(readFileSync(request.manifest, 'utf8'));
-  const root = dirname(request.manifest);
-  const configPath = resolve(root, 'dataset-config.json');
-  const dataset = resolveDatasetIndexConfig(existsSync(configPath)
-    ? JSON.parse(readFileSync(configPath, 'utf8')) : undefined, manifest.dataset);
-  const records = request.pages.map(no => {
-    const entry = manifest.pages.find(p => p.page === no);
-    if (!entry) throw Error(`Page not in manifest: ${no}`);
-    const file = resolve(root, 'annotations', entry.annotations.gj);
-    return exportLayout(readFileSync(file, 'utf8'), no, dataset);
-  });
+  const { records: sources, config, assertUnchanged } = readAnnotations(request.manifest, request.pages);
+  const records = sources.map(record => exportLayout(record.source, record.page, config, record));
+  assertUnchanged();
   process.stdout.write(JSON.stringify(records));
 }

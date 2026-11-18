@@ -124,8 +124,8 @@ pnpm build
   21 页折行界 96.2% ±0）；服务未运行/对齐不可信时回退未裁剪未折行的平铺草稿
   （sqlite `var/crawl/kangxi-crawl.sqlite3` 已有则零联网，缺则由 fetch_kangxi_page/
   fetch_kangxi_entry 增量爬取）→ 由 page_chars + entries 生成 .gj 草稿（字头行 +
-  释义段落带，未编码字 `#□` 占位注释）入 `annotations/`、manifest 追加该页并刷新
-  index.json，前端自动跳转；`POST /dataset/page-tool` 中间件仅 dev 生效
+  释义段落带，未编码字 `#□` 占位注释）入 `annotations/`、manifest 追加该页，
+  前端通过 `dataset-index` 重新读取当前清单并自动跳转；`POST /dataset/page-tool` 中间件仅 dev 生效
 - **爬取字头与详情**：字头栏通过 `POST /dataset/page-tool` 的
   `{ action: "crawl-heads", page }` 按页只读查询 SQLite；点击字头后通过
   `{ action: "crawl-entry", codepoint }`（十进制 Unicode 码位）只取该字词条。
@@ -136,9 +136,14 @@ pnpm build
   工具条徽章与页清单均带标记；既有 17 页定为初校
 - 「保存回数据集」写回 `kangxi-gold/annotations/NNNN.gj`（仅 dev server 生效的
   `POST /dataset/save` 中间件，vite.config.ts；校验页码在库内且首行仍为 @页码）
-- 保存后同步 json/txt：`npx -y tsx kangxi-gold/scripts/build_annotations.ts --allow-drift`
-  （默认严格模式会因与原 fixture 不一致而拒绝，属预期防呆；样例外的附加页两种模式
-  都会从其 .gj 生成 json/txt）
+- 保存只写 `.gj`；评测和校验从 manifest 指定的 `.gj` 实时派生 IR/TXT。
+  需要导出快照时才运行 `npx -y tsx kangxi-gold/scripts/build_annotations.ts`，不会改写源文件或 manifest。
+- **OCR 查询**：打开结果只读缓存；`prefetch-status` 一次返回状态和正文。
+  手动预取后统一刷新清单、详情、日志；残缺结果标为无效，失败可重试。
+  整页缓存按图片 SHA、模型和正文完整性判定；列级缓存只补失败列。
+- **缺字 SVG**：`crawl-glyphs` 按缺字码位读取当前 `report.json` / `font-patches.jsonl`
+  身份映射（补丁优先），否则使用库内已缓存缩略图；只读本地文件，不联网下载。
+  不再生成 `index.json`、`headword-svg.json`，资源链接脚本只准备文件目录。
 
 首次使用先生成数据集访问层（符号链接，已 gitignore，重跑安全）；刻本字体文件
 已随仓库入库（`public/fonts/`，~129MB，无需额外步骤）：

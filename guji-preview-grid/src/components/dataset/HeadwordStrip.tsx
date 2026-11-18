@@ -7,7 +7,7 @@
 // （/dataset/unencoded-svg/）→ 系统字体 + 缺字描边。
 import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { useCrawlEntry, useCrawlPageHeads, type CrawlEdition, type CrawlEntryRecord, type CrawlPageHead } from "@/components/dataset/crawl-entries";
+import { useCrawlEntry, useCrawlPageHeads, useCrawlGlyphs, type CrawlEdition, type CrawlEntryRecord, type CrawlPageHead } from "@/components/dataset/crawl-entries";
 import { type PageContinuation } from "@/components/dataset/headwords";
 
 const EMPTY_SET = new Set<string>();
@@ -42,30 +42,6 @@ function useUncovered(chars: string[]): Set<string> {
   return snap.key === key ? snap.uncovered : EMPTY_SET;
 }
 
-/** 缺字 → 站点扫描 SVG 文件名映射；仅在出现缺字时拉取（失败静默为空映射） */
-let svgMapCache: Record<string, string> | null | undefined; // undefined = 未取过
-function useSvgMap(needed: boolean): Record<string, string> | null {
-  const [map, setMap] = useState<Record<string, string> | null>(() => svgMapCache ?? null);
-  useEffect(() => {
-    if (!needed || svgMapCache !== undefined) return;
-    let alive = true;
-    fetch("/dataset/headword-svg.json")
-      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
-      .then((m: Record<string, string>) => {
-        svgMapCache = m;
-        if (alive) setMap(m);
-      })
-      .catch(() => {
-        svgMapCache = {};
-        if (alive) setMap(svgMapCache);
-      });
-    return () => {
-      alive = false;
-    };
-  }, [needed]);
-  return map;
-}
-
 const codepoint = (ch: string) =>
   "U+" + (ch.codePointAt(0) ?? 0).toString(16).toUpperCase().padStart(4, "0");
 
@@ -75,6 +51,11 @@ const lineRange = (lines: number[]) => {
   const b = lines[lines.length - 1] + 1;
   return a === b ? `第 ${a} 行` : `第 ${a}–${b} 行`;
 };
+
+function GlyphImage({ src, alt, fallback = alt }: { src: string; alt: string; fallback?: string }) {
+  const [failed, setFailed] = useState(false);
+  return failed ? fallback : <img src={src} alt={alt} draggable={false} onError={() => setFailed(true)} />;
+}
 
 /** 单个字头字符格：GujiLarge → 站点 SVG → 系统字体 + 缺字描边（条内小格 / 弹窗大样） */
 function HeadwordChar({
@@ -93,7 +74,7 @@ function HeadwordChar({
       title={`${ch}（${codepoint(ch)}）${missing ? " · GujiLarge 缺字" : ""}`}
       className={`hw-char${lg ? " hw-char-lg" : ""} ${missing && !svg ? "hw-char-missing" : ""}`}
     >
-      {missing ? (svg ? <img src={`/dataset/unencoded-svg/${svg}`} alt={ch} draggable={false} /> : ch) : ch}
+      {missing && svg ? <GlyphImage key={svg} src={svg} alt={ch} /> : ch}
     </span>
   );
 }
@@ -245,7 +226,8 @@ export function HeadwordStrip({
     return chars;
   }, [heads, continuation]);
   const uncovered = useUncovered(allChars);
-  const svgMap = useSvgMap(uncovered.size > 0);
+  const { result: glyphs, retry: retryGlyphs } = useCrawlGlyphs(uncovered);
+  const svgMap = glyphs.status === "ready" ? glyphs.data.glyphs : null;
   const [detail, setDetail] = useState<HeadwordDetail | null>(null);
 
   /** 字头格点击：弹爬取侧详情（字形大样 + 词条全文） */
@@ -274,6 +256,9 @@ export function HeadwordStrip({
     <>
       {/* 无边框内联段：作为工具栏 flex 行的一个子项，字头多时自行换行 */}
       <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-xs">
+        {uncovered.size > 0 && glyphs.status === "error" ? (
+          <Button variant="ghost" size="sm" onClick={retryGlyphs} title={glyphs.error}>字形加载失败 · 重试</Button>
+        ) : null}
         {/* .gj 侧页首跨页归属（不依赖爬取 fixture）：宿主字头可点击弹爬取详情 */}
         {host ? (
           <button
@@ -341,13 +326,11 @@ export function HeadwordStrip({
                     {h.svg ? (
                       // head-svg = WD-2T 随爬缓存，相对路径直拼（0000s/…）；
                       // 仍缺（未挂载/回补未及）时破图回退 □
-                      <img
-                        src={`/dataset/head-svg/${h.svg}`}
+                      <GlyphImage
+                        key={h.svg}
+                        src={`/dataset/head-svg/${h.svg.split("/").map(encodeURIComponent).join("/")}`}
                         alt={h.k_code ?? "□"}
-                        draggable={false}
-                        onError={(e) => {
-                          e.currentTarget.outerHTML = "□";
-                        }}
+                        fallback="□"
                       />
                     ) : (
                       "□"

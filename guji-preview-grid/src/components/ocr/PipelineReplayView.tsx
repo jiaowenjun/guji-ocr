@@ -1,3 +1,4 @@
+import { callPageTool as callTool } from "@/lib/page-tool";
 // 添加新页流程演示视图：以初校页为样例集，只读重放 add 管线逐步骤展示中间结果，
 // 并与人工初校 .gj 对照（字符流/行界带界 F1/漏多折/分歧块）——观察、调试、找错。
 // 数据源全走 /dataset/page-tool（replay-pages 样例集 / pipeline-replay 单页全量），
@@ -111,18 +112,6 @@ const COUNT_LABELS: Record<string, string> = {
   companions: "伴随字形",
   skipped_dup: "跳过延续字头",
 };
-
-/** 统一调 page-tool：非 2xx / ok:false 抛异常 */
-async function callTool<T>(body: Record<string, unknown>): Promise<T> {
-  const res = await fetch("/dataset/page-tool", {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify(body),
-  });
-  const data = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string };
-  if (!res.ok || !data.ok) throw new Error(data.error ?? `HTTP ${res.status}`);
-  return data as T;
-}
 
 function SectionCard({
   id,
