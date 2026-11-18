@@ -1,0 +1,160 @@
+{
+  "archived_at": "2026-11-18",
+  "source": {
+    "path": "var/unencoded/kangxi-unencoded/font-patches.jsonl",
+    "bytes": 6434,
+    "sha256": "17db46cb9869ae44db54860ee1fee8d165af15668484b9bdbe59b446f849bf60"
+  },
+  "events": [
+    {
+      "at": "2026-11-15T10:07:56",
+      "tool": "guji_pua_patch",
+      "cp": "U+E701",
+      "scheme": "scan-trace",
+      "version": 1,
+      "results": [
+        {
+          "font": "guji-preview-grid/public/fonts/guji-plane0.ttf",
+          "chamfer": 0.366,
+          "bytes_before": 18386644,
+          "bytes_after": 17251716
+        },
+        {
+          "font": "guji-preview-grid/public/fonts/guji-large.ttf",
+          "chamfer": 0.405,
+          "bytes_before": 46623752,
+          "bytes_after": 46624036
+        }
+      ]
+    },
+    {
+      "tool": "guji_pua_patch",
+      "cp": "U+E701",
+      "version": 2,
+      "at": "2026-11-15T14:24:28+08:00",
+      "operation": "replace",
+      "results": [
+        {
+          "font": "guji-preview-grid/public/fonts/guji-plane0.ttf",
+          "scheme": "compose",
+          "source": "tools/dataset/font-sources/e701-songti-v2.json",
+          "sha256_before": "6cdaddc31a13c41bdc602e904fc6d28a6b99422ed62d31651aac7c46345a8f9e",
+          "sha256_after": "0e5eda61b7324f8bcf9c420a9633537799021a45f0bcfdad22574fac25a1d257",
+          "bytes_before": 17251716,
+          "bytes_after": 17251812,
+          "chamfer": 0.44,
+          "cmap_before": 30707,
+          "cmap_after": 30707,
+          "other_glyphs_and_metrics_unchanged": true,
+          "backup": "var/unencoded/kangxi-unencoded/font-backups/guji-plane0.ttf.6cdaddc31a13c41bdc602e904fc6d28a6b99422ed62d31651aac7c46345a8f9e.ttf"
+        }
+      ],
+      "cache_version": "e701-2-songti"
+    },
+    {
+      "at": "2026-11-15T14:30:49+08:00",
+      "tool": "font-operations",
+      "event": "git-commit-recorded",
+      "cp": "U+E701",
+      "version": 2,
+      "font_commit": "7ff192c4900909b182e2b776ffa98989ef35d512",
+      "font": "guji-preview-grid/public/fonts/guji-plane0.ttf",
+      "sha256_after": "0e5eda61b7324f8bcf9c420a9633537799021a45f0bcfdad22574fac25a1d257",
+      "cache_version": "e701-2-songti"
+    },
+    {
+      "tool": "remove_large_e701",
+      "cp": "U+E701",
+      "at": "2026-11-15T14:37:18+08:00",
+      "version": 3,
+      "operation": "remove-from-font",
+      "reason": "仅用于小字内容，撤销大字字体补录",
+      "results": [
+        {
+          "font": "guji-preview-grid/public/fonts/guji-large.ttf",
+          "cp": "U+E701",
+          "glyph": "uniE701",
+          "sha256_before": "f79d2765b6900a90822971eea286631e93f08f43080d1b8f3e2b8b20af63b9f0",
+          "sha256_after": "99be6a77b93afa746b2d29e37d6014cab9f9c21471f685a2392426760a17dabf",
+          "bytes_before": 46624036,
+          "bytes_after": 46623752,
+          "cmap_before": 49409,
+          "cmap_after": 49408,
+          "glyph_count_before": 49412,
+          "glyph_count_after": 49411,
+          "remaining_glyf_bytes_identical": true,
+          "other_cmaps_and_metrics_unchanged": true,
+          "post_target_name_removed": true,
+          "retained_2BD6E": true,
+          "restored_from": "f3cfefdef4ff7bda953de9c88ed450fd3b8ef7ce:guji-preview-grid/public/fonts/guji-large.ttf",
+          "backup": "var/unencoded/kangxi-unencoded/font-backups/guji-large.ttf.f79d2765b6900a90822971eea286631e93f08f43080d1b8f3e2b8b20af63b9f0.ttf"
+        }
+      ],
+      "small_font_sha256_unchanged": "0e5eda61b7324f8bcf9c420a9633537799021a45f0bcfdad22574fac25a1d257",
+      "cache_version_before": "001015-2bd6e-e701",
+      "cache_version": "001015-2bd6e-no-e701"
+    },
+    {
+      "at": "2026-11-15T14:40:33+08:00",
+      "operation": "git-commit-recorded",
+      "cp": "U+E701",
+      "version": 3,
+      "git_commit": "8fd8063de383d92d366702f218d3ba4fe470a3eb",
+      "font": "guji-preview-grid/public/fonts/guji-large.ttf",
+      "sha256_after": "99be6a77b93afa746b2d29e37d6014cab9f9c21471f685a2392426760a17dabf",
+      "report": "docs/research/2026-11-15-U+E701仅限小字.md",
+      "verification": {
+        "build": "passed",
+        "dist_font_hashes_match": true,
+        "large_font_target_rejected": true
+      }
+    },
+    {
+      "tool": "guji_pua_patch",
+      "cp": "U+E701",
+      "version": 4,
+      "at": "2026-11-15T16:03:48+08:00",
+      "operation": "replace",
+      "results": [
+        {
+          "font": "guji-preview-grid/public/fonts/guji-plane0.ttf",
+          "scheme": "compose",
+          "source": "tools/dataset/font-sources/e701-songti-v4.json",
+          "sha256_before": "0e5eda61b7324f8bcf9c420a9633537799021a45f0bcfdad22574fac25a1d257",
+          "sha256_after": "b4433eb2cb5218d3e507dd1757398813ac105d6c384dbbf8a841a60107b53c0f",
+          "bytes_before": 17251812,
+          "bytes_after": 17251780,
+          "chamfer": 0.558,
+          "chamfer_gate": 0.6,
+          "cmap_before": 30707,
+          "cmap_after": 30707,
+          "other_glyphs_and_metrics_unchanged": true,
+          "backup": "var/unencoded/kangxi-unencoded/font-backups/guji-plane0.ttf.0e5eda61b7324f8bcf9c420a9633537799021a45f0bcfdad22574fac25a1d257.ttf"
+        }
+      ],
+      "cache_version": "e701-4-joined"
+    },
+    {
+      "at": "2026-11-15T16:10:49+08:00",
+      "operation": "git-commit-recorded",
+      "cp": "U+E701",
+      "version": 4,
+      "git_commit": "859ad28d127a05d477ac6301ed4a12782d81ffa3",
+      "font": "guji-preview-grid/public/fonts/guji-plane0.ttf",
+      "sha256_after": "b4433eb2cb5218d3e507dd1757398813ac105d6c384dbbf8a841a60107b53c0f",
+      "source": "tools/dataset/font-sources/e701-songti-v4.json",
+      "verification": {
+        "complete_joined_contour": "guji-plane2.ttf/U+200B9/0",
+        "other_three_component_paths_unchanged": true,
+        "external_donor_hash_rejection": "passed",
+        "legacy_v2_rebuild": "passed",
+        "current_v4_rebuild": "passed",
+        "current_recipe_dry_run": "byte-identical",
+        "browser_ink_200px": 3995,
+        "build": "passed",
+        "large_and_plane2_unchanged": true
+      }
+    }
+  ],
+  "note": "Historical operation records, not operations executed on the archive date."
+}

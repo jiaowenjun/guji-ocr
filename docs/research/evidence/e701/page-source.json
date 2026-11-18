@@ -1,0 +1,18 @@
+{
+  "path": "/Volumes/WD-2T/guji-ocr/raw/kangxizidian/pages/0349.jpg",
+  "bytes": 550514,
+  "sha256": "03e2531ce321af893faa99457d9f72bac98d9c80280bc00ce725fda7a6f0b519",
+  "url": "https://p.kangxizidian.com/kangxi2/0349.jpg",
+  "dimensions": [
+    1130,
+    1719
+  ],
+  "crop": [
+    750,
+    155,
+    1035,
+    650
+  ],
+  "display_scale": 2,
+  "note": "Coordinates in original pixels; right/bottom excluded; crop is contextual, not high-resolution reconstruction."
+}

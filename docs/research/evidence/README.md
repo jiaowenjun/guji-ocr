@@ -1,5 +1,10 @@
 # 资料核查证据说明
 
+2026-11-18 历史字体补录补充核验：
+
+- [U+2BD6E 全过程](../2026-11-18-U+2BD6E𫵮调研核验与补录报告.md)：[来源摘录](u2bd6e/source-excerpts.json)、[历史流水](u2bd6e/historical-events.json)、[当前字体](u2bd6e/current-fonts.json)、[精确重建](u2bd6e/rebuild.json)；目标及校准 SVG 一并归档。旧核验 JSON 的 Ext-C 与 U+4E2B 字面错误见新报告勘误。
+- [U+E701 全过程](../2026-11-18-U+E701调研核验与补录报告.md)：[来源及编码查询](e701/source-excerpts.json)、[历史流水](e701/historical-events.json)、[当前字体](e701/current-fonts.json)、[新做的候选排名](e701/font-search.json)、[只读核验](e701/supplemental-checks.json)。候选搜索使用补录前字体，不冒充早期已执行的工作。
+
 新增字体证据：**[E704〈二心支〉全过程报告](../2026-11-18-U+E704二心支调研核验与补录报告.md)**，对应 [补录前核验](e704/audit-before.json)、[候选排名](e704/font-search.json)、[正式补录与验证](e704/patch-verification.json)、[浏览器字体确认](e704/browser.json)。检索结论有明确范围，不把未命中当成 Unicode 官方不存在证明。
 
 这里保存 2026-11-11 调研时对公开文件的检查记录。它们是支撑[综合报告](../README.md)的文件计数、哈希和局部观察，**不是 OCR 性能复现实验，也不是全库人工质量审计**。

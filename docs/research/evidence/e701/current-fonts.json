@@ -1,0 +1,535 @@
+{
+  "checked_at": "2026-11-18T10:51:50.544980+08:00",
+  "scope": "Read-only audit; no production font writes",
+  "fonts": [
+    {
+      "path": "guji-preview-grid/public/fonts/guji-large.ttf",
+      "bytes": 46623752,
+      "sha256": "99be6a77b93afa746b2d29e37d6014cab9f9c21471f685a2392426760a17dabf",
+      "cmap_count": 49408,
+      "glyph_count": 49411,
+      "units_per_em": 1024,
+      "cmap_formats": [
+        4,
+        6,
+        12
+      ],
+      "unmapped_glyph_count": 3,
+      "GSUB_features": [
+        "vert"
+      ],
+      "glyphs": {
+        "U+2BD6E": {
+          "name": "u2BD6E",
+          "contours": 2,
+          "points": 348,
+          "bbox": [
+            88,
+            -135,
+            944,
+            735
+          ],
+          "hmtx": [
+            1024,
+            88
+          ],
+          "vmtx": null,
+          "compiled_sha256": "3e62bc086fca4a34c90741ed64726f16c2c6e1e0ade08c4d01406144fa408fd0"
+        },
+        "U+E701": null,
+        "U+E702": null,
+        "U+E703": null,
+        "U+E704": null,
+        "U+4E51": {
+          "name": "uni4E51",
+          "contours": 5,
+          "points": 146,
+          "bbox": [
+            50,
+            -134,
+            990,
+            749
+          ],
+          "hmtx": [
+            1024,
+            50
+          ],
+          "vmtx": null,
+          "compiled_sha256": "66b83eb5042a3c08f9b608a9a91b9406190fde14b5a1c7722ea0513f7d63d6a1"
+        },
+        "U+343A": {
+          "name": "uni343A",
+          "contours": 3,
+          "points": 169,
+          "bbox": [
+            35,
+            -92,
+            1003,
+            718
+          ],
+          "hmtx": [
+            1024,
+            35
+          ],
+          "vmtx": null,
+          "compiled_sha256": "c4fa1956e9d3e7ebfe3b4ab72715f85ca1e9d9d0a5f829442f30d4210ac167c0"
+        },
+        "U+200B9": {
+          "name": "uni200B9",
+          "contours": 6,
+          "points": 183,
+          "bbox": [
+            73,
+            -160,
+            987,
+            769
+          ],
+          "hmtx": [
+            1024,
+            72
+          ],
+          "vmtx": null,
+          "compiled_sha256": "9c83f7db0dc568d54f056f42a846f1af9c29f7d8b4c2f0714f02d533e187db01"
+        },
+        "U+201A7": null,
+        "U+4ECC": {
+          "name": "uni4ECC",
+          "contours": 2,
+          "points": 128,
+          "bbox": [
+            13,
+            -201,
+            1011,
+            813
+          ],
+          "hmtx": [
+            1024,
+            12
+          ],
+          "vmtx": null,
+          "compiled_sha256": "ff1ea8a203112dcafa1a6a1101c91869d671b9252fbb68176a817c4676c835c3"
+        }
+      }
+    },
+    {
+      "path": "guji-preview-grid/public/fonts/guji-plane0.ttf",
+      "bytes": 17252348,
+      "sha256": "f7e40e014584f6f4fd73ac1de97b2e9aac414e5eeb0e9c9a3847a78e4c27a20b",
+      "cmap_count": 30708,
+      "glyph_count": 30804,
+      "units_per_em": 1024,
+      "cmap_formats": [
+        0,
+        4
+      ],
+      "unmapped_glyph_count": 96,
+      "GSUB_features": [
+        "vert"
+      ],
+      "glyphs": {
+        "U+2BD6E": null,
+        "U+E701": {
+          "name": "uniE701",
+          "contours": 2,
+          "points": 99,
+          "bbox": [
+            17,
+            -146,
+            985,
+            848
+          ],
+          "hmtx": [
+            1024,
+            17
+          ],
+          "vmtx": [
+            1024,
+            22
+          ],
+          "compiled_sha256": "0ef6027de1532c8bc037f5944ab4080e7e14651298ba2f61d468a36d898493c4"
+        },
+        "U+E702": null,
+        "U+E703": null,
+        "U+E704": {
+          "name": "uniE704",
+          "contours": 7,
+          "points": 181,
+          "bbox": [
+            25,
+            -61,
+            998,
+            848
+          ],
+          "hmtx": [
+            1024,
+            25
+          ],
+          "vmtx": [
+            1024,
+            22
+          ],
+          "compiled_sha256": "f28a8bf767d91fa2ae6cbf73b5ba8ef70869e4e4ddac3487cb00e135555b3604"
+        },
+        "U+4E51": {
+          "name": "uni4E51",
+          "contours": 3,
+          "points": 96,
+          "bbox": [
+            20,
+            -109,
+            1004,
+            831
+          ],
+          "hmtx": [
+            1024,
+            20
+          ],
+          "vmtx": [
+            1024,
+            39
+          ],
+          "compiled_sha256": "f2a1dea9f16cdbdb95b2899810ae69be1ab1fb71cee9cb790ba256069c985c0d"
+        },
+        "U+343A": {
+          "name": "uni343A",
+          "contours": 3,
+          "points": 86,
+          "bbox": [
+            21,
+            -127,
+            1003,
+            848
+          ],
+          "hmtx": [
+            1024,
+            21
+          ],
+          "vmtx": [
+            1024,
+            22
+          ],
+          "compiled_sha256": "87c61df8268d07548924df6aa0fcaa198c5998f63b4fd1d544228a72100e4072"
+        },
+        "U+200B9": null,
+        "U+201A7": null,
+        "U+4ECC": {
+          "name": "uni4ECC",
+          "contours": 2,
+          "points": 64,
+          "bbox": [
+            52,
+            -127,
+            1000,
+            843
+          ],
+          "hmtx": [
+            1024,
+            52
+          ],
+          "vmtx": [
+            1024,
+            27
+          ],
+          "compiled_sha256": "419e62b507cc0d6425957d9b9afe53789645e237edced0da68d1f6e34cdb1b4d"
+        }
+      }
+    },
+    {
+      "path": "guji-preview-grid/public/fonts/guji-plane2.ttf",
+      "bytes": 42717516,
+      "sha256": "80df094a2e63091b222706696a8b244c9dba45219af866226a097d0fbb2bf28d",
+      "cmap_count": 61228,
+      "glyph_count": 61229,
+      "units_per_em": 1024,
+      "cmap_formats": [
+        0,
+        4,
+        12
+      ],
+      "unmapped_glyph_count": 1,
+      "GSUB_features": [],
+      "glyphs": {
+        "U+2BD6E": {
+          "name": "u2BD6E",
+          "contours": 2,
+          "points": 170,
+          "bbox": [
+            20,
+            -126,
+            1013,
+            848
+          ],
+          "hmtx": [
+            1024,
+            20
+          ],
+          "vmtx": null,
+          "compiled_sha256": "60d3d56e776a4603e2f9ef09e5a1f5e6794c308238c2db63fec678198d672d2d"
+        },
+        "U+E701": null,
+        "U+E702": null,
+        "U+E703": null,
+        "U+E704": null,
+        "U+4E51": null,
+        "U+343A": null,
+        "U+200B9": {
+          "name": "u200B9",
+          "contours": 5,
+          "points": 148,
+          "bbox": [
+            45,
+            -121,
+            961,
+            839
+          ],
+          "hmtx": [
+            1024,
+            45
+          ],
+          "vmtx": null,
+          "compiled_sha256": "98d1e5de079b836853273d7a08bd9202f623318e66a6c1087c512dda0fe83608"
+        },
+        "U+201A7": {
+          "name": "u201A7",
+          "contours": 2,
+          "points": 54,
+          "bbox": [
+            61,
+            -132,
+            1016,
+            854
+          ],
+          "hmtx": [
+            1024,
+            61
+          ],
+          "vmtx": null,
+          "compiled_sha256": "1c8cdcdc0df38e5b71354d511c3bf4e8afabfa8716c85bc7a1ed6a58df0bd200"
+        },
+        "U+4ECC": null
+      }
+    },
+    {
+      "path": "guji-preview-grid/public/fonts/guji-planef.ttf",
+      "bytes": 26189728,
+      "sha256": "cfeb8527cfc75fe244b1c773056ed8e8896e67918f368999d12f6bd86dee323b",
+      "cmap_count": 42620,
+      "glyph_count": 42621,
+      "units_per_em": 1024,
+      "cmap_formats": [
+        0,
+        4,
+        12
+      ],
+      "unmapped_glyph_count": 1,
+      "GSUB_features": [],
+      "glyphs": {
+        "U+2BD6E": null,
+        "U+E701": null,
+        "U+E702": null,
+        "U+E703": null,
+        "U+E704": null,
+        "U+4E51": null,
+        "U+343A": null,
+        "U+200B9": null,
+        "U+201A7": null,
+        "U+4ECC": null
+      }
+    }
+  ],
+  "pre_e701_plane0": {
+    "path": "var/font-audit/2026-11-18-history/guji-plane0.ttf",
+    "bytes": 18386644,
+    "sha256": "bfd3095240ac6c994e65eec829fe6f269c9609b655fe0904517d6aff19d015e8",
+    "cmap_count": 30706,
+    "glyph_count": 30802,
+    "units_per_em": 1024,
+    "cmap_formats": [
+      0,
+      4
+    ],
+    "unmapped_glyph_count": 96,
+    "GSUB_features": [
+      "vert"
+    ],
+    "glyphs": {
+      "U+2BD6E": null,
+      "U+E701": null,
+      "U+E702": null,
+      "U+E703": null,
+      "U+E704": null,
+      "U+4E51": {
+        "name": "uni4E51",
+        "contours": 3,
+        "points": 96,
+        "bbox": [
+          20,
+          -109,
+          1004,
+          831
+        ],
+        "hmtx": [
+          1024,
+          20
+        ],
+        "vmtx": [
+          1024,
+          39
+        ],
+        "compiled_sha256": "f2a1dea9f16cdbdb95b2899810ae69be1ab1fb71cee9cb790ba256069c985c0d"
+      },
+      "U+343A": {
+        "name": "uni343A",
+        "contours": 3,
+        "points": 86,
+        "bbox": [
+          21,
+          -127,
+          1003,
+          848
+        ],
+        "hmtx": [
+          1024,
+          21
+        ],
+        "vmtx": [
+          1024,
+          22
+        ],
+        "compiled_sha256": "87c61df8268d07548924df6aa0fcaa198c5998f63b4fd1d544228a72100e4072"
+      },
+      "U+200B9": null,
+      "U+201A7": null,
+      "U+4ECC": {
+        "name": "uni4ECC",
+        "contours": 2,
+        "points": 64,
+        "bbox": [
+          52,
+          -127,
+          1000,
+          843
+        ],
+        "hmtx": [
+          1024,
+          52
+        ],
+        "vmtx": [
+          1024,
+          27
+        ],
+        "compiled_sha256": "419e62b507cc0d6425957d9b9afe53789645e237edced0da68d1f6e34cdb1b4d"
+      }
+    }
+  },
+  "system_font": {
+    "path": "/Users/jwj/Library/Fonts/KX_47043_14.ttf",
+    "bytes": 46623752,
+    "sha256": "7d916ab6e4bcc935894cd372997ebc7536e315a1e8ae7270d39e53e2dbb9c4fa",
+    "cmap_count": 49408,
+    "glyph_count": 49411,
+    "units_per_em": 1024,
+    "cmap_formats": [
+      4,
+      6,
+      12
+    ],
+    "unmapped_glyph_count": 3,
+    "GSUB_features": [
+      "vert"
+    ],
+    "glyphs": {
+      "U+2BD6E": {
+        "name": "u2BD6E",
+        "contours": 2,
+        "points": 348,
+        "bbox": [
+          88,
+          -135,
+          944,
+          735
+        ],
+        "hmtx": [
+          1024,
+          88
+        ],
+        "vmtx": null,
+        "compiled_sha256": "3e62bc086fca4a34c90741ed64726f16c2c6e1e0ade08c4d01406144fa408fd0"
+      },
+      "U+E701": null,
+      "U+E702": null,
+      "U+E703": null,
+      "U+E704": null,
+      "U+4E51": {
+        "name": "uni4E51",
+        "contours": 5,
+        "points": 146,
+        "bbox": [
+          50,
+          -134,
+          990,
+          749
+        ],
+        "hmtx": [
+          1024,
+          50
+        ],
+        "vmtx": null,
+        "compiled_sha256": "66b83eb5042a3c08f9b608a9a91b9406190fde14b5a1c7722ea0513f7d63d6a1"
+      },
+      "U+343A": {
+        "name": "uni343A",
+        "contours": 3,
+        "points": 169,
+        "bbox": [
+          35,
+          -92,
+          1003,
+          718
+        ],
+        "hmtx": [
+          1024,
+          35
+        ],
+        "vmtx": null,
+        "compiled_sha256": "c4fa1956e9d3e7ebfe3b4ab72715f85ca1e9d9d0a5f829442f30d4210ac167c0"
+      },
+      "U+200B9": {
+        "name": "uni200B9",
+        "contours": 6,
+        "points": 183,
+        "bbox": [
+          73,
+          -160,
+          987,
+          769
+        ],
+        "hmtx": [
+          1024,
+          72
+        ],
+        "vmtx": null,
+        "compiled_sha256": "9c83f7db0dc568d54f056f42a846f1af9c29f7d8b4c2f0714f02d533e187db01"
+      },
+      "U+201A7": null,
+      "U+4ECC": {
+        "name": "uni4ECC",
+        "contours": 2,
+        "points": 128,
+        "bbox": [
+          13,
+          -201,
+          1011,
+          813
+        ],
+        "hmtx": [
+          1024,
+          12
+        ],
+        "vmtx": null,
+        "compiled_sha256": "ff1ea8a203112dcafa1a6a1101c91869d671b9252fbb68176a817c4676c835c3"
+      }
+    }
+  },
+  "original_large_backup": null
+}

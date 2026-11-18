@@ -1,5 +1,7 @@
 # 字体操作留痕登记簿
 
+历史补录的完整来源与核验汇编：[U+2BD6E 𫵮](research/2026-11-18-U+2BD6E𫵮调研核验与补录报告.md)、[PUA U+E701](research/2026-11-18-U+E701调研核验与补录报告.md)。2026-11-18 补充资料与只读核验，不新增字体操作；E701 的编码结论为“尚未确认独立标准码位”。
+
 制度自 2026-11-14 起执行（用户要求：**凡对字体的自定义优化、更新等操作，必须留痕记录**）。本登记簿是人读的汇总台账，与脚本自动追加的机器流水 `var/unencoded/kangxi-unencoded/font-patches.jsonl`（gitignore 内）互为备份——**双轨都要有**：脚本跑完有 jsonl，人做完（或复核完）来本页登记一行。
 
 全部正式补录、修改、撤销及临时试验见[字体补录 Changelog](font-changelog.md)。本页负责操作制度与当前哈希基线，changelog 负责历史状态和详细报告入口。
@@ -32,7 +34,7 @@
 | --- | --- | --- | --- | --- | --- | --- |
 | 1 | 2026-11-13 19:41 | 补录 U+2BD6E 𫵮（K0000 0334-04，康熙刻形） | guji-large.ttf + 系统字体 | chamfer 0.029（闸 0.15）；cmap 49,407→49,408 双字体一致 | 0ca95d6 | [落地报告](research/2026-11-14-kangxi-guji-large补录U+2BD6E落地报告.md) |
 | 2 | 2026-11-14 | （本制度建立 + 首次全量哈希盘点，见下表；修复 PATCH_LOG 路径漂移，未动字体字节） | — | 四字体 + 系统 + 备份六份哈希与预期一致 | f3cfefd（11-15 提交） | 同上报告 §7 |
-| 3 | 2026-11-15 | 补录 PUA **U+E701**〈亻人人〉（@349 乑按语，无 Unicode 码位；scheme=scan-trace v1；系统字体有意不同步） | guji-plane0.ttf + guji-large.ttf | chamfer 0.366/0.405（闸 0.5）；cmap 30,706→30,707 / 49,408→49,409，双字体渲染 ✓ | ad09533 | [pua-registry.json](../guji-preview-grid/src/pua-registry.json) + jsonl；工具 tools/dataset/guji_pua_patch.py |
+| 3 | 2026-11-15 | 补录 PUA **U+E701**〈亻人人〉（@349 乑按语，尚未确认独立标准码位；scheme=scan-trace v1；系统字体有意不同步） | guji-plane0.ttf + guji-large.ttf | chamfer 0.366/0.405（闸 0.5）；cmap 30,706→30,707 / 49,408→49,409，双字体渲染 ✓ | ad09533 | [pua-registry.json](../guji-preview-grid/src/pua-registry.json) + jsonl；工具 tools/dataset/guji_pua_patch.py |
 | 4 | 2026-11-15T14:24:28+08:00 | U+E701 小字升级为宋体部件构形（原试验 E702 v3）；大字保留刻形；小字缓存戳 `e701-2-songti` | guji-plane0.ttf | chamfer 0.440；cmap 30,707 不变；其余轮廓/度量不变；272 测试与构建通过 | 7ff192c | [转正报告](research/2026-11-15-U+E701小字宋体转正.md) |
 | 5 | 2026-11-15T14:37:18+08:00 | U+E701 仅限小字，撤销大字补录；缓存戳 `001015-2bd6e-no-e701` | guji-large.ttf | cmap 49,409→49,408；其余 glyf 字节/度量一致；U+2BD6E 保留；小字哈希不变 | 8fd8063 | [范围修订](research/2026-11-15-U+E701仅限小字.md) |
 | 6 | 2026-11-15T16:03:48+08:00 | U+E701 顶撇与中竖整体取自𠂹；四部件构形；缓存戳 `e701-4-joined` | guji-plane0.ttf；plane2 仅只读来源 | chamfer 0.558（本方案闸 0.6）；其余字形与度量不变；来源轮廓完整、浏览器及构建通过 | 859ad28 | [整体取件报告](research/2026-11-15-U+E701顶撇中竖整体取件.md) |

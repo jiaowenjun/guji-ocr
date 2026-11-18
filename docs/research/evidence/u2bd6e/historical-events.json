@@ -1,0 +1,49 @@
+{
+  "archived_at": "2026-11-18",
+  "source": {
+    "path": "var/unencoded/kangxi-unencoded/font-patches.jsonl",
+    "bytes": 6434,
+    "sha256": "17db46cb9869ae44db54860ee1fee8d165af15668484b9bdbe59b446f849bf60"
+  },
+  "events": [
+    {
+      "at": "2026-11-13T19:41:39",
+      "svg": "/Users/jwj/workspace/guji-ocr/datasets/kangxi-unencoded/svg/0334-04-K0000.svg",
+      "results": [
+        {
+          "font": "guji-preview-grid/public/fonts/guji-large.ttf",
+          "cp": "U+2BD6E",
+          "glyph": "u2BD6E",
+          "scale": 0.8739,
+          "bbox": [
+            88,
+            -135,
+            944,
+            735
+          ],
+          "advance": 1024,
+          "chamfer": 0.029,
+          "bytes_before": 46698456,
+          "bytes_after": 46623752
+        },
+        {
+          "font": "/Users/jwj/Library/Fonts/KX_47043_14.ttf",
+          "cp": "U+2BD6E",
+          "glyph": "u2BD6E",
+          "scale": 0.8739,
+          "bbox": [
+            88,
+            -135,
+            944,
+            735
+          ],
+          "advance": 1024,
+          "chamfer": 0.029,
+          "bytes_before": 46698456,
+          "bytes_after": 46623752
+        }
+      ]
+    }
+  ],
+  "note": "Historical operation records, not operations executed on the archive date."
+}

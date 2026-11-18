@@ -5,7 +5,7 @@
     {
       "cp": "E701",
       "char": "⿰亻⿱人人",
-      "description": "〈亻人人〉＝康熙 @349 乑字按语「《正字通》獨改作❌」处刻形（与㐺相分的另一字），无 Unicode 码位",
+      "description": "〈亻人人〉为近似检索描述；康熙 @349 乑字按语「《正字通》獨攺作」处刻形，原文另举㐺。尚未确认独立标准 Unicode 码位，字形以原图与冻结配方为准。",
       "first_seen": "kangxi-gold @349",
       "scheme": "compose",
       "version": 4,
@@ -120,7 +120,8 @@
         "guji-plane0.ttf": 4
       },
       "usage": "small-only",
-      "usage_note": "该字符只出现在小字内容中，仅收录于 guji-plane0.ttf。"
+      "usage_note": "该字符只出现在小字内容中，仅收录于 guji-plane0.ttf。",
+      "report": "docs/research/2026-11-18-U+E701调研核验与补录报告.md"
     },
     {
       "cp": "E704",

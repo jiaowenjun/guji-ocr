@@ -1,0 +1,60 @@
+{
+  "checked_at": "2026-11-18",
+  "source": {
+    "path": "var/unencoded/kangxi-unencoded/svg/0334-04-K0000.svg",
+    "bytes": 2583,
+    "sha256": "40aca218281b9efe68b7046acac6448684457cf34cf5a756d65fb857d00f13fd"
+  },
+  "anchor": {
+    "path": "var/unencoded/kangxi-unencoded/svg/0334-03-00054-4E30.svg",
+    "bytes": 1447,
+    "sha256": "79391933238c65e3e99cf0f0eb07996875eb5361a16b8ee5e27ff7f5ee743a45"
+  },
+  "transform": [
+    0.8739049307949839,
+    0,
+    0,
+    0.8739049307949839,
+    -43.22935579573286,
+    -230.9405008921147
+  ],
+  "rebuilt_sha256": "3e62bc086fca4a34c90741ed64726f16c2c6e1e0ade08c4d01406144fa408fd0",
+  "current_sha256": "3e62bc086fca4a34c90741ed64726f16c2c6e1e0ade08c4d01406144fa408fd0",
+  "exact_match": true,
+  "chamfer_128": 0.028631762041219824,
+  "threshold": 0.15,
+  "calibration_font": "Original pre-patch backup, sha256 dfc5876c1a580922798e5da3f7b58d6bdcf419c294622d67a8a07cf3256da87f",
+  "anchor_stored_bounds": [
+    73,
+    -133,
+    948,
+    742
+  ],
+  "current_font_calibration_attempt": {
+    "checked_at": "2026-11-18",
+    "source": {
+      "path": "var/unencoded/kangxi-unencoded/svg/0334-04-K0000.svg",
+      "bytes": 2583,
+      "sha256": "40aca218281b9efe68b7046acac6448684457cf34cf5a756d65fb857d00f13fd"
+    },
+    "anchor": {
+      "path": "var/unencoded/kangxi-unencoded/svg/0334-03-00054-4E30.svg",
+      "bytes": 1447,
+      "sha256": "79391933238c65e3e99cf0f0eb07996875eb5361a16b8ee5e27ff7f5ee743a45"
+    },
+    "transform": [
+      0.8724078412714721,
+      0,
+      0,
+      0.8724078412714721,
+      -42.03024288910579,
+      -230.77271868532512
+    ],
+    "rebuilt_sha256": "5ce65a525553d3efb7ab5f83840fb7d0c7ce74d158baf7ddb5df31ef14ebd8ec",
+    "current_sha256": "3e62bc086fca4a34c90741ed64726f16c2c6e1e0ade08c4d01406144fa408fd0",
+    "exact_match": false,
+    "chamfer_128": 0.028631762041219824,
+    "threshold": 0.15
+  },
+  "explanation": "Original font stores 丰 bbox [73,-133,948,742]; after serialization it is [74,-133,947,741]. Historical reproduction requires original stored anchor bbox, not the current recalculated bbox."
+}

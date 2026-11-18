@@ -1,0 +1,609 @@
+{
+  "checked_at": "2026-11-18",
+  "purpose": "Supplemental audit, not a reconstruction of unrecorded 2026-11-15 candidate search",
+  "pre_e701_font_ref": "ad09533^:guji-preview-grid/public/fonts/guji-plane0.ttf",
+  "unchanged_source_fonts": {
+    "guji-plane2.ttf": {
+      "pre_e701_sha256": "80df094a2e63091b222706696a8b244c9dba45219af866226a097d0fbb2bf28d",
+      "same_as_current": true
+    },
+    "guji-planef.ttf": {
+      "pre_e701_sha256": "cfeb8527cfc75fe244b1c773056ed8e8896e67918f368999d12f6bd86dee323b",
+      "same_as_current": true
+    }
+  },
+  "inspected_top_candidates_per_font": 48,
+  "total_inspected_candidates": 144,
+  "visual_result": "No matching target among inspected candidates; low-score non-character symbols show limitations of this metric.",
+  "unmapped_plane0": [
+    {
+      "name": ".notdef",
+      "compiled_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph00220",
+      "compiled_sha256": "c51adbe29b02a7bb3a308a9aa275fcb305b0a15da1c7affacc46023ce3a71208",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph00229",
+      "compiled_sha256": "f59303c0e42e883df7b3042f3b2ad71584e3c4361a47cfd65d2e6a5fc18fb79e",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph00231",
+      "compiled_sha256": "e799d8d03d0aedb29c33ecfec67c956e9a8fc8694df74f6d2da230bdde25b088",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph00279",
+      "compiled_sha256": "6839152fc5450d916abb94e5685efce26b636f7030e8f42fb222f26c99d71a90",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph00281",
+      "compiled_sha256": "2e91265d5a6bbfe8242f949bfa80e856deab8530ff424b2bb6adce63e0824705",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph00316",
+      "compiled_sha256": "9d1868d23b98e5a19ee006f4436e32a8e463cf11a5fcc45d98afb2291e0e7112",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph00479",
+      "compiled_sha256": "dd77d4767ee1a66ba4ff4aa28dd60ad747229d01dcb51ae95242c99800de706d",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph00629",
+      "compiled_sha256": "cc1b660e737e283cc9c4add54f3d1cc932dcc3518e954dc2489aa522259d42c6",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph00732",
+      "compiled_sha256": "03c1f5b4d9a0c4cf6f430f6d84ddd070159ddb64a02a19336f2fccdedcd4c485",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph00733",
+      "compiled_sha256": "2d38bf1d09809de237838a99e0d86e0535b7790205bc2acb0f0ebe26f567fe5b",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph00741",
+      "compiled_sha256": "3a98b1cfcd9fb0aa8758093fd9b0afb5a2bb5adf704d4e3925efa986fe0b62ff",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph00744",
+      "compiled_sha256": "75ab6742e10d0d8c7a17763cbc4ee33c8274177d9f896f5475cc628d6f4e109a",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph00746",
+      "compiled_sha256": "43b097387af2a6be2e9526986283e98de440c020393000d6f5aa663df396554a",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph01076",
+      "compiled_sha256": "ecdb5a2c625d447d9959a3737d1f4a6e8d30e0b485dc53bc21fd4f38acfd5a4a",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph01206",
+      "compiled_sha256": "aa566106493e320715f217c2a74c96ba9e4b6bd808f188bea681ff261aec4917",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph01244",
+      "compiled_sha256": "22668c568d51fcb7c0bf48de18c3e48c4d82586b6e5df3b4649e905dc9d3e3a2",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph01345",
+      "compiled_sha256": "d177794ffeea96b268a6e5bd40f474a4292db27754d7901586542c32dd71f4e7",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph01359",
+      "compiled_sha256": "0881768585ed7d7d212c2385a3eb1114c98ea5962c9ce49998cf373c17e6c1b9",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph01362",
+      "compiled_sha256": "19b19c5a6d6dc2df66cf31d81efdffa2ae186b01f3266ef02960bbf0621fee1c",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph01618",
+      "compiled_sha256": "ce865b21bda443fe30b0633d07c2c0d21699e8263786db4847933b0c09dc30e5",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph01623",
+      "compiled_sha256": "f9d2c9ce9c2954c1a87c3c747ab157858ee11a464a4624e7ee1e3e2847261890",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph01641",
+      "compiled_sha256": "5bdb0e01fef9627e5e30b3c6c5a02ee8331b3046aeea1627c090ad3893fe65eb",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph01704",
+      "compiled_sha256": "42a7e401004b027d7d6e581c049361ec2749e5fbd6a54fed88e4082505e72d51",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30055",
+      "compiled_sha256": "aba71fb81925e62ef026970156fef88a94259f5d9bfcd7cf3c6eea1d5baaefd0",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30731",
+      "compiled_sha256": "65060c335204436b317e4df59e78ad24cf67be3a19b397c4c230aa893f325885",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30732",
+      "compiled_sha256": "7993143b7a55d9aec586805edf415553ea58b9060fb286a550fe4045b745f1f6",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30733",
+      "compiled_sha256": "035344c0454f2dc3fb63073647365e10c23060554f08eb9479e6c6ae80c286d1",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30734",
+      "compiled_sha256": "46f9011f27cfeb6640e9c52476bea4b9d789243d9f9a47d2ad40f436bc7b30b4",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30735",
+      "compiled_sha256": "5b8e83038d0ee4c699ed14a5e6839e7749a62e22dd62a61725eee71a6c2a2edd",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30736",
+      "compiled_sha256": "396d07eca1ad1da2be687026f3f71965d709307c3540484d8ed42492940d5141",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30737",
+      "compiled_sha256": "b06164c8723bc66196ab4af6c060956097ada2b5a87a99e9b066c47e633f7072",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30738",
+      "compiled_sha256": "0c372a4861a309579e8cf0e57105101f8398b25b1fccd5edf5fce18f2e0ce7c6",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30739",
+      "compiled_sha256": "077379793f6f713ee9738f42ebc11e28c90f097ff15593282a12dc86636ca521",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30740",
+      "compiled_sha256": "f80ae7631be2728b9c7b1266052ff1dfd11e75e30149d21f675cb46bf8b28a0b",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30741",
+      "compiled_sha256": "c2b04aa3d07cfdf96db3f66fa37ad8cf6f93762dbf752f27e2e460af095b9d27",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30742",
+      "compiled_sha256": "e07117d8b725a9b3a5a286f6948f17072e13bd4c2961ddc3712d2c7a3b519dbd",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30743",
+      "compiled_sha256": "7b59c97501252d82b500ad35c74c0dc0156b5eeae4c1700fa34746e51de112d8",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30744",
+      "compiled_sha256": "83c908133857ceb9e36b5d759a867b4d265da122d3bbf49fdf8c0e6c8b1aebcd",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30745",
+      "compiled_sha256": "190a685b8a91ed5185f868f445c5ee052ed02947a0c0e6c5d8911bc515b8652f",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30746",
+      "compiled_sha256": "ba8481117e6afd1bc46beb99b30646d0089863aaac6aacdf9bb6e95865ebbc51",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30747",
+      "compiled_sha256": "21a54b8554a2c87641c5418d23abd278abb9d521ab028755c8c1c13c7890a1e6",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30748",
+      "compiled_sha256": "a58d5100fa111f2422f3dc032731dfb0299d7564fc43e3218058deab7f1f88c8",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30749",
+      "compiled_sha256": "2f3b7506d6854ea9c930cc567b330913633ffa25a120965915fe0a29a469a9f6",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30750",
+      "compiled_sha256": "035344c0454f2dc3fb63073647365e10c23060554f08eb9479e6c6ae80c286d1",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30751",
+      "compiled_sha256": "46f9011f27cfeb6640e9c52476bea4b9d789243d9f9a47d2ad40f436bc7b30b4",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30752",
+      "compiled_sha256": "5b8e83038d0ee4c699ed14a5e6839e7749a62e22dd62a61725eee71a6c2a2edd",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30753",
+      "compiled_sha256": "396d07eca1ad1da2be687026f3f71965d709307c3540484d8ed42492940d5141",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30754",
+      "compiled_sha256": "069d0da1634bc65cdcd984bde13f45ef3f4361413587b48c7b61b3f7a8aeb626",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30755",
+      "compiled_sha256": "717baeedd6cf2f0927a818d2c3150d960269ec5b0f684dcda213b775e51f7390",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30756",
+      "compiled_sha256": "4283de309823078d9f6bad4d72d187ab83151a612f6fd171f3f00ac74bdda689",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30757",
+      "compiled_sha256": "c6f817cb7f06073eb7164ce2b9171da067a778713e532e0c0f90a73a41e77cd3",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30758",
+      "compiled_sha256": "64ce73b3995d4e0d78821e6e965a88defa48f9953ba271f89036a0a01a0562c8",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30759",
+      "compiled_sha256": "a9a4e4c6dd7d98528fb65cd869560b867da600cd38b83c72c697bf30d38d1f78",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30760",
+      "compiled_sha256": "704d8dff2bcc7359fe8e25fd4e8d96a843f156599d41b98f293a36eeafc7b474",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30761",
+      "compiled_sha256": "5be025db97d253a64ee40e04444a99c2d294ad9e1dfc763c835433e13d6ea2cc",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30762",
+      "compiled_sha256": "70357b0ec24050cdbd15422f48a597572f0fc0aa0907bc86910847b61d25ac26",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30763",
+      "compiled_sha256": "2f6d91a2c7a58d69b01a5a17b368469646270138bd8ffea028a48a6ff67427ed",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30764",
+      "compiled_sha256": "43f850d478eed99cee5832df39278e348a90a80adf2140a8323b983eb9d78059",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30765",
+      "compiled_sha256": "fc71ab72233a080d306b2ada95512701965cc0f320f94152e6603bfc3024e3df",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30766",
+      "compiled_sha256": "deeb85d22bb69d6aea16658a013dfad08c61c6baf59624afaa39bd76731b7037",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30767",
+      "compiled_sha256": "fdc95ec77ee574aa1d30ddb800c6164785a72458d3b191cc4954dc0fb5e17948",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30768",
+      "compiled_sha256": "38bf56b72ad5c2c0db3e92ab88e6bff8261b4fb0b973f0fc0713419ee2291479",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30769",
+      "compiled_sha256": "ce07839c18d86455d50460a29da0101258f019192951124f65a3d0a1002d18af",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30770",
+      "compiled_sha256": "1c537bd1815f83c46813fff47779fbb89b41a42ce67f7adcfa7a54550ca9d493",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30771",
+      "compiled_sha256": "eb880fd9232550038b102fda58b7a4f1ac296dff6807d8e625c0a3e8ea2e2bc1",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30772",
+      "compiled_sha256": "f71dce20186aef61ecc724addc4f5c2135b3869a87c16b28a16fc0fd2d2119fe",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30773",
+      "compiled_sha256": "0da8c3215635f1cedeabe555225b385d8c7a309bf79127ffb76046694a24e567",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30774",
+      "compiled_sha256": "755795d93090a9bfabea4582d15d8485e215e0954d5317a4eafe4a4e5c4baafc",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30775",
+      "compiled_sha256": "d9dd28e504a582aea95d144ab3d28d53db763d4a68b76ada77a7fef635eec37d",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30776",
+      "compiled_sha256": "22110895d43ba4d1e1c50b29610124d259a13bf19eb6a46617a7554e8b7fa3c3",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30777",
+      "compiled_sha256": "f1b170d13cd42dd60275e35691e0c05c590548c07c27e2722fbf6e0a07110b0c",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30778",
+      "compiled_sha256": "45dd3fed81aaf72869532337470234dd4c244aa972df8d3191a42d02beda24b7",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30779",
+      "compiled_sha256": "d357c0b3ff38e3316c7e51155f361ac6787b59ddd393094a9298f9a30778dba5",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30780",
+      "compiled_sha256": "df128d7b14102b1a9dc5cf45ee1c84b9c99f1fc2900b15eb73500a27f6f8f483",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30781",
+      "compiled_sha256": "44d119932b492eb6d3ebf56e348d5ba066ea55d4a38cc859f194959612548b99",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30782",
+      "compiled_sha256": "214cd9c62e631b585c25c5d51075bea60c8499ad9380d6a33e483faccbaf371f",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30783",
+      "compiled_sha256": "f4521d633f07db09ef4d058bc558f3e6d1055478173b1fa843173b53e9de2317",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30784",
+      "compiled_sha256": "2cd05aaef1ac6b8cceb8507f82520e96b92c653ddda0df5063f7fc9b7502bbfc",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30785",
+      "compiled_sha256": "ac2abab4128686a55ad3256e5a6ee9f4eebad0440d71fc22fe58142a228b0f2e",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30786",
+      "compiled_sha256": "b0e041c682fff9c553bc851b690092ac3d89bc80918490de736025db1f9593ec",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30787",
+      "compiled_sha256": "760271c21f3093ffaee9e6e7d9e08658df1c6e61b2b482df1a8d97839f162774",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30788",
+      "compiled_sha256": "75b17ff696f72d23a03fbeec7637422e37ad17acdf44b78acac66c9b8254a31e",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30789",
+      "compiled_sha256": "cc383128dc4398a588700975808a5ef1696b21272fdac89aa04ca876996929a6",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30790",
+      "compiled_sha256": "54fc5b61d0befcd261fe43cacc96ced87acd577353bb45f42769a6ef9f4e0386",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30791",
+      "compiled_sha256": "77952d9a7d08d5a03d0292ecb6339c5e6c9dfd04deebb352353009842d9805d7",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30792",
+      "compiled_sha256": "051d4cc0c719411e0bd1226065cde7a268fc0c92bcff0d9063467e405fb23409",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30793",
+      "compiled_sha256": "8d561258ae08aba00108d687bba9451a8f4f069290705ddb146ef3e03aff25fa",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30794",
+      "compiled_sha256": "65bcb775952103a8164213fa44ec4b4d47a6dc1aeb93e09d18cedfd5ff20b4a7",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30795",
+      "compiled_sha256": "eec1da04c876bb3726ca14398746d68ab51f7117ec1b7b9b195a8bb63426db7a",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30796",
+      "compiled_sha256": "a0268d7870fffbd57a2d230ad89003c65a5ca0ee44794d5c026ee762c9a91c76",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30797",
+      "compiled_sha256": "5f628e1ecdfff92b685c6a7de5abc3711b2cf2139e1a442cfa7d911a1a7f34b5",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30798",
+      "compiled_sha256": "9e10c7e53aa7e9132e7c9de8f7892fda0234aa231b486a537986666b723e019d",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30799",
+      "compiled_sha256": "1a506389aed59e675a4424d91a96911df2f20f579e1ad73c51796b06d3eae3d9",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30800",
+      "compiled_sha256": "4872742971fd96e3c78351fac509f4b419bb09a3b393c72ad33dc1c105096f7c",
+      "same_in_current": true
+    },
+    {
+      "name": "glyph30801",
+      "compiled_sha256": "d4bcf4d040eb4707063c0bb7beab551c3feffb6b8f52a1e99700cad7c5674f3d",
+      "same_in_current": true
+    }
+  ],
+  "targeted_GSUB_substitutions": [],
+  "similar_characters": [
+    {
+      "cp": "U+4E51",
+      "font": "guji-plane0.ttf",
+      "score64": 1.901776753337011,
+      "top100_rank": 18
+    },
+    {
+      "cp": "U+343A",
+      "font": "guji-plane0.ttf",
+      "score64": 2.72767249844138,
+      "top100_rank": null
+    },
+    {
+      "cp": "U+4ECC",
+      "font": "guji-plane0.ttf",
+      "score64": 4.18458050948238,
+      "top100_rank": null
+    },
+    {
+      "cp": "U+201A7",
+      "font": "guji-plane2.ttf",
+      "score64": 3.8533877448453717,
+      "top100_rank": null
+    },
+    {
+      "cp": "U+200B9",
+      "font": "guji-plane2.ttf",
+      "score64": 2.0471995364074043,
+      "top100_rank": null
+    }
+  ],
+  "trial_script": {
+    "path": "var/unihan/font-trial-backups/before-shape-fix/trial_pua_patch.py",
+    "sha256": "f056fa69f15aed9c3721d083ad1ce3c228791792d7ef2bead8f74e93c5e8ef47",
+    "excerpt": "#!/usr/bin/env python3\n\"\"\"阶段 B+C：三方案造字 + 非破坏性注入 plane0 副本（PUA E701/E702/E703）。\n\n方案 A（E701）：截图轮廓 → 以 plane0 㐺(U+343A) 字形 bbox 校准 → TT 轮廓\n              （顶点做 off-curve、边中点做 on-curve 的二次贝塞尔平滑）\n方案 B1（E702）：整字复制 plane0 的 㐺 字形轮廓（⿰亻从 宋体形）\n方案 B2（E703）：㐺 的第一轮廓（亻）+ 仌(U+4ECC ⿱人人) 缩放嵌入右槽 → 合成 ⿰亻⿱人人\n\n验证：三字形渲染 chamfer 对清洗扫描；输出对比预览图。\n输出：var/unihan/trial-plane0-pua.ttf（副本，不触碰 public/fonts/）。\n\"\"\""
+  },
+  "generator_check": {
+    "command": "PYTHONPATH=var/unihan/font-tool-deps python3 tools/dataset/guji_songti_components.py",
+    "native_components": 4,
+    "compiled_sha256": "0ef6027de1532c8bc037f5944ab4080e7e14651298ba2f61d468a36d898493c4",
+    "passed": true
+  },
+  "replace_dry_run": {
+    "command": "python3 tools/dataset/guji_pua_patch.py --cp E701 --font guji-plane0.ttf --replace --expected-version 4 --dry-run",
+    "sha256_before": "f7e40e014584f6f4fd73ac1de97b2e9aac414e5eeb0e9c9a3847a78e4c27a20b",
+    "sha256_after": "f7e40e014584f6f4fd73ac1de97b2e9aac414e5eeb0e9c9a3847a78e4c27a20b",
+    "bytes_before": 17252348,
+    "bytes_after": 17252348,
+    "chamfer": 0.558,
+    "chamfer_gate": 0.6,
+    "cmap_before": 30708,
+    "cmap_after": 30708,
+    "other_glyphs_and_metrics_unchanged": true,
+    "production_writes": false
+  },
+  "search_script_sha256": "5c705eab348dca78e6714ed4702f30c909d39186e1bdf4fa647aabae57281893",
+  "historical_scan_trace": {
+    "source": "var/unihan/trace_glyph.py",
+    "sha256": "b9782974a45d6fc99a81ccb0ec2298f32de377265a2f1e157401f0d5eb44c610",
+    "preprocessing_excerpt": "# ---------- 1. 二值化与预处理 ----------\ng = np.asarray(Image.open(SRC).convert(\"L\"))\nink = g < 128\n# 闭运算桥接断笔：结构元 3×3 圆盘，迭代 2 次\nst = ndimage.generate_binary_structure(2, 1)\ndisk = np.array([[0,1,0],[1,1,1],[0,1,0]], bool)\nclosed = ndimage.binary_closing(ink, structure=disk, iterations=2)\n# 去小噪声域（<6px）\nlab, n = ndimage.label(closed)\nsizes = ndimage.sum(closed, lab, range(1, n+1))\nkeep = np.isin(lab, [i+1 for i, s in enumerate(sizes) if s >= 6])\nclean = keep\nprint(f\"二值 {ink.sum()}px → 闭运算 {closed.sum()}px → 去噪 {clean.sum()}px, 域数 {ndimage.label(clean)[1]}\")",
+    "simplification_excerpt": "comps = trace_all(clean)\nprint(f\"连通域 {len(comps)} 个，外轮廓点数 {[len(o) for o,_ in comps]}\")\nEPS = 1.2\nsimple = []\nfor outer, holes in comps:\n    so = dp_simplify(outer, EPS)\n    sh = [dp_simplify(h, EPS) for h in holes]\n    simple.append({\"outer\": so, \"holes\": sh})\n    print(f\"  外轮廓 {len(outer)}→{len(so)} 点; 孔洞 {[len(h) for h in sh]}\")\n\njson.dump({\"epsilon\": EPS, \"components\": simple}, open(OUT_JSON, \"w\"))",
+    "method": "Moore-Neighbor outer/hole tracing; Douglas-Peucker epsilon 1.2; quadratic smoothing at font construction stage"
+  },
+  "source_artifacts": [
+    {
+      "path": "tools/dataset/font-sources/e701-scan-original.png",
+      "bytes": 14258,
+      "sha256": "4b3e451cd14b0abd19b210e4681f55dddc66d2a525c160b772dbef1d2795b1f5"
+    },
+    {
+      "path": "tools/dataset/font-sources/e701-scan-clean.png",
+      "bytes": 459,
+      "sha256": "da27a007d7e06808563c2f98bc754c513af62ef50124f001c506fb4dd766c523"
+    },
+    {
+      "path": "tools/dataset/font-sources/e701-scan-v1.json",
+      "bytes": 480,
+      "sha256": "9bf9b3b40b9315ea644ac0077f8ee67e7e0c9e2aa8803e1f4ab299a9cac9fe33"
+    },
+    {
+      "path": "tools/dataset/font-sources/e701-songti-v2.json",
+      "bytes": 15086,
+      "sha256": "6e5cbb5c32049b47b81661d569176e9db2c11e415cab6871c54b9159ed689eef"
+    },
+    {
+      "path": "tools/dataset/font-sources/e701-songti-v4.json",
+      "bytes": 13788,
+      "sha256": "ae4adfbd6bd1dab16afde5d5bbf3168b381cbbc6bf2bcbad4ca33507af78605b"
+    }
+  ],
+  "search_parameters": {
+    "target_image": "tools/dataset/font-sources/e701-scan-clean.png",
+    "threshold": 120,
+    "cmap_minimum": "U+2E80",
+    "render_font_size": 96,
+    "render_canvas": [
+      128,
+      128
+    ],
+    "normalization_canvas": [
+      64,
+      64
+    ],
+    "normalization_max_ink_dimension": 58,
+    "algorithm": "symmetric mean Euclidean distance transform",
+    "top_saved_per_font": 100
+  }
+}
