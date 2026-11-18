@@ -126,6 +126,12 @@ pnpm build
   fetch_kangxi_entry 增量爬取）→ 由 page_chars + entries 生成 .gj 草稿（字头行 +
   释义段落带，未编码字 `#□` 占位注释）入 `annotations/`、manifest 追加该页并刷新
   index.json，前端自动跳转；`POST /dataset/page-tool` 中间件仅 dev 生效
+- **爬取字头与详情**：字头栏通过 `POST /dataset/page-tool` 的
+  `{ action: "crawl-heads", page }` 按页只读查询 SQLite；点击字头后通过
+  `{ action: "crawl-entry", codepoint }`（十进制 Unicode 码位）只取该字词条。
+  切页/重开弹窗读取当前数据库，不再生成或读取 `page-heads.json`、`entries.json`，
+  添加新页也无需同步爬取快照。查询不会联网补抓或创建数据库；未采集、查询失败
+  与已采集但零字头分别显示，失败可重试。爬取库须在本机可用。
 - **页标签**：草稿（爬取生成）/ 初校 / 精校，存 manifest.json 每页 `status` 字段，
   工具条徽章与页清单均带标记；既有 17 页定为初校
 - 「保存回数据集」写回 `kangxi-gold/annotations/NNNN.gj`（仅 dev server 生效的

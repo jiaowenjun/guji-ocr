@@ -1,8 +1,6 @@
-// 爬取词条详情（link-dataset.sh 从 tools/crawl 爬取库导出的 entries.json，
-// 与爬取演示页「字头详情」同源同字段）：整条数字全文，与物理页界无关。
-// 按码位键取——未编码字（k_code 无详情端点）与库缺录字头不在表内，
-// 弹窗回退 .gj 页内文本并注明。
-import { useEffect, useState } from "react";
+// 爬取数据按页/码位查询本地 SQLite；查询本身不抓取，不依赖静态快照。
+// 不保存模块级缓存：切页/重开弹窗读取当前库，编辑器重渲染不会重复请求。
+import { useCallback, useEffect, useState } from "react";
 
 /** 版本页位（同文書局本 / 武英殿本） */
 export interface CrawlEdition {
@@ -30,60 +28,68 @@ export interface CrawlEntryRecord {
   pua_other: string[];
 }
 
-export type CrawlEntries = Record<string, CrawlEntryRecord>;
-
 /** 爬取库页字头索引条目（page_chars 行；char=null 为未编码 K 码字形，无详情端点） */
 export interface CrawlPageHead {
   ord: number;
   char: string | null;
-  /** 码位键（如 "200BF"）；未编码为 null */
-  cp: string | null;
+  /** Unicode 码位；未编码为 null */
+  codepoint: number | null;
   k_code: string | null;
   svg: string | null;
   entry_no?: string | null;
 }
 
-/** 页码字符串 → 该页原始字头序（site page_chars 口径，与 .gj 无关） */
-export type CrawlPageHeads = Record<string, CrawlPageHead[]>;
+type QueryResult<T> =
+  | { status: "loading" }
+  | { status: "ready"; data: T }
+  | { status: "error"; error: string };
 
-/** 字符 → 码位键（entries.json 键口径，如 "200BA"） */
-export const cpKey = (ch: string) =>
-  (ch.codePointAt(0) ?? 0).toString(16).toUpperCase().padStart(4, "0");
+const LOADING = { status: "loading" } as const;
 
-/** 模块级缓存盒（undefined = 未取过；null = 失败/缺文件），useLazyJson 专用 */
-const entriesCacheBox: { v: CrawlEntries | null | undefined } = { v: undefined };
-const pageHeadsCacheBox: { v: CrawlPageHeads | null | undefined } = { v: undefined };
-
-/** 懒加载 JSON fixture（useSvgMap 同款模块缓存语义；url/box 均模块级稳定）。
- *  epoch>0 表示数据源已被后端重写（加页随写 fixture），须重取覆盖模块缓存 */
-function useLazyJson<T>(url: string, needed: boolean, box: { v: T | null | undefined }, epoch = 0): T | null | undefined {
-  const [snap, setSnap] = useState<T | null>(() => box.v ?? null);
+/** 请求身份随参数或重试次数变化；取消后的响应不能覆盖当前页/当前字头。 */
+function useCrawlQuery<T>(body: string | null) {
+  const [attempt, setAttempt] = useState(0);
+  const [snap, setSnap] = useState<{ body: string; attempt: number; result: QueryResult<T> } | null>(null);
+  const retry = useCallback(() => setAttempt((n) => n + 1), []);
+  // 参数改变时即丢弃旧结果；快速切回原页也保持加载态，直到新查询完成。
+  if (snap !== null && (snap.body !== body || snap.attempt !== attempt)) setSnap(null);
   useEffect(() => {
-    if (!needed || (box.v !== undefined && epoch === 0)) return;
-    let alive = true;
-    fetch(url)
-      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
-      .then((m: T) => {
-        box.v = m;
-        if (alive) setSnap(m);
+    if (body === null) return;
+    const controller = new AbortController();
+    fetch("/dataset/page-tool", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body,
+      cache: "no-store",
+      signal: controller.signal,
+    })
+      .then(async (res) => {
+        const data = await res.json() as T & { ok?: boolean; error?: string };
+        if (!res.ok || data.ok !== true) throw new Error(data.error ?? `HTTP ${res.status}`);
+        if (!controller.signal.aborted) setSnap({ body, attempt, result: { status: "ready", data } });
       })
-      .catch(() => {
-        box.v = null;
-        if (alive) setSnap(null);
+      .catch((error: unknown) => {
+        if (!controller.signal.aborted) setSnap({
+          body, attempt,
+          result: { status: "error", error: error instanceof Error ? error.message : String(error) },
+        });
       });
-    return () => {
-      alive = false;
-    };
-  }, [needed, epoch]); // eslint-disable-line react-hooks/exhaustive-deps -- url/box 模块级常量
-  return box.v !== undefined ? box.v : snap;
+    return () => controller.abort();
+  }, [body, attempt]);
+  const result = snap?.body === body && snap.attempt === attempt ? snap.result : LOADING;
+  return { result, retry };
 }
 
-/** 爬取词条表（弹窗「爬取全文」区块，首次打开弹窗时拉取） */
-export function useCrawlEntries(needed: boolean, epoch = 0): CrawlEntries | null | undefined {
-  return useLazyJson("/dataset/entries.json", needed, entriesCacheBox, epoch);
+/** 弹窗每次打开查询单字全文；entry=null 表示库中未收录。 */
+export function useCrawlEntry(head: string) {
+  return useCrawlQuery<{ entry: CrawlEntryRecord | null }>(
+    JSON.stringify({ action: "crawl-entry", codepoint: head.codePointAt(0) }),
+  );
 }
 
-/** 逐页爬取原始字头表（字头栏「爬取」段，进页即拉取） */
-export function useCrawlPageHeads(needed: boolean, epoch = 0): CrawlPageHeads | null | undefined {
-  return useLazyJson("/dataset/page-heads.json", needed, pageHeadsCacheBox, epoch);
+/** heads=null 表示尚未采集；[] 才是已采集但本页没有新字头。 */
+export function useCrawlPageHeads(page: number | undefined) {
+  return useCrawlQuery<{ heads: CrawlPageHead[] | null }>(
+    page === undefined ? null : JSON.stringify({ action: "crawl-heads", page }),
+  );
 }

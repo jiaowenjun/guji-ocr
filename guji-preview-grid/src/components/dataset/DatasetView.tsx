@@ -124,7 +124,6 @@ export function DatasetView({
   const [pageInput, setPageInput] = useState("");
   const [addBusy, setAddBusy] = useState(false); // 添加新页进行中
   const [jumpTo, setJumpTo] = useState<number | null>(null); // 添加成功后跳转
-  const [fixtureEpoch, setFixtureEpoch] = useState(0); // 加页后 +1：add 已随写爬取 fixture，字头栏重取
   const toolbarSlot = useToolbarSlot(); // 工具栏注入壳层插槽（见 JSX 内 portal）
 
   // 清单刷新后跳到新添加的页
@@ -225,7 +224,6 @@ export function DatasetView({
       if (!res.ok || !data.ok) throw new Error(data.error ?? `HTTP ${res.status}`);
       const { counts, summaries } = data;
       reload();
-      setFixtureEpoch((e) => e + 1); // add 已随写 entries/page-heads，字头栏重取新页字头
       setJumpTo(n);
       setAdding(false);
       setPageInput("");
@@ -472,7 +470,7 @@ export function DatasetView({
 
         {/* 字头段并入工具栏（原为工具栏下方独立窄条）：多页字头时随 flex-wrap 换行 */}
         <Separator orientation="vertical" className="h-5" />
-        <HeadwordStrip page={page} continuation={continuation} crawlEpoch={fixtureEpoch} />
+        <HeadwordStrip page={page} continuation={continuation} />
 
         <div className="ml-auto flex flex-wrap items-center gap-2">
           {addBusy ? (

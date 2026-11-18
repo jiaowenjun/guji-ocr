@@ -17,6 +17,9 @@
                         → 后台预取 N+1（独立进程 prefetch-run，不阻塞 add 退出）
   status --page N --to draft|first|final
                         改页标签（草稿/初校/精校）并同步 manifest 与 index.json
+  crawl-heads --page N   只读查询本页爬取字头；heads=null 表示阅读页尚未采集
+  crawl-entry --codepoint N
+                        只读查询单个码位的词条详情；entry=null 表示未收录
   ocr-pages             各页 OCR/预取浅状态清单（预取调试视图数据源）：
                         数据集页 ∪ 已爬页 ∪ OCR 缓存页，每页含采集完整度、
                         OCR 缓存三态（valid/stale/none）与元数据
@@ -1965,22 +1968,6 @@ def cmd_add(page: int) -> dict:
     write_index(manifest)
     _log_ts(f"草稿+manifest+index 写盘完成（{gj_path.name}）")
 
-    # 爬取侧 fixture 随写：字头栏/字头弹窗读的静态 json（entries/page-heads）
-    # 同步到库最新——否则加页后字头栏显「爬取 0」直到手动重跑 link-dataset.sh。
-    # 失败降级为一句话，不杀 add 流程（同 svg 回补的挂钩韧性）
-    try:
-        import export_crawl_fixtures
-
-        stat = export_crawl_fixtures.export(
-            export_crawl_fixtures.ENTRIES_JSON,
-            export_crawl_fixtures.PAGE_HEADS_JSON,
-            announce=False,
-        )
-        note = f"fixture：词条 {stat['records']} 条，字头 {stat['heads']}/{stat['pages']} 页"
-        summaries.append(note + "（⚠ 空表——爬取库不可用）" if stat["db"] is None else note)
-    except Exception as e:  # noqa: BLE001
-        summaries.append(f"爬取 fixture 同步失败已跳过（{type(e).__name__}）")
-
     # 后台预取 n+1：独立进程，不阻塞本进程退出（HTTP 响应 ~1s 内返回）
     prefetch_next_page(page)
 
@@ -2010,6 +1997,25 @@ def cmd_status(page: int, to: str) -> dict:
     return {"ok": True, "page": page, "status": to, "label": STATUS_LABELS[to]}
 
 
+def cmd_crawl_heads(page: int, *, db_path: Path | None = None) -> dict:
+    """校对字头栏按页查库；不依赖 manifest，不触发抓取或数据库初始化。"""
+    if not 1 <= page <= 7738:
+        raise ValueError(f"页码 {page} 超出站点范围 1-7738")
+    store = kangxi_store.KangxiStore(db_path or kangxi_store.DEFAULT_DB, readonly=True)
+    # 缺阅读页不能解释为零字头；纯续文页已采集但 page_chars 为空，返回 []。
+    row = store.get_page(page)
+    heads = page_heads(page, store) if row and row.get("reading_html") else None
+    return {"ok": True, "page": page, "heads": heads}
+
+
+def cmd_crawl_entry(codepoint: int, *, db_path: Path | None = None) -> dict:
+    """校对弹窗按码位查库；只返回解析后的词条，无 raw_html 或网络补抓。"""
+    if not 1 <= codepoint <= 0x10FFFF or 0xD800 <= codepoint <= 0xDFFF:
+        raise ValueError(f"无效 Unicode 码位：{codepoint}")
+    store = kangxi_store.KangxiStore(db_path or kangxi_store.DEFAULT_DB, readonly=True)
+    return {"ok": True, "codepoint": codepoint, "entry": entry_detail(codepoint, store)}
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -2018,6 +2024,10 @@ def main() -> int:
     s = sub.add_parser("status")
     s.add_argument("--page", type=int, required=True)
     s.add_argument("--to", required=True)
+    ch = sub.add_parser("crawl-heads")
+    ch.add_argument("--page", type=int, required=True)
+    ce = sub.add_parser("crawl-entry")
+    ce.add_argument("--codepoint", type=int, required=True)
     f = sub.add_parser("ocr-fold")
     f.add_argument("--page", type=int, required=True)
     v = sub.add_parser("ocr-view")
@@ -2039,6 +2049,10 @@ def main() -> int:
     try:
         if args.cmd == "add":
             result = cmd_add(args.page)
+        elif args.cmd == "crawl-heads":
+            result = cmd_crawl_heads(args.page)
+        elif args.cmd == "crawl-entry":
+            result = cmd_crawl_entry(args.codepoint)
         elif args.cmd == "ocr-fold":
             result = cmd_ocr_fold(args.page)
         elif args.cmd == "ocr-view":

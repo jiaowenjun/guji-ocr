@@ -3,7 +3,7 @@
 #   public/dataset/index.json    页清单（来自 kangxi-gold/manifest.json）
 #   public/dataset/annotations -> <repo>/kangxi-gold/annotations（.gj 文本）
 #   public/dataset/images      -> manifest.images_dir（WD-2T 扫描图）
-#   public/dataset/entries.json 爬取库词条全文（字头详情弹窗，码位键）
+# 爬取字头/词条由本地 API 按需查库，不生成数据快照。
 # public/dataset/ 已 gitignore；重跑安全（ln -sfn 覆盖、index.json 重写）。
 set -euo pipefail
 
@@ -57,7 +57,7 @@ else
   echo "⚠ 缺 $UNENC/svg——字头条缺字格退化为系统字体" >&2
 fi
 
-# 未编码字头格（page-heads.svg 字段直用）：WD-2T 随爬 SVG 缓存，目录布局
+# 未编码字头格（查询结果 svg 字段直用）：WD-2T 随爬 SVG 缓存，目录布局
 # = page_chars.svg 相对路径（0000s/… 千位桶），前端直拼即得，零映射。
 # 路径事实源 tools/paths.py；未挂载只告警——未编码格破图回退 □。
 HEADSVG="$(python3 -c "import sys; sys.path.insert(0, '$ROOT/tools'); import paths; print(paths.RAW_KANGXI_SVG)")"
@@ -102,13 +102,6 @@ with open(out, "w", encoding="utf-8") as f:
     f.write(json.dumps(mapping, ensure_ascii=False, indent=2, sort_keys=True) + "\n")
 print(f"headword-svg.json：{len(mapping)} 字符 → SVG", file=sys.stderr)
 PY
-
-# 字头详情弹窗与字头栏「爬取」段数据源：爬取库（tools/crawl SQLite，与爬取
-# 演示页同源）全量导出 entries.json（有码位词条全文子集）+ page-heads.json
-# （逐页原始字头索引，含未编码 K 码项，键为页码字符串）。口径与 kangxi_page_tool
-# 加页随写共用同一脚本（export_crawl_fixtures.py，防两处漂移）；库不可用写空表
-# 并告警，不阻断其余生成步骤。
-python3 "$ROOT/tools/dataset/export_crawl_fixtures.py" "$ROOT" "$DEST/entries.json" "$DEST/page-heads.json"
 
 echo "✓ $DEST"
 echo "  annotations -> $ROOT/kangxi-gold/annotations"

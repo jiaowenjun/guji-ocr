@@ -1,14 +1,13 @@
 // 字头段（并入工具栏单行，嵌在界栏/字格开关之后）：只显爬取库该页
-// 原始字头序（page-heads.json，site page_chars 口径，含未编码 K 码字形）。
-// 点击弹窗也只显爬取侧（字形大样、码位、词条全文——entries.json 同源
-// 爬取库，与爬取演示页字段一致），不带任何 .gj 侧内容。
+// 原始字头序（本地 API 按页查 page_chars，含未编码 K 码字形）。
+// 点击弹窗按码位查同库词条，显示字形大样、码位与全文，不带 .gj 侧内容。
 // 段首另显 .gj 侧页首跨页归属徽标（continuation）：本页开头几行是
 // 哪一页字头词条的延续，点击宿主字头弹爬取详情。
 // 字形用 GujiLarge（字头大字体）；缺字时依次回退：站点扫描 SVG
 // （/dataset/unencoded-svg/）→ 系统字体 + 缺字描边。
 import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { cpKey, useCrawlEntries, useCrawlPageHeads, type CrawlEdition, type CrawlEntries, type CrawlEntryRecord, type CrawlPageHead } from "@/components/dataset/crawl-entries";
+import { useCrawlEntry, useCrawlPageHeads, type CrawlEdition, type CrawlEntryRecord, type CrawlPageHead } from "@/components/dataset/crawl-entries";
 import { type PageContinuation } from "@/components/dataset/headwords";
 
 const EMPTY_SET = new Set<string>();
@@ -183,37 +182,14 @@ function CrawlRecordSection({ rec }: { rec: CrawlEntryRecord }) {
   );
 }
 
-/** 取爬取词条；未收录者注明 */
-function CrawlRecordsSection({ crawl, chars }: { crawl: CrawlEntries; chars: string[] }) {
-  const records = chars
-    .map((ch) => crawl[cpKey(ch)])
-    .filter((r): r is CrawlEntryRecord => Boolean(r));
-  if (records.length === 0) {
-    return (
-      <div className="text-muted-foreground text-xs">
-        爬取库未收录此字头（未编码字形无详情端点，或库缺录）
-      </div>
-    );
-  }
-  return (
-    <div className="space-y-3">
-      {records.map((rec) => (
-        <CrawlRecordSection key={rec.unicode} rec={rec} />
-      ))}
-    </div>
-  );
-}
-
 function HeadwordDetailDialog({
   detail,
-  crawl,
   onClose,
 }: {
   detail: HeadwordDetail;
-  /** 爬取词条表（useCrawlEntries 直传：异步取到后弹窗内即时补显） */
-  crawl: CrawlEntries | null | undefined;
   onClose: () => void;
 }) {
+  const { result: crawl, retry } = useCrawlEntry(detail.head);
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-6"
@@ -235,12 +211,16 @@ function HeadwordDetailDialog({
         </div>
         <div className="mt-3">
           <div className="text-muted-foreground mb-1 text-xs">爬取全文（kangxizidian.com 词条详情，整条与页界无关）</div>
-          {crawl === undefined ? (
+          {crawl.status === "loading" ? (
             <div className="text-muted-foreground text-xs">加载中…</div>
-          ) : crawl === null ? (
-            <div className="text-muted-foreground text-xs">entries.json 不可用（未生成或加载失败），爬取侧不可显示</div>
+          ) : crawl.status === "error" ? (
+            <div className="text-muted-foreground text-xs" title={crawl.error}>
+              词条查询失败 <Button variant="ghost" size="sm" onClick={retry}>重试</Button>
+            </div>
+          ) : crawl.data.entry === null ? (
+            <div className="text-muted-foreground text-xs">爬取库未收录此字头</div>
           ) : (
-            <CrawlRecordsSection crawl={crawl} chars={[detail.head]} />
+            <CrawlRecordSection rec={crawl.data.entry} />
           )}
         </div>
       </div>
@@ -251,21 +231,13 @@ function HeadwordDetailDialog({
 export function HeadwordStrip({
   page,
   continuation,
-  crawlEpoch = 0,
 }: {
   page?: number;
   continuation?: PageContinuation | null;
-  /** 加页后 +1：add 已随写 fixture，重取覆盖模块缓存（不动编辑缓冲） */
-  crawlEpoch?: number;
 }) {
-  /** 爬取库当前页原始字头（site page_chars 口径；null=fixture 不可用，undefined=加载中） */
-  const crawlHeads = useCrawlPageHeads(page !== undefined, crawlEpoch);
-  const crawled = useMemo(
-    () => (page !== undefined && crawlHeads ? crawlHeads[String(page)] ?? [] : undefined),
-    [page, crawlHeads],
-  );
+  const { result: crawlHeads, retry } = useCrawlPageHeads(page);
   /** 条内渲染用（未就绪分支各自显提示，此值仅在就绪分支使用） */
-  const heads = crawled ?? EMPTY_HEADS;
+  const heads = crawlHeads.status === "ready" ? crawlHeads.data.heads ?? EMPTY_HEADS : EMPTY_HEADS;
   /** 宿主字头一并探测缺字（延续徽标与字头格同套 GujiLarge/SVG 兜底） */
   const allChars = useMemo(() => {
     const chars = heads.map((h) => h.char ?? "").filter(Boolean);
@@ -275,7 +247,6 @@ export function HeadwordStrip({
   const uncovered = useUncovered(allChars);
   const svgMap = useSvgMap(uncovered.size > 0);
   const [detail, setDetail] = useState<HeadwordDetail | null>(null);
-  const crawl = useCrawlEntries(detail !== null, crawlEpoch);
 
   /** 字头格点击：弹爬取侧详情（字形大样 + 词条全文） */
   const openHead = (ch: string) => {
@@ -328,14 +299,21 @@ export function HeadwordStrip({
                 : `本页开头 ${continuation.lines.length} 行（${lineRange(continuation.lines)}）延续，但清单内更早页均无字头——宿主可能不在已标注页内`
             }
           >
-            ↩ {continuation.lines.length} 行延续
-            {continuation.state === "pending" ? " · 前页取文中…" : " · 宿主不在清单"}
+            ↩ {continuation.state === "pending"
+              ? "前页取文中…"
+              : `${continuation.lines.length} 行延续 · 宿主不在清单`}
           </span>
         ) : null}
-        {page === undefined ? null : crawlHeads === undefined ? (
+        {page === undefined ? null : crawlHeads.status === "loading" ? (
           <span className="text-muted-foreground">字头加载中…</span>
-        ) : crawlHeads === null ? (
-          <span className="text-muted-foreground">page-heads.json 不可用（未生成或加载失败）</span>
+        ) : crawlHeads.status === "error" ? (
+          <span className="text-muted-foreground" title={crawlHeads.error}>
+            字头查询失败 <Button variant="ghost" size="sm" onClick={retry}>重试</Button>
+          </span>
+        ) : crawlHeads.data.heads === null ? (
+          <span className="text-muted-foreground">
+            该页字头尚未采集 <Button variant="ghost" size="sm" onClick={retry}>刷新</Button>
+          </span>
         ) : (
           <>
             <span
@@ -347,7 +325,7 @@ export function HeadwordStrip({
             {heads.map((h) =>
               h.char ? (
                 <CrawlHeadCells
-                  key={`${h.cp}-${h.char}`}
+                  key={h.svg ?? `${h.codepoint}-${h.ord}`}
                   ch={h.char}
                   missing={uncovered.has(h.char)}
                   svg={svgMap?.[h.char]}
@@ -381,7 +359,7 @@ export function HeadwordStrip({
           </>
         )}
       </div>
-      {detail ? <HeadwordDetailDialog detail={detail} crawl={crawl} onClose={() => setDetail(null)} /> : null}
+      {detail ? <HeadwordDetailDialog key={detail.head} detail={detail} onClose={() => setDetail(null)} /> : null}
     </>
   );
 }

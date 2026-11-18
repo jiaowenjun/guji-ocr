@@ -59,8 +59,8 @@ function datasetSave(): Plugin {
   }
 }
 
-// 「添加新页」/页标签：桥接 tools/dataset/kangxi_page_tool.py（数据优先 sqlite，缺则由
-// 爬取脚本增量补抓）。子进程最长 10 分钟（含站点限速），stdout 末行是 JSON。
+// 数据集动作桥接 kangxi_page_tool.py；crawl-heads/crawl-entry 只读本地库。
+// add 缺数据时增量补抓，子进程最长 10 分钟，stdout 末行是 JSON。
 function datasetPageTool(): Plugin {
   // 此处 connect 类型的 res 即 NextHandleFunction 的第二参（有 statusCode/setHeader/end）
   const run = (args: string[], res: { statusCode: number; setHeader(k: string, v: string): void; end(body: string): void }) => {
@@ -79,6 +79,7 @@ function datasetPageTool(): Plugin {
         const ok = !err && (payload as { ok?: boolean }).ok !== false
         res.statusCode = ok ? 200 : 400
         res.setHeader('content-type', 'application/json')
+        res.setHeader('cache-control', 'no-store')
         res.end(JSON.stringify(payload))
       },
     )
@@ -93,18 +94,24 @@ function datasetPageTool(): Plugin {
     req.on('data', (chunk: string) => {
       body += chunk
     })
-      req.on('end', () => {
+    req.on('end', () => {
       let args: string[] | null = null
       try {
-        const { action, page, status, tail } = JSON.parse(body) as {
+        const { action, page, status, tail, codepoint } = JSON.parse(body) as {
           action?: unknown
           page?: unknown
           status?: unknown
           tail?: unknown
+          codepoint?: unknown
         }
         const pageOk = /^\d{1,4}$/.test(String(page))
         if (action === 'add' && pageOk) {
           args = ['add', '--page', String(page)]
+        } else if (action === 'crawl-heads' && pageOk && Number(page) >= 1 && Number(page) <= 7738) {
+          args = ['crawl-heads', '--page', String(page)]
+        } else if (action === 'crawl-entry' && typeof codepoint === 'number' && Number.isInteger(codepoint)
+          && codepoint >= 1 && codepoint <= 0x10FFFF && !(codepoint >= 0xD800 && codepoint <= 0xDFFF)) {
+          args = ['crawl-entry', '--codepoint', String(codepoint)]
         } else if (action === 'status' && pageOk && typeof status === 'string' && /^[a-z]+$/.test(status)) {
           args = ['status', '--page', String(page), '--to', status]
         } else if (action === 'ocr-fold' && pageOk) {
@@ -132,7 +139,7 @@ function datasetPageTool(): Plugin {
       if (!args) {
         res.statusCode = 400
         res.setHeader('content-type', 'application/json')
-        res.end(JSON.stringify({ ok: false, error: '请求体应为 { action: add|status|ocr-fold|ocr-view|ocr-pages|prefetch-status|prefetch-run|prefetch-log|replay-pages|pipeline-replay, page, status?, tail? }' }))
+        res.end(JSON.stringify({ ok: false, error: '请求动作或参数无效（crawl-heads 需 page: 1–7738；crawl-entry 需有效整数 codepoint）' }))
         return
       }
       run(args, res)

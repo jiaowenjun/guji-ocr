@@ -124,8 +124,12 @@ def parse_thumb_items(page_html: str) -> list[dict]:
 
 
 class KangxiStore:
-    def __init__(self, db_path: Path | str = DEFAULT_DB):
+    def __init__(self, db_path: Path | str = DEFAULT_DB, *, readonly: bool = False):
         self.db_path = Path(db_path)
+        self.readonly = readonly
+        # 查询接口不建库、不迁移；库缺失时由 mode=ro 明确报错。
+        if readonly:
+            return
         self.db_path.parent.mkdir(parents=True, exist_ok=True)
         with self._conn() as c:
             c.executescript(SCHEMA)
@@ -133,7 +137,8 @@ class KangxiStore:
 
     @contextmanager
     def _conn(self):
-        conn = sqlite3.connect(self.db_path)
+        conn = (sqlite3.connect(self.db_path.resolve().as_uri() + "?mode=ro", uri=True)
+                if self.readonly else sqlite3.connect(self.db_path))
         conn.row_factory = sqlite3.Row
         try:
             yield conn
