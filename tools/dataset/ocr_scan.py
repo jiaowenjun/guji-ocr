@@ -102,6 +102,59 @@ def detect_grid(dark):
             'lines_evidence': f"{fit['n_ev']}/17", 'fishtail_x': tail, 'majors': majors}
 
 
+def _has_ink_stroke(mask):
+    """Keep even a thin 一/丶; ignore only tiny, disconnected paper specks."""
+    remaining = {tuple(point) for point in np.argwhere(mask)}
+    minimum = max(6, int(np.ceil(mask.size * .006)))
+    while remaining:
+        stack = [remaining.pop()]
+        area = 0
+        while stack:
+            y, x = stack.pop()
+            area += 1
+            if area >= minimum:
+                return True
+            for dy, dx in ((-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)):
+                neighbor = (y + dy, x + dx)
+                if neighbor in remaining:
+                    remaining.remove(neighbor)
+                    stack.append(neighbor)
+    return False
+
+
+def detect_blank_cells(gray, band_boxes, row_spans):
+    """Image-derived empty small cells, not transcribed gaps.
+
+    Row spans only exclude occupied large glyphs (their white quarters are not
+    small-cell spaces). Blank decisions otherwise use scan pixels, including
+    untranscribed empty areas. Inset 16% avoids frame/book rules and adjacent ink;
+    local paper tone limits the dark threshold, and coherent strokes veto blank.
+    """
+    height, width = gray.shape
+    blanks = []
+    for band, ((left, top, right, bottom), spans) in enumerate(zip(band_boxes, row_spans)):
+        cw, ch = (right - left) / 2, (bottom - top) / 24
+        large_rows = {r for start, end in spans if end - start > 1 for r in range(start, end)}
+        for col in range(2):
+            for row in range(24):
+                if row in large_rows:
+                    continue
+                x1, y1 = left + col * cw, top + row * ch
+                x2, y2 = x1 + cw, y1 + ch
+                # Cropped/invalid cells are unknown, not empty.
+                if not (0 <= x1 < x2 <= width and 0 <= y1 < y2 <= height):
+                    continue
+                core = gray[int(np.ceil(y1 + ch * .16)):int(np.floor(y2 - ch * .16)),
+                            int(np.ceil(x1 + cw * .16)):int(np.floor(x2 - cw * .16))]
+                if min(core.shape) < 4:
+                    continue
+                threshold = np.clip(np.percentile(core, 80) - 35, 70, segmentation.DARK_THR)
+                ink = core < threshold
+                if ink.mean() < .015 and not _has_ink_stroke(ink):
+                    blanks.append({'band': band, 'col': col, 'row': row})
+    return blanks
+
+
 def locate_scan(layout, image_path, review=None):
     image = Image.open(image_path).convert('L'); width, height = image.size
     if layout['cols'] != 16 or len(layout['bands']) != 8:

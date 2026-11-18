@@ -15,7 +15,7 @@ export function ScanGridOverlay({ entry, layout }: { entry: PageEntry; layout?: 
     layoutError = error instanceof Error ? error.message : String(error);
   }
   // 随定位算法修订失效，避免热更新后继续显示旧的版心错位结果。
-  const key = `body-grid-v2:${entry.image}:${entry.width}:${entry.height}:${request}`;
+  const key = `body-grid-v3-blanks:${entry.image}:${entry.width}:${entry.height}:${request}`;
   const [result, setResult] = useState<{ key: string; grid?: ScanGrid; error?: string } | null>(null);
   const [retry, setRetry] = useState(0);
   const grid = cache.get(key) ?? (result?.key === key ? result.grid : undefined);
@@ -69,6 +69,10 @@ export function ScanGridLines({ grid }: { grid: ScanGrid }) {
           left: `${x1 / grid.width * 100}%`, top: `${y1 / grid.height * 100}%`,
           width: `${(x2 - x1) / grid.width * 100}%`, height: `${(y2 - y1) / grid.height * 100}%`,
         }}>
+          {grid.blank_cells.filter((cell) => cell.band === band).map(({ col, row }) => (
+            <span key={`blank-${col}-${row}`} data-scan-blank={`${band}:${col}:${row}`} className="scan-blank-cell"
+              style={{ left: `${col / 2 * 100}%`, top: `${row / 24 * 100}%`, width: "50%", height: `${100 / 24}%` }} />
+          ))}
           {Array.from({ length: 3 }, (_, col) => (
             <span key={`v${col}`} className={`scan-cell-rule scan-cell-rule-v${col % 2 ? " scan-cell-rule-minor" : ""}`}
               style={{ left: `${col / 2 * 100}%` }} />

@@ -9,6 +9,8 @@ export interface ScanGrid {
   height: number;
   /** 八个大列，从右到左；每列独立拟合纵向起点与行距。 */
   bands: ScanBandBox[];
+  /** 原图墨迹识别的空白小格；col 从左到右，row 从上到下，均从 0 开始。 */
+  blank_cells: Array<{ band: number; col: number; row: number }>;
 }
 
 /** 只给定位器非空字格的行跨度；空格占位保留，但不作为墨迹拟合目标。

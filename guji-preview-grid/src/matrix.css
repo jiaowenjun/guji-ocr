@@ -112,6 +112,14 @@
   border-color: #b0788d;
 }
 
+/* 原图识别出的空白小格：先铺底色，格线仍画在其上；不改变图像和字格尺寸。 */
+.scan-blank-cell {
+  position: absolute;
+  pointer-events: none;
+  background: rgb(16 185 129 / 28%);
+  box-shadow: inset 0 0 0 1px rgb(5 150 105 / 35%);
+}
+
 /* 超当前版式 rowCap 的溢出警示：不整条大列染色——标记（.m-over-mark，
    渲染层挂在 band 内）只落在实际溢出的小列（含大字列），方便定位哪一小列超长。
    占该列最后一格轨道、贴底 2px 即裁剪边（版框下线内侧）；

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Preview grid geometry, read-only. stdin: {page, spans: [8 × row spans]}.
 
-Uses the dataset report's image-grid + per-band vertical fit. Returns only the
-eight full band mappings, never text regions/glyph proposals or OCR results.
+Uses the dataset report's image-grid + per-band vertical fit. Returns the
+eight full band mappings and image-detected blank small cells, never text boxes.
 """
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ import sys
 import numpy as np
 from PIL import Image
 
-from ocr_scan import detect_grid, fit_vertical, segmentation
+from ocr_scan import detect_blank_cells, detect_grid, fit_vertical, segmentation
 
 MANIFEST = Path(__file__).resolve().parents[2] / 'kangxi-gold' / 'manifest.json'
 
@@ -43,7 +43,8 @@ def scan_grid(request, manifest_path=MANIFEST):
         raise ValueError('扫描图路径不在数据集内')
     with Image.open(image_path) as image:
         width, height = image.size
-        dark = (np.asarray(image.convert('L')) < segmentation.DARK_THR).astype(float)
+        gray = np.asarray(image.convert('L'))
+        dark = (gray < segmentation.DARK_THR).astype(float)
     detected = detect_grid(dark)
     _, top, _, bottom = detected['block']
     pitch = (bottom - top) / 24
@@ -52,7 +53,8 @@ def scan_grid(request, manifest_path=MANIFEST):
         glyphs = [{'grid_bbox': [0, start, 1, end]} for start, end in band]
         bt, bp, _ = fit_vertical(dark, glyphs, major['x1'], major['x2'], top, pitch, 24)
         boxes.append([major['x1'], bt, major['x2'], bt + 24 * bp])
-    return {'ok': True, 'width': width, 'height': height, 'bands': boxes}
+    return {'ok': True, 'width': width, 'height': height, 'bands': boxes,
+            'blank_cells': detect_blank_cells(gray, boxes, spans)}
 
 
 def main():

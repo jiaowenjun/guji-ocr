@@ -6,11 +6,12 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
+import numpy as np
 from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'dataset'))
 from scan_grid import scan_grid
-from ocr_scan import select_body_grid
+from ocr_scan import detect_blank_cells, select_body_grid
 
 
 class ScanGridTests(unittest.TestCase):
@@ -57,13 +58,40 @@ class ScanGridTests(unittest.TestCase):
             with patch('scan_grid.detect_grid', return_value=detected):
                 result = scan_grid({'page': 312, 'spans': [[] for _ in range(8)]}, manifest)
             self.assertEqual(result['bands'], [[880 - i * 120, 160, 1000 - i * 120, 1560] for i in range(8)])
-            self.assertEqual(set(result), {'ok', 'width', 'height', 'bands'})
+            self.assertEqual(len(result['blank_cells']), 8 * 2 * 24)
+            self.assertEqual(set(result), {'ok', 'width', 'height', 'bands', 'blank_cells'})
             self.assertEqual(sorted(p.name for p in root.iterdir()), ['0312.png', 'manifest.json'])
 
     def test_invalid_row_spans_are_rejected_before_image_access(self):
         for span in ([0, 25], [-1, 1], [2, 2], [0, 1.5], [False, 1]):
             with self.subTest(span=span), self.assertRaises(ValueError):
                 scan_grid({'page': 312, 'spans': [[span]] + [[] for _ in range(7)]}, Path('/missing'))
+
+    def test_blank_detection_uses_pixels_and_preserves_thin_strokes(self):
+        gray = np.full((1440, 120), 220, dtype=np.uint8)
+        gray[145, 20:40] = 40  # A thin 一 below the total ink-fraction threshold.
+        gray[201:205, 25:28] = 40  # Small but connected 丶.
+        gray[265:267, 25:27] = 40  # Tiny paper fleck.
+        gray[300:305, :] = 40  # Frame/book rule at a cell edge.
+        gray[360:420, :60] = 166
+        gray[361:420:4, 3:60:4] = 135  # Dark paper grain, not printed strokes.
+        gray[420:480, :60] = 0  # Solid ink must never become "blank" by local thresholding.
+        # Rows 0/1 form a large glyph: don't highlight its white quadrants.
+        # The row-4 small glyph prior deliberately disagrees with the image.
+        cells = detect_blank_cells(gray, [[0, 0, 120, 1440]], [[[0, 2], [4, 5]]])
+        found = {(c['col'], c['row']) for c in cells}
+        self.assertTrue(all(row >= 2 for _, row in found))
+        for row in (2, 3, 7):
+            self.assertNotIn((0, row), found)
+        for row in (4, 5, 6):
+            self.assertIn((0, row), found)
+        self.assertIn((1, 2), found)  # Empty image cell with no source-space requirement.
+
+    def test_clipped_cells_are_unknown_not_blank(self):
+        gray = np.full((1440, 120), 220, dtype=np.uint8)
+        cells = detect_blank_cells(gray, [[-60, 0, 60, 1440]], [[]])
+        self.assertEqual(len(cells), 24)
+        self.assertTrue(all(c['col'] == 1 for c in cells))
 
 
 if __name__ == '__main__':
