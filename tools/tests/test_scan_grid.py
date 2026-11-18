@@ -56,6 +56,40 @@ class ScanGridTests(unittest.TestCase):
         dark[::2] = 0  # Disconnected glyph strokes cannot stand in for a rule.
         self.assertEqual(slanted_body_candidates(dark, box, fit), [])
 
+    def test_partly_faded_body_rule_recovers_grid_from_spine_frame(self):
+        # @419: a long thin body rule survives above a faded section, but the
+        # whole corridor has only about 80% ink support. The spine still has
+        # enough valleys to attract the grid one small column to the right.
+        image = Image.new('L', (1130, 1665), 255)
+        draw = ImageDraw.Draw(image)
+        for line in ((56, 156, 56, 1540), (1104, 156, 1104, 1540),
+                     (56, 156, 1104, 156), (56, 1540, 1104, 1540)):
+            draw.line(line, fill=0, width=8)
+        draw.line((1028, 160, 1042, 1536), fill=0, width=2)
+        draw.rectangle((1020, 990, 1050, 1190), fill=255)
+        for col in range(17):
+            for row in range(24):
+                x, y = 85 + 60 * col, 176 + 55 * row
+                draw.rectangle((x, y, x + 25, y + 12), fill=0)
+        dark = (np.asarray(image) < 140).astype(float)
+        with patch('ocr_scan.slanted_body_candidates', return_value=[]):
+            before = detect_grid(dark)
+        after = detect_grid(dark)
+        self.assertEqual(before['block'][2], 1104)
+        self.assertAlmostEqual(after['block'][2], 1035, delta=3)
+        self.assertLess(after['majors'][-1]['x1'], 90)
+        self.assertLess(after['majors'][0]['x2'], 1040)
+        self.assertGreater(before['majors'][-1]['x1'] - after['majors'][-1]['x1'], 30)
+
+    def test_dense_disconnected_strokes_do_not_replace_a_faded_rule(self):
+        dark = np.zeros((1665, 1130))
+        for y in range(120, 1536):
+            if y % 58 < 48:  # >80% total support, without a sustained rule.
+                x = round(1026 + (y - 120) * 14 / 1416)
+                dark[y, x:x + 2] = 1
+        self.assertEqual(slanted_body_candidates(
+            dark, (56, 156, 1104, 1646), {'lines': [66], 'pitch': 60.4}), [])
+
     def test_spine_valleys_cannot_displace_leftmost_body_column(self):
         # Measured @313 and @323 candidates. The spine's extra valleys used to
         # win 13:10 / 13:11 even though the leftmost small column was omitted.

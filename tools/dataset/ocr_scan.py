@@ -70,13 +70,15 @@ def select_body_grid(fits):
 
 
 def slanted_body_candidates(dark, box, fit):
-    """Recover a thin body rule missed by the straight-column projection.
+    """Recover a thin/slightly broken rule missed by the column projection.
 
     Only retry when a measured left frame loses over half a small column. A
     slightly slanted rule (@405) can have <50% ink at every fixed x, but remains
-    present on >90% of rows within a +/-6 px corridor. Search one small column
-    inside the selected right frame; do not reinterpret cropped left edges or
-    distant rules in sparse pages as a missing body boundary.
+    present on >90% of rows within a +/-6 px corridor. A faded section (@419)
+    may reduce total support to >75%; then also require >90% support over a
+    half-band window, so repeated disconnected glyph strokes do not qualify.
+    Search one small column inside the selected right frame; do not reinterpret
+    cropped left edges or distant rules in sparse pages as a body boundary.
     """
     left, top, right, bottom = box
     pitch = fit['pitch']
@@ -90,7 +92,13 @@ def slanted_body_candidates(dark, box, fit):
         dst = slice(max(0, offset), min(width, width + offset))
         src = slice(max(0, -offset), min(width, width - offset))
         nearby[:, dst] |= band[:, src]
-    xs = np.flatnonzero(nearby.mean(axis=0) > .9)
+    support = nearby.mean(axis=0)
+    half = len(nearby) // 2
+    sustained = np.maximum.reduce([
+        nearby[start:start + half].mean(axis=0)
+        for start in (0, len(nearby) // 4, len(nearby) - half)
+    ])
+    xs = np.flatnonzero((support > .9) | ((support > .75) & (sustained > .9)))
     groups = []
     for x in xs:
         if not groups or x > groups[-1][-1] + 3:
@@ -98,7 +106,10 @@ def slanted_body_candidates(dark, box, fit):
         groups[-1].append(int(x))
     candidates = []
     for group in groups:
-        inner = int(np.mean(group))
+        # Keep the original center when the rule already has full support;
+        # accepting its faded fringe must not move a previously stable grid.
+        strong = [x for x in group if support[x] > .9]
+        inner = int(np.mean(strong or group))
         if (.5 * pitch <= right - inner <= 1.5 * pitch
                 and inner - left >= segmentation.N_SLOTS * segmentation.PITCH_RANGE[0]):
             candidates.append((left, top, inner, bottom))
