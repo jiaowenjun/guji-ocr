@@ -128,6 +128,21 @@ describe("数据集预览使用当前文档快照", () => {
     expect(revealPosition).not.toHaveBeenCalled();
   });
 
+  it("原图字格紧邻字格开关，两个开关独立控制", async () => {
+    const button = [...document.querySelectorAll<HTMLButtonElement>("button")].find((b) => b.textContent === "原图字格关")!;
+    const matrixButton = button.previousElementSibling as HTMLButtonElement;
+    expect(matrixButton.textContent).toBe("字格关");
+    expect(button.getAttribute("aria-pressed")).toBe("false");
+    await act(async () => button.click());
+    expect(button.textContent).toBe("原图字格开");
+    expect(container.textContent).toContain("正在定位原图字格");
+    expect(container.querySelector(".m-lines")?.getAttribute("data-cells")).toBe("off");
+    await act(async () => matrixButton.click());
+    await act(async () => button.click());
+    expect(container.textContent).not.toContain("正在定位原图字格");
+    expect(container.querySelector(".m-lines")?.getAttribute("data-cells")).toBe("on");
+  });
+
   it("插字和插入大列后，布局、高亮与点击定位同时更新", async () => {
     expect(container.querySelector(".m-band")?.textContent).toBe("甲乙");
     const inserted = "@1\n\n#丙甲乙\n";

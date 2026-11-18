@@ -14,6 +14,7 @@ import { bandCursorTarget, buildCharIndex, charCursorTarget, charHighlightAt, hi
 import type { CharHighlight } from "@/ir/types";
 import { resolvePageScan, type DatasetConfig } from "@/datasets/config";
 import type { PageEntry } from "./DatasetView";
+import { ScanGridOverlay } from "./ScanGridOverlay";
 
 const SAVE_SHORTCUT_HINT = /Mac|iPod|iPhone|iPad/.test(navigator.platform) ? "⌘S" : "Ctrl+S";
 const stem = (page: number) => String(page).padStart(4, "0");
@@ -60,7 +61,7 @@ function ColumnHeader({ children }: { children: ReactNode }) {
 }
 
 export function DatasetWorkspace({
-  entry, config, text, originalLoaded, dirty, busy, rules, cells,
+  entry, config, text, originalLoaded, dirty, busy, rules, cells, scanCells,
   editorTheme, vimMode, onChange, onSave, onReset, onFormat,
 }: {
   entry?: PageEntry;
@@ -71,6 +72,7 @@ export function DatasetWorkspace({
   busy: boolean;
   rules: boolean;
   cells: boolean;
+  scanCells: boolean;
   editorTheme: "light" | "dark";
   vimMode: boolean;
   onChange: (text: string) => void;
@@ -160,13 +162,14 @@ export function DatasetWorkspace({
           </ColumnHeader>
           <div ref={scanRef} className="min-h-0 flex-1 overflow-auto bg-neutral-100 p-2 dark:bg-neutral-900">
             {entry ? (
-              <div className="mx-auto" style={{ width: displayWidth }}>
+              <div className="relative mx-auto" style={{ width: displayWidth }}>
                 <img
                   src={`/dataset/images/${entry.image}`}
                   alt={`康熙字典 第 ${page} 页扫描图`}
                   className="block w-full select-none"
                   draggable={false}
                 />
+                {scanCells ? <ScanGridOverlay entry={entry} layout={laidPages[0]} /> : null}
               </div>
             ) : null}
           </div>

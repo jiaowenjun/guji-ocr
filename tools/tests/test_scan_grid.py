@@ -1,0 +1,70 @@
+"""Grid preview uses scan evidence without producing or writing text proposals."""
+import json
+from pathlib import Path
+import sys
+import tempfile
+import unittest
+from unittest.mock import patch
+
+from PIL import Image
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'dataset'))
+from scan_grid import scan_grid
+from ocr_scan import select_body_grid
+
+
+class ScanGridTests(unittest.TestCase):
+    def test_spine_valleys_cannot_displace_leftmost_body_column(self):
+        # Measured @313 and @323 candidates. The spine's extra valleys used to
+        # win 13:10 / 13:11 even though the leftmost small column was omitted.
+        for left, candidates, expected_right in [
+            (85, [(1048, 107, 58.4, 10), (1108, 168, 58.6, 12), (1123, 156.4, 59.6, 13)], 1048),
+            (57, [(1023, 79, 58.8, 11), (1087, 130, 59.4, 11), (1096, 130, 60, 13), (1117, 119.6, 61.4, 7)], 1023),
+        ]:
+            fits = [((left, 150, right, 1560), {'bx0': left + 6,
+                     'lines': [start - left - 6], 'pitch': pitch, 'n_ev': support})
+                    for right, start, pitch, support in candidates]
+            for ordered in (fits, list(reversed(fits))):
+                with self.subTest(left=left):
+                    box, _ = select_body_grid(ordered)
+                    self.assertEqual(box[2], expected_right)
+
+    def test_cropped_left_edge_and_nearby_double_frame_remain_valid(self):
+        # @312/@330 need the outer candidate with a different/cropped left edge.
+        for candidates, expected in [
+            ([(51, 1014, 58.2, 58.8, 5), (51, 997, 57.8, 58.2, 9), (1, 1014, 49.6, 59.4, 10)], (1, 1014)),
+            ([(60, 1026, 68.6, 57.4, 5), (60, 1041, 67, 60, 6), (4, 1041, 59.6, 60.4, 13)], (4, 1041)),
+            ([(53, 1010, 60.6, 58.4, 9), (1, 937, 7.4, 57.6, 7), (1, 1010, 48.8, 59.2, 15)], (1, 1010)),
+            # A too-narrow region whose fit escapes the frame cannot veto it.
+            ([(110, 1073, 117.2, 58.8, 0), (110, 1125, 138.8, 61.2, 2), (110, 809, -229, 50, 0)], (110, 1125)),
+            # @411's two measured left rules must not rescue the spine frame.
+            ([(97, 1055, 104, 59, 9), (97, 1127, 154, 60.2, 15), (81, 1127, 154, 60.4, 14)], (97, 1055)),
+        ]:
+            fits = [((left, 150, right, 1560), {'bx0': left + 6,
+                     'lines': [start - left - 6], 'pitch': pitch, 'n_ev': support})
+                    for left, right, start, pitch, support in candidates]
+            box, _ = select_body_grid(fits)
+            self.assertEqual((box[0], box[2]), expected)
+
+    def test_empty_bands_keep_detected_frame_and_full_height(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            Image.new('L', (1130, 1679), 255).save(root / '0312.png')
+            manifest = root / 'manifest.json'
+            manifest.write_text(json.dumps({'images_dir': '.', 'pages': [{'page': 312, 'image': '0312.png'}]}))
+            detected = {'block': [40, 160, 1000, 1560], 'majors': [
+                {'x1': 880 - i * 120, 'x2': 1000 - i * 120} for i in range(8)]}
+            with patch('scan_grid.detect_grid', return_value=detected):
+                result = scan_grid({'page': 312, 'spans': [[] for _ in range(8)]}, manifest)
+            self.assertEqual(result['bands'], [[880 - i * 120, 160, 1000 - i * 120, 1560] for i in range(8)])
+            self.assertEqual(set(result), {'ok', 'width', 'height', 'bands'})
+            self.assertEqual(sorted(p.name for p in root.iterdir()), ['0312.png', 'manifest.json'])
+
+    def test_invalid_row_spans_are_rejected_before_image_access(self):
+        for span in ([0, 25], [-1, 1], [2, 2], [0, 1.5], [False, 1]):
+            with self.subTest(span=span), self.assertRaises(ValueError):
+                scan_grid({'page': 312, 'spans': [[span]] + [[] for _ in range(7)]}, Path('/missing'))
+
+
+if __name__ == '__main__':
+    unittest.main()

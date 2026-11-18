@@ -5,6 +5,7 @@ import react, { reactCompilerPreset } from '@vitejs/plugin-react'
 import babel from '@rolldown/plugin-babel'
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig, type Plugin, type Connect, type ViteDevServer } from 'vite'
+import { scanGridPlugin } from './scripts/scan-grid-plugin.ts'
 
 const ANNOTATIONS_DIR = path.resolve(__dirname, '../kangxi-gold/annotations')
 const REPO = path.resolve(__dirname, '..')
@@ -186,6 +187,7 @@ export default defineConfig({
     tailwindcss(),
     datasetSave(),
     datasetPageTool(),
+    scanGridPlugin(REPO),
     copyStaticAssets(),
   ],
   build: {

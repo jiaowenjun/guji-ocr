@@ -75,27 +75,33 @@
    每条线的 containing block 是正文的实际 Grid 区域，left/top:0 锚定轨道线，
    避免 Safari 背景平铺对小数 tile 取整后向右/向上逐格累积偏移。
    border 仅用于绝对定位的空线条，不占正文轨道；负层级在所有内容之下。 */
-.m-cell-rule {
-  display: none;
+.m-cell-rule,
+.scan-cell-rule {
   position: absolute;
   left: 0;
   top: 0;
   pointer-events: none;
   border: 0 solid #35628a;
+}
+.m-cell-rule {
+  display: none;
   z-index: -1;
 }
 .m-lines[data-cells="on"] > .m-cell-rule {
   display: block;
 }
-.m-cell-rule-v {
+.m-cell-rule-v,
+.scan-cell-rule-v {
   bottom: 0;
   border-left-width: 1px;
 }
-.m-cell-rule-h {
+.m-cell-rule-h,
+.scan-cell-rule-h {
   right: 0;
   border-top-width: 1px;
 }
-.m-cell-rule-minor {
+.m-cell-rule-minor,
+.scan-cell-rule-minor {
   border-color: #50769b;
   border-style: dashed;
 }

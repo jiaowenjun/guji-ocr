@@ -117,6 +117,7 @@ export function DatasetView({
   const { texts, ensure, put } = useDatasetText();
   const [rules, setRules] = useState(false); // 界栏默认关
   const [cells, setCells] = useState(false); // 整页字格默认关
+  const [scanCells, setScanCells] = useState(false); // 原图投影字格独立开关
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState<{ ok: boolean; msg: string } | null>(null);
   const [ocrView, setOcrView] = useState<string | null>(null); // OCR 结果弹窗内容
@@ -446,6 +447,10 @@ export function DatasetView({
           字格{cells ? "开" : "关"}
         </Button>
 
+        <Button size="sm" variant="outline" aria-pressed={scanCells} onClick={() => setScanCells((v) => !v)}>
+          原图字格{scanCells ? "开" : "关"}
+        </Button>
+
         {/* 字头段并入工具栏（原为工具栏下方独立窄条）：多页字头时随 flex-wrap 换行 */}
         <Separator orientation="vertical" className="h-5" />
         <HeadwordStrip page={page} continuation={continuation} />
@@ -489,6 +494,7 @@ export function DatasetView({
         busy={busy}
         rules={rules}
         cells={cells}
+        scanCells={scanCells}
         editorTheme={editorTheme}
         vimMode={vimMode}
         onChange={onChange}

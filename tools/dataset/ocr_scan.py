@@ -40,6 +40,35 @@ def fit_vertical(dark, glyphs, x1, x2, initial_top, initial_pitch, rows):
     return best[1], best[2], round(best[0], 5)
 
 
+def select_body_grid(fits):
+    """Reject wider frame choices that trade leftmost body text for the spine.
+
+    A short/clipped fishtail can escape fishtail_x. With the same left frame,
+    adding the right-hand spine can produce MORE valley support, but shifts the
+    16-slot grid right and leaves body text uncovered on the left (@313/@323).
+    Compare alternative frames sharing that left edge (including double rules): keep the wider choice
+    only if its added width isn't largely lost again at the grid's left edge.
+    A clipped image edge is not a measured left rule; different left edges
+    remain independent (cropped scans such as @312/@330/@402).
+    """
+    def grid_left(fit):
+        return fit['bx0'] + fit['lines'][-1]
+
+    body_fits = []
+    for box, fit in fits:
+        includes_spine = any(
+            inner[0] > segmentation.SMOOTH_K
+            and abs(inner[0] - box[0]) <= inner_fit['pitch'] / 3
+            and box[2] - inner[2] >= inner_fit['pitch'] * .5
+            and 0 <= grid_left(inner_fit) - inner_fit['bx0'] <= inner_fit['pitch'] * .5
+            and grid_left(fit) - grid_left(inner_fit) >= (box[2] - inner[2]) * .5
+            for inner, inner_fit in fits
+        )
+        if not includes_spine:
+            body_fits.append((box, fit))
+    return max(body_fits, key=lambda pair: pair[1]['n_ev'])
+
+
 def detect_grid(dark):
     """Use frame evidence only, explicitly exclude the spine/fishtail strip."""
     height, width = dark.shape
@@ -49,7 +78,7 @@ def detect_grid(dark):
     fits = [(b, segmentation._fit_for_block(dark, b, segmentation.PITCH_RANGE)) for b in candidates]
     fits = [(b, f) for b, f in fits if f]
     if not fits: raise ValueError('No scan frame/grid evidence; provide a reviewed page with supported layout')
-    box, fit = max(fits, key=lambda pair: pair[1]['n_ev'])
+    box, fit = select_body_grid(fits)
     # The old locator may pick the footer as bottom; locate long horizontal frame strokes.
     left, _, right, _ = box
     profile = dark[:, max(left+20, 80):min(right-20, width-80)].mean(axis=1)
