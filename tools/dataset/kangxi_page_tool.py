@@ -85,6 +85,7 @@ EVAL = HERE.parent / "eval"
 REPO = HERE.parents[1]
 MANIFEST = REPO / "kangxi-gold" / "manifest.json"
 ANNOTATIONS = REPO / "kangxi-gold" / "annotations"
+PAGE_BOUNDARIES = REPO / "kangxi-gold" / "page-boundaries.json"
 
 STATUS_LABELS = {"draft": "草稿", "first": "初校", "final": "精校"}
 
@@ -835,6 +836,7 @@ def _align_cut(cand_n: str, ocr_n: str, full_page: bool = False) -> tuple[int | 
 _TAIL_REVIEW_MAX = 4
 _TAIL_ANCHOR_MIN = 12
 _TAIL_REVIEW_MARK = "页尾待核："
+_NEXT_OPENING_LEN = 24
 
 
 def _tail_context(cand_n: str, ocr_n: str, end: int) -> tuple[str, str]:
@@ -916,6 +918,92 @@ def _review_tail_cut(cand_n: str, ocr_n: str, end: int,
     )
 
 
+def _review_next_page_gap(cand_n: str, ocr_n: str, end: int,
+                          next_n: str | None, column_n: str | None) -> tuple[int, str]:
+    """用下一页开头反向检查本页 OCR 末界；只处理相邻的 1–4 字短缺口。
+
+    下一页开头在候选中采用固定长度窗口，至多容许 1 字替换，且最优位置必须
+    唯一。它只能证明两页 OCR 锚点之间有缺口，不能证明缺字属于哪一页；只有
+    当前页末列 OCR 在同一尾锚后完整读出库文缺口时才自动延伸，否则标记待核。
+    """
+    if not next_n or len(next_n) < _TAIL_ANCHOR_MIN:
+        return end, ""
+    anchor, rest = _tail_context(cand_n, ocr_n, end)
+    if rest or len(anchor) < _TAIL_ANCHOR_MIN:
+        return end, ""
+    anchor = anchor[-_TAIL_WINDOW:]
+    if cand_n.find(anchor) != cand_n.rfind(anchor) or ocr_n.find(anchor) != ocr_n.rfind(anchor):
+        return end, ""
+
+    opening = next_n[:min(_NEXT_OPENING_LEN, len(next_n))]
+    matches: list[tuple[int, int]] = []
+    for pos in range(end, min(len(cand_n), end + _TAIL_REVIEW_MAX) + 1):
+        source = cand_n[pos:pos + len(opening)]
+        if len(source) != len(opening) or "#" in source:
+            continue
+        diff = sum(a != b for a, b in zip(source, opening))
+        if diff <= 1:
+            matches.append((diff, pos))
+    if not matches:
+        return end, ""
+    best = min(diff for diff, _ in matches)
+    positions = [pos for diff, pos in matches if diff == best]
+    if len(positions) != 1:
+        return end, ""
+    next_pos = positions[0]
+    gap = cand_n[end:next_pos]
+    if not gap:
+        return end, ""
+    if len(gap) > _TAIL_REVIEW_MAX or "#" in gap:
+        return end, ""
+
+    def pending(reason: str) -> tuple[int, str]:
+        return end, (
+            f"，{_TAIL_REVIEW_MARK}本页尾锚与下页首锚之间有库文短缺口「{gap}」，"
+            f"{reason}；不能仅按缺口字数补入，请核对本页末列原图"
+        )
+
+    if column_n is None:
+        return pending("无有效末列 OCR 缓存，归页未确认")
+    if anchor not in column_n or column_n.find(anchor) != column_n.rfind(anchor):
+        return pending("末列 OCR 无法唯一定位本页尾锚")
+    column_tail = column_n.split(anchor, 1)[1]
+    if column_tail != gap:
+        if not column_tail:
+            return pending("末列 OCR 同样漏掉该缺口，归页未确认")
+        return pending(f"末列 OCR 尾文「{column_tail[:_TAIL_REVIEW_MAX]}」与缺口不一致")
+    return next_pos, f"，跨页首尾复核通过：末列 OCR 保留库文尾字「{gap}」"
+
+
+def _page_boundary_reviews() -> dict:
+    value = _read_cache(PAGE_BOUNDARIES)
+    pages = value.get("pages") if value else None
+    return pages if isinstance(pages, dict) else {}
+
+
+def _verified_boundary_cut(cand_n: str, end: int, scan_sha: str,
+                           review: dict | None) -> tuple[int, str]:
+    """应用绑定扫描指纹和两侧文本锚的人审页界；失配时静默回退 OCR 裁点。"""
+    if not isinstance(review, dict) or not scan_sha or review.get("scan_sha256") != scan_sha:
+        return end, ""
+    before = _norm(review.get("tail_before") or "")
+    after = _norm(review.get("head_after") or "")
+    if len(before) < _TAIL_ANCHOR_MIN or len(after) < _TAIL_ANCHOR_MIN:
+        return end, ""
+    pos = cand_n.find(before)
+    if pos < 0 or pos != cand_n.rfind(before):
+        return end, ""
+    verified = pos + len(before)
+    if cand_n[verified:verified + len(after)] != after:
+        return end, ""
+    limit = review.get("max_adjust", _TAIL_REVIEW_MAX)
+    if not isinstance(limit, int) or not 0 <= limit <= _TAIL_REVIEW_MAX:
+        return end, ""
+    if abs(verified - end) > limit or "#" in cand_n[min(end, verified):max(end, verified)]:
+        return end, ""
+    return verified, f"，已核页界：扫描指纹及两侧库文锚一致，调整 {verified - end:+d} 字"
+
+
 def ocr_page_cut(
     page: int, text: str, store: kangxi_store.KangxiStore, full_page: bool = False
 ) -> tuple[int | None, int, str]:
@@ -924,7 +1012,8 @@ def ocr_page_cut(
     裁点是候选文本归一化坐标里页面的最后一字位置；None = 不可信/不可用，
     调用方不应裁剪。文本始终以库内转写为准，OCR 只作范围标尺（全量测试：
     21 页 micro-CER 5.65%；干净链路 @332→333 裁剪与人工初校差 1 字）。
-    判信规则见 _align_cut；整页模式还用 _review_tail_cut 检查 OCR 未匹配尾文。
+    判信规则见 _align_cut；整页模式还检查 OCR 未匹配尾文、相邻两页 OCR 锚点
+    之间的短缺口，以及绑定扫描指纹和两侧文本锚的已核页界记录。
     说明含「页尾待核」时返回的只是暂定裁点，调用方必须保留待核提示，不能
     将裁后全部文字直接宣称为已确认的下页内容。复核只读有效末列 OCR 缓存。
     """
@@ -941,15 +1030,30 @@ def ocr_page_cut(
     if end is None:
         return None, len(cand_n), why
     if full_page:
-        # 查询/回放保持只读：只在末端尚有 OCR 余文时读同一扫描图的末列缓存。
-        # 缺失/过期/冲突均显式待核，不启动整页或分列识别，不按余文长度补字。
-        _, rest = _tail_context(cand_n, ocr_n, end)
-        if rest:
-            columns = _column_cache_read(page, _page_sha(page, store))
-            last_md = columns[-1]["markdown"] if columns else None
-            column_n = _norm("".join(_ocr_groups(last_md))) if last_md else None
-            end, review = _review_tail_cut(cand_n, ocr_n, end, column_n)
-            why += review
+        scan_sha = _page_sha(page, store)
+        end, verified = _verified_boundary_cut(
+            cand_n, end, scan_sha, _page_boundary_reviews().get(str(page))
+        )
+        why += verified
+        if not verified:
+            # 查询/回放保持只读：OCR 有短余文时复核局部差异；无余文时再用下页
+            # 开头检查两端锚点之间的短缺口。缺失/过期/冲突均显式待核，不启动
+            # 整页或分列识别，也不按余文或缺口长度补字。已核页界优先于自动复核。
+            _, rest = _tail_context(cand_n, ocr_n, end)
+            if rest:
+                columns = _column_cache_read(page, scan_sha)
+                last_md = columns[-1]["markdown"] if columns else None
+                column_n = _norm("".join(_ocr_groups(last_md))) if last_md else None
+                end, review = _review_tail_cut(cand_n, ocr_n, end, column_n)
+                why += review
+            else:
+                next_md = _ocr_cache_read(page + 1, store)
+                next_n = _norm("".join(_ocr_groups(next_md))) if next_md else None
+                columns = _column_cache_read(page, scan_sha) if next_n else None
+                last_md = columns[-1]["markdown"] if columns else None
+                column_n = _norm("".join(_ocr_groups(last_md))) if last_md else None
+                end, review = _review_next_page_gap(cand_n, ocr_n, end, next_n, column_n)
+                why += review
     return end, len(cand_n), why
 
 
