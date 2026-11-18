@@ -198,19 +198,28 @@ class TestMapGroupOffsets(unittest.TestCase):
 
 class TestApplyFolds(unittest.TestCase):
     def test_open_bracket_moves_before(self):
-        """切点落在【】内 → 开书名号随下文起行。"""
-        full = "甲乙。【說文】丙丁"
-        # 归一化序：甲0 乙1 說2 文3 丙4 丁5；折点 2（說）原文 i=4，带内含【 → 前移
-        pieces = kpt._apply_folds(full, [2], [])
-        self.assertEqual(pieces, ["甲乙。", "【說文】丙丁"])
+        """两种开书名号都随下文起行，句号留在上文。"""
+        for opening, closing in [("【", "】"), ("《", "》")]:
+            with self.subTest(opening=opening):
+                title = f"{opening}說文{closing}丙丁"
+                # 归一化序：甲0 乙1 說2 文3 丙4 丁5；折点 2 位于书名首字。
+                pieces = kpt._apply_folds("甲乙。" + title, [2], [])
+                self.assertEqual(pieces, ["甲乙。", title])
 
     def test_close_bracket_moves_after(self):
         """闭书名号随上文收尾。"""
-        full = "甲乙【說文】。丙丁"
-        # 归一化序：甲0 乙1 說2 文3 丙4 丁5；折点 4（丙）向左剥离带含】→
-        # cut 后移过】（句号留行尾）
-        pieces = kpt._apply_folds(full, [4], [])
-        self.assertEqual(pieces, ["甲乙【說文】。", "丙丁"])
+        for opening, closing in [("【", "】"), ("《", "》")]:
+            with self.subTest(opening=opening):
+                prefix = f"甲乙{opening}說文{closing}。"
+                pieces = kpt._apply_folds(prefix + "丙丁", [4], [])
+                self.assertEqual(pieces, [prefix, "丙丁"])
+
+    def test_page380_open_book_bracket_follows_title(self):
+        """@380 亰条：忽略标点的折点不能把《正韻》拆开。"""
+        prefix = "字《字彙》不載，韻書無考。"
+        title = "《正韻》十一先收原邍，亦闕亰。"
+        pieces = kpt._apply_folds(prefix + title, [9], [])
+        self.assertEqual(pieces, [prefix, title])
 
     def test_duplicate_cutpoints_collapsed(self):
         """@334 坍缩去重：重复折点不得吞掉后续折点。"""

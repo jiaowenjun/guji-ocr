@@ -928,8 +928,8 @@ def _apply_folds(full: str, cut_norm: list[int], structural: list[tuple[int, int
     - 结构行内部不折（整点丢弃——少折一处可见可补）；起点放行——把字头行
       与前行分开不破坏头本身，若连起点都挡，字头行与前行融合后不再以 #
       起始 → 下一击失去保护 → 周期 2 振荡（@313 实测 16→18→16 行）
-    - 括号贴字：切点落在【】剥离带内侧时外移——带内含【则移到最左【之前
-      （开书名号随下文起行），含】则移到最右】之后（闭书名号随上文收尾）；
+    - 括号贴字：【】与《》均不计归一化序号；切点前的剥离带含【或《时，
+      移到最左开书名号之前（随下文起行）；闭书名号随上文收尾；
       普通句读仍留行尾
     - 折点须先去重：OCR 组界经反向映射可坍缩到同一位点（@334 实测 24 个
       映射组界含 2 组重复），等值游标在重复位点后永不前进 → 其后折点全部
@@ -950,13 +950,13 @@ def _apply_folds(full: str, cut_norm: list[int], structural: list[tuple[int, int
             if not _structural_at(i):
                 cut = i
                 j = cut
-                while j < len(full) and full[j] in PUNCT_STRIP and full[j] != "【":
-                    if full[j] == "】":
+                while j < len(full) and full[j] in PUNCT_STRIP and full[j] not in _OPEN_BRACKETS:
+                    if full[j] in "】》":
                         cut = j + 1
                     j += 1
                 j = cut
                 while j > last and full[j - 1] in PUNCT_STRIP:
-                    if full[j - 1] == "【":
+                    if full[j - 1] in _OPEN_BRACKETS:
                         cut = j - 1
                     j -= 1
                 pieces.append(full[last:cut])
