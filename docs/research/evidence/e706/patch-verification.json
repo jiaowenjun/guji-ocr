@@ -49,5 +49,16 @@
     {"path": "/Users/jwj/Library/Fonts/KX_47043_14.ttf", "bytes": 46623752, "sha256": "7d916ab6e4bcc935894cd372997ebc7536e315a1e8ae7270d39e53e2dbb9c4fa", "contains_E706": false}
   ],
   "tests": {"command": "npm test -- --run", "files_passed": 22, "tests_passed": 784, "exit_code": 0},
-  "build": {"command": "npm run build", "exit_code": 0, "warnings": ["Vite native config future compatibility (__dirname)", "Bundle chunk over 500 kB"]}
+  "build": {"command": "npm run build", "exit_code": 0, "warnings": ["Vite native config future compatibility (__dirname)", "Bundle chunk over 500 kB"]},
+  "font_commit": "9d95078fd95cc40823ea4de34cffa679709c641d",
+  "commit_registration": {
+    "at": "2026-11-18T22:13:18+08:00",
+    "operation": "register-font-commit",
+    "codepoint": "U+E706",
+    "font": "guji-preview-grid/public/fonts/guji-plane0.ttf",
+    "sha256_after": "25857b0b476193a79e4b280e42302f0e00977385d2bbc62e603cc8e3a00568ed",
+    "font_commit": "9d95078fd95cc40823ea4de34cffa679709c641d",
+    "parent_font_sha256": "d95b07155dd6993f86175cc6ee979403be7fa712b4f79881981011d80d276da8",
+    "report": "docs/research/2026-11-18-U+E706亻亻亻调研核验与补录报告.md"
+  }
 }
