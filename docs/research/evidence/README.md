@@ -1,11 +1,15 @@
 # 资料核查证据说明
 
-2026-11-18 历史字体补录补充核验：
+字体证据中的哈希、cmap 计数及 `current-fonts.json` 均是各次核验时的快照，不随后续补字覆盖。现行基线见[字体操作登记簿](../../font-operations.md)，事件顺序见[字体补录 Changelog](../../font-changelog.md)。
+
+2026-11-18 历史字体补录补充核验（以下两项早于当日 U+2E85 补录）：
 
 - [U+2BD6E 全过程](../2026-11-18-U+2BD6E𫵮调研核验与补录报告.md)：[来源摘录](u2bd6e/source-excerpts.json)、[历史流水](u2bd6e/historical-events.json)、[当前字体](u2bd6e/current-fonts.json)、[精确重建](u2bd6e/rebuild.json)；目标及校准 SVG 一并归档。旧核验 JSON 的 Ext-C 与 U+4E2B 字面错误见新报告勘误。
 - [U+E701 全过程](../2026-11-18-U+E701调研核验与补录报告.md)：[来源及编码查询](e701/source-excerpts.json)、[历史流水](e701/historical-events.json)、[当前字体](e701/current-fonts.json)、[新做的候选排名](e701/font-search.json)、[只读核验](e701/supplemental-checks.json)。候选搜索使用补录前字体，不冒充早期已执行的工作。
 
 新增字体证据：**[E704〈二心支〉全过程报告](../2026-11-18-U+E704二心支调研核验与补录报告.md)**，对应 [补录前核验](e704/audit-before.json)、[候选排名](e704/font-search.json)、[正式补录与验证](e704/patch-verification.json)、[浏览器字体确认](e704/browser.json)。检索结论有明确范围，不把未命中当成 Unicode 官方不存在证明。
+
+**[U+2E85 ⺅ 补录报告](../2026-11-18-U+2E85补录报告.md)**（@398，大字）：[补前四字体快照](0398-person-radical/before.json)、[形似候选](0398-person-radical/font-search.json)、[补录参数／哈希／验证／提交](0398-person-radical/patch-verification.json)、[398 页解析结果](0398-person-radical/annotation-derived.json)。[原始截图与 SVG](../../../tools/dataset/font-sources/0398-person-radical/)随版本库保存；[页面截图](../figures/0398-person-radical/browser-page398.jpg)记录实际显示。U+2F08 是「⼈」，本次经用户确认只补 U+2E85「⺅」。
 
 新增字体证据：**[E705〈口𠂹〉全过程报告](../2026-11-18-U+E705口𠂹调研核验与补录报告.md)**，对应 [补录前编码调研](kou-200b9/audit.json)、[全字体排名](kou-200b9/font-search.json)、[字体覆盖](kou-200b9/font-coverage.json)、[口部候选](kou-200b9/mouth-candidates.json)、[写入前基线](e705/before.json)、[试作参数](e705/layout-trials.json)、[反例与来源拒绝](e705/extra-checks.json)、[正式写入和全量保护核验](e705/patch-verification.json)、[正文替换](e705/annotation.json)、[实际浏览器字体](e705/browser.json)。形似分数是弱回归检查，不能单独识别目标；报告明确保存通过数值闸的错误结构对照。
 

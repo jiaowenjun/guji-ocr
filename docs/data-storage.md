@@ -11,6 +11,7 @@
 | --- | --- | --- | --- |
 | **代码 / 文档 / 金标** | 人写的、需要版本管理的文本 | git 仓库（`src/`、`tools/`、`docs/`、`kangxi-gold/annotations/` 等） | — |
 | **刻本字体** | `guji-preview-grid/public/fonts/*.ttf`（128M） | git 仓库内 | Safari `local()` 伪命中须 url() 直载；克隆即用、部署自包含。是 git 内唯一的大文件例外 |
+| **自定义字形来源与补录证据** | 经采用的单字截图、二值图、SVG、冻结配方、验证 JSON 与对照图 | `tools/dataset/font-sources/`、`docs/research/evidence/`、`docs/research/figures/`，随 git | 属于重建依据，不能只留临时缓存；如 [@398 U+2E85 来源](../tools/dataset/font-sources/0398-person-radical/)。完整字体备份和机器流水留 `var/unencoded/kangxi-unencoded/`，文档及 Git 提交另存回滚依据 |
 | **可再生缓存 / 工作状态** | 丢了能重算、或随进度自会重建 | 仓库本地 `var/`（整目录 gitignore） | OCR 缓存丢了重跑 prefetch；demo 缓存/日志随建随有 |
 | **爬取状态库** | `var/crawl/kangxi-crawl.sqlite3`（93M+，随全书爬取增长） | **只留仓库本地**，定期快照到 WD `backup/` | exFAT 无 POSIX 锁、断写易损坏，SQLite 高频写**禁止**直接落外置盘 |
 | **自采原始数据** | 爬虫抓来的、丢了要重爬（礼貌限速下代价极高） | WD-2T `raw/<站点>/<类别>/`，只增不改 | — |
