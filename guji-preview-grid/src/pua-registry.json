@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "comment": "guji-ocr 自补字形登记簿（PUA U+E700–U+E7FF；避开站方 E815–E864）。码位是稳定字位；version 是登记操作版本，font_versions 是各字体的最近更新版本。scheme/source 为默认方案，font_overrides 可按文件名选择小字宋体或大字刻形；hashes/version 由 guji_pua_patch 更新。 项目私有 PUA 不同步到系统字体。",
+  "comment": "guji-ocr 自补字形登记簿（PUA U+E700–U+E7FF；避开站方 E815–E864）。码位是稳定字位；version 是登记操作版本，font_versions 是各字体的最近更新版本。scheme/source 为默认方案，font_overrides 可按文件名选择小字宋体或大字刻形；hashes/version 由 guji_pua_patch 更新。 项目私有 PUA 不同步到系统字体。 sha256_after 表示共享字体当前基线；每次字体变化同步关联条目，旧哈希留在 history；字形版本仅在该字形修改时递增。",
   "glyphs": [
     {
       "cp": "E701",
@@ -18,7 +18,7 @@
         "guji-preview-grid/public/fonts/guji-plane0.ttf"
       ],
       "sha256_after": {
-        "guji-plane0.ttf": "b4433eb2cb5218d3e507dd1757398813ac105d6c384dbbf8a841a60107b53c0f"
+        "guji-plane0.ttf": "f7e40e014584f6f4fd73ac1de97b2e9aac414e5eeb0e9c9a3847a78e4c27a20b"
       },
       "history": [
         {
@@ -121,6 +121,70 @@
       },
       "usage": "small-only",
       "usage_note": "该字符只出现在小字内容中，仅收录于 guji-plane0.ttf。"
+    },
+    {
+      "cp": "E704",
+      "char": "⿳一⿰心支一",
+      "description": "〈二心支〉＝康熙 @373 𠄹条「【風雅廣逸】又書作〈二心支〉」所引异体；未确认独立 Unicode 码位。",
+      "first_seen": "kangxi-gold @373，𠄹 U+20139 条，二部九画增字",
+      "scheme": "compose",
+      "version": 1,
+      "source": "tools/dataset/font-sources/e704-songti-v1.json",
+      "source_note": "上下横取自小字 plane2 𠄹；心、支取自 plane0，支顶衬线在连接处省去，保留十与又的整体结构。",
+      "verify_image": "tools/dataset/font-sources/e704-scan-mask.png",
+      "verify_note": "用户原图灰度阈值 120，无闭运算或描摹；仅用于形似回归。",
+      "fonts": [
+        "guji-preview-grid/public/fonts/guji-plane0.ttf"
+      ],
+      "sha256_after": {
+        "guji-plane0.ttf": "f7e40e014584f6f4fd73ac1de97b2e9aac414e5eeb0e9c9a3847a78e4c27a20b"
+      },
+      "history": [
+        {
+          "version": 1,
+          "at": "2026-11-18T10:09:09+08:00",
+          "operation": "insert",
+          "results": [
+            {
+              "font": "guji-preview-grid/public/fonts/guji-plane0.ttf",
+              "scheme": "compose",
+              "source": "tools/dataset/font-sources/e704-songti-v1.json",
+              "sha256_before": "b4433eb2cb5218d3e507dd1757398813ac105d6c384dbbf8a841a60107b53c0f",
+              "sha256_after": "f7e40e014584f6f4fd73ac1de97b2e9aac414e5eeb0e9c9a3847a78e4c27a20b",
+              "bytes_before": 17251780,
+              "bytes_after": 17252348,
+              "chamfer": 1.717,
+              "chamfer_gate": 1.8,
+              "cmap_before": 30707,
+              "cmap_after": 30708,
+              "other_glyphs_and_metrics_unchanged": true,
+              "backup": "var/unencoded/kangxi-unencoded/font-backups/guji-plane0.ttf.b4433eb2cb5218d3e507dd1757398813ac105d6c384dbbf8a841a60107b53c0f.ttf"
+            }
+          ],
+          "cache_version": "e701-4-e704-1"
+        }
+      ],
+      "usage": "small-only",
+      "usage_note": "仅小字，不写大字或系统字体。",
+      "unicode_status": "unconfirmed-independent-codepoint",
+      "related_characters": [
+        {
+          "char": "𠄹",
+          "cp": "20139",
+          "relation": "来源字头；中间敂，不等同本次心支字形"
+        },
+        {
+          "char": "亟",
+          "cp": "4E9F",
+          "relation": "原条郑樵所释字；非图示写法"
+        }
+      ],
+      "report": "docs/research/2026-11-18-U+E704二心支调研核验与补录报告.md",
+      "allocation_note": "E702、E703 曾用于 E701 历史试验，保留不用以免旧材料混淆。",
+      "font_versions": {
+        "guji-plane0.ttf": 1
+      },
+      "patched_at": "2026-11-18"
     }
   ]
 }

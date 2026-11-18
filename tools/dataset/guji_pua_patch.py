@@ -239,6 +239,21 @@ def verify_replacement(before, after, cp):
         raise ValueError('替换改变了 advance')
 
 
+def verify_addition(before, after, cp):
+    """A new codepoint must preserve every previously mapped glyph and metric."""
+    old, new = before.getBestCmap(), after.getBestCmap()
+    if cp in old or cp not in new or {k: v for k, v in new.items() if k != cp} != old:
+        raise ValueError('新增只能改变目标码位的 cmap 映射')
+    if after.getGlyphOrder() != before.getGlyphOrder() + [new[cp]]:
+        raise ValueError('新增只能在 glyphOrder 末尾增加一个字形')
+    for name in before.getGlyphOrder():
+        if before['glyf'][name].compile(before['glyf']) != after['glyf'][name].compile(after['glyf']):
+            raise ValueError(f'新增时既有轮廓变化：{name}')
+        for tag in ('hmtx', 'vmtx'):
+            if tag in before and before[tag][name] != after[tag][name]:
+                raise ValueError(f'新增时既有度量变化：{tag}/{name}')
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument('--cp', required=True, help='注册表内码位，如 E701')
@@ -295,6 +310,8 @@ def main():
             after = TTFont(tmp, recalcTimestamp=False)
             if args.replace:
                 verify_replacement(font, after, cp)
+            else:
+                verify_addition(font, after, cp)
             if scheme == 'compose':
                 target = after.getBestCmap()[cp]
                 for tag, expected in data['metrics'].items():
@@ -311,7 +328,7 @@ def main():
                       'bytes_before': before_bytes, 'bytes_after': os.path.getsize(tmp),
                       'chamfer': round(float(score), 3), 'chamfer_gate': gate, 'cmap_before': len(font.getBestCmap()),
                       'cmap_after': len(after.getBestCmap()),
-                      'other_glyphs_and_metrics_unchanged': bool(args.replace)}
+                      'other_glyphs_and_metrics_unchanged': True}
             print(json.dumps(result, ensure_ascii=False))
             results.append(result)
             plans.append((path, tmp, result))
@@ -336,7 +353,13 @@ def main():
         for path, tmp, result in plans:
             os.replace(tmp, path)
             basename = os.path.basename(path)
-            entry['sha256_after'][basename] = result['sha256_after']
+            # Every entry referring to this shared font needs its current
+            # baseline refreshed; immutable history retains each event's hash.
+            # Otherwise inserting E704 would make a later E701 replacement
+            # fail the stale whole-font guard even though E701 was untouched.
+            for registered in reg['glyphs']:
+                if result['font'] in registered['fonts']:
+                    registered.setdefault('sha256_after', {})[basename] = result['sha256_after']
             entry['font_versions'][basename] = version
             if args.scheme:
                 entry.setdefault('font_overrides', {})[basename] = {
