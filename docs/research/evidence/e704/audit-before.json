@@ -1,0 +1,200 @@
+{
+  "date": "2026-11-18",
+  "target": {
+    "page": 373,
+    "annotation": "kangxi-gold/annotations/0373.gj",
+    "source_image": "scan-crop.png",
+    "sha256": "cafed9d9a6de28651c74fb9ddaaeadc940c2206e9f31f782987301ff41dbef6e",
+    "descriptive_ids": "⿳一⿰心支一",
+    "text": "【風雅廣逸】又書作〈二心支〉。"
+  },
+  "unicode": {
+    "official_latest": "18.0.0, checked via https://www.unicode.org/Public/UCD/latest/ucd/ReadMe.txt",
+    "u20139": {
+      "ids_chise": "⿴𠄠敂",
+      "ids_cjkvi_babelstone": "⿳一敂一",
+      "kKangXi": "0087.180",
+      "kIRG_GSource": "GKX-0087.18"
+    },
+    "independent_codepoint": "Not identified in inspected sources; this is not a normative proof that Unicode excludes the printed variant.",
+    "ids": {
+      "IDS-UCS-Basic.txt": {
+        "sha256": "2ee31dafadcc7985ae7b29d854bceb906ef587a4feeb4ea3ec1469c7d69428bf",
+        "entries": 20992
+      },
+      "IDS-UCS-Compat-Supplement.txt": {
+        "sha256": "c1d265a791a24a8b4d7d963cb7cf31a6a3b1b234b630477d3f27798c9ccab930",
+        "entries": 542
+      },
+      "IDS-UCS-Compat.txt": {
+        "sha256": "7683730c8213ecb3a2b3e85daa6b7b913c43b44a81a9af7900671bca4d091391",
+        "entries": 355
+      },
+      "IDS-UCS-Ext-A.txt": {
+        "sha256": "d58c5b21054d1ba07fd2621f0892b36c088009d7890b136f42f8c5a5af21f495",
+        "entries": 6604
+      },
+      "IDS-UCS-Ext-B-1.txt": {
+        "sha256": "3e847635a97e618e447ec25d143c3827640ab9e30e7ff6b58f078009fef113a1",
+        "entries": 8192
+      },
+      "IDS-UCS-Ext-B-2.txt": {
+        "sha256": "551150fa2bd8886c17b5af40ad1d7876026d477349e7d636b0fbfc7306d26b81",
+        "entries": 8192
+      },
+      "IDS-UCS-Ext-B-3.txt": {
+        "sha256": "33a51a09a18d06fb666e72f13d3854c41a1d06207f0f0c4ac43f3687a0bea6fb",
+        "entries": 8192
+      },
+      "IDS-UCS-Ext-B-4.txt": {
+        "sha256": "f68fac9ed5f86953b574eacae17be49c57f270caa4a590339ba4d3f668f6596b",
+        "entries": 8192
+      },
+      "IDS-UCS-Ext-B-5.txt": {
+        "sha256": "21cf28e9e4aeb3d98e8c7739899270b13a6d080a2f65f0d4287710d71e72901a",
+        "entries": 8192
+      },
+      "IDS-UCS-Ext-B-6.txt": {
+        "sha256": "a732d18a27f418cb4610b7a1e1674487485111734cbd131220caa1baf23b630a",
+        "entries": 1760
+      },
+      "IDS-UCS-Ext-C.txt": {
+        "sha256": "74dcff528d54508225e587384f132cac508b97a866969ebbeea848a030910225",
+        "entries": 4160
+      },
+      "IDS-UCS-Ext-D.txt": {
+        "sha256": "c300f9ace1ffd9526fe3c17a12c94b3823e1a97cd507bd4b85b784bf269a3234",
+        "entries": 223
+      },
+      "IDS-UCS-Ext-E.txt": {
+        "sha256": "aab22be5a0ba07d3830f37f344b08950c566286171539c08ce6d0d0a5f3a635b",
+        "entries": 5774
+      },
+      "IDS-UCS-Ext-F.txt": {
+        "sha256": "dfede4731416ad43a084d0ecdc86562607e9057735e9ac43114870fa5dbf9f5e",
+        "entries": 7473
+      },
+      "IDS-UCS-Ext-G.txt": {
+        "sha256": "1f8f8cc7d911ccf86c196ce4de43d7e4ca03689ee83d4e3e380120eac336c64d",
+        "entries": 4939
+      },
+      "IDS-UCS-Ext-H.txt": {
+        "sha256": "e239d31373777a953c755ba99ae7a502a33823bddd0fc9af4e61e3cd8f209e0c",
+        "entries": 4192
+      },
+      "IDS-UCS-Ext-I.txt": {
+        "sha256": "a84694c801290033b7e3f79303c71fcdcae595afc3a47481496dc051832369d0",
+        "entries": 622
+      },
+      "IDS-UCS-Ext-J.txt": {
+        "sha256": "0910def2870d1e4cb38c4064f060de5efc48bb73fee6d5f7447657fa121fa260",
+        "entries": 4298
+      }
+    },
+    "babelstone": {
+      "version": "Unicode 16.0; file date 2025-06-27",
+      "sha256": "cc2a0a97e6a51ed6ebe59870ef2af66e83f3c3c27387d79b4441bb2d791d78b1"
+    },
+    "queries": [
+      "心 AND 支",
+      "忄 AND 支",
+      "忮",
+      "⿴二",
+      "⿴𠄠",
+      "⿳一...一",
+      "𠄹"
+    ],
+    "ivd_snapshot": {
+      "url": "https://www.unicode.org/ivd/data/2025-07-14/IVD_Sequences.txt",
+      "sha256": "0052165369b6c8783d19b041f0a70537a69d718d577b9df180453be9d8c10a87",
+      "u20139_records": 0,
+      "u4e9f_sequences": [
+        "4E9F E0100",
+        "4E9F E0101",
+        "4E9F E0102",
+        "4E9F E0103"
+      ],
+      "limitation": "No claim that every registered U+4E9F variant shape was independently inspected; none can be selected in these fonts because no format-14 cmap exists."
+    }
+  },
+  "fonts": {
+    "guji-plane0.ttf": {
+      "sha256": "b4433eb2cb5218d3e507dd1757398813ac105d6c384dbbf8a841a60107b53c0f",
+      "bytes": 17251780,
+      "cmap_count": 30707,
+      "u20139": null,
+      "u4e9f": "uni4E9F",
+      "cmap_formats": [
+        0,
+        4
+      ],
+      "unmapped_glyph_count": 96,
+      "gsub_features": [
+        "vert"
+      ]
+    },
+    "guji-plane2.ttf": {
+      "sha256": "80df094a2e63091b222706696a8b244c9dba45219af866226a097d0fbb2bf28d",
+      "bytes": 42717516,
+      "cmap_count": 61228,
+      "u20139": "u20139",
+      "u4e9f": null,
+      "cmap_formats": [
+        0,
+        4,
+        12
+      ],
+      "unmapped_glyph_count": 1,
+      "gsub_features": []
+    },
+    "guji-planef.ttf": {
+      "sha256": "cfeb8527cfc75fe244b1c773056ed8e8896e67918f368999d12f6bd86dee323b",
+      "bytes": 26189728,
+      "cmap_count": 42620,
+      "u20139": null,
+      "u4e9f": null,
+      "cmap_formats": [
+        0,
+        4,
+        12
+      ],
+      "unmapped_glyph_count": 1,
+      "gsub_features": []
+    }
+  },
+  "font_search": {
+    "method": "PIL rendering for cmap codepoints >= U+2E80, symmetric distance transform at normalized 64px; ranking used only to nominate candidates.",
+    "counts": {
+      "guji-plane0.ttf": 28996,
+      "guji-plane2.ttf": 61119,
+      "guji-planef.ttf": 42520
+    },
+    "total": 132635,
+    "visual_review": "48 top candidates per font, 144 font/codepoint pairs, all rejected; also inspected all 96 unmapped Plane0 glyphs from existing contact sheet after current SHA-256 matched its recorded baseline. Other two fonts have only .notdef unmapped.",
+    "result": "No matching glyph found in inspected small fonts.",
+    "limitation": "Similarity search plus reviewed shortlist is evidence of absence, not an exhaustive visual proof for every glyph."
+  },
+  "conclusion": {
+    "unicode": "No verified independent Unicode codepoint for this exact printed form. U+20139 and U+4E9F do not reproduce it in the actual small fonts.",
+    "need_supplement": "Recommended for faithful reproduction of the quoted alternate form. Use a separately registered small-only PUA glyph unless a standard codepoint is later verified; preserve existing U+20139/U+4E9F outlines.",
+    "production_changes": "None. Fonts, CSS, registry and annotation unchanged."
+  },
+  "sources": [
+    {
+      "url": "https://www.kangxizidian.com/search/index_v.php?stype=Word&sword=%F0%A0%84%B9&detail=y",
+      "sha256": "28ae1df053355251585078e3a89c3bc83f16b8011bd2d5052a2e579312ae21e8"
+    },
+    {
+      "url": "https://github.com/chise/ids",
+      "local": "ids/"
+    },
+    {
+      "url": "https://www.babelstone.co.uk/CJK/IDS.TXT",
+      "local": "babelstone-ids.txt"
+    },
+    {
+      "url": "https://www.unicode.org/Public/UCD/latest/ucd/ReadMe.txt",
+      "local": "unihan-version.txt"
+    }
+  ]
+}

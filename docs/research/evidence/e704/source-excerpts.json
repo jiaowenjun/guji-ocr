@@ -1,0 +1,42 @@
+{
+  "recorded_at": "2026-11-18T10:23:20+08:00",
+  "kangxi_entry": {
+    "url": "https://www.kangxizidian.com/search/index_v.php?stype=Word&sword=%F0%A0%84%B9&detail=y",
+    "text": "﻿ 𠄹的解释|𠄹的意思|康熙字典“𠄹”的释义 字頭： 𠄹 𠄹 部首：二 部首筆畫：2 部外筆畫：9 總筆畫：11 倉頡：MPKM 统一碼：20139 卷別：〈子集上〉 同文書局本 ：87頁，第18字 武英殿本 ：373頁，第1字 石鼓文 吳人𢠴 𠄹 。鄭樵云：卽亟字。 風雅廣逸 又書作〈二心支〉。 《論壇交流》"
+  },
+  "unihan_u20139": {
+    "Unihan_DictionaryLikeData.txt": [
+      "U+20139\tkMojiJoho\tMJ030481"
+    ],
+    "Unihan_DictionaryIndices.txt": [
+      "U+20139\tkHanYu\t10026.090",
+      "U+20139\tkIRGHanyuDaZidian\t10026.090",
+      "U+20139\tkKangXi\t0087.180",
+      "U+20139\tkMorohashi\t00284"
+    ],
+    "Unihan_IRGSources.txt": [
+      "U+20139\tkIRG_GSource\tGKX-0087.18",
+      "U+20139\tkIRG_JSource\tJMJ-030481",
+      "U+20139\tkIRG_TSource\tT6-3D21",
+      "U+20139\tkRSUnicode\t7.9",
+      "U+20139\tkTotalStrokes\t11"
+    ],
+    "Unihan_Readings.txt": [
+      "U+20139\tkJapanese\tキョク"
+    ]
+  },
+  "ids_matches": {
+    "IDS-UCS-Basic.txt": [
+      "U+5FEE\t忮\t⿰忄支"
+    ],
+    "IDS-UCS-Ext-B-1.txt": [
+      "U-0002012E\t𠄮\t⿴𠄠𢆶",
+      "U-00020139\t𠄹\t⿴𠄠敂"
+    ]
+  },
+  "unicode_version_readme": "# Unicode Character Database\n# © 2026 Unicode®, Inc.\n# Unicode and the Unicode Logo are registered trademarks of Unicode, Inc. in the U.S. and other countries.\n# For terms of use and license, see https://www.unicode.org/terms_of_use.html\n\nThis directory contains final data files for version 18.0.0 of the\nUnicode Character Database.\n\nFor documentation, see https://www.unicode.org/versions/Unicode18.0.0/\nwith links to\n- UAX #38: Unicode Han Database (Unihan)\n- UAX #42: Unicode Character Database in XML\n- UAX #44: Unicode Character Database\n- UTS #51: Unicode Emoji\n- UAX #57: Unicode Egyptian Hieroglyph Database\n- UAX #60: Data for Non Han Ideographic Scripts\n\nas well as the following in this directory:\n- NamesList.html\n",
+  "block_correction": [
+    "2B820..2CEAF; CJK Unified Ideographs Extension E"
+  ],
+  "cjkvi_sha256": "bfc70a8c09f9f5616ebf0543bd6681e67314e9f7ae2307e5ae8c6f15bdc5c6a6"
+}

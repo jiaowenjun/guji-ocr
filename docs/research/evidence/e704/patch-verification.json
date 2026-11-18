@@ -1,0 +1,135 @@
+{
+  "event": {
+    "version": 1,
+    "at": "2026-11-18T10:09:09+08:00",
+    "operation": "insert",
+    "results": [
+      {
+        "font": "guji-preview-grid/public/fonts/guji-plane0.ttf",
+        "scheme": "compose",
+        "source": "tools/dataset/font-sources/e704-songti-v1.json",
+        "sha256_before": "b4433eb2cb5218d3e507dd1757398813ac105d6c384dbbf8a841a60107b53c0f",
+        "sha256_after": "f7e40e014584f6f4fd73ac1de97b2e9aac414e5eeb0e9c9a3847a78e4c27a20b",
+        "bytes_before": 17251780,
+        "bytes_after": 17252348,
+        "chamfer": 1.717,
+        "chamfer_gate": 1.8,
+        "cmap_before": 30707,
+        "cmap_after": 30708,
+        "other_glyphs_and_metrics_unchanged": true,
+        "backup": "var/unencoded/kangxi-unencoded/font-backups/guji-plane0.ttf.b4433eb2cb5218d3e507dd1757398813ac105d6c384dbbf8a841a60107b53c0f.ttf"
+      }
+    ],
+    "cache_version": "e701-4-e704-1"
+  },
+  "glyph": {
+    "codepoint": "U+E704",
+    "name": "uniE704",
+    "contours": 7,
+    "points": 181,
+    "bbox": [
+      25,
+      -61,
+      998,
+      848
+    ],
+    "hmtx": [
+      1024,
+      25
+    ],
+    "vmtx": [
+      1024,
+      22
+    ],
+    "compiled_sha256": "f28a8bf767d91fa2ae6cbf73b5ba8ef70869e4e4ddac3487cb00e135555b3604"
+  },
+  "checks": {
+    "donor_tamper_rejected": "compose 来源字 U+5FC3 已变化，请重新审定部件",
+    "external_tamper_rejected": "compose 外部来源字 guji-preview-grid/public/fonts/guji-plane2.ttf/U+20139 已变化，请重新审定部件",
+    "frozen_tamper_rejected": "compose 冻结轮廓校验失败",
+    "unrelated_metric_tamper_rejected": "新增时既有度量变化：hmtx/uni5FC3",
+    "shared_font_baselines_match": true,
+    "existing_e701_replacement_dry_run": "passed; entire output font byte-identical",
+    "e704_generator_reproduction": "exact compiled glyph hash",
+    "existing_glyphs_and_metrics_unchanged": true,
+    "preserved_existing_glyph_count": 30803,
+    "tests": "453 passed / 17 test files",
+    "production_build": "passed",
+    "dist_font_hash_matches": true,
+    "saved_search_candidate_score_reproduction": "First five entries per font, 15 scores, agree to <1e-10"
+  },
+  "other_fonts": {
+    "guji-large.ttf": {
+      "sha256": "99be6a77b93afa746b2d29e37d6014cab9f9c21471f685a2392426760a17dabf",
+      "bytes": 46623752,
+      "has_e704": false
+    },
+    "guji-plane2.ttf": {
+      "sha256": "80df094a2e63091b222706696a8b244c9dba45219af866226a097d0fbb2bf28d",
+      "bytes": 42717516,
+      "has_e704": false
+    },
+    "guji-planef.ttf": {
+      "sha256": "cfeb8527cfc75fe244b1c773056ed8e8896e67918f368999d12f6bd86dee323b",
+      "bytes": 26189728,
+      "has_e704": false
+    }
+  },
+  "source_scan": {
+    "path": "/Volumes/WD-2T/guji-ocr/raw/kangxizidian/pages/0373.jpg",
+    "sha256": "5bca5d647b59029c1ca2c03506f34871dbf4cd3eb829b829554567d94d9c7fa9",
+    "size": [
+      1130,
+      1676
+    ],
+    "crop": [
+      960,
+      1430,
+      1018,
+      1482
+    ]
+  },
+  "font_commit": "5280746bef43ad9727279f666803ee39de3cca27",
+  "annotation": {
+    "path": "kangxi-gold/annotations/0373.gj",
+    "replacement": "〈二心支〉 → U+E704",
+    "occurrences": 1
+  },
+  "negative_shape_controls": [
+    {
+      "char": "",
+      "cp": "U+E704",
+      "font": "guji-plane0.ttf",
+      "chamfer": 1.717,
+      "passes_e704_gate": true
+    },
+    {
+      "char": "𠄹",
+      "cp": "U+20139",
+      "font": "guji-plane2.ttf",
+      "chamfer": 2.123,
+      "passes_e704_gate": false
+    },
+    {
+      "char": "亟",
+      "cp": "U+4E9F",
+      "font": "guji-plane0.ttf",
+      "chamfer": 2.492,
+      "passes_e704_gate": false
+    },
+    {
+      "char": "忮",
+      "cp": "U+5FEE",
+      "font": "guji-plane0.ttf",
+      "chamfer": 4.488,
+      "passes_e704_gate": false
+    },
+    {
+      "char": "𠄮",
+      "cp": "U+2012E",
+      "font": "guji-plane2.ttf",
+      "chamfer": 2.065,
+      "passes_e704_gate": false
+    }
+  ]
+}

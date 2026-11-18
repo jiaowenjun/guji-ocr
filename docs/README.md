@@ -21,6 +21,8 @@
 | 向康熙字典體补录缺字字形（K0000 字形入库） | [字体补录流程](research/2026-11-13-kangxi-字体补录流程.md) |
 | 查 guji-large 首例补录（U+2BD6E）的实际执行、验证与回滚 | [补录落地报告](research/2026-11-14-kangxi-guji-large补录U+2BD6E落地报告.md) |
 | 了解 U+E701 的造字缘起、宋体部件来源与最终小字效果 | [从刻本截图到小字宋体：造字纪实](research/2026-11-15-U+E701造字纪实.md) |
+| 追踪 @373〈二心支〉的出处、Unicode／字体查验、构形与 U+E704 补录 | [U+E704 调研核验与补录全过程](research/2026-11-18-U+E704二心支调研核验与补录报告.md) |
+| 查全部字体补录、改进、撤销与历史试验 | [字体补录 Changelog](font-changelog.md) |
 | 查字体操作登记制度 / 各字体文件哈希基线 / 补录历史 | [字体操作留痕登记簿](font-operations.md) |
 | 查 歹部「歺」旁刻形（如〈歺㐱〉=殄）的码位与小字字体覆盖 | [歹部歺形码位核验](research/2026-11-14-kangxi-歹部歺形码位核验.md) |
 
@@ -32,6 +34,7 @@ docs/
 ├── README.md                          本导航
 ├── data-storage.md                    数据文件存放规范（git/var/外置盘分层）
 ├── font-operations.md                 字体操作留痕登记簿（制度+登记+哈希基线）
+├── font-changelog.md                  补录、修改、撤销与试验时间线
 └── research/
     ├── README.md                      新综合报告，主要阅读入口
     ├── references.md                  论文与文章来源索引
