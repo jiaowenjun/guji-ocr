@@ -98,7 +98,9 @@ def slanted_body_candidates(dark, box, fit):
         nearby[start:start + half].mean(axis=0)
         for start in (0, len(nearby) // 4, len(nearby) - half)
     ])
-    xs = np.flatnonzero((support > .9) | ((support > .75) & (sustained > .9)))
+    xs = np.flatnonzero((support > .9)
+                        | ((support > .75) & (sustained > .9))
+                        | ((support > .8) & (sustained > .85)))
     groups = []
     for x in xs:
         if not groups or x > groups[-1][-1] + 3:
@@ -106,10 +108,11 @@ def slanted_body_candidates(dark, box, fit):
         groups[-1].append(int(x))
     candidates = []
     for group in groups:
-        # Keep the original center when the rule already has full support;
-        # accepting its faded fringe must not move a previously stable grid.
+        # Keep the original center when the rule met an earlier threshold;
+        # accepting its fainter fringe must not move a previously stable grid.
         strong = [x for x in group if support[x] > .9]
-        inner = int(np.mean(strong or group))
+        faded = [x for x in group if support[x] > .75 and sustained[x] > .9]
+        inner = int(np.mean(strong or faded or group))
         if (.5 * pitch <= right - inner <= 1.5 * pitch
                 and inner - left >= segmentation.N_SLOTS * segmentation.PITCH_RANGE[0]):
             candidates.append((left, top, inner, bottom))

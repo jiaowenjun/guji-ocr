@@ -222,6 +222,32 @@ class ScanGridTests(unittest.TestCase):
         self.assertEqual(slanted_body_candidates(
             dark, (56, 156, 1104, 1646), {'lines': [66], 'pitch': 60.4}), [])
 
+    def test_uniformly_faint_body_rule_recovers_grid_from_spine_frame(self):
+        # @481: the pale body rule leaves about 83% whole-band support and 87%
+        # in its strongest half, while the darker spine frame shifts the fit.
+        image = Image.new('L', (1130, 1671), 255)
+        draw = ImageDraw.Draw(image)
+        for line in ((98, 183, 98, 1550), (1125, 183, 1125, 1550),
+                     (98, 183, 1125, 183), (98, 1550, 1125, 1550)):
+            draw.line(line, fill=0, width=8)
+        for y in range(335, 1337):
+            keep = y % 100 < (87 if y < 836 else 79)
+            if keep:
+                x = round(1053 + (y - 335) * 12 / 1002)
+                draw.point((x, y), fill=0)
+        for col in range(17):
+            for row in range(24):
+                x, y = 122 + 58 * col, 205 + 55 * row
+                draw.rectangle((x, y, x + 24, y + 12), fill=0)
+        dark = (np.asarray(image) < 140).astype(float)
+        with patch('ocr_scan.slanted_body_candidates', return_value=[]):
+            before = detect_grid(dark)
+        after = detect_grid(dark)
+        self.assertEqual(before['block'][2], 1125)
+        self.assertAlmostEqual(after['block'][2], 1059, delta=3)
+        self.assertLess(after['majors'][-1]['x1'], 135)
+        self.assertLess(after['majors'][0]['x2'], 1060)
+
     def test_spine_valleys_cannot_displace_leftmost_body_column(self):
         # Measured @313 and @323 candidates. The spine's extra valleys used to
         # win 13:10 / 13:11 even though the leftmost small column was omitted.

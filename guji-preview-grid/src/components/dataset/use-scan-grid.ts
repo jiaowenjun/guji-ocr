@@ -18,7 +18,7 @@ export function useScanGrid(entry: PageEntry | undefined, layout: L3Page | undef
     layoutError = error instanceof Error ? error.message : String(error);
   }
   // 随定位／空格检测算法修订失效，避免热更新后继续显示旧结果。
-  const key = `body-grid-v10-boundary-frame-rules:${entry?.image}:${entry?.width}:${entry?.height}:${request}`;
+  const key = `body-grid-v11-faint-frame-rule:${entry?.image}:${entry?.width}:${entry?.height}:${request}`;
   const [result, setResult] = useState<{ key: string; grid?: ScanGrid; error?: string } | null>(null);
   const [retry, setRetry] = useState(0);
   const grid = request ? cache.get(key) ?? (result?.key === key ? result.grid : undefined) : undefined;
