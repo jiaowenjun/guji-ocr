@@ -1,21 +1,24 @@
 import { useEffect, useState } from "react";
 import type { L3Page } from "@/ir/layout3";
 import type { PageEntry } from "./DatasetView";
-import { scanGridPrior, type ScanGrid } from "./scan-grid";
+import { assertScanGridLayout, type ScanGrid } from "./scan-grid";
 
-// 只缓存本次会话里最近的布局；同一页换字但占格未变时无需重复测量。
+// 缓存本次会话里最近的原图；草稿重排只更新渲染侧对照，不改变原图检测。
 const cache = new Map<string, ScanGrid>();
 
 export function useScanGrid(entry: PageEntry | undefined, layout: L3Page | undefined, enabled: boolean) {
   let request = "";
   let layoutError = "";
   try {
-    if (enabled && entry && layout?.no === entry.page) request = JSON.stringify({ page: entry.page, spans: scanGridPrior(layout) });
+    if (enabled && entry && layout?.no === entry.page) {
+      assertScanGridLayout(layout);
+      request = JSON.stringify({ page: entry.page });
+    }
   } catch (error) {
     layoutError = error instanceof Error ? error.message : String(error);
   }
   // 随定位／空格检测算法修订失效，避免热更新后继续显示旧结果。
-  const key = `body-grid-v8-fishtail-recovery:${entry?.image}:${entry?.width}:${entry?.height}:${request}`;
+  const key = `body-grid-v9-centered-small-runs:${entry?.image}:${entry?.width}:${entry?.height}:${request}`;
   const [result, setResult] = useState<{ key: string; grid?: ScanGrid; error?: string } | null>(null);
   const [retry, setRetry] = useState(0);
   const grid = request ? cache.get(key) ?? (result?.key === key ? result.grid : undefined) : undefined;
@@ -24,7 +27,7 @@ export function useScanGrid(entry: PageEntry | undefined, layout: L3Page | undef
   useEffect(() => {
     if (!request || cache.has(key)) return;
     const controller = new AbortController();
-    // 编辑时合并连续输入；切页或关闭立即取消，旧响应不会盖到新原图上。
+    // 合并切页／开关操作；旧响应不会盖到新原图上。
     const timer = setTimeout(async () => {
       try {
         const response = await fetch("/dataset/scan-grid", {

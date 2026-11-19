@@ -1,0 +1,130 @@
+[
+  {
+    "page": 363,
+    "band": 4,
+    "col": 0,
+    "row": 23,
+    "metrics": {
+      "before": {
+        "core_box": [
+          626,
+          1509,
+          660,
+          1546
+        ],
+        "ink_pixels": 1,
+        "core_pixels": 1258,
+        "masked_ink": 0,
+        "threshold": 138.0
+      },
+      "after": {
+        "core_box": [
+          626,
+          1492,
+          660,
+          1529
+        ],
+        "ink_pixels": 35,
+        "core_pixels": 1258,
+        "masked_ink": 0,
+        "threshold": 139.0
+      }
+    }
+  },
+  {
+    "page": 399,
+    "band": 2,
+    "col": 0,
+    "row": 23,
+    "metrics": {
+      "before": {
+        "core_box": [
+          744,
+          1489,
+          784,
+          1527
+        ],
+        "ink_pixels": 7,
+        "core_pixels": 1520,
+        "masked_ink": 0,
+        "threshold": 139.0
+      },
+      "after": {
+        "core_box": [
+          744,
+          1484,
+          784,
+          1522
+        ],
+        "ink_pixels": 29,
+        "core_pixels": 1520,
+        "masked_ink": 0,
+        "threshold": 139.0
+      }
+    }
+  },
+  {
+    "page": 390,
+    "band": 4,
+    "col": 0,
+    "row": 12,
+    "metrics": {
+      "before": {
+        "core_box": [
+          473,
+          956,
+          508,
+          992
+        ],
+        "ink_pixels": 29,
+        "core_pixels": 1260,
+        "masked_ink": 0,
+        "threshold": 134.0
+      },
+      "after": {
+        "core_box": [
+          473,
+          961,
+          508,
+          996
+        ],
+        "ink_pixels": 1,
+        "core_pixels": 1225,
+        "masked_ink": 0,
+        "threshold": 134.0
+      }
+    }
+  },
+  {
+    "page": 398,
+    "band": 1,
+    "col": 0,
+    "row": 15,
+    "metrics": {
+      "before": {
+        "core_box": [
+          794,
+          1013,
+          829,
+          1051
+        ],
+        "ink_pixels": 60,
+        "core_pixels": 1330,
+        "masked_ink": 0,
+        "threshold": 140.0
+      },
+      "after": {
+        "core_box": [
+          794,
+          1038,
+          829,
+          1076
+        ],
+        "ink_pixels": 84,
+        "core_pixels": 1330,
+        "masked_ink": 84,
+        "threshold": 140.0
+      }
+    }
+  }
+]

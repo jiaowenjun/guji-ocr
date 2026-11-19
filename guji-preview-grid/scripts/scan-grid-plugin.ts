@@ -2,7 +2,7 @@ import { execFile } from 'node:child_process'
 import path from 'node:path'
 import type { Plugin } from 'vite'
 
-/** 按当前编辑布局测量原图；不写标注，不依赖预先导出的 OCR 数据集。 */
+/** 独立测量原图；不读取草稿占格，不写标注，不依赖预先导出的 OCR 数据集。 */
 export function scanGridPlugin(repo: string): Plugin {
   return {
     name: 'dataset-scan-grid',

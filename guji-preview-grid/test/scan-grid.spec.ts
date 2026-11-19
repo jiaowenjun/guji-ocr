@@ -4,7 +4,7 @@ import { createRoot, type Root } from "react-dom/client";
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { ScanGridLines, ScanGridOverlay } from "../src/components/dataset/ScanGridOverlay";
-import { compareBlankCells, scanGridPrior, type ScanGrid } from "../src/components/dataset/scan-grid";
+import { assertScanGridLayout, compareBlankCells, type ScanGrid } from "../src/components/dataset/scan-grid";
 import { useScanGrid } from "../src/components/dataset/use-scan-grid";
 import { MatrixPages } from "../src/components/matrix/MatrixPages";
 import { layout3, type L3Page } from "../src/ir/layout3";
@@ -17,13 +17,11 @@ const grid: ScanGrid = { width: 1130, height: 1679,
   blank_cells: [],
 };
 
-it("拟合先验保留空格行位、合字完整跨度，并补足八列", () => {
-  const spans = scanGridPrior(laid("@312\n\n#(十一)\n甲*乙\n丙*丁\n\n#*戊\n"));
-  expect(spans).toHaveLength(8);
-  expect(spans[0]).toEqual([[0, 2], [2, 3], [4, 5]]);
-  expect(spans[1]).toEqual([[2, 4]]);
-  expect(spans.slice(2)).toEqual(Array.from({ length: 6 }, () => []));
-  expect(scanGridPrior(laid("@312\n"))).toEqual(Array.from({ length: 8 }, () => []));
+it("只验证原图支持的版式，不依赖草稿占格", () => {
+  const page = laid("@312\n\n#(十一)\n甲*乙\n丙*丁\n\n#*戊\n");
+  expect(() => assertScanGridLayout(page)).not.toThrow();
+  expect(() => assertScanGridLayout(laid("@312\n"))).not.toThrow();
+  expect(() => assertScanGridLayout({ ...page, config: { ...page.config, rowCap: 20 } })).toThrow("8×12");
 });
 
 it("按物理小格双向对照：都空为蓝，只有一侧空为红，都有字不着色", () => {
@@ -163,21 +161,46 @@ it("切页取消旧请求，晚到响应不会覆盖新页；关闭时取消计�
   expect(pending[2].signal.aborted).toBe(true);
 });
 
-it("编辑占格后重新拟合，同占格换字复用结果，失败可重试", async () => {
+it("换字、补空格和大字重排都复用同一原图结果，请求不含草稿先验", async () => {
   const fetcher = vi.fn(async () => ({ ok: true, json: async () => ({ ok: true, ...grid }) }));
   vi.stubGlobal("fetch", fetcher);
   await show(316);
   await flush();
   await show(316, "@316\n#乙\n");
   await flush();
+  await show(316, "@316\n*又使也\n#甲乙\n");
+  await flush();
+  await show(316, "@316\n");
+  await flush();
   expect(fetcher).toHaveBeenCalledTimes(1);
-  fetcher.mockResolvedValueOnce({ ok: false, json: async () => ({ ok: false, error: "定位失败" }) } as never);
-  await show(316, "@316\n#甲乙\n");
+  expect(JSON.parse((fetcher.mock.calls[0] as unknown as [string, RequestInit])[1].body as string)).toEqual({ page: 316 });
+  expect(container.querySelectorAll("[data-scan-band]")).toHaveLength(8);
+});
+
+it("原图识别失败可重试", async () => {
+  const fetcher = vi.fn().mockResolvedValueOnce({ ok: false, json: async () => ({ ok: false, error: "定位失败" }) })
+    .mockResolvedValue({ ok: true, json: async () => ({ ok: true, ...grid }) });
+  vi.stubGlobal("fetch", fetcher);
+  await show(317);
   expect(container.querySelector("[data-scan-grid]")).toBeNull();
   await flush();
   expect(container.textContent).toContain("定位失败");
   await act(async () => container.querySelector("button")!.click());
   await flush();
   expect(container.querySelectorAll("[data-scan-band]")).toHaveLength(8);
-  expect(fetcher).toHaveBeenCalledTimes(3);
+  expect(fetcher).toHaveBeenCalledTimes(2);
+});
+
+it("编辑草稿不会取消进行中的原图检测", async () => {
+  let finish!: (value: unknown) => void;
+  const fetcher = vi.fn((_url, init) => new Promise(resolve => { finish = resolve; expect(init.signal.aborted).toBe(false); }));
+  vi.stubGlobal("fetch", fetcher);
+  await show(318);
+  await flush();
+  await show(318, "@318\n*又使也\n#甲\n");
+  await flush();
+  expect(fetcher).toHaveBeenCalledTimes(1);
+  expect(fetcher.mock.calls[0][1].signal.aborted).toBe(false);
+  await act(async () => finish({ ok: true, json: async () => ({ ok: true, ...grid }) }));
+  expect(container.querySelectorAll("[data-scan-band]")).toHaveLength(8);
 });

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Preview grid geometry, read-only. stdin: {page, spans: [8 × row spans]}.
+"""Preview grid geometry, read-only. stdin: {page}.
 
-Uses the dataset report's image-grid + per-band vertical fit. Returns the
+Uses scan evidence and a fixed 24-row lattice, independent of edited text. Returns the
 eight full band mappings and image-detected blank small cells, never text boxes.
 """
 from __future__ import annotations
@@ -20,18 +20,8 @@ MANIFEST = Path(__file__).resolve().parents[2] / 'kangxi-gold' / 'manifest.json'
 
 def scan_grid(request, manifest_path=MANIFEST):
     page = request.get('page')
-    spans = request.get('spans')
     if type(page) is not int or not 1 <= page <= 7738:
         raise ValueError('原图字格页码无效')
-    if not isinstance(spans, list) or len(spans) != 8:
-        raise ValueError('原图字格需要八个大列的行位')
-    for band in spans:
-        if not isinstance(band, list) or len(band) > 48:
-            raise ValueError('原图字格行位无效')
-        for span in band:
-            if (not isinstance(span, list) or len(span) != 2 or
-                    any(type(v) is not int for v in span) or not 0 <= span[0] < span[1] <= 24):
-                raise ValueError('原图字格行位必须位于 0–24 内')
 
     manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
     entry = next((e for e in manifest['pages'] if e['page'] == page), None)
@@ -49,12 +39,15 @@ def scan_grid(request, manifest_path=MANIFEST):
     _, top, _, bottom = detected['block']
     pitch = (bottom - top) / 24
     boxes = []
-    for major, band in zip(detected['majors'], spans):
-        glyphs = [{'grid_bbox': [0, start, 1, end]} for start, end in band]
-        bt, bp, _ = fit_vertical(dark, glyphs, major['x1'], major['x2'], top, pitch, 24)
+    glyphs = [{'grid_bbox': [0, row, 1, row + 1]} for row in range(24)]
+    for major in detected['majors']:
+        # An empty scan has no phase evidence; retain its measured frame.
+        x1, x2 = max(0, round(major['x1'])), min(width, round(major['x2']))
+        targets = glyphs if dark[max(0, top):min(height, bottom), x1:x2].any() else []
+        bt, bp, _ = fit_vertical(dark, targets, major['x1'], major['x2'], top, pitch, 24)
         boxes.append([major['x1'], bt, major['x2'], bt + 24 * bp])
     return {'ok': True, 'width': width, 'height': height, 'bands': boxes,
-            'blank_cells': detect_blank_cells(gray, boxes, spans)}
+            'blank_cells': detect_blank_cells(gray, boxes)}
 
 
 def main():

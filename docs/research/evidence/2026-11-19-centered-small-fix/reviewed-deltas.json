@@ -1,0 +1,72 @@
+[
+  {
+    "page": 358,
+    "removed": [
+      [
+        3,
+        0,
+        0
+      ],
+      [
+        3,
+        0,
+        1
+      ]
+    ],
+    "assessment": "All removed cells overlap the logical slots of the centered small characters 古文; their white corners are not transcription spaces.",
+    "image_sha256": "5d9b1519d8f73739219e03ade9b2dd5b83dd2abd98d9038242063b1c6e0647d3",
+    "figure_crop": [
+      545,
+      170,
+      683,
+      308
+    ],
+    "before_count": 8,
+    "after_count": 6
+  },
+  {
+    "page": 376,
+    "removed": [
+      [
+        5,
+        0,
+        9
+      ],
+      [
+        5,
+        0,
+        10
+      ]
+    ],
+    "assessment": "All removed cells overlap the logical slots of the centered small characters 古文; their white corners are not transcription spaces.",
+    "image_sha256": "2c70cd94d0da0c0bf911d95f28eeee507481901f7de2b29bd65b5d6d2219a312",
+    "figure_crop": [
+      278,
+      661,
+      419,
+      802
+    ],
+    "before_count": 11,
+    "after_count": 9
+  },
+  {
+    "page": 445,
+    "removed": [
+      [
+        4,
+        1,
+        1
+      ]
+    ],
+    "assessment": "All removed cells overlap the logical slots of the centered small characters 古文; their white corners are not transcription spaces.",
+    "image_sha256": "a48b6c7a54362656c006d5d5798963d8e902eea6b79e8ad40794e37eb5636044",
+    "figure_crop": [
+      407,
+      166,
+      553,
+      310
+    ],
+    "before_count": 13,
+    "after_count": 12
+  }
+]

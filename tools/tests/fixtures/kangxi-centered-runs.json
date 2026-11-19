@@ -1,0 +1,44 @@
+[
+  {
+    "page": 358,
+    "image": "kangxi-0358-centered.png",
+    "original_crop": [
+      547,
+      170,
+      681,
+      308
+    ],
+    "original_image_sha256": "5d9b1519d8f73739219e03ade9b2dd5b83dd2abd98d9038242063b1c6e0647d3",
+    "box": [
+      8.0,
+      12.0,
+      126.0,
+      1378.0799999999997
+    ],
+    "rows": [
+      0,
+      1
+    ]
+  },
+  {
+    "page": 376,
+    "image": "kangxi-0376-centered.png",
+    "original_crop": [
+      280,
+      661,
+      417,
+      802
+    ],
+    "original_image_sha256": "2c70cd94d0da0c0bf911d95f28eeee507481901f7de2b29bd65b5d6d2219a312",
+    "box": [
+      8.0,
+      -515.0,
+      129.0,
+      890.4399999999996
+    ],
+    "rows": [
+      9,
+      10
+    ]
+  }
+]

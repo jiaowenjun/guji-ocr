@@ -1,0 +1,565 @@
+{
+  "images_dir": "/Volumes/WD-2T/guji-ocr/raw/kangxizidian/pages",
+  "pages": [
+    {
+      "page": 312,
+      "image": "0312.jpg"
+    },
+    {
+      "page": 313,
+      "image": "0313.jpg"
+    },
+    {
+      "page": 314,
+      "image": "0314.jpg"
+    },
+    {
+      "page": 315,
+      "image": "0315.jpg"
+    },
+    {
+      "page": 316,
+      "image": "0316.jpg"
+    },
+    {
+      "page": 317,
+      "image": "0317.jpg"
+    },
+    {
+      "page": 318,
+      "image": "0318.jpg"
+    },
+    {
+      "page": 319,
+      "image": "0319.jpg"
+    },
+    {
+      "page": 320,
+      "image": "0320.jpg"
+    },
+    {
+      "page": 321,
+      "image": "0321.jpg"
+    },
+    {
+      "page": 322,
+      "image": "0322.jpg"
+    },
+    {
+      "page": 323,
+      "image": "0323.jpg"
+    },
+    {
+      "page": 324,
+      "image": "0324.jpg"
+    },
+    {
+      "page": 325,
+      "image": "0325.jpg"
+    },
+    {
+      "page": 326,
+      "image": "0326.jpg"
+    },
+    {
+      "page": 327,
+      "image": "0327.jpg"
+    },
+    {
+      "page": 328,
+      "image": "0328.jpg"
+    },
+    {
+      "page": 329,
+      "image": "0329.jpg"
+    },
+    {
+      "page": 330,
+      "image": "0330.jpg"
+    },
+    {
+      "page": 331,
+      "image": "0331.jpg"
+    },
+    {
+      "page": 332,
+      "image": "0332.jpg"
+    },
+    {
+      "page": 333,
+      "image": "0333.jpg"
+    },
+    {
+      "page": 334,
+      "image": "0334.jpg"
+    },
+    {
+      "page": 335,
+      "image": "0335.jpg"
+    },
+    {
+      "page": 336,
+      "image": "0336.jpg"
+    },
+    {
+      "page": 337,
+      "image": "0337.jpg"
+    },
+    {
+      "page": 338,
+      "image": "0338.jpg"
+    },
+    {
+      "page": 339,
+      "image": "0339.jpg"
+    },
+    {
+      "page": 340,
+      "image": "0340.jpg"
+    },
+    {
+      "page": 341,
+      "image": "0341.jpg"
+    },
+    {
+      "page": 342,
+      "image": "0342.jpg"
+    },
+    {
+      "page": 343,
+      "image": "0343.jpg"
+    },
+    {
+      "page": 344,
+      "image": "0344.jpg"
+    },
+    {
+      "page": 345,
+      "image": "0345.jpg"
+    },
+    {
+      "page": 346,
+      "image": "0346.jpg"
+    },
+    {
+      "page": 347,
+      "image": "0347.jpg"
+    },
+    {
+      "page": 348,
+      "image": "0348.jpg"
+    },
+    {
+      "page": 349,
+      "image": "0349.jpg"
+    },
+    {
+      "page": 350,
+      "image": "0350.jpg"
+    },
+    {
+      "page": 351,
+      "image": "0351.jpg"
+    },
+    {
+      "page": 352,
+      "image": "0352.jpg"
+    },
+    {
+      "page": 353,
+      "image": "0353.jpg"
+    },
+    {
+      "page": 354,
+      "image": "0354.jpg"
+    },
+    {
+      "page": 355,
+      "image": "0355.jpg"
+    },
+    {
+      "page": 356,
+      "image": "0356.jpg"
+    },
+    {
+      "page": 357,
+      "image": "0357.jpg"
+    },
+    {
+      "page": 358,
+      "image": "0358.jpg"
+    },
+    {
+      "page": 359,
+      "image": "0359.jpg"
+    },
+    {
+      "page": 360,
+      "image": "0360.jpg"
+    },
+    {
+      "page": 361,
+      "image": "0361.jpg"
+    },
+    {
+      "page": 362,
+      "image": "0362.jpg"
+    },
+    {
+      "page": 363,
+      "image": "0363.jpg"
+    },
+    {
+      "page": 364,
+      "image": "0364.jpg"
+    },
+    {
+      "page": 365,
+      "image": "0365.jpg"
+    },
+    {
+      "page": 366,
+      "image": "0366.jpg"
+    },
+    {
+      "page": 367,
+      "image": "0367.jpg"
+    },
+    {
+      "page": 368,
+      "image": "0368.jpg"
+    },
+    {
+      "page": 369,
+      "image": "0369.jpg"
+    },
+    {
+      "page": 370,
+      "image": "0370.jpg"
+    },
+    {
+      "page": 371,
+      "image": "0371.jpg"
+    },
+    {
+      "page": 372,
+      "image": "0372.jpg"
+    },
+    {
+      "page": 373,
+      "image": "0373.jpg"
+    },
+    {
+      "page": 374,
+      "image": "0374.jpg"
+    },
+    {
+      "page": 375,
+      "image": "0375.jpg"
+    },
+    {
+      "page": 376,
+      "image": "0376.jpg"
+    },
+    {
+      "page": 377,
+      "image": "0377.jpg"
+    },
+    {
+      "page": 378,
+      "image": "0378.jpg"
+    },
+    {
+      "page": 379,
+      "image": "0379.jpg"
+    },
+    {
+      "page": 380,
+      "image": "0380.jpg"
+    },
+    {
+      "page": 381,
+      "image": "0381.jpg"
+    },
+    {
+      "page": 382,
+      "image": "0382.jpg"
+    },
+    {
+      "page": 383,
+      "image": "0383.jpg"
+    },
+    {
+      "page": 384,
+      "image": "0384.jpg"
+    },
+    {
+      "page": 385,
+      "image": "0385.jpg"
+    },
+    {
+      "page": 386,
+      "image": "0386.jpg"
+    },
+    {
+      "page": 387,
+      "image": "0387.jpg"
+    },
+    {
+      "page": 388,
+      "image": "0388.jpg"
+    },
+    {
+      "page": 389,
+      "image": "0389.jpg"
+    },
+    {
+      "page": 390,
+      "image": "0390.jpg"
+    },
+    {
+      "page": 391,
+      "image": "0391.jpg"
+    },
+    {
+      "page": 392,
+      "image": "0392.jpg"
+    },
+    {
+      "page": 393,
+      "image": "0393.jpg"
+    },
+    {
+      "page": 394,
+      "image": "0394.jpg"
+    },
+    {
+      "page": 395,
+      "image": "0395.jpg"
+    },
+    {
+      "page": 396,
+      "image": "0396.jpg"
+    },
+    {
+      "page": 397,
+      "image": "0397.jpg"
+    },
+    {
+      "page": 398,
+      "image": "0398.jpg"
+    },
+    {
+      "page": 399,
+      "image": "0399.jpg"
+    },
+    {
+      "page": 400,
+      "image": "0400.jpg"
+    },
+    {
+      "page": 401,
+      "image": "0401.jpg"
+    },
+    {
+      "page": 402,
+      "image": "0402.jpg"
+    },
+    {
+      "page": 403,
+      "image": "0403.jpg"
+    },
+    {
+      "page": 404,
+      "image": "0404.jpg"
+    },
+    {
+      "page": 405,
+      "image": "0405.jpg"
+    },
+    {
+      "page": 406,
+      "image": "0406.jpg"
+    },
+    {
+      "page": 407,
+      "image": "0407.jpg"
+    },
+    {
+      "page": 408,
+      "image": "0408.jpg"
+    },
+    {
+      "page": 409,
+      "image": "0409.jpg"
+    },
+    {
+      "page": 410,
+      "image": "0410.jpg"
+    },
+    {
+      "page": 411,
+      "image": "0411.jpg"
+    },
+    {
+      "page": 412,
+      "image": "0412.jpg"
+    },
+    {
+      "page": 413,
+      "image": "0413.jpg"
+    },
+    {
+      "page": 414,
+      "image": "0414.jpg"
+    },
+    {
+      "page": 415,
+      "image": "0415.jpg"
+    },
+    {
+      "page": 416,
+      "image": "0416.jpg"
+    },
+    {
+      "page": 417,
+      "image": "0417.jpg"
+    },
+    {
+      "page": 418,
+      "image": "0418.jpg"
+    },
+    {
+      "page": 419,
+      "image": "0419.jpg"
+    },
+    {
+      "page": 420,
+      "image": "0420.jpg"
+    },
+    {
+      "page": 421,
+      "image": "0421.jpg"
+    },
+    {
+      "page": 422,
+      "image": "0422.jpg"
+    },
+    {
+      "page": 423,
+      "image": "0423.jpg"
+    },
+    {
+      "page": 424,
+      "image": "0424.jpg"
+    },
+    {
+      "page": 425,
+      "image": "0425.jpg"
+    },
+    {
+      "page": 426,
+      "image": "0426.jpg"
+    },
+    {
+      "page": 427,
+      "image": "0427.jpg"
+    },
+    {
+      "page": 428,
+      "image": "0428.jpg"
+    },
+    {
+      "page": 429,
+      "image": "0429.jpg"
+    },
+    {
+      "page": 430,
+      "image": "0430.jpg"
+    },
+    {
+      "page": 431,
+      "image": "0431.jpg"
+    },
+    {
+      "page": 432,
+      "image": "0432.jpg"
+    },
+    {
+      "page": 433,
+      "image": "0433.jpg"
+    },
+    {
+      "page": 434,
+      "image": "0434.jpg"
+    },
+    {
+      "page": 435,
+      "image": "0435.jpg"
+    },
+    {
+      "page": 436,
+      "image": "0436.jpg"
+    },
+    {
+      "page": 437,
+      "image": "0437.jpg"
+    },
+    {
+      "page": 438,
+      "image": "0438.jpg"
+    },
+    {
+      "page": 439,
+      "image": "0439.jpg"
+    },
+    {
+      "page": 440,
+      "image": "0440.jpg"
+    },
+    {
+      "page": 441,
+      "image": "0441.jpg"
+    },
+    {
+      "page": 442,
+      "image": "0442.jpg"
+    },
+    {
+      "page": 443,
+      "image": "0443.jpg"
+    },
+    {
+      "page": 444,
+      "image": "0444.jpg"
+    },
+    {
+      "page": 445,
+      "image": "0445.jpg"
+    },
+    {
+      "page": 446,
+      "image": "0446.jpg"
+    },
+    {
+      "page": 447,
+      "image": "0447.jpg"
+    },
+    {
+      "page": 448,
+      "image": "0448.jpg"
+    },
+    {
+      "page": 449,
+      "image": "0449.jpg"
+    },
+    {
+      "page": 450,
+      "image": "0450.jpg"
+    },
+    {
+      "page": 451,
+      "image": "0451.jpg"
+    }
+  ]
+}

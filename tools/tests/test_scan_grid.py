@@ -11,10 +11,100 @@ from PIL import Image, ImageDraw
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'dataset'))
 from scan_grid import scan_grid
-from ocr_scan import detect_blank_cells, detect_grid, select_body_grid, slanted_body_candidates
+from ocr_scan import _scan_centered_rows, detect_blank_cells, detect_grid, select_body_grid, slanted_body_candidates
 
 
 class ScanGridTests(unittest.TestCase):
+    def test_p445_centered_small_text_does_not_create_a_corner_space(self):
+        fixture = Path(__file__).parent / 'fixtures' / 'kangxi-0445.jpg'
+        with tempfile.TemporaryDirectory() as temp:
+            manifest = Path(temp) / 'manifest.json'
+            manifest.write_text(json.dumps({'images_dir': str(fixture.parent.resolve()),
+                                            'pages': [{'page': 445, 'image': fixture.name}]}))
+            result = scan_grid({'page': 445}, manifest)
+        found = {(c['band'], c['col'], c['row']) for c in result['blank_cells']}
+        # The false right-hand corner of 文 is the only removed candidate;
+        # every existing space elsewhere on the scan remains available.
+        self.assertEqual(found, {
+            (0, 0, 9), (0, 0, 21), (0, 1, 2), (1, 0, 10), (1, 0, 19),
+            (2, 0, 3), (3, 0, 0), (3, 0, 21), (3, 1, 7),
+            (5, 0, 11), (5, 1, 7), (7, 1, 17),
+        })
+        # Do not "fix" this by moving the grid back to the draft-based fit.
+        self.assertAlmostEqual(result['bands'][4][1], 178.5)
+        with Image.open(fixture) as image:
+            gray = np.asarray(image.convert('L'))
+        for band, rows in ((4, {0, 1}), (5, {14, 15})):
+            for shift in (-6, -3, 0, 3, 6):
+                with self.subTest(band=band, shift=shift):
+                    left, top, right, bottom = result['bands'][band]
+                    box = [left, top + shift, right, bottom + shift]
+                    self.assertEqual(_scan_centered_rows(gray, box), rows)
+                    cells = detect_blank_cells(gray, [box])
+                    self.assertFalse(any(c['row'] in rows for c in cells))
+
+    def test_other_scanned_centered_runs_keep_their_whole_character_slots(self):
+        fixtures = Path(__file__).parent / 'fixtures'
+        for case in json.loads((fixtures / 'kangxi-centered-runs.json').read_text()):
+            with self.subTest(page=case['page']):
+                with Image.open(fixtures / case['image']) as image:
+                    gray = np.asarray(image.convert('L'))
+                self.assertEqual(_scan_centered_rows(gray, case['box']), set(case['rows']))
+                self.assertEqual(detect_blank_cells(gray, [case['box']]), [])
+
+    def test_centered_run_keeps_adjacent_empty_rows_and_requires_neighbour_evidence(self):
+        gray = np.full((1440, 120), 220, dtype=np.uint8)
+        # Two small characters straddle the middle. Each has disconnected
+        # upper and lower strokes, so no single component describes its slot.
+        for row in (2, 3):
+            y = row * 60
+            gray[y + 10:y + 13, 40:80] = 40
+            gray[y + 5:y + 22, 58:62] = 40
+            gray[y + 25:y + 45, 45:49] = 40
+            gray[y + 25:y + 45, 73:77] = 40
+            gray[y + 25:y + 29, 45:77] = 40
+            gray[y + 41:y + 45, 45:77] = 40
+        box = [0, 0, 120, 1440]
+        self.assertEqual(_scan_centered_rows(gray, box), {2, 3})
+        found = {(c['col'], c['row']) for c in detect_blank_cells(gray, [box])}
+        for col in (0, 1):
+            for row in (2, 3):
+                self.assertNotIn((col, row), found)
+            for row in (1, 4):
+                self.assertIn((col, row), found)
+        gray[180:240] = 220
+        self.assertEqual(_scan_centered_rows(gray, box), set())
+
+    def test_centered_protection_rejects_normal_columns_radicals_and_rules(self):
+        for variant in ('single-column', 'two-columns', 'detached-radical', 'thin-strokes', 'rule'):
+            for mirror in (False, True):
+                with self.subTest(variant=variant, mirror=mirror):
+                    gray = np.full((1440, 120), 220, dtype=np.uint8)
+                    for row in (2, 3):
+                        y = row * 60
+                        if variant in ('single-column', 'two-columns', 'detached-radical'):
+                            gray[y + 10:y + 45, 15:20] = 40
+                            gray[y + 10:y + 14, 15:50] = 40
+                            gray[y + 40:y + 45, 15:50] = 40
+                        if variant == 'two-columns':
+                            gray[y + 10:y + 45, 75:80] = 40
+                            gray[y + 10:y + 14, 75:110] = 40
+                        if variant == 'detached-radical':
+                            gray[y + 20:y + 38, 55:66] = 40
+                        if variant == 'thin-strokes':
+                            gray[y + 10:y + 45, 59:61] = 40
+                    if variant == 'rule':
+                        gray[110:250, 59:61] = 40
+                        gray[110:113, 40:61] = 40
+                    if mirror:
+                        gray = gray[:, ::-1].copy()
+                    self.assertEqual(_scan_centered_rows(gray, [0, 0, 120, 1440]), set())
+                    if variant == 'single-column':
+                        found = {(c['col'], c['row']) for c in detect_blank_cells(gray, [[0, 0, 120, 1440]])}
+                        empty_col = 0 if mirror else 1
+                        for row in (2, 3):
+                            self.assertIn((empty_col, row), found)
+
     def test_p443_recovers_body_when_fishtail_excludes_every_frame(self):
         fixture = Path(__file__).parent / 'fixtures' / 'kangxi-0443.jpg'
         with Image.open(fixture) as image:
@@ -173,16 +263,16 @@ class ScanGridTests(unittest.TestCase):
             detected = {'block': [40, 160, 1000, 1560], 'majors': [
                 {'x1': 880 - i * 120, 'x2': 1000 - i * 120} for i in range(8)]}
             with patch('scan_grid.detect_grid', return_value=detected):
-                result = scan_grid({'page': 312, 'spans': [[] for _ in range(8)]}, manifest)
+                result = scan_grid({'page': 312}, manifest)
             self.assertEqual(result['bands'], [[880 - i * 120, 160, 1000 - i * 120, 1560] for i in range(8)])
             self.assertEqual(len(result['blank_cells']), 8 * 2 * 24)
             self.assertEqual(set(result), {'ok', 'width', 'height', 'bands', 'blank_cells'})
             self.assertEqual(sorted(p.name for p in root.iterdir()), ['0312.png', 'manifest.json'])
 
-    def test_invalid_row_spans_are_rejected_before_image_access(self):
-        for span in ([0, 25], [-1, 1], [2, 2], [0, 1.5], [False, 1]):
-            with self.subTest(span=span), self.assertRaises(ValueError):
-                scan_grid({'page': 312, 'spans': [[span]] + [[] for _ in range(7)]}, Path('/missing'))
+    def test_invalid_pages_are_rejected_before_image_access(self):
+        for page in (0, 7739, -1, 1.5, True, '427', None):
+            with self.subTest(page=page), self.assertRaises(ValueError):
+                scan_grid({'page': page}, Path('/missing'))
 
     def test_blank_detection_uses_pixels_and_preserves_thin_strokes(self):
         gray = np.full((1440, 120), 220, dtype=np.uint8)
@@ -193,9 +283,9 @@ class ScanGridTests(unittest.TestCase):
         gray[360:420, :60] = 166
         gray[361:420:4, 3:60:4] = 135  # Dark paper grain, not printed strokes.
         gray[420:480, :60] = 0  # Solid ink must never become "blank" by local thresholding.
-        # Rows 0/1 form a large glyph: don't highlight its white quadrants.
-        # The row-4 small glyph prior deliberately disagrees with the image.
-        cells = detect_blank_cells(gray, [[0, 0, 120, 1440]], [[[0, 2], [4, 5]]])
+        # A scanned large 一 bridges both columns; no transcription is provided.
+        gray[55:65, 10:110] = 40
+        cells = detect_blank_cells(gray, [[0, 0, 120, 1440]])
         found = {(c['col'], c['row']) for c in cells}
         self.assertTrue(all(row >= 2 for _, row in found))
         for row in (2, 3, 7):
@@ -206,7 +296,7 @@ class ScanGridTests(unittest.TestCase):
 
     def test_clipped_cells_are_unknown_not_blank(self):
         gray = np.full((1440, 120), 220, dtype=np.uint8)
-        cells = detect_blank_cells(gray, [[-60, 0, 60, 1440]], [[]])
+        cells = detect_blank_cells(gray, [[-60, 0, 60, 1440]])
         self.assertEqual(len(cells), 24)
         self.assertTrue(all(c['col'] == 1 for c in cells))
 
@@ -216,7 +306,7 @@ class ScanGridTests(unittest.TestCase):
         fixture = Path(__file__).parent / 'fixtures' / 'kangxi-0415-leading-space.png'
         with Image.open(fixture) as image:
             gray = np.asarray(image.convert('L'))
-        cells = detect_blank_cells(gray, [[0, .5, 118, 1405.46]], [[]])
+        cells = detect_blank_cells(gray, [[0, .5, 118, 1405.46]])
         self.assertEqual(cells, [{'band': 0, 'col': 1, 'row': 0}])
 
     def test_sparse_faint_line_and_dark_dot_remain_ink(self):
@@ -224,11 +314,105 @@ class ScanGridTests(unittest.TestCase):
         gray[25, 20:40] = 130  # Pale, one-pixel 一 below the ink-density cutoff.
         gray[85:89, 25:28] = 110  # Small coherent 丶 still counts as ink.
         gray[145:150, 20:40] = 130  # A pale glyph body uses the softer threshold.
-        cells = detect_blank_cells(gray, [[0, 0, 120, 1440]], [[]])
+        cells = detect_blank_cells(gray, [[0, 0, 120, 1440]])
         found = {(c['col'], c['row']) for c in cells}
         for row in range(3):
             self.assertNotIn((0, row), found)
             self.assertIn((1, row), found)
+
+    def test_book_rule_requires_continuation_and_outward_corner(self):
+        # A rule entering the left edge of the right small column. Its lower
+        # corner turns back toward the title in the neighbouring column.
+        for side in ('left', 'right'):
+            for variant in ('frame', 'broken-frame', 'single-stroke', 'no-corner', 'disconnected', 'inward-corner'):
+                with self.subTest(side=side, variant=variant):
+                    gray = np.full((1440, 120), 220, dtype=np.uint8)
+                    gray[65:174, 72:74] = 100
+                    if variant == 'single-stroke':
+                        gray[65:130, 72:74] = 220
+                    elif variant == 'disconnected':
+                        gray[108:132, 72:74] = 220
+                    if variant not in ('no-corner', 'single-stroke', 'disconnected'):
+                        if variant == 'inward-corner':
+                            gray[172:175, 72:96] = 100
+                        else:
+                            gray[172:175, 48:74] = 100
+                    if variant == 'broken-frame':
+                        for y in (84, 102, 130, 145, 160):
+                            gray[y:y + 4, 72:74] = 220
+                    col = 1
+                    if side == 'right':
+                        gray = gray[:, ::-1].copy()
+                        col = 0
+                    found = {(c['col'], c['row']) for c in detect_blank_cells(gray, [[0, 0, 120, 1440]])}
+                    self.assertEqual((col, 2) in found, variant in ('frame', 'broken-frame'))
+
+    def test_rule_removal_keeps_nearby_glyph_ink(self):
+        for stroke in ('thin-horizontal', 'thin-vertical', 'dot', 'faint-radical'):
+            with self.subTest(stroke=stroke):
+                gray = np.full((1440, 120), 220, dtype=np.uint8)
+                gray[65:174, 72:74] = 100
+                gray[172:175, 48:74] = 100
+                if stroke == 'thin-horizontal':
+                    gray[146, 72:98] = 130
+                elif stroke == 'thin-vertical':
+                    gray[135:161, 78] = 130
+                elif stroke == 'dot':
+                    gray[143:147, 78:81] = 100
+                else:
+                    gray[138:160, 78:80] = 130
+                    gray[143, 77:86] = 130
+                found = {(c['col'], c['row']) for c in detect_blank_cells(gray, [[0, 0, 120, 1440]])}
+                self.assertNotIn((1, 2), found)
+
+    def test_large_strokes_are_located_from_scan_and_leave_adjacent_gaps(self):
+        for shape in ('horizontal', 'vertical', 'ding', 'bu'):
+            with self.subTest(shape=shape):
+                gray = np.full((1440, 120), 220, dtype=np.uint8)
+                if shape in ('horizontal', 'ding'):
+                    gray[175:185, 10:110] = 40
+                if shape in ('vertical', 'ding', 'bu'):
+                    gray[130:230, 55:65] = 40
+                if shape == 'bu':
+                    gray[155:165, 55:92] = 40
+                found = {(c['col'], c['row']) for c in detect_blank_cells(gray, [[0, 0, 120, 1440]])}
+                for col in range(2):
+                    for row in (2, 3):
+                        self.assertNotIn((col, row), found)
+                    for row in (1, 4):
+                        self.assertIn((col, row), found)
+
+    def test_p427_scan_is_independent_of_draft_and_recovers_all_reported_gaps(self):
+        fixture = Path(__file__).parent / 'fixtures' / 'kangxi-0427.jpg'
+        with tempfile.TemporaryDirectory() as temp:
+            manifest = Path(temp) / 'manifest.json'
+            manifest.write_text(json.dumps({'images_dir': str(fixture.parent.resolve()),
+                                            'pages': [{'page': 427, 'image': fixture.name}]}))
+            result = scan_grid({'page': 427}, manifest)
+            # Legacy clients may still send an uncalibrated draft. Neither
+            # its large rows nor their movement can change image results.
+            for rows in ([[5, 7], [11, 13], [17, 19]], [[6, 8], [12, 14], [18, 20]]):
+                self.assertEqual(scan_grid({'page': 427, 'spans': [rows] * 8}, manifest), result)
+        found = {(c['band'], c['col'], c['row']) for c in result['blank_cells']}
+        self.assertEqual(found, {
+            (0, 0, 3), (0, 0, 17), (0, 1, 0), (0, 1, 10), (0, 1, 20),
+            (1, 0, 5), (1, 0, 11), (1, 0, 17), (2, 1, 20),
+            (3, 0, 15), (3, 1, 1), (4, 0, 9), (4, 0, 19), (4, 1, 2), (4, 1, 5),
+            (6, 0, 13), (6, 1, 7), (7, 0, 4), (7, 0, 8),
+        })
+
+    def test_scanned_large_heads_preserve_the_blank_above_them(self):
+        fixtures = Path(__file__).parent / 'fixtures'
+        cases = json.loads((fixtures / 'kangxi-scan-large-gaps.json').read_text())
+        for case in cases:
+            with self.subTest(page=case['page']):
+                with Image.open(fixtures / case['image']) as image:
+                    gray = np.asarray(image.convert('L'))
+                found = {(c['col'], c['row']) for c in detect_blank_cells(gray, [case['band_box']])}
+                for cell in case['blank']:
+                    self.assertIn(tuple(cell), found)
+                for cell in case['occupied']:
+                    self.assertNotIn(tuple(cell), found)
 
 
 if __name__ == '__main__':

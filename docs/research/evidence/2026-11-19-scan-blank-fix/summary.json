@@ -1,0 +1,42 @@
+{
+  "date": "2026-11-19",
+  "pages": 116,
+  "both_successful": 102,
+  "both_failed": 14,
+  "same_sets_and_geometry": 23,
+  "same_sets_changed_geometry": 65,
+  "changed_sets": 14,
+  "changed_geometry": 79,
+  "other_pages_changed_sets": 13,
+  "other_pages_added": 40,
+  "other_pages_removed": 17,
+  "original_blank_total": 3277,
+  "final_blank_total": 3307,
+  "confirmed_remaining_cases": [
+    {
+      "page": 363,
+      "cell": "5左24",
+      "issue": "paper fleck enters shifted core; new false negative"
+    },
+    {
+      "page": 399,
+      "cell": "3左24",
+      "issue": "paper fleck enters shifted core; new false negative"
+    },
+    {
+      "page": 390,
+      "cell": "5左13",
+      "issue": "large display glyph whitespace; new false positive / unsuitable small-grid semantics"
+    },
+    {
+      "page": 391,
+      "cell": "5左13",
+      "issue": "same detection issue as 390, distinct image file"
+    },
+    {
+      "page": 398,
+      "cell": "2左16",
+      "issue": "seal edge accepted as decoration; semantic class remains ambiguous"
+    }
+  ]
+}

@@ -189,41 +189,274 @@ def _has_ink_stroke(mask, minimum_span=0):
     return False
 
 
-def detect_blank_cells(gray, band_boxes, row_spans):
+def _ink_components(mask):
+    """8-connected ink bounds/areas, using row runs without a SciPy dependency."""
+    parents, bounds = [], []
+
+    def root(i):
+        while parents[i] != i:
+            parents[i] = parents[parents[i]]
+            i = parents[i]
+        return i
+
+    previous = []
+    for y, row in enumerate(mask):
+        edges = np.flatnonzero(np.diff(np.r_[False, row, False]))
+        current = []
+        first = 0
+        for x1, x2 in zip(edges[::2], edges[1::2]):
+            i = len(parents)
+            parents.append(i)
+            bounds.append([int(x1), y, int(x2), y + 1, int(x2 - x1)])
+            while first < len(previous) and previous[first][1] < x1:
+                first += 1
+            for a, b, j in previous[first:]:
+                if a > x2:
+                    break
+                j = root(j)
+                if j == i:
+                    continue
+                parents[j] = i
+                old, new = bounds[j], bounds[i]
+                bounds[i] = [min(old[0], new[0]), min(old[1], new[1]),
+                             max(old[2], new[2]), max(old[3], new[3]), old[4] + new[4]]
+            current.append((x1, x2, i))
+        previous = current
+    return [bounds[i] for i in range(len(parents)) if parents[i] == i]
+
+
+def _scan_large_rows(gray, box):
+    """Protect large-glyph whitespace only where scan strokes span small slots.
+
+    Wide strokes bridge the two columns; a tall, thick central stroke also
+    supports narrow heads such as 丨. Thin book rules and page rules do not.
+    No draft glyph positions participate in this decision.
+    """
+    left, top, right, bottom = box
+    cw, ch = (right - left) / 2, (bottom - top) / 24
+    if cw <= 0 or ch <= 0:
+        return set()
+    x0, x2 = max(0, int(np.ceil(left + cw * .1))), min(gray.shape[1], int(right - cw * .1))
+    y0, y2 = max(0, int(np.ceil(top))), min(gray.shape[0], int(bottom))
+    if x2 <= x0 or y2 <= y0:
+        return set()
+    rows = set()
+    strip = gray[y0:y2, x0:x2] < segmentation.DARK_THR
+    components = _ink_components(strip)
+    # A complete two-row ink window keeps an upper bar with the rest of its
+    # glyph rather than assigning the preceding blank row to that bar.
+    weights = np.zeros(strip.shape[0])
+    for a, b, c, d, area in components:
+        cx = x0 + (a + c) / 2
+        if (area / (d - b) >= cw * .08 and d - b <= ch * 2.25
+                and (c - a > cw * .95 or abs(cx - (left + right) / 2) < cw * .3)):
+            weights[b:d] += strip[b:d, a:c].sum(axis=1)
+    ys = y0 + np.arange(len(weights)) + .5
+    for a, b, c, d, area in components:
+        w, h = c - a, d - b
+        cx = x0 + (a + c) / 2
+        if a == 0 and c == strip.shape[1] and h < ch * .3:
+            continue  # A horizontal rule continuing beyond both band edges.
+        wide = w > cw * 1.05 and area / w >= ch * .08
+        centre = (left + right) / 2
+        central = (w < cw * 1.1 and area / h >= cw * .08
+                   and ((h > ch * 1.15 and abs(cx - centre) < cw * .35)
+                        or (h > ch * .5 and x0 + a >= centre - cw * .3
+                            and x0 + c <= centre + cw * .3)))
+        mid = (left + right) / 2 - x0
+        centre_ink = strip[b:d, max(a, int(mid - cw * .15)):min(c, int(np.ceil(mid + cw * .15)))]
+        thick_centre = np.count_nonzero(centre_ink.sum(axis=1) >= cw * .08) >= min(h * .4, ch * .3)
+        if not (wide or (central and thick_centre)) or h > ch * 2.05:
+            continue
+        local_weights = weights
+        if central and not wide and h < ch:
+            # A small glyph's detached radical can lean into the band centre
+            # (e.g. 郞). Its companion ink at a small-column centre rules out 丶.
+            if any(min(d, dd) - max(b, bb) > h * .5
+                   and abs(x0 + (aa + cc) / 2 - centre) > cw * .3
+                   and dd - bb > ch * .3 and size / (dd - bb) >= cw * .08
+                   for aa, bb, cc, dd, size in components):
+                continue
+            # A central 丶 can belong to a multi-dot head. Include nearby dots
+            # in both columns, without pulling a preceding wide glyph into it.
+            local_weights = np.zeros_like(weights)
+            for aa, bb, cc, dd, size in components:
+                if (cc - aa < cw * .7 and dd - bb < ch and size / (dd - bb) >= cw * .08
+                        and bb < d + ch and dd > b - ch):
+                    local_weights[bb:dd] += strip[bb:dd, aa:cc].sum(axis=1)
+        candidates = []
+        for start in range(23):
+            if y0 + b < top + (start - .12) * ch or y0 + d > top + (start + 2.12) * ch:
+                continue
+            # A triangular window rewards the full glyph's centre of ink;
+            # neighbouring small text near the two-row edges contributes less.
+            kernel = np.maximum(0, 1 - np.abs((ys - top) / ch - start - 1))
+            candidates.append((float(local_weights @ kernel), start))
+        if candidates:
+            _, start = max(candidates)
+            rows.update((start, start + 1))
+    return rows
+
+
+def _scan_centered_rows(gray, box):
+    """Find a run of single-row glyphs centred between the two small columns.
+
+    A half-cell core can miss the end of a centred glyph (@445 文). Measure
+    whole ink components before splitting cells, including detached strokes.
+    Require neighbouring glyphs on the same axis, ink on both sides of it,
+    and no companion glyph in either normal column. This is distinct from
+    two-row large-glyph protection and never uses transcription positions.
+    """
+    left, top, right, bottom = box
+    cw, ch = (right - left) / 2, (bottom - top) / 24
+    if cw <= 0 or ch <= 0:
+        return set()
+    x0, x2 = max(0, int(np.ceil(left + cw * .1))), min(gray.shape[1], int(right - cw * .1))
+    y0, y2 = max(0, int(np.ceil(top))), min(gray.shape[0], int(bottom))
+    if x2 <= x0 or y2 <= y0:
+        return set()
+    strip = gray[y0:y2, x0:x2]
+    threshold = np.clip(np.percentile(strip, 80) - 35, 70, segmentation.DARK_THR)
+    ink = strip < threshold
+    components = [(a + x0, b + y0, c + x0, d + y0, area)
+                  for a, b, c, d, area in _ink_components(ink)
+                  if area >= max(6, cw * ch * .002)
+                  # A small phase shift can include the top frame. A thin
+                  # stroke traversing both band edges is not part of a glyph.
+                  and not (a == 0 and c == ink.shape[1] and d - b < ch * .3)]
+    candidates = {}
+    centre = (left + right) / 2
+    for row in range(24):
+        start, end = top + row * ch, top + (row + 1) * ch
+        # A large glyph or a continuous vertical rule is not a small run.
+        if any(b < end - ch * .15 and d > start + ch * .15
+               and (b < start - ch * .18 or d > end + ch * .18)
+               for _, b, _, d, _ in components):
+            continue
+        parts = [(a, b, c, d, area) for a, b, c, d, area in components
+                 if start <= (b + d) / 2 < end]
+        if not parts:
+            continue
+        a, b = min(p[0] for p in parts), min(p[1] for p in parts)
+        c, d = max(p[2] for p in parts), max(p[3] for p in parts)
+        cx, cy = (a + c) / 2, (b + d) / 2
+        if not (cw * .4 <= c - a <= cw * 1.1 and ch * .45 <= d - b <= ch * 1.15
+                and abs(cx - centre) <= cw * .2
+                and a <= centre - cw * .18 and c >= centre + cw * .18
+                and sum(p[4] for p in parts) >= cw * ch * .025):
+            continue
+        # Several rows of ink must cross the middle corridor: two unrelated
+        # small glyphs with sparse outer strokes are not a centred character.
+        middle = ink[b - y0:d - y0,
+                     max(0, int(centre - cw * .08) - x0):int(np.ceil(centre + cw * .08)) - x0]
+        if np.count_nonzero(middle.any(axis=1)) < ch * .2:
+            continue
+        candidates[row] = (cx, cy)
+    rows = set()
+    for row, (cx, cy) in candidates.items():
+        if row + 1 in candidates:
+            nx, ny = candidates[row + 1]
+            if abs(nx - cx) <= cw * .2 and ch * .65 <= ny - cy <= ch * 1.35:
+                rows.update((row, row + 1))
+    return rows
+
+
+def _has_rule_return(gray, x1, x2, endpoint, outward, cw, ch, threshold):
+    """A connected corner turns toward the neighbouring title, not this cell."""
+    reach = int(np.ceil(cw * .2))
+    left = max(0, x1 - int(np.ceil(cw * .5)) if outward < 0 else x1)
+    right = min(gray.shape[1], x2 if outward < 0 else x2 + int(np.ceil(cw * .5)))
+    top, bottom = max(0, endpoint - int(np.ceil(ch * .25))), min(gray.shape[0], endpoint + int(np.ceil(ch * .25)) + 1)
+    for a, b, c, d, _ in _ink_components(gray[top:bottom, left:right] < threshold):
+        if (left + c > x1 and left + a < x2
+                and top + b <= endpoint + ch * .1 and top + d >= endpoint - ch * .1
+                and ((outward < 0 and left + a <= x1 - reach)
+                     or (outward > 0 and left + c >= x2 + reach))):
+            return True
+    return False
+
+
+def _book_rule_mask(gray, cell, core_box, threshold):
+    """Mask only thin edge rules with continuation AND an outward frame corner.
+
+    A single-cell 丨/亻, repeated disconnected vertical strokes, and horizontal
+    strokes are not rules. The normal core inset and ink thresholds stay intact.
+    """
+    x1, y1, x2, y2 = cell
+    a, b, c, d = core_box
+    cw, ch = x2 - x1, y2 - y1
+    core = gray[b:d, a:c]
+    result = np.zeros(core.shape, dtype=bool)
+    columns = np.flatnonzero((core < threshold).any(axis=0)) + a
+    groups = []
+    for x in columns:
+        if not groups or x > groups[-1][-1] + 1:
+            groups.append([])
+        groups[-1].append(int(x))
+    for group in groups:
+        lo, hi = group[0], group[-1] + 1
+        if hi - lo > max(3, cw * .08):
+            continue
+        outward = -1 if hi <= x1 + cw * .25 else 1 if lo >= x2 - cw * .25 else 0
+        if not outward:
+            continue
+        # One pixel of drift on each side; only this corridor can be masked.
+        lo, hi = max(a, lo - 1), min(c, hi + 1)
+        top, bottom = max(0, int(y1 - ch)), min(gray.shape[0], int(np.ceil(y2 + ch)))
+        support = np.flatnonzero((gray[top:bottom, lo:hi] < threshold).any(axis=1)) + top
+        runs = np.split(support, np.flatnonzero(np.diff(support) > max(2, int(ch * .15)) + 1) + 1)
+        for run in runs:
+            if not len(run):
+                continue
+            first, last = int(run[0]), int(run[-1])
+            if (last - first + 1 < ch * 1.35 or len(run) / (last - first + 1) < .65
+                    or np.count_nonzero((run >= b) & (run < d)) < (d - b) * .45
+                    or not (first < y1 - ch * .4 or last > y2 + ch * .4)):
+                continue
+            if any(_has_rule_return(gray, lo, hi, end, outward, cw, ch, threshold) for end in (first, last)):
+                result[max(0, first - b):min(d - b, last - b + 1), lo - a:hi - a] = True
+    return result
+
+
+def detect_blank_cells(gray, band_boxes):
     """Image-derived empty small cells, not transcribed gaps.
 
-    Row spans only exclude occupied large glyphs (their white quarters are not
-    small-cell spaces). Blank decisions otherwise use scan pixels, including
-    untranscribed empty areas. Inset 16% avoids frame/book rules and adjacent ink;
+    Large/centred-glyph protection and book-rule removal require scan evidence, never
+    draft row spans. Includes untranscribed empty areas. Inset 16% avoids adjacent ink;
     local paper tone limits the dark threshold. Sparse compact marks need a
     darker coherent core; extended fine strokes retain the softer threshold.
     """
     height, width = gray.shape
     blanks = []
-    for band, ((left, top, right, bottom), spans) in enumerate(zip(band_boxes, row_spans)):
+    for band, (left, top, right, bottom) in enumerate(band_boxes):
         cw, ch = (right - left) / 2, (bottom - top) / 24
-        large_rows = {r for start, end in spans if end - start > 1 for r in range(start, end)}
+        occupied_rows = (_scan_large_rows(gray, (left, top, right, bottom))
+                         | _scan_centered_rows(gray, (left, top, right, bottom)))
         for col in range(2):
             for row in range(24):
-                if row in large_rows:
+                if row in occupied_rows:
                     continue
                 x1, y1 = left + col * cw, top + row * ch
                 x2, y2 = x1 + cw, y1 + ch
                 # Cropped/invalid cells are unknown, not empty.
                 if not (0 <= x1 < x2 <= width and 0 <= y1 < y2 <= height):
                     continue
-                core = gray[int(np.ceil(y1 + ch * .16)):int(np.floor(y2 - ch * .16)),
-                            int(np.ceil(x1 + cw * .16)):int(np.floor(x2 - cw * .16))]
+                core_box = (int(np.ceil(x1 + cw * .16)), int(np.ceil(y1 + ch * .16)),
+                            int(np.floor(x2 - cw * .16)), int(np.floor(y2 - ch * .16)))
+                a, b, c, d = core_box
+                core = gray[b:d, a:c]
                 if min(core.shape) < 4:
                     continue
                 threshold = np.clip(np.percentile(core, 80) - 35, 70, segmentation.DARK_THR)
                 ink = core < threshold
+                rule = _book_rule_mask(gray, (x1, y1, x2, y2), core_box, threshold) if ink.any() else np.zeros(core.shape, dtype=bool)
+                ink = ink & ~rule
                 # A fleck's gray fringe can just reach the component-size cutoff
                 # (@415, before 又). Keep dense/faint glyphs at the original
                 # threshold, and preserve even pale thin strokes spanning 1/4
                 # of the core; compact dots must also have a coherent dark core.
                 if (ink.mean() < .015
-                        and not _has_ink_stroke(core < threshold - 20)
+                        and not _has_ink_stroke((core < threshold - 20) & ~rule)
                         and not _has_ink_stroke(ink, minimum_span=np.ceil(min(core.shape) * .25))):
                     blanks.append({'band': band, 'col': col, 'row': row})
     return blanks
