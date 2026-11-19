@@ -17,7 +17,7 @@
 | [p427-original-and-star.json](p427-original-and-star.json) | 旧算法下初始草稿 12 格与仅补首个 * 后 17 格的原始结果 |
 | [p427-priors.json](p427-priors.json) | 上述两种旧草稿的输入跨度 |
 | [p427-book-rule-pixels.json](p427-book-rule-pixels.json) | 两目标格的采样框、阈值、过滤前后墨迹数量 |
-| [remaining-limitations.json](remaining-limitations.json) | 363/399 纸斑、390 大字局部留白、398 印章边线的前后采样证据 |
+| [remaining-limitations.json](remaining-limitations.json) | 363/399 纸斑、390 大字局部留白、398 印章边线的前后采样证据；问题已暂缓实施，后续机制与验收条件见[遗留问题与后续方案](../../2026-11-19-原图空格识别遗留问题与后续方案.md) |
 
 ## 后续 445 页回归诊断
 
