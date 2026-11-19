@@ -21,6 +21,9 @@ describe("line-scoped large highlighting", () => {
     expect(segments("#**甲// #注")).toEqual([["#", "strong"], ["**", "escape"], ["甲", "strong"], ["// #注", "comment"]]);
     expect(segments("#甲")[0][1]).toBe("strong");
     expect(segments("乙")[0][1]).toBe("plain");
+    expect(segments("  甲")).toEqual([["  ", "escape"], ["甲", "plain"]]);
+    expect(segments("  // 注")).toEqual([["  ", "escape"], ["// 注", "comment"]]);
+    expect(segments("  ")).toEqual([["  ", "escape"]]);
   });
   it("Kangxi heading color comes from semantic classification", () => {
     for (const line of ["#康熙字典", "#*子集上", "#*丑集中", "#**一部"])

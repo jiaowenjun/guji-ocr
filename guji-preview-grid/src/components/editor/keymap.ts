@@ -1,8 +1,8 @@
 // 编辑器快捷键（insert 模态方案；vim 开启后仅 insert 模态生效，normal 模态
 // 让位给 vim 引擎——Ctrl-J/O/U 在 vim normal 下分别是下移一行/跳转列表/
 // 上滚半屏）：
-// Ctrl-J 下一行并入本行末尾——只去接缝两侧的半角空格和 Tab，
-//   保留全角及其他 Unicode 占位空格；删除换行完成拼接，光标落在接缝处。
+// Ctrl-J 下一行并入本行末尾——清除正文后的半角尾空白和下行行首 Tab，
+//   下行行首半角空格逐个转为 *，保留所有占位空格；光标落在接缝处。
 // Ctrl-O 光标后插换行、光标不动（emacs open-line / 原生 NSTextView 语义，
 //   新空行在下方；行中按即劈行）；Ctrl-Alt-O 本行上方插空行，光标不动
 //   （列不变，随本行下移）。
@@ -61,11 +61,11 @@ const joinNextLine: Command = (view) => {
   if (line.to === state.doc.length) return false; // 已是末行
   const next = state.doc.lineAt(line.to + 1);
   const trailing = line.text.match(/[ \t]+$/)?.[0].length ?? 0;
-  const leading = next.text.match(/^[ \t]+/)?.[0].length ?? 0;
-  const joinAt = line.to - trailing;
-  // 一次删除：行尾半角空白 + 换行 + 下行行首半角空白
+  const leading = next.text.match(/^[ \t]*/)![0];
+  const joinAt = Math.max(line.to - trailing, line.from + line.text.match(/^[ \t]*/)![0].length);
+  // 纯半角空格行也有占位；下行行首空格显式化，避免并入行中后折叠或清除。
   view.dispatch({
-    changes: { from: joinAt, to: next.from + leading },
+    changes: { from: joinAt, to: next.from + leading.length, insert: leading.replace(/ /g, "*").replace(/\t/g, "") },
     selection: { anchor: joinAt },
     scrollIntoView: true,
   });

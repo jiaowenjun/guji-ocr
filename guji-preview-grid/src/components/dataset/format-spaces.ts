@@ -4,11 +4,14 @@ export function formatSpaces(text: string): { text: string; count: number } {
   const out = text
     .split(/\r?\n/)
     .map((line) => {
-      const stripped = line.replace(/[ \t]+$/, ""); // 只清除行尾半角空白；全角空格始终占格
-      // 页码与注释中的空白不属于正文，保持原有的尾空白清理。
-      if (/^[ \t]*\/\//.test(stripped) || /^[ \t]*@\d+\s*(?:\/\/.*)?$/.test(stripped)) {
-        return stripped.replace(/[ \t　]+$/, "");
+      // 页码缩进不属于正文；正文行首半角空格逐个占格，Tab 不占格。
+      if (/^[ \t]*@\d+\s*(?:\/\/.*)?$/.test(line)) {
+        return line.replace(/[ \t　]+$/, "");
       }
+      const stripped = line.replace(/^[ \t]+/, (leading) => leading.replace(/ /g, () => {
+        count += 1;
+        return "*";
+      }).replace(/\t/g, "")).replace(/[ \t]+$/, "");
       const ci = stripped.indexOf("//");
       const body = ci >= 0 ? stripped.slice(0, ci) : stripped;
       const forced = /[ \t]*([$¥])[ \t]*$/.exec(body);
@@ -18,7 +21,7 @@ export function formatSpaces(text: string): { text: string; count: number } {
         count += 1;
         return "*";
       });
-      // 行内半角串：两侧必须是非空格/tab 字符（行首/行尾的不动）
+      // 行内半角串仍合并为一个占格。
       const half = full.replace(/([^ \t])[ \t]+(?=[^ \t])/g, (_m, lead: string) => {
         count += 1;
         return lead + "*";

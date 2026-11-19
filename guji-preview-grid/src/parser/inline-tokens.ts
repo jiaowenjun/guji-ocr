@@ -23,6 +23,7 @@ export function scanInline(line: string, inBook = false): { tokens: InlineToken[
   const tokens: InlineToken[] = [];
   let size: InlineToken["size"] = "small";
   let book = inBook;
+  const leading = /^[ \t]*/.exec(line)![0].length;
   // An orphan closing bracket is a continuation even when the caller has no preceding page.
   const orphan = /^[^【#]*】/.exec(line)?.[0].length ?? 0;
   for (let i = 0; i < line.length;) {
@@ -34,6 +35,11 @@ export function scanInline(line: string, inBook = false): { tokens: InlineToken[
     };
     if (line.startsWith("//", i)) { push("comment", "", line.length); break; }
     if ((ch === "$" || ch === "¥") && /^[ \t\r]*(?:\/\/.*)?$/.test(line.slice(i + 1))) { push("break", "", i + 1); continue; }
+    if (i < leading) {
+      if (ch === " ") push("text", " ", i + 1);
+      else i++; // Leading tabs remain cosmetic; spaces keep individual source positions.
+      continue;
+    }
     if (ch === " " || ch === "\t") {
       const whitespace = /^[ \t]+/.exec(line.slice(i))![0];
       const rest = line.slice(i + whitespace.length);

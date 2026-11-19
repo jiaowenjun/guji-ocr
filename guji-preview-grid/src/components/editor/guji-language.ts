@@ -20,7 +20,7 @@ export function nextGujiToken(line: string, pos: number, inBook = false): {
     if (/^\s*@\d+\s*$/.test(line))
       return { next: line.length, tok: "keyword", inBookAfter: inBook };
     if (/^\s*=+\s*$/.test(line)) return { next: line.length, tok: "meta", inBookAfter: inBook };
-    if (/^\s*\/\//.test(line)) return { next: line.length, tok: "comment", inBookAfter: inBook };
+    if (/^\t*\/\//.test(line)) return { next: line.length, tok: "comment", inBookAfter: inBook };
     if (kangxiHeading(line)) return { next: line.indexOf("//") < 0 ? line.length : line.indexOf("//"), tok: "heading", inBookAfter: false };
   }
   const tokens = scanInline(line, inBook).tokens;

@@ -9,9 +9,13 @@ export function gjSourceLines(text: string) {
   const cut = /[\s\S]*==.*/.exec(text);
   let from = cut ? cut.index + cut[0].length + (text[cut.index + cut[0].length] === "\n" ? 1 : 0) : 0;
   for (const raw of text.slice(from).split("\n")) {
-    // Indentation is cosmetic; full-width spaces and * remain explicit slots.
-    const start = /^[ \t\r]*/.exec(raw)![0].length;
-    lines.push({ text: raw.slice(start).replace(/[ \t\r]+$/, ""), from: from + start });
+    // Leading spaces occupy cells, even on an otherwise blank line. Only page
+    // marker indentation and whitespace after content are cosmetic.
+    const line = raw.replace(/\r$/, "");
+    const leading = /^[ \t]*/.exec(line)![0].length;
+    const start = /^[ \t]*@\d+\s*(?:\/\/.*)?$/.test(line) ? leading : 0;
+    const end = Math.max(leading, line.replace(/[ \t]+$/, "").length);
+    lines.push({ text: line.slice(start, end), from: from + start });
     from += raw.length + 1;
   }
   return lines;

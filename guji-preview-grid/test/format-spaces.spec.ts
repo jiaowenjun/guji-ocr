@@ -30,10 +30,14 @@ describe("formatSpaces 规则", () => {
     expect(formatSpaces("a  b").count).toBe(1);
   });
 
-  it("行首半角空格不动；行尾半角空格清除", () => {
-    expect(fmt(" 行首保留。又")).toBe(" 行首保留。又");
+  it("行首半角空格逐个占格；正文行尾半角空格清除", () => {
+    expect(fmt(" 行首保留。又")).toBe("*行首保留。又");
+    expect(fmt("  又也。")).toBe("**又也。");
+    expect(fmt("\t \t 甲")).toBe("**甲");
+    expect(formatSpaces("  又也。").count).toBe(2);
     expect(fmt("行尾清除。 ")).toBe("行尾清除。");
-    expect(fmt("  ")).toBe("");
+    expect(fmt("  ")).toBe("**");
+    expect(fmt("\t")).toBe("");
   });
 
   it("与已转换内容的邻接：a* b → a**b（两侧原本各占一格，等价）", () => {

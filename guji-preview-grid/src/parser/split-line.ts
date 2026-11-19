@@ -6,10 +6,10 @@ import { scanInline } from "./inline-tokens";
 export function attachLeadingCommas(text: string): string {
   const lines = text.split(/\r?\n/);
   for (let i = 1; i < lines.length; i++) {
-    const match = /^([ \t]*)(，+)/.exec(lines[i]);
+    const match = /^(\t*)(，+)/.exec(lines[i]);
     if (!match) continue;
     let previousIndex = i - 1;
-    while (previousIndex >= 0 && /^[ \t]*$/.test(lines[previousIndex])) previousIndex--;
+    while (previousIndex >= 0 && /^\t*$/.test(lines[previousIndex])) previousIndex--;
     if (previousIndex < 0) continue;
     const previous = lines[previousIndex];
     const tokens = scanInline(previous).tokens;
@@ -20,15 +20,14 @@ export function attachLeadingCommas(text: string): string {
     const end = previous.slice(0, comment?.from ?? previous.length).replace(/[ \t]+$/, "").length;
     lines[previousIndex] = previous.slice(0, end) + match[2] + previous.slice(end);
     let rest = lines[i].slice(match[0].length);
-    // A space after the comma was an occupied cell. Once moved to line start,
-    // it would look like indentation, so preserve the lexer token explicitly.
-    const first = scanInline(rest).tokens[0];
-    if (first?.kind === "text" && first.text === " " && /^[ \t]+$/.test(rest.slice(first.from, first.to))) {
-      rest = "*" + rest.slice(first.to);
-    }
+    // Preserve the original interior run as one cell, rather than turning each
+    // newly leading space into a cell. Trailing/comment padding stays cosmetic.
+    const first = scanInline(lines[i]).tokens.find(t => t.from >= match[0].length);
+    if (first?.kind === "text" && first.text === " " && /^[ \t]+$/.test(lines[i].slice(first.from, first.to)))
+      rest = "*" + lines[i].slice(first.to);
+    else rest = rest.replace(/^[ \t]+/, "");
     lines[i] = match[1] + rest;
-    // Only cosmetic ASCII whitespace is empty; Unicode spaces still occupy cells.
-    if (/^[ \t]*$/.test(lines[i])) lines.splice(i--, 1);
+    if (/^\t*$/.test(lines[i])) lines.splice(i--, 1);
   }
   return lines.join("\n");
 }
