@@ -18,7 +18,7 @@
         "guji-preview-grid/public/fonts/guji-plane0.ttf"
       ],
       "sha256_after": {
-        "guji-plane0.ttf": "3409fd6cdebe85c58d60148d26acba80ec578831015b221e3101f3b794e752ab"
+        "guji-plane0.ttf": "740842c631185be99d889f5e1f2a535ddf5f1526ba3a17fa519aeb361f06a0e4"
       },
       "history": [
         {
@@ -138,7 +138,7 @@
         "guji-preview-grid/public/fonts/guji-plane0.ttf"
       ],
       "sha256_after": {
-        "guji-plane0.ttf": "3409fd6cdebe85c58d60148d26acba80ec578831015b221e3101f3b794e752ab"
+        "guji-plane0.ttf": "740842c631185be99d889f5e1f2a535ddf5f1526ba3a17fa519aeb361f06a0e4"
       },
       "history": [
         {
@@ -251,7 +251,7 @@
         "guji-plane0.ttf": 1
       },
       "sha256_after": {
-        "guji-plane0.ttf": "3409fd6cdebe85c58d60148d26acba80ec578831015b221e3101f3b794e752ab"
+        "guji-plane0.ttf": "740842c631185be99d889f5e1f2a535ddf5f1526ba3a17fa519aeb361f06a0e4"
       },
       "patched_at": "2026-11-18"
     },
@@ -270,7 +270,7 @@
         "guji-preview-grid/public/fonts/guji-plane0.ttf"
       ],
       "sha256_after": {
-        "guji-plane0.ttf": "3409fd6cdebe85c58d60148d26acba80ec578831015b221e3101f3b794e752ab"
+        "guji-plane0.ttf": "740842c631185be99d889f5e1f2a535ddf5f1526ba3a17fa519aeb361f06a0e4"
       },
       "history": [
         {
@@ -329,7 +329,7 @@
         "guji-preview-grid/public/fonts/guji-plane0.ttf"
       ],
       "sha256_after": {
-        "guji-plane0.ttf": "3409fd6cdebe85c58d60148d26acba80ec578831015b221e3101f3b794e752ab"
+        "guji-plane0.ttf": "740842c631185be99d889f5e1f2a535ddf5f1526ba3a17fa519aeb361f06a0e4"
       },
       "history": [
         {
@@ -425,6 +425,75 @@
           "source_note": "按已审定的宋体部件构形替换；码位稳定，具体部件与轮廓摘要见 source。"
         }
       }
+    },
+    {
+      "cp": "E708",
+      "char": "⿰彳𢾕",
+      "description": "康熙 @504 傲条「本作」后的〈彳𢾕〉。未确认该完整构形的独立标准码位；不得把右部𢾕或右作敖的𢕟当作完整目标字形。",
+      "first_seen": "kangxi-gold @504 傲条本作",
+      "scheme": "compose",
+      "version": 1,
+      "source": "tools/dataset/font-sources/e708-songti-v1.json",
+      "source_note": "同系列 plane2：左取𢕟第2、4条完整轮廓（双人旁），右取𢾕全部四条轮廓；左保持原位，右整体正向仿射。",
+      "verify_image": "tools/dataset/font-sources/e708-scan-mask.png",
+      "verify_note": "扫描遮罩仅作回归闸；身份与完整部件结构另验。",
+      "fonts": [
+        "guji-preview-grid/public/fonts/guji-plane0.ttf"
+      ],
+      "sha256_after": {
+        "guji-plane0.ttf": "740842c631185be99d889f5e1f2a535ddf5f1526ba3a17fa519aeb361f06a0e4"
+      },
+      "history": [
+        {
+          "version": 1,
+          "at": "2026-11-19T22:55:27+08:00",
+          "operation": "insert",
+          "results": [
+            {
+              "font": "guji-preview-grid/public/fonts/guji-plane0.ttf",
+              "scheme": "compose",
+              "source": "tools/dataset/font-sources/e708-songti-v1.json",
+              "sha256_before": "3409fd6cdebe85c58d60148d26acba80ec578831015b221e3101f3b794e752ab",
+              "sha256_after": "740842c631185be99d889f5e1f2a535ddf5f1526ba3a17fa519aeb361f06a0e4",
+              "bytes_before": 17253564,
+              "bytes_after": 17254352,
+              "chamfer": 3.684,
+              "chamfer_gate": 3.8,
+              "cmap_before": 30711,
+              "cmap_after": 30712,
+              "other_glyphs_and_metrics_unchanged": true,
+              "backup": "var/unencoded/kangxi-unencoded/font-backups/guji-plane0.ttf.3409fd6cdebe85c58d60148d26acba80ec578831015b221e3101f3b794e752ab.ttf"
+            }
+          ],
+          "cache_version": "e701-4-e704-1-e705-1-e706-1-e707-3-e708-1"
+        }
+      ],
+      "usage": "small-only",
+      "usage_note": "仅用于504页小字刻形；来源plane2、大字、planeF和系统字体不写入；标准U+2255F、U+22F95、U+50B2不变。",
+      "unicode_status": "independent-codepoint-not-confirmed",
+      "related_characters": [
+        {
+          "char": "傲",
+          "cp": "50B2",
+          "relation": "来源字头，原文以本作另举目标刻形"
+        },
+        {
+          "char": "𢕟",
+          "cp": "2255F",
+          "relation": "左彳供体；其右部为敖，不能代替目标刻形"
+        },
+        {
+          "char": "𢾕",
+          "cp": "22F95",
+          "relation": "完整右部件供体，不是目标整字"
+        }
+      ],
+      "report": "docs/research/2026-11-19-U+E708彳𢾕补录报告.md",
+      "allocation_note": "E702、E703为历史试验保留位；E708在四份字体中均未占用，为E707后的新增正式字位。",
+      "font_versions": {
+        "guji-plane0.ttf": 1
+      },
+      "patched_at": "2026-11-19"
     }
   ]
 }

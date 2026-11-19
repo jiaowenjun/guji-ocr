@@ -1,0 +1,18 @@
+
+> guji-preview-grid@0.0.0 test
+> vitest run
+
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - `__dirname` (vite.config.ts:10:38). Use `import.meta.dirname` instead
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v5.1.0 /Users/jwj/workspace/guji-ocr/guji-preview-grid
+
+
+ Test Files  22 passed (22)
+      Tests  1146 passed (1146)
+   Start at  22:57:18
+   Duration  6.22s (tests 70%, environment 17%, import 10%, transform 2%)
+
+    Isolate  22 workers spawned · ~471ms startup each (spawn + environment, per file)
+             at least ~1.01s faster with isolate: false — reuses workers across files instead of one per file

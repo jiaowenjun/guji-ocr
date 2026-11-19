@@ -1,0 +1,36 @@
+{
+  "checked_at": "2026-11-19T14:58:40.095Z",
+  "url": "http://localhost:5173/",
+  "page": 504,
+  "source": "actual .m-cell on the preview page after reload and page selection",
+  "cells": [
+    {
+      "font": "GujiPlane0, GujiPlane2, GujiPlaneF, 中华书局宋体00平面, 中华书局宋体02平面, 中华书局宋体15平面, HanaMinA, serif",
+      "html": "<div class=\"m-cell\"></div>",
+      "rect": {
+        "bottom": 814.9921875,
+        "height": 21.9609375,
+        "left": 354.8046875,
+        "right": 376.078125,
+        "top": 793.03125,
+        "width": 21.2734375,
+        "x": 354.8046875,
+        "y": 793.03125
+      },
+      "size": "17.022px",
+      "text": ""
+    }
+  ],
+  "platform_fonts": [
+    {
+      "familyName": "ZhongHuaSongPlane00",
+      "glyphCount": 1,
+      "isCustomFont": true,
+      "postScriptName": "FZSONG_ZHSJ_SIP--GB1-5"
+    }
+  ],
+  "screenshot": "docs/research/figures/e708/browser-page504.jpg",
+  "cache_version": "e701-4-e704-1-e705-1-e706-1-e707-3-e708-1",
+  "result": "one E708 cell rendered by custom ZhongHuaSongPlane00; upper 出 and left 彳 visible; no system fallback",
+  "limitation": "Current narrow viewport clips other columns; this evidence confirms the target cell, not whole-page proofreading."
+}

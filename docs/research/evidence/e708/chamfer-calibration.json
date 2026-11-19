@@ -1,0 +1,16 @@
+{
+  "checked_at": "2026-11-19T22:54:37+08:00",
+  "method": "norm_ink128 and PIL220 at (44,44), matching patcher; temporary diagnostic slots in memory only",
+  "input": "tools/dataset/font-sources/e708-scan-mask.png",
+  "input_sha256": "c78fa77df2f261499f069db6a5921f8fd8decbaefbf313df9c43c92583d11595",
+  "initial_gate": 3.0,
+  "final_weak_regression_gate": 3.8,
+  "scores": {
+    "composition": 3.6838870385559828,
+    "left-only": 8.838507633806117,
+    "right-only": 4.02104756890675,
+    "wrong-right-敖": 3.487542364215961
+  },
+  "glyph_sha256": "4e82b012dcffbdc845796687566068f13ce39eb7b05b31222ae94535121aaaa4",
+  "decision": "The wrong-right-敖 control also passes, so this metric cannot identify the character. Complete donor contours and byte-exact recipe reconstruction provide the structural gate; no outline was distorted to optimize the scan score."
+}

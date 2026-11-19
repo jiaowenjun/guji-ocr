@@ -1,0 +1,30 @@
+{
+  "recorded_at": "2026-11-19T22:55:26+08:00",
+  "command": "python3 tools/dataset/guji_pua_patch.py --cp E708 --dry-run --cache-version e701-4-e704-1-e705-1-e706-1-e707-3-e708-1",
+  "exit_code": 0,
+  "result": {
+    "font": "guji-preview-grid/public/fonts/guji-plane0.ttf",
+    "scheme": "compose",
+    "source": "tools/dataset/font-sources/e708-songti-v1.json",
+    "sha256_before": "3409fd6cdebe85c58d60148d26acba80ec578831015b221e3101f3b794e752ab",
+    "sha256_after": "740842c631185be99d889f5e1f2a535ddf5f1526ba3a17fa519aeb361f06a0e4",
+    "bytes_before": 17253564,
+    "bytes_after": 17254352,
+    "chamfer": 3.684,
+    "chamfer_gate": 3.8,
+    "cmap_before": 30711,
+    "cmap_after": 30712,
+    "other_glyphs_and_metrics_unchanged": true
+  },
+  "production_font_unchanged": true,
+  "preflight_failures": [
+    {
+      "reason": "initial recipe vmtx23 differed from insertion anchor vmtx22",
+      "resolution": "right yMax adjusted847 to848, same vertical origin870"
+    },
+    {
+      "reason": "chamfer3.684 exceeded provisional3.0",
+      "resolution": "calibration documents weak metric limit;3.8 plus mandatory exact structural gates"
+    }
+  ]
+}

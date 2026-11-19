@@ -1,0 +1,36 @@
+{
+  "checked_at": "2026-11-19T22:59:25+08:00",
+  "npm_test": {
+    "command": "npm test",
+    "exit_code": 0,
+    "files": 22,
+    "tests": 1146,
+    "passed": 1146,
+    "log": "npm-test.txt",
+    "scope": "Current working tree including preexisting unrelated auto-flow/format tests and untracked annotation drafts; not a pristine checkout."
+  },
+  "build": {
+    "command": "npm run build",
+    "exit_code": 0,
+    "log": "npm-build.txt",
+    "font_sha256": "740842c631185be99d889f5e1f2a535ddf5f1526ba3a17fa519aeb361f06a0e4",
+    "dist_font_equals_production": true,
+    "warnings": [
+      "existing Vite configLoader native migration warning",
+      "existing large JavaScript chunk warning"
+    ]
+  },
+  "runtime": {
+    "python": "3.9.6",
+    "fontTools": "4.60.2",
+    "Pillow": "11.3.0"
+  },
+  "json_validation": {
+    "files": 10,
+    "passed": true
+  },
+  "report_links_valid": true,
+  "diff_check": "passed",
+  "production_preview": "generator --preview reads actual production bytes and verifies outline equality after insertion",
+  "log_normalization": "Trailing line whitespace and extra terminal blank lines removed; content preserved."
+}

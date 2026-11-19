@@ -1,0 +1,111 @@
+{
+  "checked_at": "2026-11-19T22:57:46+08:00",
+  "operation": {
+    "version": 1,
+    "at": "2026-11-19T22:55:27+08:00",
+    "operation": "insert",
+    "results": [
+      {
+        "font": "guji-preview-grid/public/fonts/guji-plane0.ttf",
+        "scheme": "compose",
+        "source": "tools/dataset/font-sources/e708-songti-v1.json",
+        "sha256_before": "3409fd6cdebe85c58d60148d26acba80ec578831015b221e3101f3b794e752ab",
+        "sha256_after": "740842c631185be99d889f5e1f2a535ddf5f1526ba3a17fa519aeb361f06a0e4",
+        "bytes_before": 17253564,
+        "bytes_after": 17254352,
+        "chamfer": 3.684,
+        "chamfer_gate": 3.8,
+        "cmap_before": 30711,
+        "cmap_after": 30712,
+        "other_glyphs_and_metrics_unchanged": true,
+        "backup": "var/unencoded/kangxi-unencoded/font-backups/guji-plane0.ttf.3409fd6cdebe85c58d60148d26acba80ec578831015b221e3101f3b794e752ab.ttf"
+      }
+    ],
+    "cache_version": "e701-4-e704-1-e705-1-e706-1-e707-3-e708-1"
+  },
+  "final_font": {
+    "path": "guji-preview-grid/public/fonts/guji-plane0.ttf",
+    "sha256": "740842c631185be99d889f5e1f2a535ddf5f1526ba3a17fa519aeb361f06a0e4",
+    "bytes": 17254352,
+    "cmap": 30712,
+    "glyph_order": 30808,
+    "contains_E708": true,
+    "unmapped_count": 96,
+    "format14": false,
+    "gsub_features": [
+      "vert"
+    ]
+  },
+  "final_glyph": {
+    "name": "uniE708",
+    "contours": 6,
+    "points": 263,
+    "bbox": [
+      14,
+      -125,
+      1011,
+      848
+    ],
+    "hmtx": [
+      1024,
+      14
+    ],
+    "vmtx": [
+      1024,
+      22
+    ],
+    "compiled_sha256": "4e82b012dcffbdc845796687566068f13ce39eb7b05b31222ae94535121aaaa4"
+  },
+  "preserved_glyphs": 30807,
+  "all_previous_glyphs_and_metrics_unchanged": true,
+  "other_fonts": [
+    {
+      "path": "guji-preview-grid/public/fonts/guji-plane2.ttf",
+      "sha256": "80df094a2e63091b222706696a8b244c9dba45219af866226a097d0fbb2bf28d",
+      "bytes": 42717516,
+      "cmap": 61228,
+      "glyph_order": 61229,
+      "contains_E708": false,
+      "unmapped_count": 1,
+      "format14": false,
+      "gsub_features": []
+    },
+    {
+      "path": "guji-preview-grid/public/fonts/guji-planef.ttf",
+      "sha256": "cfeb8527cfc75fe244b1c773056ed8e8896e67918f368999d12f6bd86dee323b",
+      "bytes": 26189728,
+      "cmap": 42620,
+      "glyph_order": 42621,
+      "contains_E708": false,
+      "unmapped_count": 1,
+      "format14": false,
+      "gsub_features": []
+    },
+    {
+      "path": "guji-preview-grid/public/fonts/guji-large.ttf",
+      "sha256": "447a77da5078b9654499c954df651d821b7e1a284606022fa03eaa69d4f8f199",
+      "bytes": 46625740,
+      "cmap": 49410,
+      "glyph_order": 49413,
+      "contains_E708": false,
+      "unmapped_count": 3,
+      "format14": false,
+      "gsub_features": [
+        "vert"
+      ]
+    }
+  ],
+  "complete_donor_contours": true,
+  "component_gap_units": 17.875,
+  "non_overlap": "Disjoint x bounds, with more than 16 units of gap before integer rounding; this proves component outlines cannot intersect.",
+  "rebuild_matches_production": true,
+  "corruption_rejected": [
+    "external-donor-hash",
+    "frozen-outline"
+  ],
+  "registry_shared_hashes_match": true,
+  "rollback": {
+    "git_head": "5423c29af90c485ea7f973664c13952be24c58f4",
+    "font_git_blob": "2325861242fa0e94a64dfd232d1efcd897141a7d"
+  }
+}
