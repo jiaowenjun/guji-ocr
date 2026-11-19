@@ -1,0 +1,219 @@
+{
+  "schema": "guji-ocr/page445-shi-variants-audit/1",
+  "date": "2026-11-19",
+  "scope": "Kangxi Wuying edition site page 445, second ancient-form glyph under 使 only",
+  "question": {
+    "source_svg": "0000s/0445-06-K0000.svg",
+    "candidate_codepoints": [
+      "U+21DEE",
+      "U+20B46"
+    ],
+    "font_patch_considered": true
+  },
+  "source_page": {
+    "page": 445,
+    "main_headword": {
+      "page_seq": 4,
+      "char": "使",
+      "codepoint": "U+4F7F",
+      "svg": "0000s/0445-04-00435-4F7F.svg"
+    },
+    "ancient_forms": [
+      {
+        "page_seq": 5,
+        "svg": "0000s/0445-05-K0000.svg",
+        "current_transcription": "𡥐",
+        "codepoint": "U+21950"
+      },
+      {
+        "page_seq": 6,
+        "svg": "0000s/0445-06-K0000.svg",
+        "current_transcription": "𡷮",
+        "codepoint": "U+21DEE"
+      }
+    ],
+    "site_entry_record": {
+      "guwen": "𡥐、𠭆",
+      "source_url": "https://www.kangxizidian.com/search/index_v.php?stype=Word&sword=%E4%BD%BF&detail=y",
+      "fetched_at": "2026-11-15T22:48:14",
+      "database_html_sha256": "d8316493bdd9ad919186159f1ce0fca55bae2bbf8890f792f9449de433f5311e",
+      "record_embedded_html_sha256": "f308dcff485b18830f7e9fed41af506801974b83792f465b416da0f96c49bc5f",
+      "interpretation": "The site metadata maps the second K0000 form to U+20B46. It is retained as source evidence, not treated as the final project transcription."
+    },
+    "target_svg": {
+      "archived_file": "docs/research/evidence/page445-shi-variants/0445-06-K0000.svg",
+      "local_preview_url": "http://localhost:5173/dataset/head-svg/0000s/0445-06-K0000.svg",
+      "sha256": "57dfe0ed65ec13d3f508615878085ec6c497befbcd7b8f274b4f03b9dca35957"
+    }
+  },
+  "initial_assessment": {
+    "conclusion": "Treat the SVG as U+20B46 and add that codepoint to guji-large.ttf.",
+    "status": "superseded",
+    "why_superseded": [
+      "It promoted site guwen metadata and a semantic-variant relation into a definitive glyph identity.",
+      "It used the absence of U+20B46 from the large font as part of an identity decision.",
+      "It did not give sufficient weight to U+21DEE, which is the closest existing large-font shape and has direct dictionary support as a variant of 使."
+    ]
+  },
+  "external_sources": [
+    {
+      "name": "教育部《異體字字典》臺灣學術網路十四版（正式七版）2024",
+      "url": "https://dict.variants.moe.edu.tw/",
+      "claim": "U+21DEE 𡷮 is recorded as a variant of 使, with a source chain involving 集韻, 四聲篇海, 康熙字典 and 漢語大字典.",
+      "verification": "user-provided research; exact entry page was not archived in this audit"
+    },
+    {
+      "name": "漢典 𡷮",
+      "url": "https://www.zdic.net/hans/%F0%A1%B7%AE",
+      "claim": "The page describes 𡷮 as the erroneous form of 𠭆 and quotes 康熙字典: 【集韻】使古作𠭆。",
+      "verification": "directly fetched and text-checked on 2026-11-19"
+    },
+    {
+      "name": "漢典 𠭆",
+      "url": "https://www.zdic.net/hans/%F0%A0%AD%86",
+      "claim": "The page associates U+20B46 with 事 and 𡷮 and reproduces the 說文 path 古文事.",
+      "verification": "directly fetched and text-checked on 2026-11-19"
+    },
+    {
+      "name": "澳典",
+      "url": "https://zidian.odict.net/",
+      "claim": "U+20B46 is listed as a variant of 事, with U+21DEE present in the related variant list.",
+      "verification": "user-provided research; the site returned an access restriction during command-line checking"
+    }
+  ],
+  "unicode_data": {
+    "version": "Unihan 18.0.0, files dated 2026-07-31",
+    "records": {
+      "U+4F7F": {
+        "char": "使",
+        "kKangXi": "0101.050",
+        "kSemanticVariant": "U+20B46<kKangXi:T",
+        "kRSUnicode": "9.6",
+        "kTotalStrokes": 8
+      },
+      "U+20B46": {
+        "char": "𠭆",
+        "kKangXi": "0101.070",
+        "kSemanticVariant": "U+4F7F<kKangXi:TZ",
+        "kIRG_GSource": "GHZ-10397.13",
+        "kRSUnicode": "29.7",
+        "kTotalStrokes": 9,
+        "ids": "⿱㞢𪠲",
+        "ids_apparent": "⿱⿱㞢口又"
+      },
+      "U+21DEE": {
+        "char": "𡷮",
+        "kKangXi": "0312.300",
+        "kIRG_GSource": "GKX-0312.30",
+        "kRSUnicode": "46.7",
+        "kTotalStrokes": 10,
+        "ids": "⿱山⿱⿱亠口又"
+      }
+    },
+    "file_sha256": {
+      "Unihan_Variants.txt": "4ccfd34b08ac7b9c14353f6668ba43e3796d85c4cdce7952b635be16015aafa2",
+      "Unihan_DictionaryIndices.txt": "b41c7c5ca3a01d833ed4fe0c7b9cdf41c4ec08cb11a0fd1df6e92ed666ce00e1",
+      "Unihan_IRGSources.txt": "e2c484cd22b54f7e0ce896ebb02f33e092b92325accf0fd55e0e14e3863869eb",
+      "IDS-UCS-Ext-B-1.txt": "19d03e23487d56500a944281334cff8c535cf32cd1947fdc3e627de091c6c519"
+    },
+    "interpretation": "The records establish separate encoded characters and a direct semantic-variant relationship between U+20B46 and 使. They do not establish universal interchangeability between U+20B46 and U+21DEE."
+  },
+  "font_coverage": {
+    "checked_at": "2026-11-19",
+    "fonts": [
+      {
+        "file": "guji-preview-grid/public/fonts/guji-large.ttf",
+        "bytes": 46624948,
+        "sha256": "3973ccbe8bbdb4b91af44269a12f9b9f58daeb0c225d78e3a934f676f1c4c231",
+        "best_cmap_count": 49409,
+        "U+21DEE": "uni21DEE",
+        "U+20B46": null,
+        "unmapped_non_notdef_glyphs": 0
+      },
+      {
+        "file": "guji-preview-grid/public/fonts/guji-plane0.ttf",
+        "bytes": 17253564,
+        "sha256": "4dd33d63a37aa36cfd445cbc975e986cce9dbd35b01e26752321af8d9b8b073d",
+        "best_cmap_count": 30711,
+        "U+21DEE": null,
+        "U+20B46": null
+      },
+      {
+        "file": "guji-preview-grid/public/fonts/guji-plane2.ttf",
+        "bytes": 42717516,
+        "sha256": "80df094a2e63091b222706696a8b244c9dba45219af866226a097d0fbb2bf28d",
+        "best_cmap_count": 61228,
+        "U+21DEE": "u21DEE",
+        "U+20B46": "u20B46"
+      },
+      {
+        "file": "guji-preview-grid/public/fonts/guji-planef.ttf",
+        "bytes": 26189728,
+        "sha256": "cfeb8527cfc75fe244b1c773056ed8e8896e67918f368999d12f6bd86dee323b",
+        "best_cmap_count": 42620,
+        "U+21DEE": null,
+        "U+20B46": null
+      }
+    ],
+    "interpretation": "The selected codepoint U+21DEE already exists in the large font and the plane2 fallback. No font modification is required."
+  },
+  "shape_search": {
+    "tool": "tools/dataset/guji_font_shape_search.py",
+    "target": "rasterized 0445-06-K0000.svg",
+    "font": "guji-preview-grid/public/fonts/guji-large.ttf",
+    "metric": "bbox-normalized symmetric chamfer at 64x64",
+    "candidate_count": 49402,
+    "top_candidates": [
+      {
+        "rank": 1,
+        "codepoint": "U+21DEE",
+        "char": "𡷮",
+        "score": 0.2462678096001861
+      },
+      {
+        "rank": 2,
+        "codepoint": "U+20B4F",
+        "char": "𠭏",
+        "score": 0.47751828698839316
+      },
+      {
+        "rank": 3,
+        "codepoint": "U+20F78",
+        "char": "𠽸",
+        "score": 0.5925874008398304
+      }
+    ],
+    "limitation": "Shape ranking generates candidates and supports visual compatibility; it does not identify a character or resolve dictionary history."
+  },
+  "decision": {
+    "status": "adopted",
+    "transcription": "#𡥐𡷮",
+    "selected_char": "𡷮",
+    "selected_codepoint": "U+21DEE",
+    "scope": "page 445, second ancient form under 使",
+    "font_patch": "none",
+    "pua_allocation": "none",
+    "global_replacement_rule": "none",
+    "reasons": [
+      "User literature research found direct dictionary support for U+21DEE as a variant of 使.",
+      "U+21DEE is visually compatible with the page SVG and ranks first in the existing large font.",
+      "U+21DEE and U+20B46 remain distinct Unicode characters with different properties and dictionary paths.",
+      "The production large font already maps U+21DEE."
+    ]
+  },
+  "current_annotation": {
+    "file": "kangxi-gold/annotations/0445.gj",
+    "sha256_at_audit": "3156040cde2de4405dd3528c18aa6975c064d066acb42d48fa54cf9420d008ae",
+    "line": "#𡥐𡷮"
+  },
+  "historical_snapshot_note": {
+    "file": "docs/research/evidence/2026-11-19-scan-blank-fix/p445-layout.json",
+    "contains": "𠭆",
+    "policy": "Preserve as evidence for the earlier scan-blank task; do not treat it as the current transcription."
+  },
+  "writes_performed": {
+    "fonts": false,
+    "source_database": false,
+    "annotation": "The annotation had already been updated to U+21DEE during the decision turn; this audit documents that state."
+  }
+}
