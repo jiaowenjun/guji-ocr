@@ -36,6 +36,7 @@
 | 排查 Safari 拼音下 Option 快捷键残留、复查失败方案与原生验收 | [Option 快捷键与输入法修复报告](development/editor-ime-shortcuts.md) |
 | 核验康熙字典未编码字头（K0000）与字体缺字判定 | [未编码字头字体核验流程](research/2026-11-13-kangxi-未编码字头字体核验流程.md) |
 | 向项目大字／小字字体补录标准码位或 PUA 字形 | [字体补录流程（标准码位与 PUA 两条路径）](research/2026-11-13-kangxi-字体补录流程.md) |
+| 查字体补录完成后必须撰写哪些报告、更新哪些登记、证据、导航和提交记录 | [字体补录规范](font-replenishment-spec.md) |
 | 查预览应用当前大字／小字覆盖、缓存戳与系统字体同步边界 | [guji-preview-grid 字体说明](../guji-preview-grid/README.md#字體) |
 | 查 U+2BD6E 丰条古文的出处、身份、候选排除、补录与精确复现 | [U+2BD6E 调研核验与补录全过程](research/2026-11-18-U+2BD6E𫵮调研核验与补录报告.md) |
 | 查 U+E701 乑条按语的出处、编码调查、候选检索与历次构形 | [U+E701 调研核验与补录全过程](research/2026-11-18-U+E701调研核验与补录报告.md) |
@@ -58,6 +59,7 @@ docs/
 ├── kangxi-page-mapping.md             康熙字典站点页号↔原始扫描对应规则（2026-11-18）
 ├── font-operations.md                 字体操作留痕登记簿（制度+登记+哈希基线）
 ├── font-changelog.md                  补录、修改、撤销与试验时间线
+├── font-replenishment-spec.md         补录后文档、证据、验证、提交与回滚规范
 ├── development/
 │   ├── editor-ime-shortcuts.md         Safari 拼音与 Option 快捷键修复报告
 │   └── evidence/2026-11-18-safari-option-ime.json  原生事件摘录与验收证据

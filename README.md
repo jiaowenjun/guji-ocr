@@ -11,6 +11,7 @@
 - [参考文献与来源：27 篇论文、15 篇文章及用户链接](docs/research/references.md)
 - [机器可读资源索引](docs/research/resources.json)
 - [文件核查证据与适用边界](docs/research/evidence/README.md)
+- [字体补录规范](docs/font-replenishment-spec.md)：补录后详报、Changelog、登记簿、证据、导航、验证与提交要求
 - [字体补录 Changelog](docs/font-changelog.md)：当前正式字位、全部补录／修改／撤销事件与详报入口
 - [字体操作留痕登记簿](docs/font-operations.md)：当前字体哈希、操作制度、缓存戳与回滚基线
 - [预览应用字体说明](guji-preview-grid/README.md#字體)：大字／小字覆盖范围及系统字体同步边界
