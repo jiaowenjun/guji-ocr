@@ -27,6 +27,7 @@
 - [p445-input.json](p445-input.json)、[p445-layout.json](p445-layout.json)：从诊断时草稿生成的旧接口跨度和布局快照。
 - [replay_p445.py](replay_p445.py)、[p445-verified.json](p445-verified.json)：专用重放入口与已验证输出。
 - [新旧采样范围对照图](../../figures/2026-11-19-scan-blank-fix/p445-before-after.png)：蓝框为小格，红框为目标格核心采样区。
+- [p466-boundary-frame.json](p466-boundary-frame.json)：466 页底框与末行普通小字粘连导致大字保护误判的像素、前后结果及 156 页回放摘要。
 
 ## 中间版本证据
 

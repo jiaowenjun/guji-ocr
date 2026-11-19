@@ -242,6 +242,13 @@ def _scan_large_rows(gray, box):
         return set()
     rows = set()
     strip = gray[y0:y2, x0:x2] < segmentation.DARK_THR
+    # A page frame can touch ordinary glyphs in the last row and merge both
+    # small columns into one wide component (@466). Remove only full-width
+    # horizontal rule rows at the measured top/bottom edge before component
+    # analysis. Interior wide strokes such as a large 一 remain evidence.
+    edge = min(len(strip), int(np.ceil(ch * .15)))
+    for boundary in (strip[:edge], strip[-edge:]):
+        boundary[boundary.mean(axis=1) > .65] = False
     components = _ink_components(strip)
     # A complete two-row ink window keeps an upper bar with the rest of its
     # glyph rather than assigning the preceding blank row to that bar.

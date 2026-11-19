@@ -382,6 +382,21 @@ class ScanGridTests(unittest.TestCase):
                     for row in (1, 4):
                         self.assertIn((col, row), found)
 
+    def test_bottom_frame_joined_to_ordinary_glyphs_does_not_hide_previous_blank(self):
+        gray = np.full((1440, 120), 220, dtype=np.uint8)
+        # As on @466, the bottom rule touches ordinary glyphs in both small
+        # columns. Their combined component spans the major band but remains
+        # a single small-text row, so row 22 must not become a protected large
+        # slot. A large interior 一 is covered by the preceding test.
+        gray[1437:1440, :] = 40
+        for x in (15, 75):
+            gray[1390:1438, x:x + 5] = 40
+            gray[1390:1395, x:x + 35] = 40
+        found = {(c['col'], c['row']) for c in detect_blank_cells(gray, [[0, 0, 120, 1440]])}
+        for col in (0, 1):
+            self.assertIn((col, 22), found)
+            self.assertNotIn((col, 23), found)
+
     def test_p427_scan_is_independent_of_draft_and_recovers_all_reported_gaps(self):
         fixture = Path(__file__).parent / 'fixtures' / 'kangxi-0427.jpg'
         with tempfile.TemporaryDirectory() as temp:

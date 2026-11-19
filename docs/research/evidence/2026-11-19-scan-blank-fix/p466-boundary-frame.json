@@ -1,0 +1,42 @@
+{
+  "date": "2026-11-19",
+  "page": 466,
+  "coordinate_convention": "band: right to left 0..7; col: left=0,right=1; row: top to bottom 0..23",
+  "target": [1, 0, 22],
+  "user_coordinate": "第4小列（从右往左）倒数第2小格",
+  "image": "0466.jpg",
+  "image_sha256": "f5edb56020345e1ca045cdf8b7c9d5c28e7482e0f039394ac8dd2d66c4d904be",
+  "band_box": [772.0, 130.0, 887.0, 1528.7199999999996],
+  "cell_box": [772.0, 1412.1599999999996, 829.5, 1470.4399999999996],
+  "core_box": [782, 1422, 820, 1461],
+  "core_pixels": 1482,
+  "ink_pixels": 0,
+  "threshold": 140.0,
+  "book_rule_pixels_removed": 0,
+  "large_rows_before": [22, 23],
+  "large_rows_after": [],
+  "blank_count_before": 12,
+  "blank_count_after": 13,
+  "delta": {
+    "added": [[1, 0, 22]],
+    "removed": []
+  },
+  "cause": "The bottom page rule touched ordinary glyphs in both small columns, merging them into a full-width component. Large-row protection treated that component as a two-row large glyph and skipped the genuinely empty preceding cell.",
+  "fix": "Before large-glyph component analysis, remove only rows that cover over 65% of the major band and lie within 15% of one cell height from the measured top or bottom boundary. Interior wide strokes remain unchanged.",
+  "audit": {
+    "scope_pages": 156,
+    "scope_first_page": 312,
+    "scope_last_page": 467,
+    "changed_pages": [466],
+    "changed_geometry": [],
+    "added_cells": [[466, 1, 0, 22]],
+    "removed_cells": [],
+    "both_failed_pages": [329, 337, 384, 385, 386, 387, 388, 389, 392, 393, 394, 395, 396, 397]
+  },
+  "source_sha256": {
+    "ocr_scan_before": "1a6972cd8043c1e5ba1fc599c1d876acf58a6017fcf2942d869c87e777e66e28",
+    "ocr_scan_after": "fef2fa4d22e5d94505e8ec796bffeb1816936a882856d3e46595af1705143a64",
+    "scan_grid": "baeb2d52c0cc1424adbdab0a4a59d3705240eb750bee4ad8f1e41a5619a9a43c",
+    "manifest_at_audit": "b269b4a273e29cb59925ce9e46e2e8838dbc3b0e5de2bc7de01be3759eb29c6d"
+  }
+}
