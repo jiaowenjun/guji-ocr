@@ -30,7 +30,7 @@
 - `kangxi_font_patch.py` 方案 A 原管线：站方 SVG 刻形为源（非 HanaMinB donor），同页紧邻前字 𠈾 U+2023E 锚定校准（scale 0.8755）。glyph `u2023F`，4 轮廓，bbox `[34,-154,987,695]`，chamfer 0.033（闸 0.15，与首例 U+2BD6E 的 0.029 同级）。
 - 仅 guji-large：cmap 49,409→49,410，glyphOrder 49,412→49,413，46,624,948→46,625,740 B，SHA `3973ccbe…`→`447a77da…`；U+2BD6E、U+2E85 保留；按补前哈希备份于 `font-backups/`，回滚点=补前 Git blob。系统字体未同步（与 U+2E85 同边界）。
 - 验收（规范 v1 四层）：干跑重放 glyf/cmap/hmtx/maxp 逐字节一致（仅 head 校验和 4 字节自算差，先例已知坑）；vitest 1138/1138、`npm run build` 通过且 dist 字体哈希一致；dev server 新缓存戳 200 供应，应用页同栈 96px 元素 fonts.check=true 渲染刻形非 tofu；JSON 校验与 `git diff --check` 通过。
-- 缓存戳更新为 `001017-2bd6e-2e85-2023f`。字形源与锚 SVG 归档 `tools/dataset/font-sources/u2023f-0467/`。正文与 .gj 无变更。提交：**待提交**。
+- 缓存戳更新为 `001017-2bd6e-2e85-2023f`。字形源与锚 SVG 归档 `tools/dataset/font-sources/u2023f-0467/`。正文与 .gj 无变更。提交：`55b2436690bfd2ea69aec1d4173328387f15aafa`。
 - **[完整报告](research/2026-11-19-U+2023F𠈿补录报告.md)** · [补前审计](research/evidence/u2023f/audit.json) · [补录验证](research/evidence/u2023f/patch-verification.json) · [浏览器记录](research/evidence/u2023f/browser.json)
 
 ### 2026-11-19 14:48:26 — U+E707 调整右司供体为飼，升级 v3
