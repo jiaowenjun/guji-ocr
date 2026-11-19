@@ -11,6 +11,9 @@
 - [参考文献与来源：27 篇论文、15 篇文章及用户链接](docs/research/references.md)
 - [机器可读资源索引](docs/research/resources.json)
 - [文件核查证据与适用边界](docs/research/evidence/README.md)
+- [字体补录 Changelog](docs/font-changelog.md)：当前正式字位、全部补录／修改／撤销事件与详报入口
+- [字体操作留痕登记簿](docs/font-operations.md)：当前字体哈希、操作制度、缓存戳与回滚基线
+- [预览应用字体说明](guji-preview-grid/README.md#字體)：大字／小字覆盖范围及系统字体同步边界
 
 索引另含 13 项数据资源、16 项代码／模型／评测工具，以及古籍酷服务、古籍云桌面软件。数据资源包含派生教学样本，不代表 13 个独立金标库。三份旧报告保留原文和原路径，作为[历史参考](docs/README.md#历史参考报告)。
 

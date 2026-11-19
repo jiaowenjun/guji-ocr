@@ -1,11 +1,11 @@
 # 资料核查证据说明
 
-字体证据中的哈希、cmap 计数及 `current-fonts.json` 均是各次核验时的快照，不随后续补字覆盖。现行基线见[字体操作登记簿](../../font-operations.md)，事件顺序见[字体补录 Changelog](../../font-changelog.md)。
+字体证据中的哈希、cmap 计数及 `current-fonts.json` 均是各次核验时的快照，不随后续补字覆盖。截至 2026-11-19 的现行基线见[字体操作登记簿](../../font-operations.md)，事件顺序见[字体补录 Changelog](../../font-changelog.md)。
 
 2026-11-18 历史字体补录补充核验（以下两项早于当日 U+2E85 补录）：
 
-- [U+2BD6E 全过程](../2026-11-18-U+2BD6E𫵮调研核验与补录报告.md)：[来源摘录](u2bd6e/source-excerpts.json)、[历史流水](u2bd6e/historical-events.json)、[当前字体](u2bd6e/current-fonts.json)、[精确重建](u2bd6e/rebuild.json)；目标及校准 SVG 一并归档。旧核验 JSON 的 Ext-C 与 U+4E2B 字面错误见新报告勘误。
-- [U+E701 全过程](../2026-11-18-U+E701调研核验与补录报告.md)：[来源及编码查询](e701/source-excerpts.json)、[历史流水](e701/historical-events.json)、[当前字体](e701/current-fonts.json)、[新做的候选排名](e701/font-search.json)、[只读核验](e701/supplemental-checks.json)。候选搜索使用补录前字体，不冒充早期已执行的工作。
+- [U+2BD6E 全过程](../2026-11-18-U+2BD6E𫵮调研核验与补录报告.md)：[来源摘录](u2bd6e/source-excerpts.json)、[历史流水](u2bd6e/historical-events.json)、[核验时字体快照](u2bd6e/current-fonts.json)、[精确重建](u2bd6e/rebuild.json)；目标及校准 SVG 一并归档。旧核验 JSON 的 Ext-C 与 U+4E2B 字面错误见新报告勘误。
+- [U+E701 全过程](../2026-11-18-U+E701调研核验与补录报告.md)：[来源及编码查询](e701/source-excerpts.json)、[历史流水](e701/historical-events.json)、[核验时字体快照](e701/current-fonts.json)、[新做的候选排名](e701/font-search.json)、[只读核验](e701/supplemental-checks.json)。候选搜索使用补录前字体，不冒充早期已执行的工作。
 
 新增字体证据：**[E704〈二心支〉全过程报告](../2026-11-18-U+E704二心支调研核验与补录报告.md)**，对应 [补录前核验](e704/audit-before.json)、[候选排名](e704/font-search.json)、[正式补录与验证](e704/patch-verification.json)、[浏览器字体确认](e704/browser.json)。检索结论有明确范围，不把未命中当成 Unicode 官方不存在证明。
 
