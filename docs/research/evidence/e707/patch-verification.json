@@ -1,0 +1,76 @@
+{
+  "operations": [
+    {
+      "version": 1,
+      "at": "2026-11-19T13:58:04+08:00",
+      "operation": "insert",
+      "source": "tools/dataset/font-sources/e707-songti-v1.json",
+      "cache_version": "e701-4-e704-1-e705-1-e706-1-e707-1",
+      "sha256_before": "25857b0b476193a79e4b280e42302f0e00977385d2bbc62e603cc8e3a00568ed",
+      "sha256_after": "f4355c73a6ac620830395003bb323f37a3278d43ff586d2192ae52f6cc71bd7f",
+      "bytes_before": 17253152,
+      "bytes_after": 17253552,
+      "cmap_before": 30710,
+      "cmap_after": 30711,
+      "chamfer": 1.65,
+      "chamfer_gate": 1.7,
+      "other_glyphs_and_metrics_unchanged": true,
+      "backup": "var/unencoded/kangxi-unencoded/font-backups/guji-plane0.ttf.25857b0b476193a79e4b280e42302f0e00977385d2bbc62e603cc8e3a00568ed.ttf"
+    },
+    {
+      "version": 2,
+      "at": "2026-11-19T14:10:12+08:00",
+      "operation": "replace",
+      "source": "tools/dataset/font-sources/e707-songti-v2.json",
+      "cache_version": "e701-4-e704-1-e705-1-e706-1-e707-2",
+      "sha256_before": "f4355c73a6ac620830395003bb323f37a3278d43ff586d2192ae52f6cc71bd7f",
+      "sha256_after": "4dd33d63a37aa36cfd445cbc975e986cce9dbd35b01e26752321af8d9b8b073d",
+      "bytes_before": 17253552,
+      "bytes_after": 17253564,
+      "cmap_before": 30711,
+      "cmap_after": 30711,
+      "chamfer": 2.015,
+      "chamfer_gate": 2.1,
+      "other_glyphs_and_metrics_unchanged": true,
+      "backup": "var/unencoded/kangxi-unencoded/font-backups/guji-plane0.ttf.f4355c73a6ac620830395003bb323f37a3278d43ff586d2192ae52f6cc71bd7f.ttf"
+    }
+  ],
+  "final_font": {
+    "path": "guji-preview-grid/public/fonts/guji-plane0.ttf",
+    "bytes": 17253564,
+    "sha256": "4dd33d63a37aa36cfd445cbc975e986cce9dbd35b01e26752321af8d9b8b073d",
+    "cmap": 30711,
+    "glyph_order": 30807
+  },
+  "final_glyph": {
+    "name": "uniE707",
+    "compiled_sha256": "c27687999aa8f3ba30a6e1366bd81bf44e0f661a8170ae1fd82325821c963490",
+    "contours": 10,
+    "points": 131,
+    "bbox": [32, -117, 971, 800],
+    "hmtx": [1024, 32],
+    "vmtx": [1024, 70],
+    "donors": {
+      "U+476D": "8a3d3e306a896df12fe9ebdbc8b8aa17329412dfa9690e558d344f727fe369a6",
+      "U+4F3A": "0ddff8c8115a57165d9126e2d06c6fdaf5277fdef32277fe282812765e7ab708"
+    }
+  },
+  "preserved_glyph_hashes": {
+    "U+476D": "8a3d3e306a896df12fe9ebdbc8b8aa17329412dfa9690e558d344f727fe369a6",
+    "U+4F3A": "0ddff8c8115a57165d9126e2d06c6fdaf5277fdef32277fe282812765e7ab708",
+    "U+E701": "0ef6027de1532c8bc037f5944ab4080e7e14651298ba2f61d468a36d898493c4",
+    "U+E704": "f28a8bf767d91fa2ae6cbf73b5ba8ef70869e4e4ddac3487cb00e135555b3604",
+    "U+E705": "1fe4d3e014eb00135b454eba31cbab7263e1a62aea67105a419d68bbb1cf3ec7",
+    "U+E706": "b70f363fdaae3b9abb0798b70c4d480fca9a4ac513b6baeb389633fd7bea727c"
+  },
+  "other_fonts": [
+    {"path": "guji-preview-grid/public/fonts/guji-plane2.ttf", "bytes": 42717516, "sha256": "80df094a2e63091b222706696a8b244c9dba45219af866226a097d0fbb2bf28d", "contains_E707": false},
+    {"path": "guji-preview-grid/public/fonts/guji-planef.ttf", "bytes": 26189728, "sha256": "cfeb8527cfc75fe244b1c773056ed8e8896e67918f368999d12f6bd86dee323b", "contains_E707": false},
+    {"path": "guji-preview-grid/public/fonts/guji-large.ttf", "bytes": 46624948, "sha256": "3973ccbe8bbdb4b91af44269a12f9b9f58daeb0c225d78e3a934f676f1c4c231", "contains_E707": false}
+  ],
+  "rebuild": {
+    "command": "python3 tools/dataset/guji_beisi_components.py",
+    "source": "tools/dataset/font-sources/e707-songti-v2.json",
+    "result": "Native components reproduce the frozen U+E707 exactly."
+  }
+}

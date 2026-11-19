@@ -1,0 +1,22 @@
+{
+  "checked_at": "2026-11-19",
+  "url": "http://127.0.0.1:5173/",
+  "page": 427,
+  "viewport_mode": "Codex in-app browser default",
+  "node": {
+    "selector": ".m-cell containing U+E707",
+    "text": "U+E707",
+    "count": 1,
+    "font_family_css": "GujiPlane0, GujiPlane2, GujiPlaneF, 中华书局宋体00平面, 中华书局宋体02平面, 中华书局宋体15平面, HanaMinA, serif",
+    "font_size_px": 15.3458,
+    "width_px": 19.1796875,
+    "height_px": 20.953125
+  },
+  "platform_font": {
+    "familyName": "ZhongHuaSongPlane00",
+    "postScriptName": "FZSONG_ZHSJ_SIP--GB1-5",
+    "glyphCount": 1,
+    "isCustomFont": true
+  },
+  "result": "E707 rendered once in the page-427 matrix with the bundled plane0 custom font, not a system fallback."
+}

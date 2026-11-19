@@ -1,0 +1,8 @@
+{
+  "file": "kangxi-gold/annotations/0427.gj",
+  "replacement": {"before": "〈貝司〉", "after": "U+E707", "count": 1},
+  "sha256_before": "80bd0e916822ff5e15e50b6c5913a9dbf9ee50b9227a49986ea6a9cdced53acf",
+  "sha256_after": "6c8923cdb33173db9285b938e7b36eac114561df571b20fd7df5cf12a202ccaa",
+  "counts_after": {"U+E707": 1, "descriptive_placeholder": 0, "U+4F3A": 1},
+  "scope": "One placeholder replacement in an existing untracked draft; no whole-page formatting or status change."
+}

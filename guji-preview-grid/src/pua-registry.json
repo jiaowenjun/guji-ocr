@@ -18,7 +18,7 @@
         "guji-preview-grid/public/fonts/guji-plane0.ttf"
       ],
       "sha256_after": {
-        "guji-plane0.ttf": "25857b0b476193a79e4b280e42302f0e00977385d2bbc62e603cc8e3a00568ed"
+        "guji-plane0.ttf": "4dd33d63a37aa36cfd445cbc975e986cce9dbd35b01e26752321af8d9b8b073d"
       },
       "history": [
         {
@@ -138,7 +138,7 @@
         "guji-preview-grid/public/fonts/guji-plane0.ttf"
       ],
       "sha256_after": {
-        "guji-plane0.ttf": "25857b0b476193a79e4b280e42302f0e00977385d2bbc62e603cc8e3a00568ed"
+        "guji-plane0.ttf": "4dd33d63a37aa36cfd445cbc975e986cce9dbd35b01e26752321af8d9b8b073d"
       },
       "history": [
         {
@@ -251,7 +251,7 @@
         "guji-plane0.ttf": 1
       },
       "sha256_after": {
-        "guji-plane0.ttf": "25857b0b476193a79e4b280e42302f0e00977385d2bbc62e603cc8e3a00568ed"
+        "guji-plane0.ttf": "4dd33d63a37aa36cfd445cbc975e986cce9dbd35b01e26752321af8d9b8b073d"
       },
       "patched_at": "2026-11-18"
     },
@@ -270,7 +270,7 @@
         "guji-preview-grid/public/fonts/guji-plane0.ttf"
       ],
       "sha256_after": {
-        "guji-plane0.ttf": "25857b0b476193a79e4b280e42302f0e00977385d2bbc62e603cc8e3a00568ed"
+        "guji-plane0.ttf": "4dd33d63a37aa36cfd445cbc975e986cce9dbd35b01e26752321af8d9b8b073d"
       },
       "history": [
         {
@@ -313,6 +313,95 @@
       "report": "docs/research/2026-11-18-U+E706亻亻亻调研核验与补录报告.md",
       "allocation_note": "E702、E703为E701历史试验保留位；E706是E705后的首个未占用正式字位。",
       "patched_at": "2026-11-18"
+    },
+    {
+      "cp": "E707",
+      "char": "⿰貝司",
+      "description": "康熙 @427 伺 U+4F3A 条「別作〈貝司〉」明确另举的字形异体；抽象字符已编码为伺，所查资料未确认该精确貝司字形的独立码位或标准化变体序列。",
+      "first_seen": "kangxi-gold @427 伺条，子集中人部；用户提问称426页，经原页与草稿定位为网站图片页427",
+      "scheme": "compose",
+      "version": 2,
+      "source": "tools/dataset/font-sources/e707-songti-v2.json",
+      "source_note": "左部取 plane0 䝭的完整貝旁六轮廓，右部取 plane0 伺的完整司旁四轮廓；保持两个复合字偏旁的原生坐标，均为恒等变换，不缩放、不切笔、不镜像、不重绘。",
+      "verify_image": "tools/dataset/font-sources/e707-scan-mask.png",
+      "verify_note": "第427页目标裁片灰度阈值100，并限定目标字区域排除界栏和邻字；形似回归辅助，字符身份以伺条原文为准。",
+      "fonts": [
+        "guji-preview-grid/public/fonts/guji-plane0.ttf"
+      ],
+      "sha256_after": {
+        "guji-plane0.ttf": "4dd33d63a37aa36cfd445cbc975e986cce9dbd35b01e26752321af8d9b8b073d"
+      },
+      "history": [
+        {
+          "version": 1,
+          "at": "2026-11-19T13:58:04+08:00",
+          "operation": "insert",
+          "results": [
+            {
+              "font": "guji-preview-grid/public/fonts/guji-plane0.ttf",
+              "scheme": "compose",
+              "source": "tools/dataset/font-sources/e707-songti-v1.json",
+              "sha256_before": "25857b0b476193a79e4b280e42302f0e00977385d2bbc62e603cc8e3a00568ed",
+              "sha256_after": "f4355c73a6ac620830395003bb323f37a3278d43ff586d2192ae52f6cc71bd7f",
+              "bytes_before": 17253152,
+              "bytes_after": 17253552,
+              "chamfer": 1.65,
+              "chamfer_gate": 1.7,
+              "cmap_before": 30710,
+              "cmap_after": 30711,
+              "other_glyphs_and_metrics_unchanged": true,
+              "backup": "var/unencoded/kangxi-unencoded/font-backups/guji-plane0.ttf.25857b0b476193a79e4b280e42302f0e00977385d2bbc62e603cc8e3a00568ed.ttf"
+            }
+          ],
+          "cache_version": "e701-4-e704-1-e705-1-e706-1-e707-1"
+        },
+        {
+          "version": 2,
+          "at": "2026-11-19T14:10:12+08:00",
+          "operation": "replace",
+          "results": [
+            {
+              "font": "guji-preview-grid/public/fonts/guji-plane0.ttf",
+              "scheme": "compose",
+              "source": "tools/dataset/font-sources/e707-songti-v2.json",
+              "sha256_before": "f4355c73a6ac620830395003bb323f37a3278d43ff586d2192ae52f6cc71bd7f",
+              "sha256_after": "4dd33d63a37aa36cfd445cbc975e986cce9dbd35b01e26752321af8d9b8b073d",
+              "bytes_before": 17253552,
+              "bytes_after": 17253564,
+              "chamfer": 2.015,
+              "chamfer_gate": 2.1,
+              "cmap_before": 30711,
+              "cmap_after": 30711,
+              "other_glyphs_and_metrics_unchanged": true,
+              "backup": "var/unencoded/kangxi-unencoded/font-backups/guji-plane0.ttf.f4355c73a6ac620830395003bb323f37a3278d43ff586d2192ae52f6cc71bd7f.ttf"
+            }
+          ],
+          "cache_version": "e701-4-e704-1-e705-1-e706-1-e707-2"
+        }
+      ],
+      "font_versions": {
+        "guji-plane0.ttf": 2
+      },
+      "usage": "small-only",
+      "usage_note": "仅用于427页小字异体展示，不写大字、plane2、planeF或系统字体；不得替换标准U+4F3A。",
+      "unicode_status": "encoded-character-unencoded-glyph-variant",
+      "related_characters": [
+        {
+          "char": "伺",
+          "cp": "4F3A",
+          "relation": "已编码的抽象字符及来源字头；E707只保存原刻明确另举的貝司字形"
+        }
+      ],
+      "report": "docs/research/2026-11-19-U+E707貝司调研核验与补录报告.md",
+      "allocation_note": "E702、E703为E701历史试验保留位；E707是E706后的首个未占用正式字位。",
+      "patched_at": "2026-11-19",
+      "font_overrides": {
+        "guji-plane0.ttf": {
+          "scheme": "compose",
+          "source": "tools/dataset/font-sources/e707-songti-v2.json",
+          "source_note": "按已审定的宋体部件构形替换；码位稳定，具体部件与轮廓摘要见 source。"
+        }
+      }
     }
   ]
 }

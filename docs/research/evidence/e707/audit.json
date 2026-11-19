@@ -1,0 +1,64 @@
+{
+  "checked_at": "2026-11-19",
+  "target": {
+    "website_image_page": 427,
+    "user_page_reference": 426,
+    "entry": "伺",
+    "source_text": "音斯。義同。別作〈貝司〉。",
+    "descriptive_ids": "⿰貝司",
+    "page_sha256": "9735cdb89e2cdb7f96c817472ea8b17b1ab818f2a8bf093e3a29567725c5a9e3",
+    "target_crop": [84, 575, 156, 647],
+    "target_crop_sha256": "dc3e0fb08acb35ca1c2aaa08c503d0b86515a28ed9f3a59f006023a573bcf731"
+  },
+  "unicode": {
+    "encoded_character": "U+4F3A 伺",
+    "unihan_version": "18.0.0",
+    "unihan_definition": "serve, wait upon, attend; examine",
+    "cjkvi_ids_u4f3a": "⿰亻司",
+    "exact_ids_matches": 0,
+    "ivd_snapshot": "2025-07-14",
+    "u4f3a_ivd_records": ["4F3A E0100; Adobe-Japan1; CID+2197"],
+    "ivd_note": "Unihan itself maps U+4F3A to Adobe-Japan1 CID+2197. The checked IVS therefore identifies the standard 伺 glyph, not an independently encoded ⿰貝司 form.",
+    "related_encoded_structures": [
+      {"char": "覗", "cp": "U+8997", "ids": "⿰司見"},
+      {"char": "䙾", "cp": "U+467E", "ids": "⿰它見"},
+      {"char": "𣱇", "cp": "U+23C47", "ids": "⿰司氏"}
+    ],
+    "conclusion": "The source entry explicitly treats the target as another written form of encoded U+4F3A. No independent code point or standardized variation sequence for the exact ⿰貝司 glyph was confirmed."
+  },
+  "fonts_before": {
+    "guji-plane0.ttf": {
+      "sha256": "25857b0b476193a79e4b280e42302f0e00977385d2bbc62e603cc8e3a00568ed",
+      "cmap": 30710,
+      "mapped_nonempty_searched": 28999,
+      "contains_u4f3a": true,
+      "contains_e707": false
+    },
+    "guji-plane2.ttf": {
+      "sha256": "80df094a2e63091b222706696a8b244c9dba45219af866226a097d0fbb2bf28d",
+      "cmap": 61228,
+      "mapped_nonempty_searched": 61119,
+      "contains_e707": false
+    },
+    "guji-planef.ttf": {
+      "sha256": "cfeb8527cfc75fe244b1c773056ed8e8896e67918f368999d12f6bd86dee323b",
+      "cmap": 42620,
+      "mapped_nonempty_searched": 42520,
+      "contains_e707": false
+    }
+  },
+  "font_search": {
+    "total_mapped_nonempty": 132638,
+    "saved_candidates_per_font": 100,
+    "plane0_unmapped_non_notdef_reviewed": 95,
+    "plane2_and_planef_hidden_non_notdef": 0,
+    "result": "No matching ⿰貝司 glyph in the reviewed mapped candidates or unmapped glyph inventory.",
+    "limits": "Candidate ranking plus finite visual review, not a global audit of every third-party font."
+  },
+  "mechanisms": {
+    "format14_count_each_small_font": 0,
+    "plane0_gsub": "vert only; no relevant alternate invocation",
+    "plane2_and_planef_gsub": false
+  },
+  "decision": "Allocate small-font project PUA U+E707 for faithful glyph-level transcription while preserving standard U+4F3A unchanged."
+}
