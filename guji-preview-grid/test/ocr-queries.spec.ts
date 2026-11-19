@@ -2,6 +2,7 @@
 import { act, createElement, type ReactNode } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { beforeEach, afterEach, expect, it, vi } from "vitest";
+import { toast } from "sonner";
 import { OcrPrefetchView } from "../src/components/ocr/OcrPrefetchView";
 
 vi.mock("../src/components/ui/resizable", () => {
@@ -53,6 +54,7 @@ beforeEach(async () => {
 
 afterEach(async () => {
   await act(async () => root.unmount());
+  toast.dismiss();
   document.body.replaceChildren();
   vi.useRealTimers();
   vi.unstubAllGlobals();
@@ -69,7 +71,15 @@ it("打开只查询；刷新同时更新详情和日志，部分预取失败也�
   await click("缓存失效");
   expect(container.textContent).toContain("OCR ⚠ 残缺");
   await click("预取此页");
-  expect(container.textContent).toContain("服务暂不可用");
+  expect(toast.getToasts()).toEqual([
+    expect.objectContaining({
+      type: "error",
+      title: "@367 预取部分失败",
+      description: expect.stringContaining("服务暂不可用"),
+      duration: Infinity,
+    }),
+  ]);
+  expect(container.textContent).not.toContain("服务暂不可用");
   expect(container.textContent).toContain("部分成功后重读");
   expect(calls.filter(a => a === "prefetch-log")).toHaveLength(3);
   expect(calls.filter(a => a === "prefetch-status")).toHaveLength(3);

@@ -7,6 +7,7 @@ import { callPageTool as callTool } from "@/lib/page-tool";
 // 与校对视图（DatasetView）共用状态配色；本视图只读展示 + 手动预取，不写 .gj。
 import { useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import { toast } from "sonner";
 import {
   CheckCircle2,
   CircleDashed,
@@ -97,16 +98,8 @@ export function OcrPrefetchView() {
   const [runInput, setRunInput] = useState("");
   const [runBusy, setRunBusy] = useState(false);
   const [runTarget, setRunTarget] = useState<number | null>(null);
-  const [msg, setMsg] = useState<{ ok: boolean; msg: string } | null>(null);
 
   const reload = useCallback(() => setReloadKey((k) => k + 1), []);
-
-  // 成功反馈 6s 自动消失（同 DatasetView）；错误保留至人工处理
-  useEffect(() => {
-    if (!msg?.ok) return;
-    const t = setTimeout(() => setMsg(null), 6000);
-    return () => clearTimeout(t);
-  }, [msg]);
 
   // 清单就绪后默认选数据集末页（预取调试关注点）
   useEffect(() => {
@@ -153,17 +146,27 @@ export function OcrPrefetchView() {
   const runPrefetch = async (page: number) => {
     setRunBusy(true);
     setRunTarget(page);
-    setMsg(null);
+    const notification = toast.loading(`@${page} 正在预取…`);
     try {
       const r = await callTool<{ steps: { step: string; ok: boolean; detail: string }[] }>({
         action: "prefetch-run",
         page,
       });
       const detail = r.steps.map((s) => `${s.step}${s.ok ? "✓" : "✗"} ${s.detail}`).join("；");
-      setMsg({ ok: r.steps.every((s) => s.ok), msg: `@${page} 预取完成：${detail}` });
+      const ok = r.steps.every((s) => s.ok);
+      const notify = ok ? toast.success : toast.error;
+      notify(`@${page} ${ok ? "预取完成" : "预取部分失败"}`, {
+        id: notification,
+        description: detail,
+        duration: ok ? 6000 : Infinity,
+      });
       setSelected(page);
     } catch (e) {
-      setMsg({ ok: false, msg: e instanceof Error ? e.message : String(e) });
+      toast.error(`@${page} 预取失败`, {
+        id: notification,
+        description: e instanceof Error ? e.message : String(e),
+        duration: Infinity,
+      });
     } finally {
       reload();
       setRunBusy(false);
@@ -174,7 +177,7 @@ export function OcrPrefetchView() {
   const runFromInput = () => {
     const n = Number(runInput);
     if (!/^\d{1,4}$/.test(runInput) || n < 1 || n > 7738) {
-      setMsg({ ok: false, msg: `页码应为 1-7738 的整数（当前输入：${runInput || "空"}）` });
+      toast.error(`页码应为 1-7738 的整数（当前输入：${runInput || "空"}）`, { duration: Infinity });
       return;
     }
     setRunInput("");
@@ -243,19 +246,6 @@ export function OcrPrefetchView() {
           </>,
           toolbarSlot,
         )}
-
-      {msg ? (
-        <div
-          className={`flex items-start gap-2 border-b px-3 py-1.5 text-xs ${
-            msg.ok ? "text-emerald-600" : "text-destructive"
-          }`}
-        >
-          <span className="min-w-0 flex-1 break-all">{msg.msg}</span>
-          <Button size="sm" variant="ghost" className="h-5 px-1.5" onClick={() => setMsg(null)}>
-            ✕
-          </Button>
-        </div>
-      ) : null}
 
       <div className="flex min-h-0 flex-1">
         {/* 左：页清单与 OCR 状态 */}

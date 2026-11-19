@@ -4,6 +4,7 @@
 // 流程演示 = 添加新页管线逐步骤重放（初校页样例集 + 金标对照找错）。
 // 原「编辑」双栏模式已移除；通用编辑/预览见姊妹项目 guji-preview
 import { useState } from "react";
+import { Toaster } from "sonner";
 import {
   BookOpenText,
   ScanText,
@@ -123,6 +124,15 @@ export default function App() {
           <PipelineReplayView />
         )}
       </div>
+      <Toaster
+        theme={resolved}
+        position="bottom-right"
+        richColors
+        closeButton
+        duration={6000}
+        containerAriaLabel="通知"
+        toastOptions={{ closeButtonAriaLabel: "关闭通知" }}
+      />
     </TooltipProvider>
   );
 }

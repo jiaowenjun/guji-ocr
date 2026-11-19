@@ -11,7 +11,8 @@ import {
   useState,
 } from "react";
 import { createPortal } from "react-dom";
-import { ChevronLeft, ChevronRight, Database, Minus, Plus, ScanText, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, Database, Minus, Plus, ScanText } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -119,7 +120,6 @@ export function DatasetView({
   const [scanCells, setScanCells] = useState(false); // 原图投影字格独立开关
   const [blanksOnly, setBlanksOnly] = useState(false); // 暂时隐藏两栏格线，保留原开关状态
   const [busy, setBusy] = useState(false);
-  const [status, setStatus] = useState<{ ok: boolean; msg: string } | null>(null);
   const [ocrView, setOcrView] = useState<string | null>(null); // OCR 结果弹窗内容
   const [adding, setAdding] = useState(false); // 添加新页表单开合
   const [pageInput, setPageInput] = useState("");
@@ -137,13 +137,6 @@ export function DatasetView({
       }
     }
   }, [index, jumpTo]);
-
-  // 成功反馈 6s 自动消失；错误保留至人工处理（均可手动关闭），避免长消息常驻撑乱工具栏
-  useEffect(() => {
-    if (!status?.ok) return;
-    const t = setTimeout(() => setStatus(null), 6000);
-    return () => clearTimeout(t);
-  }, [status]);
 
   const entry = index?.[idx];
   const page = entry?.page;
@@ -198,18 +191,17 @@ export function DatasetView({
   const reset = () => {
     if (page === undefined) return;
     setEdits(({ [page]: _drop, ...rest }) => rest);
-    setStatus(null);
   };
 
   /** 添加新页：桥接 kangxi_page_tool.py（sqlite 优先，缺则增量爬取），完成后刷新清单并跳转 */
   const addPage = async () => {
     const n = Number(pageInput);
     if (!/^\d{1,4}$/.test(pageInput) || n < 1 || n > 7738) {
-      setStatus({ ok: false, msg: `页码应为 1-7738 的整数（当前输入：${pageInput || "空"}）` });
+      toast.error(`页码应为 1-7738 的整数（当前输入：${pageInput || "空"}）`, { duration: Infinity });
       return;
     }
     setAddBusy(true);
-    setStatus(null);
+    const notification = toast.loading(`正在添加 @${n}…`);
     try {
       const data = await callPageTool<{
         counts?: { chars: number; unencoded: number; with_text: number };
@@ -220,12 +212,16 @@ export function DatasetView({
       setJumpTo(n);
       setAdding(false);
       setPageInput("");
-      setStatus({
-        ok: true,
-        msg: `已添加 @${n}（字头 ${counts?.chars ?? "?"} 个，含释义 ${counts?.with_text ?? "?"}，未编码 ${counts?.unencoded ?? 0}）${summaries?.length ? "；" + summaries.join("；") : ""}`,
+      toast.success(`已添加 @${n}`, {
+        id: notification,
+        description: `字头 ${counts?.chars ?? "?"} 个，含释义 ${counts?.with_text ?? "?"}，未编码 ${counts?.unencoded ?? 0}${summaries?.length ? "；" + summaries.join("；") : ""}`,
       });
     } catch (e) {
-      setStatus({ ok: false, msg: e instanceof Error ? e.message : String(e) });
+      toast.error(`添加 @${n} 失败`, {
+        id: notification,
+        description: e instanceof Error ? e.message : String(e),
+        duration: Infinity,
+      });
     } finally {
       setAddBusy(false);
     }
@@ -237,9 +233,9 @@ export function DatasetView({
     try {
       await callPageTool({ action: "status", page, status: to });
       reload();
-      setStatus({ ok: true, msg: `@${page} 标签已改为「${STATUS_META[to].label}」` });
+      toast.success(`@${page} 标签已改为「${STATUS_META[to].label}」`);
     } catch (e) {
-      setStatus({ ok: false, msg: e instanceof Error ? e.message : String(e) });
+      toast.error(e instanceof Error ? e.message : String(e), { duration: Infinity });
     }
   };
 
@@ -249,7 +245,6 @@ export function DatasetView({
     const body = content ?? text;
     if (page === undefined || body === undefined) return;
     setBusy(true);
-    setStatus(null);
     try {
       const res = await fetch("/dataset/save", {
         method: "POST",
@@ -260,9 +255,9 @@ export function DatasetView({
       if (!res.ok || !data.ok) throw new Error(data.error ?? `HTTP ${res.status}`);
       put(page, body); // 立即可见，避免再等 fetch
       setEdits(({ [page]: _drop, ...rest }) => rest);
-      setStatus({ ok: true, msg: okMsg ?? `已保存 ${stem(page)}.gj` });
+      toast.success(okMsg ?? `已保存 ${stem(page)}.gj`);
     } catch (e) {
-      setStatus({ ok: false, msg: e instanceof Error ? e.message : String(e) });
+      toast.error(e instanceof Error ? e.message : String(e), { duration: Infinity });
     } finally {
       setBusy(false);
     }
@@ -287,7 +282,7 @@ export function DatasetView({
     if (page === undefined || text === undefined) return;
     const { text: formatted, spaces, circles, dots } = formatDocument(text, config?.layout);
     if (formatted === text) {
-      setStatus({ ok: true, msg: `@${page} 已是标准写法，无需格式化` });
+      toast.success(`@${page} 已是标准写法，无需格式化`);
       return;
     }
     setEdits((prev) => ({ ...prev, [page]: formatted }));
@@ -305,12 +300,11 @@ export function DatasetView({
   /** 显示 OCR 结果：弹窗展示该页 OCR markdown */
   const ocrShow = async () => {
     if (page === undefined) return;
-    setStatus(null);
     try {
       const data = await callPageTool<{ markdown: string | null; hint?: string }>({ action: "ocr-view", page });
       setOcrView(data.markdown ?? data.hint ?? "（无内容）");
     } catch (e) {
-      setStatus({ ok: false, msg: e instanceof Error ? e.message : String(e) });
+      toast.error(e instanceof Error ? e.message : String(e), { duration: Infinity });
     }
   };
 
@@ -458,25 +452,6 @@ export function DatasetView({
         <HeadwordStrip page={page} continuation={continuation} />
 
         <div className="ml-auto flex flex-wrap items-center gap-2">
-          {addBusy ? (
-            <span className="text-amber-600 text-xs">
-              抓取新页中…（sqlite 已有数据不联网，缺则增量爬取，约 10-60s）
-            </span>
-          ) : null}
-          {status ? (
-            // 单行截断 + 悬停看全文，长消息（含抓取统计）不再把 flex-wrap 工具栏撑乱
-            <span className="flex items-center gap-1">
-              <span
-                title={status.msg}
-                className={`max-w-[min(52ch,45vw)] truncate text-xs ${status.ok ? "text-emerald-600" : "text-destructive"}`}
-              >
-                {status.msg}
-              </span>
-              <Button variant="ghost" size="icon-sm" aria-label="关闭反馈" onClick={() => setStatus(null)}>
-                <X />
-              </Button>
-            </span>
-          ) : null}
           <Button size="sm" variant="outline" disabled={page === undefined} onClick={ocrShow}
             title="弹窗显示该页的 PaddleOCR 识别文本">
             <ScanText data-icon="inline-start" />
