@@ -1,8 +1,8 @@
 # 字体操作留痕登记簿
 
-当前正式补录共七项：大字标准码位 **U+2BD6E、U+2E85**，以及仅用于 `guji-plane0.ttf` 的 **PUA U+E701 v4、U+E704 v1、U+E705 v1、U+E706 v1、U+E707 v3**。各项来源、编码结论、操作时间线与详报入口见[字体补录 Changelog](font-changelog.md)；其中 U+E706、U+E707 保存已编码字符 U+343A、U+4F3A 的项目字形异体，不是新的通用字符。2026-11-18 对 U+2BD6E、U+E701 的资料汇编属于只读核验，不计新增字体操作。
+当前正式补录共八项：大字标准码位 **U+2BD6E、U+2E85、U+2023F**，以及仅用于 `guji-plane0.ttf` 的 **PUA U+E701 v4、U+E704 v1、U+E705 v1、U+E706 v1、U+E707 v3**。各项来源、编码结论、操作时间线与详报入口见[字体补录 Changelog](font-changelog.md)；其中 U+E706、U+E707 保存已编码字符 U+343A、U+4F3A 的项目字形异体，不是新的通用字符。2026-11-18 对 U+2BD6E、U+E701 的资料汇编属于只读核验，不计新增字体操作。
 
-制度自 2026-11-14 起执行（用户要求：**凡对字体的自定义优化、更新等操作，必须留痕记录**）。本登记簿是人读的汇总台账，与脚本自动追加的机器流水 `var/unencoded/kangxi-unencoded/font-patches.jsonl`（gitignore 内）互为备份——**双轨都要有**：脚本跑完有 jsonl，人做完（或复核完）来本页登记一行。
+制度自 2026-11-14 起执行（用户要求：**凡对字体的自定义优化、更新等操作，必须留痕记录**）。本登记簿是人读的汇总台账，与脚本自动追加的机器流水 `var/unencoded/kangxi-unencoded/font-patches.jsonl`（gitignore 内）互为备份——**双轨都要有**：脚本跑完有 jsonl，人做完（或复核完）来本页登记一行。自 2026-11-19 起，补录的强制清单、四层验收与完成定义以[字体补录规范](font-replenishment-spec.md)（v1）为准。
 
 全部正式补录、修改、撤销及临时试验见[字体补录 Changelog](font-changelog.md)。本页负责操作制度与当前哈希基线，changelog 负责历史状态和详细报告入口。
 
@@ -47,15 +47,16 @@
 | 11 | 2026-11-19T13:58:04+08:00 | 新增 U+E707〈貝司〉v1，@427 伺条异体；独体貝／司正向仿射；缓存戳 `e701-4-e704-1-e705-1-e706-1-e707-1` | 仅 guji-plane0.ttf | cmap 30,710→30,711；30,806 个既有字形／度量不变；chamfer 1.650（闸 1.7）；同日被 v2 取代但保留历史 | a746046 | [全过程报告](research/2026-11-19-U+E707貝司调研核验与补录报告.md) |
 | 12 | 2026-11-19T14:10:12+08:00 | U+E707 升级 v2；左取䝭完整貝旁，右取伺完整司旁；恒等变换；缓存戳 `e701-4-e704-1-e705-1-e706-1-e707-2` | 仅 guji-plane0.ttf | cmap／glyphOrder 不变；除 E707 外全部字形／度量不变；chamfer 2.015（闸 2.1）；冻结配方与小字号验证通过 | a746046 | [全过程报告](research/2026-11-19-U+E707貝司调研核验与补录报告.md) |
 | 13 | 2026-11-19T14:48:26+08:00 | U+E707 升级 v3；左取䝭完整貝旁，右改取飼完整司旁；原生边界留约 4 单位净间隙；缓存戳 `e701-4-e704-1-e705-1-e706-1-e707-3` | 仅 guji-plane0.ttf | 文件大小、cmap／glyphOrder 不变；除 E707 外全部字形／度量不变；chamfer 1.945（闸 2.0）；冻结配方与小字号验证通过 | f94b598 | [全过程报告](research/2026-11-19-U+E707貝司调研核验与补录报告.md) |
+| 14 | 2026-11-19T16:33:00+08:00 | 补录 U+2023F 𠈿（@467 第 4 字头，康熙傳承版 v14 自身缺收的已编码字；站方 SVG 刻形＋同页邻字 𠈾 U+2023E 锚定）；缓存戳 `001017-2bd6e-2e85-2023f` | 仅 guji-large.ttf | chamfer 0.033（闸 0.15）；cmap 49,409→49,410；U+2BD6E／U+2E85 保留；干跑重放表级逐字节一致；vitest 1138/1138、构建通过、dist 哈希一致；应用页 fonts.check=true 渲染刻形；回滚点＝补前 Git blob＋哈希备份 | 待提交 | [补录报告](research/2026-11-19-U+2023F𠈿补录报告.md) |
 
 ## 哈希基线（截至 2026-11-19 复核，SHA-256 全量）
 
 - `guji-preview-grid/public/fonts/guji-plane0.ttf`（17,253,564 B，E701 v4 + E704 v1 + E705 v1 + E706 v1 + E707 v3，操作 #13）
   `3409fd6cdebe85c58d60148d26acba80ec578831015b221e3101f3b794e752ab`
   （E707 补前：`25857b0b476193a79e4b280e42302f0e00977385d2bbc62e603cc8e3a00568ed`，17,253,152 B；E707 v1：`f4355c73a6ac620830395003bb323f37a3278d43ff586d2192ae52f6cc71bd7f`，17,253,552 B；E707 v2：`4dd33d63a37aa36cfd445cbc975e986cce9dbd35b01e26752321af8d9b8b073d`，17,253,564 B；三份自动备份及完整历史见 #11–#13 详报）
-- `guji-preview-grid/public/fonts/guji-large.ttf`（46,624,948 B，#8 新增 U+2E85，保留 U+2BD6E）
-  `3973ccbe8bbdb4b91af44269a12f9b9f58daeb0c225d78e3a934f676f1c4c231`
-  （#8 前：`99be6a77b93afa746b2d29e37d6014cab9f9c21471f685a2392426760a17dabf`，46,623,752 B；按哈希备份及历史见 #8 详报）
+- `guji-preview-grid/public/fonts/guji-large.ttf`（46,625,740 B，#14 新增 U+2023F，保留 U+2BD6E、U+2E85）
+  `447a77da5078b9654499c954df651d821b7e1a284606022fa03eaa69d4f8f199`
+  （#14 前：`3973ccbe8bbdb4b91af44269a12f9b9f58daeb0c225d78e3a934f676f1c4c231`，46,624,948 B；#8 前：`99be6a77b93afa746b2d29e37d6014cab9f9c21471f685a2392426760a17dabf`，46,623,752 B；#14 按哈希备份在 `font-backups/`，历史见 #8/#14 详报）
 - `guji-preview-grid/public/fonts/guji-plane2.ttf`（原始入库，未动）
   `80df094a2e63091b222706696a8b244c9dba45219af866226a097d0fbb2bf28d`
 - `guji-preview-grid/public/fonts/guji-planef.ttf`（原始入库，未动）

@@ -1,0 +1,28 @@
+{
+  "at": "2026-11-19T16:20:00+08:00",
+  "purpose": "U+2023F 𠈿 补录前的字体覆盖快照（查询动因：用户搜索该字头是否在大字字体）",
+  "codepoint": "U+2023F",
+  "identity": {
+    "char": "𠈿",
+    "site_headword": "0467-04-00560-2023F.svg",
+    "site_mapping": "站方 SVG 文件名自带码位映射（铁证，非视觉判读）",
+    "crawl_entry": {"sword": "𠈿", "radical": "人", "total_strokes": 9, "extra_strokes": 7, "cangjie": "OLNE", "unicode": "U+2023F"},
+    "page": "@467 第 4 字头，同页连码段 U+2023C–U+2023F（⿰亻X 族）+ 修 U+4FEE"
+  },
+  "coverage_before": {
+    "guji-preview-grid/public/fonts/guji-large.ttf": {"cp_in_cmap": false, "cmap_total": 49409},
+    "guji-preview-grid/public/fonts/guji-plane0.ttf": {"cp_in_cmap": false},
+    "guji-preview-grid/public/fonts/guji-planef.ttf": {"cp_in_cmap": false},
+    "guji-preview-grid/public/fonts/guji-plane2.ttf": {"cp_in_cmap": true, "glyph": "u2023F"},
+    "~/Library/Fonts/KX_47043_14.ttf（康熙字典體傳承版 v001.014，即站方字体与 guji-large 基线）": {"cp_in_cmap": false, "note": "站方词表编了码、自家 v14 字体不收；同页邻字 U+2023C/D/E 均在库，属 cmap 个案缺口"},
+    "~/Library/Fonts/HanaMinA.ttf": {"cp_in_cmap": false},
+    "~/Library/Fonts/HanaMinB.ttf": {"cp_in_cmap": true, "role": "备选 donor（本次未采用，站方 SVG 刻形优先）"},
+    "macOS 系统回退（Songti.ttc / STHeiti / Arial Unicode）": {"cp_in_cmap": false, "note": "逐一实测全缺 → 大字栈 GujiLarge→康熙傳承版→HanaMinA→serif 全链失效，必 tofu"}
+  },
+  "css_fallback_chain_before": "GujiLarge, 康熙傳承版 local(), HanaMinA, serif（Ext-B 在 HanaMinB，栈内未列）",
+  "visual_preflight": {
+    "method": "站方 SVG（qlmanage 256px）vs plane2 vs HanaMinB 三视图比对",
+    "conclusion": "三者部件一致（⿰亻X 同构），plane2 笔画平直化、HanaMinB 规范明朝形；无 㐺 U+343A 式形分歧",
+    "figures": "figures/u2023f/comparison.png 左中右 = 站方 SVG / 补录后 guji-large / plane2"
+  }
+}

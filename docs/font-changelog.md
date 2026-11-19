@@ -8,6 +8,7 @@
 
 | 字位 | 来源及当前状态 | 详报 |
 | --- | --- | --- |
+| **U+2023F 𠈿** | @467 第 4 字头，站方已编码但康熙傳承版 v14 自身缺收（同页 U+2023C/D/E 均在库的个案缺口）；站方 SVG 刻形＋同页邻字 U+2023E 锚定；**仅 guji-large**，小字 plane2 原有 | [补录报告](research/2026-11-19-U+2023F𠈿补录报告.md) |
 | **U+2E85 ⺅** | @398 人部卷首偏旁，用户截图描摹成 SVG；**仅 guji-large**；U+2F08 实为⼈，未写入该槽 | [截图转 SVG 与补录报告](research/2026-11-18-U+2E85补录报告.md) |
 | **U+2BD6E 𫵮** | 已编码，Unicode **扩展 E**；@334 第 4 字头 K0000，康熙槽位 0079.090。guji-large 与系统康熙字体已补刻形；小字 plane2 原本有该字，不计作项目补录 | [调研核验与补录全过程](research/2026-11-18-U+2BD6E𫵮调研核验与补录报告.md) |
 | **PUA U+E701** | @349 乑条按语〈亻人人〉，与㐺相分的写法；**仅 guji-plane0**，登记 v4，整体顶撇／中竖宋体构形；大字补录已撤销 | [调研核验与补录全过程](research/2026-11-18-U+E701调研核验与补录报告.md) |
@@ -21,6 +22,16 @@
 2026-11-18 为𫵮、E701 两项历史补录补齐全过程报告：𫵮归档原始 SVG 并验证按原字体校准的精确重建；E701 新增编码查询和补录前字体候选复核。详情、机器证据与历史局限见各报告。此为文档及只读核验，不计新增字体操作。
 
 ## 正式变更记录（由新到旧）
+
+### 2026-11-19 16:33:00 — 新增 U+2023F 𠈿 大字（站方字体自身缺收的已编码字头）
+
+- 来源：@467 第 4 字头，⿰亻X 连码段 U+2023C–U+2023F 末位。站方词表已编码（SVG 文件名自带码位映射），但 guji-large 基线（康熙字典體傳承版 v001.014，即站方自家字体）原版 cmap 即缺此字——同页邻字 U+2023C/D/E 均在库。与 K0000 未编码补录不同类。
+- 补录前回退链全灭实测：康熙傳承版、HanaMinA（Ext-B 实收于 HanaMinB，栈内未列）、macOS Songti/STHeiti/Arial Unicode 全缺，大字位置必 tofu；正文 plane2 原有 `u2023F` 不受影响。
+- `kangxi_font_patch.py` 方案 A 原管线：站方 SVG 刻形为源（非 HanaMinB donor），同页紧邻前字 𠈾 U+2023E 锚定校准（scale 0.8755）。glyph `u2023F`，4 轮廓，bbox `[34,-154,987,695]`，chamfer 0.033（闸 0.15，与首例 U+2BD6E 的 0.029 同级）。
+- 仅 guji-large：cmap 49,409→49,410，glyphOrder 49,412→49,413，46,624,948→46,625,740 B，SHA `3973ccbe…`→`447a77da…`；U+2BD6E、U+2E85 保留；按补前哈希备份于 `font-backups/`，回滚点=补前 Git blob。系统字体未同步（与 U+2E85 同边界）。
+- 验收（规范 v1 四层）：干跑重放 glyf/cmap/hmtx/maxp 逐字节一致（仅 head 校验和 4 字节自算差，先例已知坑）；vitest 1138/1138、`npm run build` 通过且 dist 字体哈希一致；dev server 新缓存戳 200 供应，应用页同栈 96px 元素 fonts.check=true 渲染刻形非 tofu；JSON 校验与 `git diff --check` 通过。
+- 缓存戳更新为 `001017-2bd6e-2e85-2023f`。字形源与锚 SVG 归档 `tools/dataset/font-sources/u2023f-0467/`。正文与 .gj 无变更。提交：**待提交**。
+- **[完整报告](research/2026-11-19-U+2023F𠈿补录报告.md)** · [补前审计](research/evidence/u2023f/audit.json) · [补录验证](research/evidence/u2023f/patch-verification.json) · [浏览器记录](research/evidence/u2023f/browser.json)
 
 ### 2026-11-19 14:48:26 — U+E707 调整右司供体为飼，升级 v3
 

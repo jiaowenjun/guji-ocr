@@ -1,0 +1,60 @@
+{
+  "at": "2026-11-19T16:33:00+08:00（验证补齐至 17:10）",
+  "tool": "tools/dataset/kangxi_font_patch.py（方案 A 原管线：站方 SVG 源 + 同页邻字锚定；无 --dry-run 旗标——内置验证闸在 os.replace 前执行，见 dry_run_replay）",
+  "tool_version": "仓库 f3cfefd 时点脚本；fontTools 4.60.2；rsvg-convert（栅格闸）",
+  "font": "guji-preview-grid/public/fonts/guji-large.ttf",
+  "command": "python3 tools/dataset/kangxi_font_patch.py --font guji-preview-grid/public/fonts/guji-large.ttf --svg var/unencoded/kangxi-unencoded/svg/0467-04-00560-2023F.svg --cp 2023F --anchor-svg var/unencoded/kangxi-unencoded/svg/0467-03-00559-2023E.svg --anchor-cp 2023E",
+  "args": {
+    "svg": "var/unencoded/kangxi-unencoded/svg/0467-04-00560-2023F.svg（sha256 a90b428e…，版本库副本 tools/dataset/font-sources/u2023f-0467/target-0467-04.svg）",
+    "cp": "2023F",
+    "anchor_svg": "var/unencoded/kangxi-unencoded/svg/0467-03-00559-2023E.svg（sha256 9ea51094…，版本库副本 anchor-0467-03.svg）",
+    "anchor_cp": "2023E",
+    "gate": 0.15
+  },
+  "anchor_choice": "𠈾 U+2023E：@467 紧邻前一字头，同页同族 ⿰亻X，补前已在库",
+  "result": {
+    "glyph": "u2023F",
+    "transform": {"scale": 0.8755, "units": "upem 1024，SVG 1280 坐标系 y-up 经统一缩放+平移；Cu2QuPen(max_err=1) 二次化、轮廓反向以 TrueType 语义落库"},
+    "chamfer_svg_to_font": 0.033,
+    "chamfer_gate": 0.15,
+    "chamfer_reference": "首例 U+2BD6E 为 0.029，同级；chamfer 为描摹保真回归分，非字符身份证明（身份见 audit.json）",
+    "bbox": [34, -154, 987, 695],
+    "contours": 4,
+    "advance": 1024,
+    "bytes_before": 46624948,
+    "bytes_after": 46625740,
+    "sha256_before": "3973ccbe8bbdb4b91af44269a12f9b9f58daeb0c225d78e3a934f676f1c4c231",
+    "sha256_after": "447a77da5078b9654499c954df651d821b7e1a284606022fa03eaa69d4f8f199",
+    "backup": "var/unencoded/kangxi-unencoded/font-backups/guji-large.ttf.3973ccbe8bbdb4b91af44269a12f9b9f58daeb0c225d78e3a934f676f1c4c231.ttf（补前哈希名，gitignore 内；Git 回滚点=HEAD blob）"
+  },
+  "post_checks": {
+    "cmap": "49409 → 49410（仅新增 U+2023F）",
+    "glyphOrder": "49412 → 49413（maxp numGlyphs 同步）",
+    "hmtx": "新字形 advance=1024（锚字同值）；字体无 vmtx 表（水平度量字体），vmtx 不适用",
+    "retained": {"U+2BD6E": true, "U+2E85": true},
+    "additive_by_construction": true,
+    "visual_three_view": "passed（figures/u2023f/comparison.png：站方 SVG / 补录后 / plane2，同构无毛刺断笔破洞）"
+  },
+  "dry_run_replay": {
+    "at": "2026-11-19T17:00+08:00",
+    "method": "工具无 --dry-run；以补前备份副本重放 patch_font（同一函数路径、含验证闸），比对生产字体",
+    "chamfer_replay": 0.033,
+    "bytes_replay": 46625740,
+    "table_comparison": "glyf/cmap/hmtx/maxp 全部字节一致；唯一差异 head.checkSumAdjustment（4 字节字体级校验和自算差，U+2BD6E 先例已知坑，无功能影响）",
+    "whole_file_sha256_replay": "82315135db506c27e039a0e51ef5e0388316caad2453d995ba7a69c569e53920",
+    "conclusion": "表级确定性重建成立；整文件 sha 因头部校验和区差异不可逐字节复现，以表比对+闸值为准"
+  },
+  "engineering_regression": {
+    "json_validation": "audit.json / patch-verification.json / browser.json python -m json.tool 通过",
+    "git_diff_check": "通过（无空白错误）",
+    "vitest": "22 文件 1138/1138 通过（含并行 WIP 的 ir.spec.ts；CSS 戳与字体变更不在测试覆盖面，全绿为回归确认）",
+    "build": "npm run build（tsc -b && vite build）通过，1.41s；dist/fonts/guji-large.ttf 哈希与生产一致 447a77da…（dist_font_hashes_match）",
+    "browser": "browser.json（dev server 200 供应新字体、fonts.check true、96px 注入元素渲染刻形）"
+  },
+  "cache_version": "001017-2bd6e-2e85-2023f",
+  "system_font_synced": false,
+  "system_font_note": "与 #8 U+2E85 同边界：仅仓库 guji-large；~/Library/Fonts/KX_47043_14.ttf 维持 #1 后状态未同步",
+  "annotation_changes": "无（@467 尚未纳入金标标注，无 .gj/正文变更，故无 annotation.json）",
+  "commit": "待提交（提交后回填完整哈希并清除占位，spec §2.1/§6.2）",
+  "machine_log": "var/unencoded/kangxi-unencoded/font-patches.jsonl（工具流水 + audit-supplement + register-verification 三条，gitignore 内）"
+}

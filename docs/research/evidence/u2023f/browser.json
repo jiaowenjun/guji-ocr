@@ -1,0 +1,26 @@
+{
+  "at": "2026-11-19T17:05:00+08:00",
+  "method": "ZCode 内置浏览器（IAB/WebKit）打开 dev server 应用页 http://[::1]:5173/，注入与 .hw-char 同栈的 96px 验证元素，读取 document.fonts 实况并截图",
+  "page": "http://[::1]:5173/（guji-preview-grid dev server，vite）",
+  "font_url_check": {
+    "url": "http://[::1]:5173/fonts/guji-large.ttf?v=001017-2bd6e-2e85-2023f",
+    "http_status": 200,
+    "bytes": 46625740,
+    "note": "dev server 已直接供应补录后字体"
+  },
+  "fonts_api": {
+    "GujiLarge_face_status": "loaded",
+    "fontsCheck_20px_GujiLarge_U+2023F": true,
+    "fontsCheck_note": "康熙傳承版/HanaMinA/serif 亦报 true——fonts.check 对回退族宽松，不能反证补录前状态；判定依据是 GujiLarge 族对 U+2023F 返回 true（补录前该族对 Ext-B 缺收必 false）"
+  },
+  "injected_element": {
+    "font_family_computed": "GujiLarge, \"康熙傳承版 KangXiZiDian.com\", HanaMinA, serif（与 .hw-char/.m-large 大字栈一致）",
+    "font_size": "96px",
+    "result": "渲染为刻本风格 ⿰亻X 字形，与站方 SVG 同构，非 tofu、未落系统回退"
+  },
+  "screenshot": "figures/u2023f/browser-verify.png",
+  "limitations": [
+    "应用内尚无 @467 的 .gj 标注，字格矩阵/字头条暂不显示该字；本记录为应用页同栈注入元素的等价记录（spec §2.4 允许）",
+    "@467 纳入金标后可在字头簇自然复验"
+  ]
+}
