@@ -55,6 +55,6 @@
   "system_font_synced": false,
   "system_font_note": "与 #8 U+2E85 同边界：仅仓库 guji-large；~/Library/Fonts/KX_47043_14.ttf 维持 #1 后状态未同步",
   "annotation_changes": "无（@467 尚未纳入金标标注，无 .gj/正文变更，故无 annotation.json）",
-  "commit": "待提交（提交后回填完整哈希并清除占位，spec §2.1/§6.2）",
+  "commit": "55b2436690bfd2ea69aec1d4173328387f15aafa（字体+证据批次；文档回填 34ffd8c46a79d0dfa21b02e6750cd14bdec0f594）",
   "machine_log": "var/unencoded/kangxi-unencoded/font-patches.jsonl（工具流水 + audit-supplement + register-verification 三条，gitignore 内）"
 }
