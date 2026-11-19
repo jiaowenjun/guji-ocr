@@ -19,7 +19,7 @@ from guji_songti_components import bbox, contours, moved
 
 ROOT = Path(__file__).resolve().parents[2]
 FONT = ROOT / 'guji-preview-grid/public/fonts/guji-plane0.ttf'
-RECIPE = ROOT / 'tools/dataset/font-sources/e707-songti-v2.json'
+RECIPE = ROOT / 'tools/dataset/font-sources/e707-songti-v3.json'
 
 
 def glyph_hash(font, char):
@@ -28,10 +28,10 @@ def glyph_hash(font, char):
 
 
 def build(font):
-    """Join the native left 貝 component of 䝭 and right 司 component of 伺."""
+    """Join the native left 貝 component of 䝭 and right 司 component of 飼."""
     definitions = [
         ('䝭', [0, 4, 5, 6, 7, 8], '左貝旁（完整偏旁）'),
-        ('伺', [0, 1, 3, 4], '右司旁（完整偏旁）'),
+        ('飼', [1, 2, 3, 7], '右司旁（完整偏旁）'),
     ]
     parts, pen = [], TTGlyphPen(font.getGlyphSet())
     for char, indices, role in definitions:
@@ -75,7 +75,7 @@ def main():
         recipe = {
             'schema': 2,
             'scheme': 'compose',
-            'construction': 'left-component-of-u476d-right-component-of-u4f3a',
+            'construction': 'left-component-of-u476d-right-component-of-u98fc',
             'description': 'U+E707：康熙 @427 伺条「別作〈貝司〉」的字形异体，仅小字。',
             'units_per_em': 1024,
             'font': 'guji-plane0.ttf',
@@ -85,7 +85,7 @@ def main():
             'encoded_identity': {'char': '伺', 'codepoint': 'U+4F3A'},
             'donor_glyph_sha256': {
                 '476D': glyph_hash(font, '䝭'),
-                '4F3A': glyph_hash(font, '伺'),
+                '98FC': glyph_hash(font, '飼'),
             },
             'components': parts,
             'approved_glyph': {
@@ -101,10 +101,10 @@ def main():
                 'vmtx': [1024, 870 - glyph.yMax],
             },
             'verification': {
-                'max_chamfer': 2.1,
+                'max_chamfer': 2.0,
                 'note': 'Threshold-100 scan mask is a regression guard. Character identity follows the 伺 entry; exact structure and complete native contour provenance are reviewed separately.',
             },
-            'note': 'Ten complete native Songti contours: the six-contour left 貝 component of 䝭 and the four-contour right 司 component of 伺. Both retain their compound-character coordinates with identity transforms.',
+            'note': 'Ten complete native Songti contours: the six-contour left 貝 component of 䝭 and the four-contour right 司 component of 飼. Both retain their compound-character coordinates with identity transforms; their native bounds leave a four-unit horizontal gap.',
         }
         if args.write_recipe:
             RECIPE.write_text(json.dumps(recipe, ensure_ascii=False, indent=2) + '\n')

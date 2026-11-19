@@ -8,7 +8,7 @@ from fontTools.ttLib import TTFont
 
 ROOT = Path(__file__).resolve().parents[2]
 FONT = ROOT / 'guji-preview-grid/public/fonts/guji-plane0.ttf'
-RECIPE = ROOT / 'tools/dataset/font-sources/e707-songti-v2.json'
+RECIPE = ROOT / 'tools/dataset/font-sources/e707-songti-v3.json'
 SCAN = ROOT / 'tools/dataset/font-sources/e707-scan-original.png'
 PAGE = Path('/Volumes/WD-2T/guji-ocr/raw/kangxizidian/pages/0427.jpg')
 OUT = ROOT / 'docs/research/figures/e707'
@@ -55,10 +55,10 @@ def component_sources(recipe):
     draw = ImageDraw.Draw(image)
     title = label_font(22)
     draw.text((175, 35), '供体 U+476D（取左貝旁）', font=title, fill='#222', anchor='mm')
-    draw.text((440, 35), '供体 伺（取右司旁）', font=title, fill='#222', anchor='mm')
+    draw.text((440, 35), '供体 飼（取右司旁）', font=title, fill='#222', anchor='mm')
     draw.text((785, 35), 'U+E707：完整偏旁原位拼合', font=title, fill='#222', anchor='mm')
     image.paste(glyph_image('䝭'), (40, 70))
-    image.paste(glyph_image('伺'), (305, 70))
+    image.paste(glyph_image('飼'), (305, 70))
 
     # Render the reviewed production glyph, then color complete contours by donor.
     with TTFont(FONT, recalcTimestamp=False) as font:

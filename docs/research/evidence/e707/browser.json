@@ -1,6 +1,9 @@
 {
   "checked_at": "2026-11-19",
-  "url": "http://127.0.0.1:5173/",
+  "glyph_version": 3,
+  "font_sha256": "3409fd6cdebe85c58d60148d26acba80ec578831015b221e3101f3b794e752ab",
+  "cache_version": "e701-4-e704-1-e705-1-e706-1-e707-3",
+  "url": "http://localhost:5173/",
   "page": 427,
   "viewport_mode": "Codex in-app browser default",
   "node": {
@@ -18,5 +21,5 @@
     "glyphCount": 1,
     "isCustomFont": true
   },
-  "result": "E707 rendered once in the page-427 matrix with the bundled plane0 custom font, not a system fallback."
+  "result": "E707 v3 rendered once in the page-427 matrix with the bundled plane0 custom font, not a system fallback."
 }

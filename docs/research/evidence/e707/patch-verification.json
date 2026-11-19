@@ -1,5 +1,6 @@
 {
-  "font_commit": "a7460461c588512c2161b2994a9eaea5090f14b3",
+  "font_commit": "pending",
+  "previous_font_commit": "a7460461c588512c2161b2994a9eaea5090f14b3",
   "operations": [
     {
       "version": 1,
@@ -34,31 +35,49 @@
       "chamfer_gate": 2.1,
       "other_glyphs_and_metrics_unchanged": true,
       "backup": "var/unencoded/kangxi-unencoded/font-backups/guji-plane0.ttf.f4355c73a6ac620830395003bb323f37a3278d43ff586d2192ae52f6cc71bd7f.ttf"
+    },
+    {
+      "version": 3,
+      "at": "2026-11-19T14:48:26+08:00",
+      "operation": "replace",
+      "source": "tools/dataset/font-sources/e707-songti-v3.json",
+      "cache_version": "e701-4-e704-1-e705-1-e706-1-e707-3",
+      "sha256_before": "4dd33d63a37aa36cfd445cbc975e986cce9dbd35b01e26752321af8d9b8b073d",
+      "sha256_after": "3409fd6cdebe85c58d60148d26acba80ec578831015b221e3101f3b794e752ab",
+      "bytes_before": 17253564,
+      "bytes_after": 17253564,
+      "cmap_before": 30711,
+      "cmap_after": 30711,
+      "chamfer": 1.945,
+      "chamfer_gate": 2.0,
+      "other_glyphs_and_metrics_unchanged": true,
+      "backup": "var/unencoded/kangxi-unencoded/font-backups/guji-plane0.ttf.4dd33d63a37aa36cfd445cbc975e986cce9dbd35b01e26752321af8d9b8b073d.ttf"
     }
   ],
   "final_font": {
     "path": "guji-preview-grid/public/fonts/guji-plane0.ttf",
     "bytes": 17253564,
-    "sha256": "4dd33d63a37aa36cfd445cbc975e986cce9dbd35b01e26752321af8d9b8b073d",
+    "sha256": "3409fd6cdebe85c58d60148d26acba80ec578831015b221e3101f3b794e752ab",
     "cmap": 30711,
     "glyph_order": 30807
   },
   "final_glyph": {
     "name": "uniE707",
-    "compiled_sha256": "c27687999aa8f3ba30a6e1366bd81bf44e0f661a8170ae1fd82325821c963490",
+    "compiled_sha256": "ff258603fab29813e667fe0cd7486d2cc7ac4ee97eac646a51c791ccb1b878d7",
     "contours": 10,
-    "points": 131,
-    "bbox": [32, -117, 971, 800],
+    "points": 132,
+    "bbox": [32, -122, 951, 800],
     "hmtx": [1024, 32],
     "vmtx": [1024, 70],
     "donors": {
       "U+476D": "8a3d3e306a896df12fe9ebdbc8b8aa17329412dfa9690e558d344f727fe369a6",
-      "U+4F3A": "0ddff8c8115a57165d9126e2d06c6fdaf5277fdef32277fe282812765e7ab708"
+      "U+98FC": "13ddaf947900febce911c20703e57c3addbad09c24e82a2d2bafaf0029fe4223"
     }
   },
   "preserved_glyph_hashes": {
     "U+476D": "8a3d3e306a896df12fe9ebdbc8b8aa17329412dfa9690e558d344f727fe369a6",
     "U+4F3A": "0ddff8c8115a57165d9126e2d06c6fdaf5277fdef32277fe282812765e7ab708",
+    "U+98FC": "13ddaf947900febce911c20703e57c3addbad09c24e82a2d2bafaf0029fe4223",
     "U+E701": "0ef6027de1532c8bc037f5944ab4080e7e14651298ba2f61d468a36d898493c4",
     "U+E704": "f28a8bf767d91fa2ae6cbf73b5ba8ef70869e4e4ddac3487cb00e135555b3604",
     "U+E705": "1fe4d3e014eb00135b454eba31cbab7263e1a62aea67105a419d68bbb1cf3ec7",
@@ -71,7 +90,7 @@
   ],
   "rebuild": {
     "command": "python3 tools/dataset/guji_beisi_components.py",
-    "source": "tools/dataset/font-sources/e707-songti-v2.json",
+    "source": "tools/dataset/font-sources/e707-songti-v3.json",
     "result": "Native components reproduce the frozen U+E707 exactly."
   }
 }
