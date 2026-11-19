@@ -95,3 +95,17 @@ class ShortPageContinuationTest(unittest.TestCase):
         cont, info = kpt.continuation_from_prev(371, self.store)
         self.assertIsNone(info["skipped"])
         self.assertEqual(cont, [self.paragraphs[0][1:], *self.paragraphs[1:]])
+
+    def test_terminal_short_remainder_is_bounded_by_next_page_head(self):
+        self.prev.write_text("@370\n\n#㑁\n【廣韻】【集韻】\n")
+        self.write_ocr(
+            "𡖖竹律切\n\n音怞短貌\n\n伯\n\n"
+            "唐韻集韻正韻博陌切音百說文長也父之兄曰伯父"
+        )
+        detail = {"text_paragraphs": ["【廣韻】【集韻】𠀤竹律切，音㤕。短貌。"]}
+        with (patch.object(kpt, "entry_detail", return_value=detail),
+              patch.object(kpt, "page_heads", return_value=[{"char": "伯"}])):
+            cont, info = kpt.continuation_from_prev(371, self.store)
+        self.assertEqual(cont, ["𠀤竹律切，音㤕。短貌。"])
+        self.assertIsNone(info["skipped"])
+        self.assertEqual(info["head"], "㑁")

@@ -111,6 +111,22 @@ class TestLocateTail(unittest.TestCase):
         opening[8], opening[20] = "甲", "乙"
         self.assertEqual(kpt.locate_tail(entry, "廣韻", opening_n="".join(opening)), (2, ""))
 
+    def test_terminal_short_remainder_uses_next_head_after_two_positional_errors(self):
+        entry = "廣韻集韻𠀤竹律切音㤕短貌"
+        observed = "𡖖竹律切音怞短貌伯"
+        self.assertEqual(
+            kpt.locate_tail(entry, "廣韻集韻", opening_n=observed, next_head_n="伯"),
+            (4, ""),
+        )
+        for opening, head in ((observed, None), (observed, "估"),
+                              ("甲" + observed, "伯"), (observed[:-1], "伯")):
+            with self.subTest(opening=opening, head=head):
+                self.assertEqual(
+                    kpt.locate_tail(entry, "廣韻集韻", opening_n=opening,
+                                    next_head_n=head),
+                    (None, "short_ocr_mismatch"),
+                )
+
     def test_short_text_must_be_an_exact_entry_prefix(self):
         entry = distinct_chars(32) + "廣韻" + distinct_chars(32, 0x8000)
         self.assertEqual(kpt.locate_tail(entry, "廣韻", opening_n=entry[34:]),

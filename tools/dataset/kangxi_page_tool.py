@@ -142,13 +142,16 @@ def _norm(text: str) -> str:
     return "".join(ch for ch in text if ch not in PUNCT_STRIP)
 
 
-def locate_tail(entry_n: str, tail_n: str, *, opening_n: str | None = None) -> tuple[int | None, str]:
+def locate_tail(entry_n: str, tail_n: str, *, opening_n: str | None = None,
+                next_head_n: str | None = None) -> tuple[int | None, str]:
     """续入锚定：尾部前缀锚定 + 容差对齐。返回 (库文坐标末界, "") 或
     (None, 原因)，原因为 anchor / coverage 覆盖/总长 / fully / short_*。
     前页可能有个别校订增删（如站点文本少一字），整串子串匹配会整体失败，
     故先按 24→8 字递减锚定再 SequenceMatcher 容差（覆盖率 ≥0.9）。
     不足 8 字（含仅排下字头）只接受词条的精确前缀，并要求本页 OCR 开头
-    证实余文；不能在全文中搜索短串（@370「廣韻」在些条出现两次）。
+    证实余文；不能在全文中搜索短串（@370「廣韻」在些条出现两次）。若余文
+    已到词条末尾且仅 8–24 字，可在同位置至多 2 字误识时用紧接的本页首字头
+    锚定终点（@425「㑁」）；不接受插删或缺少下一字头证据。
     短前缀拒绝原因以 short_ 开头，供调用方提示待核而非误报校订不匹配。"""
     if len(tail_n) < 8:
         if not entry_n.startswith(tail_n):
@@ -164,11 +167,18 @@ def locate_tail(entry_n: str, tail_n: str, *, opening_n: str | None = None) -> t
         observed = opening_n[:len(prefix)]
         blocks = [b for b in difflib.SequenceMatcher(None, prefix, observed, autojunk=False)
                   .get_matching_blocks() if b.size]
-        if (not blocks or blocks[0].a != 0 or blocks[0].b != 0
-                or max(b.size for b in blocks) < 8
-                or sum(b.size for b in blocks) < len(prefix) * 0.9):
-            return None, "short_ocr_mismatch"
-        return end, ""
+        ordinary = (blocks and blocks[0].a == 0 and blocks[0].b == 0
+                    and max(b.size for b in blocks) >= 8
+                    and sum(b.size for b in blocks) >= len(prefix) * 0.9)
+        if ordinary:
+            return end, ""
+        terminal = end + len(prefix) == len(entry_n) and 8 <= len(prefix) <= 24
+        positional_errors = sum(a != b for a, b in zip(prefix, observed))
+        next_at = opening_n[len(prefix):]
+        if (terminal and len(observed) == len(prefix) and positional_errors <= 2
+                and next_head_n and next_at.startswith(next_head_n)):
+            return end, ""
+        return None, "short_ocr_mismatch"
 
     anchor = -1
     for k in range(min(len(tail_n), 24), 7, -1):
@@ -276,11 +286,18 @@ def continuation_from_prev(
 
     # 定位：先锚定（尾部前缀在库文中找起点），再容差对齐到尾串末尾（locate_tail）
     opening_n = None
+    next_head_n = None
     if len(tail_n) < 8:
         md = _ocr_cache_read(page, store)  # 只读有效缓存；查询/重放不提交识别任务
         if md:
             opening_n = _norm("".join(_ocr_groups(md)))
-    end, why = locate_tail(entry_n, tail_n, opening_n=opening_n)
+            next_head_n = next(
+                (_norm(item["char"]) for item in page_heads(page, store) if item.get("char")),
+                None,
+            )
+    end, why = locate_tail(
+        entry_n, tail_n, opening_n=opening_n, next_head_n=next_head_n
+    )
     if end is None:
         if why.startswith("short_"):
             reason = {
