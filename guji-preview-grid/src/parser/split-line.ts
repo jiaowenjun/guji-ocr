@@ -54,6 +54,6 @@ export function split(text: string): string[] {
   return normalizeInput(text).replace(/[\s\S]*==.*/, "").split("\n")
     .map((l) => l.replace(/　/g, "*").trim().replace(/[ \t]+/, " "))
     .join("\n").split(/\n\s*\n/).map((s) => s.trim()
-      .replace(/[。，·":：、《》]/g, "").replace(/\/\/[^\n]*/g, "").replace(/[◎〇]/g, "○"))
+      .replace(/[。，·•":：、《》]/g, "").replace(/\/\/[^\n]*/g, "").replace(/[◎〇]/g, "○"))
     .filter((s) => s.length > 0);
 }

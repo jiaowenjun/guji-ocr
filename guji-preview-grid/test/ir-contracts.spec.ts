@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, it, expect } from "vitest";
-import { importLegacyKangxiDocument } from "../src/datasets/kangxi";
+import { importLegacyKangxiDocument, parseKangxiDocument } from "../src/datasets/kangxi";
 import { foldedDocument as gj2ir } from "./helpers/folded-document";
 import { irPageToText, irToText } from "../src/ir/text";
 import { layout3, planLayoutBand } from "../src/ir/layout3";
@@ -12,6 +12,7 @@ import { KANGXI_LAYOUT } from "../src/datasets/kangxi";
 import { diagnoseLayout } from "../src/ir/layout-diagnostics";
 import { indexLayout, projectBooks, locateCell } from "../src/ir/projection";
 import { compileProfile } from "../src/ir/profile";
+import { visibleLayout } from "./helpers/visible-layout";
 import { getPageFrame } from "../src/ir/page-frame";
 import { nextGujiToken } from "../src/components/editor/guji-language";
 import { MatrixPages } from "../src/components/matrix/MatrixPages";
@@ -52,6 +53,12 @@ describe("document profile and provenance", () => {
     a.meta.profile.stripPunct.length = 0;
     expect(irToText(a)).toBe("甲，乙\n");
     expect(irToText(gj2ir("@1\n\n甲，乙\n"))).toBe("甲乙\n");
+  });
+  it("ignores the site's • interval-dot spelling exactly like · (page 454 book titles)", () => {
+    const bullet = parseKangxiDocument("@454\n\n【爾雅•釋詁】公侯，君也。\n");
+    const dot = parseKangxiDocument("@454\n\n【爾雅·釋詁】公侯，君也。\n");
+    expect(visibleLayout(bullet)).toEqual(visibleLayout(dot));
+    expect(visibleLayout(bullet).pages[0].bands.flatMap((b) => b.cells.map((c) => c.text))).not.toContain("•");
   });
 });
 

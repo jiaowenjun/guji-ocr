@@ -30,6 +30,7 @@ export const GUJI_PROFILE: IRProfile = {
   normalize: [
     ["◎", "○"],
     ["〇", "○"],
+    ["•", "·"],
   ],
 };
 
