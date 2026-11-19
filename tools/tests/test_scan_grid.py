@@ -15,6 +15,48 @@ from ocr_scan import detect_blank_cells, detect_grid, select_body_grid, slanted_
 
 
 class ScanGridTests(unittest.TestCase):
+    def test_p443_recovers_body_when_fishtail_excludes_every_frame(self):
+        fixture = Path(__file__).parent / 'fixtures' / 'kangxi-0443.jpg'
+        with Image.open(fixture) as image:
+            dark = (np.asarray(image.convert('L')) < 140).astype(float)
+        with patch('ocr_scan.slanted_body_candidates', return_value=[]):
+            with self.assertRaisesRegex(ValueError, 'No scan frame/grid evidence'):
+                detect_grid(dark)
+        detected = detect_grid(dark)
+        self.assertAlmostEqual(detected['block'][2], 1036, delta=3)
+        self.assertLess(detected['block'][2], detected['fishtail_x'] - 12)
+        self.assertEqual(len(detected['majors']), 8)
+        self.assertAlmostEqual(detected['majors'][0]['x2'], 1029, delta=3)
+        self.assertAlmostEqual(detected['majors'][-1]['x1'], 53, delta=3)
+        for major in detected['majors']:
+            self.assertTrue(110 < major['x2'] - major['x1'] < 130)
+
+    def test_fishtail_recovery_requires_a_body_rule_left_of_the_tail(self):
+        for body_rule, tail_left in ((True, 1052), (False, 1052), (True, 1025)):
+            with self.subTest(body_rule=body_rule, tail_left=tail_left):
+                image = Image.new('L', (1130, 1665), 255)
+                draw = ImageDraw.Draw(image)
+                for line in ((78, 116, 78, 1540), (1108, 116, 1108, 1540),
+                             (78, 116, 1108, 116), (78, 1540, 1108, 1540)):
+                    draw.line(line, fill=0, width=8)
+                if body_rule:
+                    draw.line((1026, 120, 1040, 1536), fill=0, width=2)
+                for col in range(17):
+                    for row in range(24):
+                        x, y = 108 + 58 * col, 138 + 58 * row
+                        draw.rectangle((x, y, x + 25, y + 12), fill=0)
+                draw.rectangle((tail_left, 180, 1094, 520), fill=0)
+                dark = (np.asarray(image) < 140).astype(float)
+                if body_rule and tail_left == 1052:
+                    result = detect_grid(dark)
+                    self.assertAlmostEqual(result['block'][2], 1034, delta=3)
+                    self.assertEqual(len(result['majors']), 8)
+                else:
+                    # Neither the original spine frame nor a recovered rule
+                    # on the wrong side of the fishtail is a usable body frame.
+                    with self.assertRaisesRegex(ValueError, 'No scan frame/grid evidence'):
+                        detect_grid(dark)
+
     def test_slanted_body_rule_recovers_grid_from_spine_frame(self):
         # @405: the thin body rule slopes across x=1026..1040, so no fixed
         # column reaches 50% ink. Only the outer spine frame was detected.

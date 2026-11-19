@@ -119,17 +119,28 @@ def slanted_body_candidates(dark, box, fit):
 def detect_grid(dark):
     """Use frame evidence only, explicitly exclude the spine/fishtail strip."""
     height, width = dark.shape
-    candidates = segmentation.frame_candidates(dark, 960)
+    raw_candidates = segmentation.frame_candidates(dark, 960)
     tail = segmentation.fishtail_x(dark, width*.55)
-    if tail is not None: candidates = [b for b in candidates if b[2] < tail-12]
+    candidates = [b for b in raw_candidates if tail is None or b[2] < tail-12]
     fits = [(b, segmentation._fit_for_block(dark, b, segmentation.PITCH_RANGE)) for b in candidates]
     fits = [(b, f) for b, f in fits if f]
+    if fits:
+        recovery_seeds = [select_body_grid(fits)]
+    else:
+        # @443: the thin body rule slopes, leaving only spine frames, all
+        # excluded by the fishtail. Use those frames solely to search inward;
+        # they must never become accepted fits without a measured body rule.
+        recovery_seeds = [(b, segmentation._fit_for_block(dark, b, segmentation.PITCH_RANGE))
+                          for b in raw_candidates if b not in candidates]
+        recovery_seeds = [(b, f) for b, f in recovery_seeds if f]
+    for box, fit in recovery_seeds:
+        for candidate in slanted_body_candidates(dark, box, fit):
+            if tail is not None and candidate[2] >= tail-12:
+                continue
+            recovered = segmentation._fit_for_block(dark, candidate, segmentation.PITCH_RANGE)
+            if recovered and 0 <= recovered['lines'][-1] <= recovered['pitch'] * .5:
+                fits.append((candidate, recovered))
     if not fits: raise ValueError('No scan frame/grid evidence; provide a reviewed page with supported layout')
-    box, fit = select_body_grid(fits)
-    for candidate in slanted_body_candidates(dark, box, fit):
-        recovered = segmentation._fit_for_block(dark, candidate, segmentation.PITCH_RANGE)
-        if recovered and 0 <= recovered['lines'][-1] <= recovered['pitch'] * .5:
-            fits.append((candidate, recovered))
     box, fit = select_body_grid(fits)
     # The old locator may pick the footer as bottom; locate long horizontal frame strokes.
     left, _, right, _ = box
