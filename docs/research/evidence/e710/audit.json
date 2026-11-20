@@ -1,0 +1,272 @@
+{
+  "captured_at": "2026-11-20T14:14:04+08:00",
+  "page": 478,
+  "headword": "倝",
+  "headword_codepoint": "U+501D",
+  "headword_order": 1,
+  "context": "本作〈𠦝一〉，俗作𣉙，別作𧹳。",
+  "target_ids": "⿰𠦝一",
+  "unicode_status": "independent-codepoint-not-confirmed",
+  "distinction": "CHISE lists every encoded ⿰𠦝X (彡/文/朋/束/乚/人/戈/月/韋/韦) and none pairs 𠦝 with 一. 倝 U+501D itself is ⿰𠦝人; the 本作 form replaces 人 with 一. The station encodes 𠦝 alone at its own PUA E854 and still writes two characters.",
+  "site_record": {
+    "sword": "倝",
+    "unicode": "U+501D",
+    "pua_other": [
+      "U+E854"
+    ],
+    "context": "本作〈一〉，俗",
+    "context_codepoints": [
+      "U+672C",
+      "U+4F5C",
+      "U+3008",
+      "U+E854",
+      "U+4E00",
+      "U+3009",
+      "U+FF0C",
+      "U+4FD7"
+    ],
+    "note": "E854 is the station slot for 𠦝 alone (plane0 sync band E815-E864, 3 contours, bbox (50,-128,626,851), 𠦝-shaped); the appended 一 makes the form a two-character transcription, so no single-codepoint rendering exists on the site either."
+  },
+  "source": {
+    "page_path": "/Volumes/WD-2T/guji-ocr/raw/kangxizidian/pages/0478.jpg",
+    "page_sha256": "a358d1f7756b17bb55a268bfbd2cad9e37ff4b3a7a4e93d99e851b4e709f1f34",
+    "screenshot": "tools/dataset/font-sources/e710-scan-original.png",
+    "screenshot_sha256": "a0ebf81e3db61962f9786c21636dfb6376470fcd30ea169806983d9bd7d77787",
+    "screenshot_note": "User-provided site-zoom crop (crisp, unsqueezed); archived as scan source per the E708 precedent, no raw-page crop taken for this slot.",
+    "mask": "tools/dataset/font-sources/e710-scan-mask.png",
+    "mask_sha256": "35fe7ed0eba31e859101aecfe84a4bc79a86fa59b27ad13fcb5c987d392cbb7b",
+    "mask_method": "grayscale < 128, discard connected ink components smaller than 8 pixels"
+  },
+  "fonts_before": [
+    {
+      "path": "guji-preview-grid/public/fonts/guji-plane0.ttf",
+      "sha256": "936f79433f8624b0e69cd93ab13712b14c72bd59679026ea95b73112f48dcba8",
+      "bytes": 17254744,
+      "cmap": 30713,
+      "glyph_order": 30809,
+      "contains_E710": false,
+      "unmapped_count": 96,
+      "format14": false,
+      "gsub_features": [
+        "vert"
+      ]
+    },
+    {
+      "path": "guji-preview-grid/public/fonts/guji-plane2.ttf",
+      "sha256": "80df094a2e63091b222706696a8b244c9dba45219af866226a097d0fbb2bf28d",
+      "bytes": 42717516,
+      "cmap": 61228,
+      "glyph_order": 61229,
+      "contains_E710": false,
+      "unmapped_count": 1,
+      "format14": false,
+      "gsub_features": []
+    },
+    {
+      "path": "guji-preview-grid/public/fonts/guji-planef.ttf",
+      "sha256": "cfeb8527cfc75fe244b1c773056ed8e8896e67918f368999d12f6bd86dee323b",
+      "bytes": 26189728,
+      "cmap": 42620,
+      "glyph_order": 42621,
+      "contains_E710": false,
+      "unmapped_count": 1,
+      "format14": false,
+      "gsub_features": []
+    },
+    {
+      "path": "guji-preview-grid/public/fonts/guji-large.ttf",
+      "sha256": "447a77da5078b9654499c954df651d821b7e1a284606022fa03eaa69d4f8f199",
+      "bytes": 46625740,
+      "cmap": 49410,
+      "glyph_order": 49413,
+      "contains_E710": false,
+      "unmapped_count": 3,
+      "format14": false,
+      "gsub_features": [
+        "vert"
+      ]
+    }
+  ],
+  "ids_search": {
+    "queries": [
+      "⿰𠦝一"
+    ],
+    "sources": [
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Basic.txt",
+        "sha256": "2ee31dafadcc7985ae7b29d854bceb906ef587a4feeb4ea3ec1469c7d69428bf",
+        "entries": 20992,
+        "target_matches": [],
+        "zao_family": [
+          "U+501D\t倝\t⿰𠦝人"
+        ]
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Compat-Supplement.txt",
+        "sha256": "c1d265a791a24a8b4d7d963cb7cf31a6a3b1b234b630477d3f27798c9ccab930",
+        "entries": 542,
+        "target_matches": [],
+        "zao_family": []
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Compat.txt",
+        "sha256": "7683730c8213ecb3a2b3e85daa6b7b913c43b44a81a9af7900671bca4d091391",
+        "entries": 355,
+        "target_matches": [],
+        "zao_family": []
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-A.txt",
+        "sha256": "d58c5b21054d1ba07fd2621f0892b36c088009d7890b136f42f8c5a5af21f495",
+        "entries": 6604,
+        "target_matches": [],
+        "zao_family": []
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-B-1.txt",
+        "sha256": "3e847635a97e618e447ec25d143c3827640ab9e30e7ff6b58f078009fef113a1",
+        "entries": 8192,
+        "target_matches": [],
+        "zao_family": [
+          "U-0002099D\t𠦝\t⿴⿱十十日"
+        ]
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-B-2.txt",
+        "sha256": "551150fa2bd8886c17b5af40ad1d7876026d477349e7d636b0fbfc7306d26b81",
+        "entries": 8192,
+        "target_matches": [],
+        "zao_family": []
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-B-3.txt",
+        "sha256": "33a51a09a18d06fb666e72f13d3854c41a1d06207f0f0c4ac43f3687a0bea6fb",
+        "entries": 8192,
+        "target_matches": [],
+        "zao_family": []
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-B-4.txt",
+        "sha256": "f68fac9ed5f86953b574eacae17be49c57f270caa4a590339ba4d3f668f6596b",
+        "entries": 8192,
+        "target_matches": [],
+        "zao_family": []
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-B-5.txt",
+        "sha256": "21cf28e9e4aeb3d98e8c7739899270b13a6d080a2f65f0d4287710d71e72901a",
+        "entries": 8192,
+        "target_matches": [],
+        "zao_family": []
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-B-6.txt",
+        "sha256": "a732d18a27f418cb4610b7a1e1674487485111734cbd131220caa1baf23b630a",
+        "entries": 1760,
+        "target_matches": [],
+        "zao_family": []
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-C.txt",
+        "sha256": "74dcff528d54508225e587384f132cac508b97a866969ebbeea848a030910225",
+        "entries": 4160,
+        "target_matches": [],
+        "zao_family": []
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-D.txt",
+        "sha256": "c300f9ace1ffd9526fe3c17a12c94b3823e1a97cd507bd4b85b784bf269a3234",
+        "entries": 223,
+        "target_matches": [],
+        "zao_family": []
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-E.txt",
+        "sha256": "aab22be5a0ba07d3830f37f344b08950c566286171539c08ce6d0d0a5f3a635b",
+        "entries": 5774,
+        "target_matches": [],
+        "zao_family": []
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-F.txt",
+        "sha256": "dfede4731416ad43a084d0ecdc86562607e9057735e9ac43114870fa5dbf9f5e",
+        "entries": 7473,
+        "target_matches": [],
+        "zao_family": []
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-G.txt",
+        "sha256": "1f8f8cc7d911ccf86c196ce4de43d7e4ca03689ee83d4e3e380120eac336c64d",
+        "entries": 4939,
+        "target_matches": [],
+        "zao_family": []
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-H.txt",
+        "sha256": "e239d31373777a953c755ba99ae7a502a33823bddd0fc9af4e61e3cd8f209e0c",
+        "entries": 4192,
+        "target_matches": [],
+        "zao_family": []
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-I.txt",
+        "sha256": "a84694c801290033b7e3f79303c71fcdcae595afc3a47481496dc051832369d0",
+        "entries": 622,
+        "target_matches": [],
+        "zao_family": []
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-J.txt",
+        "sha256": "0910def2870d1e4cb38c4064f060de5efc48bb73fee6d5f7447657fa121fa260",
+        "entries": 4298,
+        "target_matches": [],
+        "zao_family": []
+      },
+      {
+        "path": "var/font-audit/0373/babelstone-ids.txt",
+        "sha256": "cc2a0a97e6a51ed6ebe59870ef2af66e83f3c3c27387d79b4441bb2d791d78b1",
+        "entries": 97680,
+        "target_matches": [],
+        "zao_family": [
+          "U+501D\t倝\t^⿰𠦝人$(GTJKP)",
+          "U+2099D\t𠦝\t^⿱十早$(TJV)"
+        ]
+      },
+      {
+        "path": "var/font-audit/0367/cjkvi-ids.txt",
+        "sha256": "bfc70a8c09f9f5616ebf0543bd6681e67314e9f7ae2307e5ae8c6f15bdc5c6a6",
+        "entries": 88937,
+        "target_matches": [],
+        "zao_family": [
+          "U+501D\t倝\t⿰𠦝人",
+          "U+2099D\t𠦝\t⿱十早"
+        ]
+      }
+    ]
+  },
+  "shape_search": {
+    "counts": {
+      "guji-plane0.ttf": 29002,
+      "guji-plane2.ttf": 61119,
+      "guji-planef.ttf": 42520
+    },
+    "reviewed": "Top 48 of each small font via figures/e710/font-candidates.png; nearest misses are the 𠦝-family siblings (戟/朝 class), none with a bare right horizontal.",
+    "result": "No matching target found",
+    "limitation": "Candidate ranking plus finite visual review; not manual examination of every glyph or proof of global Unicode absence."
+  },
+  "calibration": "chamfer-calibration.json: composition 4.09 clearly beats wrong-right 倝 5.50 / 朝 5.76 / left-only 6.16 / right-only 12.84; the crisp mask makes the metric discriminative here, gate 4.6.",
+  "allocation": {
+    "cp": "E710",
+    "note": "E701, E704-E709 occupied; E702/E703 reserved historical slots; E710 absent from all four cmap tables."
+  },
+  "annotation_before": {
+    "path": "kangxi-gold/annotations/0478.gj",
+    "sha256": "cc6e0518009f7325f4e9185ab7c7d9e1a6848b9148783d8ab1228dec567f4e4c",
+    "tracked": false,
+    "target_occurrences": 1
+  },
+  "rollback": {
+    "git_head": "74db71413b2f25749a2018732d516ccef3d3e9ba",
+    "font_git_blob": "c4c7027380907d9f26094ca1227b55fc8fabe68c"
+  }
+}

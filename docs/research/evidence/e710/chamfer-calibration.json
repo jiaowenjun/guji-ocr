@@ -1,0 +1,16 @@
+{
+  "checked_at": "2026-11-20T14:10:08+08:00",
+  "method": "norm_ink128 and PIL220 at (44,44), matching patcher; temporary diagnostic slots in memory only",
+  "input": "tools/dataset/font-sources/e710-scan-mask.png",
+  "input_sha256": "35fe7ed0eba31e859101aecfe84a4bc79a86fa59b27ad13fcb5c987d392cbb7b",
+  "provisional_gate": 3.5,
+  "scores": {
+    "composition": 4.090660136691681,
+    "left-only": 6.161377434929408,
+    "right-only": 12.843501191569949,
+    "wrong-人-倝": 5.500559236117443,
+    "wrong-月-朝": 5.763539419492806
+  },
+  "glyph_sha256": "268a51a9306ec9ad955583c869ee3b8853cefedcd6ed26327e33917bb6ea562c",
+  "decision": "The mask is a crisp site-zoom screenshot (ink aspect 0.94 vs composition 0.98), so unlike E709 the scan distance should discriminate: the composition must clearly beat the wrong-right siblings 倝/朝. Identity still rests on the site paragraph 〈E854一〉, the user transcription and stroke-level review."
+}

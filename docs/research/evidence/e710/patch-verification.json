@@ -1,0 +1,112 @@
+{
+  "checked_at": "2026-11-20T14:16:18+08:00",
+  "operation": {
+    "version": 1,
+    "at": "2026-11-20T14:14:52+08:00",
+    "operation": "insert",
+    "results": [
+      {
+        "font": "guji-preview-grid/public/fonts/guji-plane0.ttf",
+        "scheme": "compose",
+        "source": "tools/dataset/font-sources/e710-songti-v1.json",
+        "sha256_before": "936f79433f8624b0e69cd93ab13712b14c72bd59679026ea95b73112f48dcba8",
+        "sha256_after": "80da57fa51b66fc3c09ee690326a0967e06da76dd00ef660d25feec06afcbb45",
+        "bytes_before": 17254744,
+        "bytes_after": 17255056,
+        "chamfer": 4.091,
+        "chamfer_gate": 4.6,
+        "cmap_before": 30713,
+        "cmap_after": 30714,
+        "other_glyphs_and_metrics_unchanged": true,
+        "backup": "var/unencoded/kangxi-unencoded/font-backups/guji-plane0.ttf.936f79433f8624b0e69cd93ab13712b14c72bd59679026ea95b73112f48dcba8.ttf"
+      }
+    ],
+    "cache_version": "e701-4-e704-1-e705-1-e706-1-e707-3-e708-1-e709-1-e710-1"
+  },
+  "final_font": {
+    "path": "guji-preview-grid/public/fonts/guji-plane0.ttf",
+    "sha256": "80da57fa51b66fc3c09ee690326a0967e06da76dd00ef660d25feec06afcbb45",
+    "bytes": 17255056,
+    "cmap": 30714,
+    "glyph_order": 30810,
+    "contains_E710": true,
+    "unmapped_count": 96,
+    "format14": false,
+    "gsub_features": [
+      "vert"
+    ]
+  },
+  "final_glyph": {
+    "name": "uniE710",
+    "contours": 4,
+    "points": 100,
+    "bbox": [
+      44,
+      -130,
+      1003,
+      848
+    ],
+    "hmtx": [
+      1024,
+      44
+    ],
+    "vmtx": [
+      1024,
+      22
+    ],
+    "compiled_sha256": "268a51a9306ec9ad955583c869ee3b8853cefedcd6ed26327e33917bb6ea562c"
+  },
+  "preserved_glyphs": 30809,
+  "all_previous_glyphs_and_metrics_unchanged": true,
+  "other_fonts": [
+    {
+      "path": "guji-preview-grid/public/fonts/guji-plane2.ttf",
+      "sha256": "80df094a2e63091b222706696a8b244c9dba45219af866226a097d0fbb2bf28d",
+      "bytes": 42717516,
+      "cmap": 61228,
+      "glyph_order": 61229,
+      "contains_E710": false,
+      "unmapped_count": 1,
+      "format14": false,
+      "gsub_features": []
+    },
+    {
+      "path": "guji-preview-grid/public/fonts/guji-planef.ttf",
+      "sha256": "cfeb8527cfc75fe244b1c773056ed8e8896e67918f368999d12f6bd86dee323b",
+      "bytes": 26189728,
+      "cmap": 42620,
+      "glyph_order": 42621,
+      "contains_E710": false,
+      "unmapped_count": 1,
+      "format14": false,
+      "gsub_features": []
+    },
+    {
+      "path": "guji-preview-grid/public/fonts/guji-large.ttf",
+      "sha256": "447a77da5078b9654499c954df651d821b7e1a284606022fa03eaa69d4f8f199",
+      "bytes": 46625740,
+      "cmap": 49410,
+      "glyph_order": 49413,
+      "contains_E710": false,
+      "unmapped_count": 3,
+      "format14": false,
+      "gsub_features": [
+        "vert"
+      ]
+    }
+  ],
+  "complete_donor_contours": true,
+  "component_gap_units": 16.35714285714289,
+  "non_overlap": "Disjoint x bounds with at least 16 units of gap past the 十字臂 tip; the bar starts where the woodblock layout puts it, exactly as the original rule.",
+  "rebuild_matches_production": true,
+  "corruption_rejected": [
+    "donor-hash-671D",
+    "donor-hash-793A",
+    "frozen-outline"
+  ],
+  "registry_shared_hashes_match": true,
+  "rollback": {
+    "git_head": "74db71413b2f25749a2018732d516ccef3d3e9ba",
+    "font_git_blob": "c4c7027380907d9f26094ca1227b55fc8fabe68c"
+  }
+}

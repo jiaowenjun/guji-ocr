@@ -18,7 +18,7 @@
         "guji-preview-grid/public/fonts/guji-plane0.ttf"
       ],
       "sha256_after": {
-        "guji-plane0.ttf": "936f79433f8624b0e69cd93ab13712b14c72bd59679026ea95b73112f48dcba8"
+        "guji-plane0.ttf": "80da57fa51b66fc3c09ee690326a0967e06da76dd00ef660d25feec06afcbb45"
       },
       "history": [
         {
@@ -138,7 +138,7 @@
         "guji-preview-grid/public/fonts/guji-plane0.ttf"
       ],
       "sha256_after": {
-        "guji-plane0.ttf": "936f79433f8624b0e69cd93ab13712b14c72bd59679026ea95b73112f48dcba8"
+        "guji-plane0.ttf": "80da57fa51b66fc3c09ee690326a0967e06da76dd00ef660d25feec06afcbb45"
       },
       "history": [
         {
@@ -251,7 +251,7 @@
         "guji-plane0.ttf": 1
       },
       "sha256_after": {
-        "guji-plane0.ttf": "936f79433f8624b0e69cd93ab13712b14c72bd59679026ea95b73112f48dcba8"
+        "guji-plane0.ttf": "80da57fa51b66fc3c09ee690326a0967e06da76dd00ef660d25feec06afcbb45"
       },
       "patched_at": "2026-11-18"
     },
@@ -270,7 +270,7 @@
         "guji-preview-grid/public/fonts/guji-plane0.ttf"
       ],
       "sha256_after": {
-        "guji-plane0.ttf": "936f79433f8624b0e69cd93ab13712b14c72bd59679026ea95b73112f48dcba8"
+        "guji-plane0.ttf": "80da57fa51b66fc3c09ee690326a0967e06da76dd00ef660d25feec06afcbb45"
       },
       "history": [
         {
@@ -329,7 +329,7 @@
         "guji-preview-grid/public/fonts/guji-plane0.ttf"
       ],
       "sha256_after": {
-        "guji-plane0.ttf": "936f79433f8624b0e69cd93ab13712b14c72bd59679026ea95b73112f48dcba8"
+        "guji-plane0.ttf": "80da57fa51b66fc3c09ee690326a0967e06da76dd00ef660d25feec06afcbb45"
       },
       "history": [
         {
@@ -441,7 +441,7 @@
         "guji-preview-grid/public/fonts/guji-plane0.ttf"
       ],
       "sha256_after": {
-        "guji-plane0.ttf": "936f79433f8624b0e69cd93ab13712b14c72bd59679026ea95b73112f48dcba8"
+        "guji-plane0.ttf": "80da57fa51b66fc3c09ee690326a0967e06da76dd00ef660d25feec06afcbb45"
       },
       "history": [
         {
@@ -540,7 +540,7 @@
       "report": "docs/research/2026-11-20-U+E709亻亨补录报告.md",
       "allocation_note": "E702、E703为历史试验保留位；E709是E708后的首个未占用正式字位。",
       "sha256_after": {
-        "guji-plane0.ttf": "936f79433f8624b0e69cd93ab13712b14c72bd59679026ea95b73112f48dcba8"
+        "guji-plane0.ttf": "80da57fa51b66fc3c09ee690326a0967e06da76dd00ef660d25feec06afcbb45"
       },
       "patched_at": "2026-11-20",
       "history": [
@@ -566,6 +566,91 @@
             }
           ],
           "cache_version": "e701-4-e704-1-e705-1-e706-1-e707-3-e708-1-e709-1"
+        }
+      ]
+    },
+    {
+      "cp": "E710",
+      "char": "⿰𠦝一",
+      "description": "康熙 @478 倝 U+501D 条「本作〈𠦝一〉，俗作𣉙，別作𧹳」的本作形；CHISE 无 ⿰𠦝一 已编码字（倝本身是 ⿰𠦝人）。尚未确认独立标准 Unicode 码位。",
+      "first_seen": "kangxi-gold @478 倝条，子集中人部",
+      "scheme": "compose",
+      "version": 1,
+      "source": "tools/dataset/font-sources/e710-songti-v1.json",
+      "source_note": "左𠦝取 plane0 朝 U+671D 的完整左半（连体框第1轮廓＋日内两横第4、5轮廓，恒等变换）；右一取 plane0 示 U+793A 的顶部短横（第3轮廓，x向缩至0.637保持木刻比例、y向保持）；两部件均并入全局-2竖向平移使 yMax=848 继承锚字竖排原点。短横起点=十字臂端+16单位，与原刻布局法则一致。",
+      "verify_image": "tools/dataset/font-sources/e710-scan-mask.png",
+      "verify_note": "用户提供站方缩放截图（清晰无挤压，墨迹宽高比0.94），灰度阈值128、去小于8像素孤立墨点；chamfer 具判别力（组合4.09 vs 倝5.50/朝5.76），闸4.6。",
+      "fonts": [
+        "guji-preview-grid/public/fonts/guji-plane0.ttf"
+      ],
+      "font_versions": {
+        "guji-plane0.ttf": 1
+      },
+      "usage": "small-only",
+      "usage_note": "仅用于478页小字正文，不写大字、plane2、planeF或系统字体；不得替换标准U+501D倝、U+671D朝、U+2099D𠦝或U+4E00一。",
+      "unicode_status": "independent-codepoint-not-confirmed",
+      "station_record": "站方以〈E854一〉两字符转写本作形：E854=站方为𠦝单字分配的PUA槽（plane0的E815-E864站方同步带内、3轮廓bbox(50,-128,626,851)与𠦝同构），整字仍无单一编码。回迁或复用时不得把E854当作整字。",
+      "related_characters": [
+        {
+          "char": "倝",
+          "cp": "501D",
+          "relation": "来源字头；CHISE IDS ⿰𠦝人，本作形以一代人"
+        },
+        {
+          "char": "朝",
+          "cp": "671D",
+          "relation": "左𠦝供体（plane0完整左半）"
+        },
+        {
+          "char": "示",
+          "cp": "793A",
+          "relation": "右短横供体（顶部第3轮廓）"
+        },
+        {
+          "char": "𠦝",
+          "cp": "2099D",
+          "relation": "左部抽象部件，plane2在库、站方E854同步槽同构；非目标整字"
+        },
+        {
+          "char": "𣉙",
+          "cp": "23259",
+          "relation": "同条俗作形，plane2在库，无需补录"
+        },
+        {
+          "char": "𧹳",
+          "cp": "27E73",
+          "relation": "同条別作形，plane2在库，无需补录"
+        }
+      ],
+      "report": "docs/research/2026-11-20-U+E710𠦝一补录报告.md",
+      "allocation_note": "E702、E703为历史试验保留位；E710是E709后的首个未占用正式字位。",
+      "sha256_after": {
+        "guji-plane0.ttf": "80da57fa51b66fc3c09ee690326a0967e06da76dd00ef660d25feec06afcbb45"
+      },
+      "patched_at": "2026-11-20",
+      "history": [
+        {
+          "version": 1,
+          "at": "2026-11-20T14:14:52+08:00",
+          "operation": "insert",
+          "results": [
+            {
+              "font": "guji-preview-grid/public/fonts/guji-plane0.ttf",
+              "scheme": "compose",
+              "source": "tools/dataset/font-sources/e710-songti-v1.json",
+              "sha256_before": "936f79433f8624b0e69cd93ab13712b14c72bd59679026ea95b73112f48dcba8",
+              "sha256_after": "80da57fa51b66fc3c09ee690326a0967e06da76dd00ef660d25feec06afcbb45",
+              "bytes_before": 17254744,
+              "bytes_after": 17255056,
+              "chamfer": 4.091,
+              "chamfer_gate": 4.6,
+              "cmap_before": 30713,
+              "cmap_after": 30714,
+              "other_glyphs_and_metrics_unchanged": true,
+              "backup": "var/unencoded/kangxi-unencoded/font-backups/guji-plane0.ttf.936f79433f8624b0e69cd93ab13712b14c72bd59679026ea95b73112f48dcba8.ttf"
+            }
+          ],
+          "cache_version": "e701-4-e704-1-e705-1-e706-1-e707-3-e708-1-e709-1-e710-1"
         }
       ]
     }

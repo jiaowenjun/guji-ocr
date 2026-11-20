@@ -1,5 +1,7 @@
 # 资料核查证据说明
 
+新增字体证据：**[E710〈𠦝一〉补录报告](../2026-11-20-U+E710𠦝一补录报告.md)**（@478 倝条「本作〈𠦝一〉」），对应 [补前身份／字体审计](e710/audit.json)（含站方 E854=𠦝单字槽、整字两字符转写的记录）、[候选检索](e710/font-search.json)、[干跑](e710/dry-run.json)、[扫描距离校准](e710/chamfer-calibration.json)（清晰截图恢复判别力）、[正式写入／完整供体／全量保护](e710/patch-verification.json)、[478 页单点替换](e710/annotation.json)、[浏览器渲染与 canvas 墨迹探针](e710/browser.json)、[工程回归](e710/engineering.json)。左部取朝的完整𠦝，右部取示的顶部短横；倝（⿰𠦝人）、朝、𠦝整字均不能代替目标。
+
 新增字体证据：**[E709〈亻亨〉补录报告](../2026-11-20-U+E709亻亨补录报告.md)**（@471 倀条「倀〈亻亨〉，疎率也」），对应 [补前身份／字体审计](e709/audit.json)（含站方库 pua_other=[] 硬证据）、[候选检索](e709/font-search.json)、[干跑](e709/dry-run.json)、[扫描距离校准（同页真值带）](e709/chamfer-calibration.json)、[正式写入／完整供体／全量保护](e709/patch-verification.json)、[471 页单点替换](e709/annotation.json)、[浏览器渲染与 canvas 墨迹探针](e709/browser.json)、[工程回归](e709/engineering.json)。左部仅取𠆼的完整亻，右部取悙的完整右亨；无标准码位（WS2024 UK-30044），停形经笔画级排除。
 
 新增字体证据：**[E708〈彳𢾕〉补录报告](../2026-11-19-U+E708彳𢾕补录报告.md)**（@504 傲条），对应 [补前身份／字体审计](e708/audit.json)、[候选检索](e708/font-search.json)、[干跑](e708/dry-run.json)、[扫描距离反例](e708/chamfer-calibration.json)、[正式写入／完整供体／全量保护](e708/patch-verification.json)、[504 页单点替换](e708/annotation.json)、[实际字体与截图](e708/browser.json)。左部仅取𢕟的完整彳，右部取完整𢾕；上部出形不以敖形替代。
