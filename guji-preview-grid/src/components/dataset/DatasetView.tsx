@@ -274,19 +274,21 @@ export function DatasetView({
     return () => window.removeEventListener("keydown", onKey);
   }, [save, dirty, busy]);
 
-  /** 格式化（一键）：全角及行首半角空格逐个→*、行内半角空格串→*、正文后尾空白清除、◎→〇、全角括号/速记归一、
-   *  #(X 补右括号、同行重复 # 合并、行首逗号回贴前行大字、自动流式＋均式折行，保留大小字边界与显式 $ 换列。
+  /** 格式化（一键）：<U+xxxx>编号转写为实际字符、全角及行首半角空格逐个→*、行内半角空格串→*、正文后尾空白清除、
+   *  ◎→〇、全角括号/速记归一、#(X 补右括号、同行重复 # 合并、行首逗号回贴前行大字、自动流式＋均式折行，
+   *  保留大小字边界与显式 $ 换列。
    *  格式化即保存（2026-11-15）：缓冲与磁盘同形，省去手动「保存回数据集」；
    *  保存失败时缓冲保持未保存态，可 ⌘S 重试 */
   const formatText = () => {
     if (page === undefined || text === undefined) return;
-    const { text: formatted, spaces, circles, dots } = formatDocument(text, config?.layout);
+    const { text: formatted, spaces, circles, dots, codepoints } = formatDocument(text, config?.layout);
     if (formatted === text) {
       toast.success(`@${page} 已是标准写法，无需格式化`);
       return;
     }
     setEdits((prev) => ({ ...prev, [page]: formatted }));
     const detail = [
+      codepoints > 0 ? `<U+xxxx>→字符 ${codepoints} 处` : "",
       spaces > 0 ? `占位空格→* ${spaces} 处` : "",
       circles > 0 ? `◎→〇 ${circles} 处` : "",
       dots > 0 ? `•→· ${dots} 处` : "",

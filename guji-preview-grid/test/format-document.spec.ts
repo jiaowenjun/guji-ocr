@@ -3,6 +3,7 @@ import { readFileSync, readdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { formatDocument } from "../src/components/dataset/format-document";
+import { formatCodepoints } from "../src/components/dataset/format-codepoints";
 import { parseKangxiDocument as gj2ir } from "../src/datasets/kangxi";
 import type { IRDocument } from "../src/ir/types";
 import { layout3 } from "../src/ir/layout3";
@@ -72,12 +73,30 @@ describe("formatDocument preserves type-size scopes", () => {
   });
   it("reports normalization counts and is idempotent", () => {
     const r = formatDocument("@2\n\n甲　乙◎丙　丁•戊\n");
-    expect(r).toEqual({ text: "@2\n\n甲*乙〇\n丙*丁·戊\n", spaces: 2, circles: 1, dots: 1 });
-    expect(formatDocument(r.text)).toEqual({ text: r.text, spaces: 0, circles: 0, dots: 0 });
+    expect(r).toEqual({ text: "@2\n\n甲*乙〇\n丙*丁·戊\n", spaces: 2, circles: 1, dots: 1, codepoints: 0 });
+    expect(formatDocument(r.text)).toEqual({ text: r.text, spaces: 0, circles: 0, dots: 0, codepoints: 0 });
+  });
+  it("converts <U+xxxx> notation to the actual character (page 504 E708)", () => {
+    const e708 = String.fromCodePoint(0xe708);
+    // 3 格小字（。随末格）按均式折 2+1：本作｜E708。两列，与「甲乙丙。」同形
+    expect(fmt("@504\n\n本作<U+E708>。\n")).toBe(`@504\n\n本作\n${e708}。\n`);
+    expect(fmt("@504\n\n本作<U+e708>。\n")).toBe(`@504\n\n本作\n${e708}。\n`);
+    // 扩展平面 5 位码位同样支持（@398 大字补录 U+2BD6E）
+    expect(formatCodepoints("偏旁<U+2BD6E>形")).toEqual({ text: `偏旁${String.fromCodePoint(0x2bd6e)}形`, count: 1 });
+    const r = formatDocument("@504\n\n【荀子·勸學篇】不問而告謂之傲。*本作<U+E708>。\n");
+    expect(r.text).toContain(`本作${e708}。`);
+    expect(r.text).not.toContain("<U+");
+    expect(r.codepoints).toBe(1);
+    expect(formatDocument(r.text).codepoints).toBe(0);
+  });
+  it("leaves invalid <U+xxxx> notation and comments untouched", () => {
+    // 代理区/超平面/控制符破坏行结构或非法；3 位编号不合语法；注释区一律保留
+    const src = "@1\n<U+D800><U+110000><U+001A><U+123>甲 // 注<U+E708>释\n// 整行注<U+E708>释\n";
+    expect(formatCodepoints(src)).toEqual({ text: src, count: 0 });
   });
 });
 
-describe("formatDocument 全语料不变量：字符流/大字/overlay/带数不变（◎→〇 调整）", () => {
+describe("formatDocument 全语料不变量：字符流/大字/overlay/带数不变（◎→〇、<U+xxxx>→字符 调整）", () => {
   const dir = fileURLToPath(new URL("../../kangxi-gold/annotations", import.meta.url));
   const files = readdirSync(dir).filter((f) => f.endsWith(".gj"));
   const corpus: Array<[string, string]> = [
@@ -105,12 +124,14 @@ describe("formatDocument 全语料不变量：字符流/大字/overlay/带数不
   const overlayKinds = (doc: IRDocument) => JSON.stringify(doc.overlays.map((o) => o.kind).sort());
   // ◎→〇 是 1 BMP 码元的等价替换（GUJI_PROFILE 同归 ○），比对前对基准做同样替换
   const circlesAdjusted = (s: string) => s.split("◎").join("〇");
+  // <U+xxxx>→字符 是格式化的既定转写（0504 草稿 *本作<U+E708>。）：基准同样转写后再比对
+  const unescapeCp = (s: string) => formatCodepoints(s).text;
 
   it("语料文件非空", () => expect(files.length).toBeGreaterThan(0));
 
   for (const [name, src] of corpus) {
     it(`${name}`, () => {
-      const a = gj2ir(src);
+      const a = gj2ir(unescapeCp(src));
       const b = gj2ir(fmt(src));
       expect(visibleLayout(b)).toEqual(visibleLayout(a));
       expect(charStream(b)).toBe(circlesAdjusted(charStream(a)));
