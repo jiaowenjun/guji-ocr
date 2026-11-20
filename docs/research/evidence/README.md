@@ -1,5 +1,7 @@
 # 资料核查证据说明
 
+新增字体证据：**[E713〈忄棠〉补录报告](../2026-11-20-U+E713忄棠补录报告.md)**（@519 㒉条「同惝。或作〈忄棠〉。」），对应 [补前身份／字体审计](e713/audit.json)（真实字符描述式：忄棠均为 BMP 常规字）、[候选检索](e713/font-search.json)、[干跑](e713/dry-run.json)、[扫描距离校准（清晰截图具判别力）](e713/chamfer-calibration.json)、[正式写入／完整供体／全量保护](e713/patch-verification.json)、[519 页单点替换](e713/annotation.json)、[浏览器渲染与 canvas 墨迹探针（含缓存戳先行教训）](e713/browser.json)、[工程回归](e713/engineering.json)。左取惝的完整忄，右取㒉的完整棠部件形。
+
 新增字体证据：**[E712〈亻𫇮〉补录报告](../2026-11-20-U+E712亻𫇮补录报告.md)**（@512 𠌾条「或作〈亻𫇮〉」），对应 [补前身份／字体审计](e712/audit.json)（**首例站方转录分歧**：站方懒代𠌾，金标+截图定形）、[候选检索](e712/font-search.json)、[干跑](e712/dry-run.json)、[扫描距离校准（短亻形差存档）](e712/chamfer-calibration.json)、[正式写入／完整供体／全量保护](e712/patch-verification.json)、[512 页单点替换](e712/annotation.json)、[浏览器渲染与 canvas 墨迹探针](e712/browser.json)、[工程回归含 2 项失败的归因分析](e712/engineering.json)。首例双外部供体：𠌾 的完整亻＋plane2 完整𫇮。
 
 新增字体证据：**[E711〈亻𠨟〉补录报告](../2026-11-20-U+E711亻𠨟补录报告.md)**（@480 倦条按语「人部作〈亻𠨟〉」），对应 [补前身份／字体审计](e711/audit.json)（部件𠨟 U+20A1F 标准编码与 E710 站方 E854 案的类型区分）、[候选检索](e711/font-search.json)、[干跑](e711/dry-run.json)、[扫描距离校准（短亻形差如实存档）](e711/chamfer-calibration.json)、[正式写入／完整供体／全量保护](e711/patch-verification.json)、[480 页单点替换](e711/annotation.json)、[浏览器渲染与 canvas 墨迹探针](e711/browser.json)、[工程回归](e711/engineering.json)。左部取倦的完整亻，右部取 plane2 完整𠨟；原刻短亻形，构形按供体原样取件并记录形差。

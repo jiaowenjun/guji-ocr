@@ -1,0 +1,272 @@
+{
+  "captured_at": "2026-11-20T16:43:57+08:00",
+  "page": 519,
+  "headword": "㒉",
+  "headword_codepoint": "U+3489",
+  "headword_order": 1,
+  "context": "【集韻】同惝。或作〈忄棠〉。",
+  "target_ids": "⿰忄棠",
+  "unicode_status": "independent-codepoint-not-confirmed",
+  "distinction": "CHISE has no encoded ⿰忄棠. 惝 U+60DD is ⿰忄尚 and 㒉 U+3489 is ⿰亻棠 — both siblings carry a different right part. The composition takes the 忄 from 惝 and the 棠 component form from 㒉 per the user instruction.",
+  "site_record": {
+    "sword": "㒉",
+    "unicode": "U+3489",
+    "pua_other": [],
+    "context": "或作〈忄棠〉。",
+    "context_codepoints": [
+      "U+6216",
+      "U+4F5C",
+      "U+3008",
+      "U+5FC4",
+      "U+68E0",
+      "U+3009",
+      "U+3002"
+    ],
+    "note": "Real-component transcription: 忄 U+5FC4 and 棠 U+68E0 are both BMP characters, so the station writes the pair directly with no PUA; only the composite is unencoded."
+  },
+  "source": {
+    "page_path": "/Volumes/WD-2T/guji-ocr/raw/kangxizidian/pages/0519.jpg",
+    "page_sha256": "d0dd7734d97861ce3c14ce4b73754092d7eec2e2918f028ff70b51a9989f621e",
+    "screenshot": "tools/dataset/font-sources/e713-scan-original.png",
+    "screenshot_sha256": "ae27b618c2300f18a35597c3525b0b9405437fbe0cc90f1ec314510e9e37a163",
+    "screenshot_note": "User-provided site-zoom crop (crisp); archived per the E708/E710-E712 precedent.",
+    "mask": "tools/dataset/font-sources/e713-scan-mask.png",
+    "mask_sha256": "f6341991e120f9063b1cbae7cc31acf2f2969d31214b757c750f859914165dc6",
+    "mask_method": "grayscale < 128, discard connected ink components smaller than 8 pixels"
+  },
+  "fonts_before": [
+    {
+      "path": "guji-preview-grid/public/fonts/guji-plane0.ttf",
+      "sha256": "61167a2a733c20ab5e71486cb3b205f0e9f20ce4f565bee84174392740d11912",
+      "bytes": 17256376,
+      "cmap": 30716,
+      "glyph_order": 30812,
+      "contains_E713": false,
+      "unmapped_count": 96,
+      "format14": false,
+      "gsub_features": [
+        "vert"
+      ]
+    },
+    {
+      "path": "guji-preview-grid/public/fonts/guji-plane2.ttf",
+      "sha256": "80df094a2e63091b222706696a8b244c9dba45219af866226a097d0fbb2bf28d",
+      "bytes": 42717516,
+      "cmap": 61228,
+      "glyph_order": 61229,
+      "contains_E713": false,
+      "unmapped_count": 1,
+      "format14": false,
+      "gsub_features": []
+    },
+    {
+      "path": "guji-preview-grid/public/fonts/guji-planef.ttf",
+      "sha256": "cfeb8527cfc75fe244b1c773056ed8e8896e67918f368999d12f6bd86dee323b",
+      "bytes": 26189728,
+      "cmap": 42620,
+      "glyph_order": 42621,
+      "contains_E713": false,
+      "unmapped_count": 1,
+      "format14": false,
+      "gsub_features": []
+    },
+    {
+      "path": "guji-preview-grid/public/fonts/guji-large.ttf",
+      "sha256": "447a77da5078b9654499c954df651d821b7e1a284606022fa03eaa69d4f8f199",
+      "bytes": 46625740,
+      "cmap": 49410,
+      "glyph_order": 49413,
+      "contains_E713": false,
+      "unmapped_count": 3,
+      "format14": false,
+      "gsub_features": [
+        "vert"
+      ]
+    }
+  ],
+  "ids_search": {
+    "queries": [
+      "⿰忄棠"
+    ],
+    "sources": [
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Basic.txt",
+        "sha256": "2ee31dafadcc7985ae7b29d854bceb906ef587a4feeb4ea3ec1469c7d69428bf",
+        "entries": 20992,
+        "target_matches": [],
+        "siblings": [
+          "U+60DD\t惝\t⿰忄尚",
+          "U+68E0\t棠\t⿱𫩠木"
+        ]
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Compat-Supplement.txt",
+        "sha256": "c1d265a791a24a8b4d7d963cb7cf31a6a3b1b234b630477d3f27798c9ccab930",
+        "entries": 542,
+        "target_matches": [],
+        "siblings": []
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Compat.txt",
+        "sha256": "7683730c8213ecb3a2b3e85daa6b7b913c43b44a81a9af7900671bca4d091391",
+        "entries": 355,
+        "target_matches": [],
+        "siblings": []
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-A.txt",
+        "sha256": "d58c5b21054d1ba07fd2621f0892b36c088009d7890b136f42f8c5a5af21f495",
+        "entries": 6604,
+        "target_matches": [],
+        "siblings": [
+          "U+3489\t㒉\t⿰亻棠"
+        ]
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-B-1.txt",
+        "sha256": "3e847635a97e618e447ec25d143c3827640ab9e30e7ff6b58f078009fef113a1",
+        "entries": 8192,
+        "target_matches": [],
+        "siblings": []
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-B-2.txt",
+        "sha256": "551150fa2bd8886c17b5af40ad1d7876026d477349e7d636b0fbfc7306d26b81",
+        "entries": 8192,
+        "target_matches": [],
+        "siblings": []
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-B-3.txt",
+        "sha256": "33a51a09a18d06fb666e72f13d3854c41a1d06207f0f0c4ac43f3687a0bea6fb",
+        "entries": 8192,
+        "target_matches": [],
+        "siblings": []
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-B-4.txt",
+        "sha256": "f68fac9ed5f86953b574eacae17be49c57f270caa4a590339ba4d3f668f6596b",
+        "entries": 8192,
+        "target_matches": [],
+        "siblings": []
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-B-5.txt",
+        "sha256": "21cf28e9e4aeb3d98e8c7739899270b13a6d080a2f65f0d4287710d71e72901a",
+        "entries": 8192,
+        "target_matches": [],
+        "siblings": []
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-B-6.txt",
+        "sha256": "a732d18a27f418cb4610b7a1e1674487485111734cbd131220caa1baf23b630a",
+        "entries": 1760,
+        "target_matches": [],
+        "siblings": []
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-C.txt",
+        "sha256": "74dcff528d54508225e587384f132cac508b97a866969ebbeea848a030910225",
+        "entries": 4160,
+        "target_matches": [],
+        "siblings": []
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-D.txt",
+        "sha256": "c300f9ace1ffd9526fe3c17a12c94b3823e1a97cd507bd4b85b784bf269a3234",
+        "entries": 223,
+        "target_matches": [],
+        "siblings": []
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-E.txt",
+        "sha256": "aab22be5a0ba07d3830f37f344b08950c566286171539c08ce6d0d0a5f3a635b",
+        "entries": 5774,
+        "target_matches": [],
+        "siblings": []
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-F.txt",
+        "sha256": "dfede4731416ad43a084d0ecdc86562607e9057735e9ac43114870fa5dbf9f5e",
+        "entries": 7473,
+        "target_matches": [],
+        "siblings": []
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-G.txt",
+        "sha256": "1f8f8cc7d911ccf86c196ce4de43d7e4ca03689ee83d4e3e380120eac336c64d",
+        "entries": 4939,
+        "target_matches": [],
+        "siblings": []
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-H.txt",
+        "sha256": "e239d31373777a953c755ba99ae7a502a33823bddd0fc9af4e61e3cd8f209e0c",
+        "entries": 4192,
+        "target_matches": [],
+        "siblings": []
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-I.txt",
+        "sha256": "a84694c801290033b7e3f79303c71fcdcae595afc3a47481496dc051832369d0",
+        "entries": 622,
+        "target_matches": [],
+        "siblings": []
+      },
+      {
+        "path": "var/font-audit/0373/ids/IDS-UCS-Ext-J.txt",
+        "sha256": "0910def2870d1e4cb38c4064f060de5efc48bb73fee6d5f7447657fa121fa260",
+        "entries": 4298,
+        "target_matches": [],
+        "siblings": []
+      },
+      {
+        "path": "var/font-audit/0373/babelstone-ids.txt",
+        "sha256": "cc2a0a97e6a51ed6ebe59870ef2af66e83f3c3c27387d79b4441bb2d791d78b1",
+        "entries": 97680,
+        "target_matches": [],
+        "siblings": [
+          "U+60DD\t惝\t^⿰忄尚$(GHTV)\t^⿰忄尙$(JKP)",
+          "U+68E0\t棠\t^⿱𫩠木$(GHTJKPV)\t^⿱龸呆$(X)",
+          "U+3489\t㒉\t^⿰亻棠$(GT)"
+        ]
+      },
+      {
+        "path": "var/font-audit/0367/cjkvi-ids.txt",
+        "sha256": "bfc70a8c09f9f5616ebf0543bd6681e67314e9f7ae2307e5ae8c6f15bdc5c6a6",
+        "entries": 88937,
+        "target_matches": [],
+        "siblings": [
+          "U+60DD\t惝\t⿰忄尚[GTV]\t⿰忄尙[JK]",
+          "U+68E0\t棠\t⿱𫩠木[GJK]\t⿱𫩠朩[T]",
+          "U+3489\t㒉\t⿰亻棠"
+        ]
+      }
+    ]
+  },
+  "shape_search": {
+    "counts": {
+      "guji-plane0.ttf": 29005,
+      "guji-plane2.ttf": 61119,
+      "guji-planef.ttf": 42520
+    },
+    "reviewed": "Top 48 of each small font via figures/e713/font-candidates.png.",
+    "result": "No matching target found",
+    "limitation": "Candidate ranking plus finite visual review; not manual examination of every glyph or proof of global Unicode absence."
+  },
+  "calibration": "chamfer-calibration.json: crisp mask discriminates — composition 2.516 beats wrong-right 惝 2.864, standalone 棠 3.130, right-only 3.334, left-only 9.187; gate 2.7.",
+  "allocation": {
+    "cp": "E713",
+    "note": "E701, E704-E712 occupied; E702/E703 reserved historical slots; E713 absent from all four cmap tables."
+  },
+  "annotation_before": {
+    "path": "kangxi-gold/annotations/0519.gj",
+    "sha256": "937ccbbbc4382eb3fab118ad9fcfa44fea1e7b78fc3e8a30f51f9792dfa9c050",
+    "tracked": false,
+    "target_occurrences": 0
+  },
+  "rollback": {
+    "git_head": "dab5ae981cf69c3f51668f82d90d916d8fd0c155",
+    "font_git_blob": "e2db3b398f476107163c3c67cf2b7b895e43a186"
+  }
+}

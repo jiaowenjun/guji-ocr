@@ -22,8 +22,8 @@
 }
 @font-face {
     font-family: "GujiPlane0";
-    /* U+E701 v4、U+E704 v1〈二心支〉、U+E705 v1〈口𠂹〉、U+E706 v1〈亻亻亻〉、U+E707 v3〈貝司〉、U+E708 v1〈彳𢾕〉、U+E709 v1〈亻亨〉、U+E710 v1〈𠦝一〉、U+E711 v1〈亻𠨟〉、U+E712 v1〈亻𫇮〉：均仅在小字字体收录。 */
-    src: url("/fonts/guji-plane0.ttf?v=e701-4-e704-1-e705-1-e706-1-e707-3-e708-1-e709-1-e710-1-e711-1-e712-1") format("truetype"),
+    /* U+E701 v4、U+E704 v1〈二心支〉、U+E705 v1〈口𠂹〉、U+E706 v1〈亻亻亻〉、U+E707 v3〈貝司〉、U+E708 v1〈彳𢾕〉、U+E709 v1〈亻亨〉、U+E710 v1〈𠦝一〉、U+E711 v1〈亻𠨟〉、U+E712 v1〈亻𫇮〉、U+E713 v1〈忄棠〉：均仅在小字字体收录。 */
+    src: url("/fonts/guji-plane0.ttf?v=e701-4-e704-1-e705-1-e706-1-e707-3-e708-1-e709-1-e710-1-e711-1-e712-1-e713-1") format("truetype"),
         local("FZSONG_ZHSJ_SIP--GB1-5"), local("中华书局宋体00平面");
     font-display: swap;
 }

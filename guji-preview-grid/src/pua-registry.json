@@ -18,7 +18,7 @@
         "guji-preview-grid/public/fonts/guji-plane0.ttf"
       ],
       "sha256_after": {
-        "guji-plane0.ttf": "61167a2a733c20ab5e71486cb3b205f0e9f20ce4f565bee84174392740d11912"
+        "guji-plane0.ttf": "eb3791216daa8cebbcf7973f4870e65e66adf8e8e6a8152c5e674bbebfc7d5c2"
       },
       "history": [
         {
@@ -138,7 +138,7 @@
         "guji-preview-grid/public/fonts/guji-plane0.ttf"
       ],
       "sha256_after": {
-        "guji-plane0.ttf": "61167a2a733c20ab5e71486cb3b205f0e9f20ce4f565bee84174392740d11912"
+        "guji-plane0.ttf": "eb3791216daa8cebbcf7973f4870e65e66adf8e8e6a8152c5e674bbebfc7d5c2"
       },
       "history": [
         {
@@ -251,7 +251,7 @@
         "guji-plane0.ttf": 1
       },
       "sha256_after": {
-        "guji-plane0.ttf": "61167a2a733c20ab5e71486cb3b205f0e9f20ce4f565bee84174392740d11912"
+        "guji-plane0.ttf": "eb3791216daa8cebbcf7973f4870e65e66adf8e8e6a8152c5e674bbebfc7d5c2"
       },
       "patched_at": "2026-11-18"
     },
@@ -270,7 +270,7 @@
         "guji-preview-grid/public/fonts/guji-plane0.ttf"
       ],
       "sha256_after": {
-        "guji-plane0.ttf": "61167a2a733c20ab5e71486cb3b205f0e9f20ce4f565bee84174392740d11912"
+        "guji-plane0.ttf": "eb3791216daa8cebbcf7973f4870e65e66adf8e8e6a8152c5e674bbebfc7d5c2"
       },
       "history": [
         {
@@ -329,7 +329,7 @@
         "guji-preview-grid/public/fonts/guji-plane0.ttf"
       ],
       "sha256_after": {
-        "guji-plane0.ttf": "61167a2a733c20ab5e71486cb3b205f0e9f20ce4f565bee84174392740d11912"
+        "guji-plane0.ttf": "eb3791216daa8cebbcf7973f4870e65e66adf8e8e6a8152c5e674bbebfc7d5c2"
       },
       "history": [
         {
@@ -441,7 +441,7 @@
         "guji-preview-grid/public/fonts/guji-plane0.ttf"
       ],
       "sha256_after": {
-        "guji-plane0.ttf": "61167a2a733c20ab5e71486cb3b205f0e9f20ce4f565bee84174392740d11912"
+        "guji-plane0.ttf": "eb3791216daa8cebbcf7973f4870e65e66adf8e8e6a8152c5e674bbebfc7d5c2"
       },
       "history": [
         {
@@ -540,7 +540,7 @@
       "report": "docs/research/2026-11-20-U+E709亻亨补录报告.md",
       "allocation_note": "E702、E703为历史试验保留位；E709是E708后的首个未占用正式字位。",
       "sha256_after": {
-        "guji-plane0.ttf": "61167a2a733c20ab5e71486cb3b205f0e9f20ce4f565bee84174392740d11912"
+        "guji-plane0.ttf": "eb3791216daa8cebbcf7973f4870e65e66adf8e8e6a8152c5e674bbebfc7d5c2"
       },
       "patched_at": "2026-11-20",
       "history": [
@@ -625,7 +625,7 @@
       "report": "docs/research/2026-11-20-U+E710𠦝一补录报告.md",
       "allocation_note": "E702、E703为历史试验保留位；E710是E709后的首个未占用正式字位。",
       "sha256_after": {
-        "guji-plane0.ttf": "61167a2a733c20ab5e71486cb3b205f0e9f20ce4f565bee84174392740d11912"
+        "guji-plane0.ttf": "eb3791216daa8cebbcf7973f4870e65e66adf8e8e6a8152c5e674bbebfc7d5c2"
       },
       "patched_at": "2026-11-20",
       "history": [
@@ -694,7 +694,7 @@
       "report": "docs/research/2026-11-20-U+E711亻𠨟补录报告.md",
       "allocation_note": "E702、E703为历史试验保留位；E711是E710后的首个未占用正式字位。",
       "sha256_after": {
-        "guji-plane0.ttf": "61167a2a733c20ab5e71486cb3b205f0e9f20ce4f565bee84174392740d11912"
+        "guji-plane0.ttf": "eb3791216daa8cebbcf7973f4870e65e66adf8e8e6a8152c5e674bbebfc7d5c2"
       },
       "patched_at": "2026-11-20",
       "history": [
@@ -764,7 +764,7 @@
       "report": "docs/research/2026-11-20-U+E712亻𫇮补录报告.md",
       "allocation_note": "E702、E703为历史试验保留位；E712是E711后的首个未占用正式字位。",
       "sha256_after": {
-        "guji-plane0.ttf": "61167a2a733c20ab5e71486cb3b205f0e9f20ce4f565bee84174392740d11912"
+        "guji-plane0.ttf": "eb3791216daa8cebbcf7973f4870e65e66adf8e8e6a8152c5e674bbebfc7d5c2"
       },
       "patched_at": "2026-11-20",
       "history": [
@@ -790,6 +790,75 @@
             }
           ],
           "cache_version": "e701-4-e704-1-e705-1-e706-1-e707-3-e708-1-e709-1-e710-1-e711-1-e712-1"
+        }
+      ]
+    },
+    {
+      "cp": "E713",
+      "char": "⿰忄棠",
+      "description": "康熙 @519 㒉 U+3489 条「同惝。或作〈忄棠〉。」的或作形；CHISE 无 ⿰忄棠 已编码字（惝 U+60DD 是 ⿰忄尚、㒉 是 ⿰亻棠，右部互不相同）。站方与金标均以真实字符〈忄棠〉描述式转写。尚未确认独立标准 Unicode 码位。",
+      "first_seen": "kangxi-gold @519 㒉条，子集中人部",
+      "scheme": "compose",
+      "version": 1,
+      "source": "tools/dataset/font-sources/e713-songti-v1.json",
+      "source_note": "左忄取 plane0 惝 U+60DD 第 2、6、7 轮廓（竖＋左右点，恒等变换原生坐标）；右棠取 plane0 㒉 U+3489 第 0、1、3、4、5 轮廓（㒉的完整右部，即棠的部件形；整体正向仿射入家族右半宽，y 带对齐 [-127,848] 天然继承锚字竖排原点、无需全局平移）。两供体均在 plane0。",
+      "verify_image": "tools/dataset/font-sources/e713-scan-mask.png",
+      "verify_note": "用户提供站方缩放截图（清晰），灰度阈值128、去小于8像素孤立墨点；chamfer 具判别力（组合 2.516 优于错右惝 2.864/棠整字 3.130），闸 2.7。",
+      "fonts": [
+        "guji-preview-grid/public/fonts/guji-plane0.ttf"
+      ],
+      "font_versions": {
+        "guji-plane0.ttf": 1
+      },
+      "usage": "small-only",
+      "usage_note": "仅用于519页小字正文，不写大字、plane2、planeF或系统字体；不得替换标准U+60DD惝、U+3489㒉或U+68E0棠。",
+      "unicode_status": "independent-codepoint-not-confirmed",
+      "related_characters": [
+        {
+          "char": "㒉",
+          "cp": "3489",
+          "relation": "来源字头兼右棠供体（⿰亻棠，plane0）"
+        },
+        {
+          "char": "惝",
+          "cp": "60DD",
+          "relation": "释义本字（条云 同惝）兼左忄供体（⿰忄尚）"
+        },
+        {
+          "char": "棠",
+          "cp": "68E0",
+          "relation": "右部抽象部件整字（plane0 在库）；独体形与㒉内部件形比例不同，本字位取部件形"
+        }
+      ],
+      "report": "docs/research/2026-11-20-U+E713忄棠补录报告.md",
+      "allocation_note": "E702、E703为历史试验保留位；E713是E712后的首个未占用正式字位。",
+      "sha256_after": {
+        "guji-plane0.ttf": "eb3791216daa8cebbcf7973f4870e65e66adf8e8e6a8152c5e674bbebfc7d5c2"
+      },
+      "patched_at": "2026-11-20",
+      "history": [
+        {
+          "version": 1,
+          "at": "2026-11-20T16:44:39+08:00",
+          "operation": "insert",
+          "results": [
+            {
+              "font": "guji-preview-grid/public/fonts/guji-plane0.ttf",
+              "scheme": "compose",
+              "source": "tools/dataset/font-sources/e713-songti-v1.json",
+              "sha256_before": "61167a2a733c20ab5e71486cb3b205f0e9f20ce4f565bee84174392740d11912",
+              "sha256_after": "eb3791216daa8cebbcf7973f4870e65e66adf8e8e6a8152c5e674bbebfc7d5c2",
+              "bytes_before": 17256376,
+              "bytes_after": 17256940,
+              "chamfer": 2.516,
+              "chamfer_gate": 2.7,
+              "cmap_before": 30716,
+              "cmap_after": 30717,
+              "other_glyphs_and_metrics_unchanged": true,
+              "backup": "var/unencoded/kangxi-unencoded/font-backups/guji-plane0.ttf.61167a2a733c20ab5e71486cb3b205f0e9f20ce4f565bee84174392740d11912.ttf"
+            }
+          ],
+          "cache_version": "e701-4-e704-1-e705-1-e706-1-e707-3-e708-1-e709-1-e710-1-e711-1-e712-1-e713-1"
         }
       ]
     }

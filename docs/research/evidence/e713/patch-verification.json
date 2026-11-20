@@ -1,0 +1,112 @@
+{
+  "checked_at": "2026-11-20T16:46:22+08:00",
+  "operation": {
+    "version": 1,
+    "at": "2026-11-20T16:44:39+08:00",
+    "operation": "insert",
+    "results": [
+      {
+        "font": "guji-preview-grid/public/fonts/guji-plane0.ttf",
+        "scheme": "compose",
+        "source": "tools/dataset/font-sources/e713-songti-v1.json",
+        "sha256_before": "61167a2a733c20ab5e71486cb3b205f0e9f20ce4f565bee84174392740d11912",
+        "sha256_after": "eb3791216daa8cebbcf7973f4870e65e66adf8e8e6a8152c5e674bbebfc7d5c2",
+        "bytes_before": 17256376,
+        "bytes_after": 17256940,
+        "chamfer": 2.516,
+        "chamfer_gate": 2.7,
+        "cmap_before": 30716,
+        "cmap_after": 30717,
+        "other_glyphs_and_metrics_unchanged": true,
+        "backup": "var/unencoded/kangxi-unencoded/font-backups/guji-plane0.ttf.61167a2a733c20ab5e71486cb3b205f0e9f20ce4f565bee84174392740d11912.ttf"
+      }
+    ],
+    "cache_version": "e701-4-e704-1-e705-1-e706-1-e707-3-e708-1-e709-1-e710-1-e711-1-e712-1-e713-1"
+  },
+  "final_font": {
+    "path": "guji-preview-grid/public/fonts/guji-plane0.ttf",
+    "sha256": "eb3791216daa8cebbcf7973f4870e65e66adf8e8e6a8152c5e674bbebfc7d5c2",
+    "bytes": 17256940,
+    "cmap": 30717,
+    "glyph_order": 30813,
+    "contains_E713": true,
+    "unmapped_count": 96,
+    "format14": false,
+    "gsub_features": [
+      "vert"
+    ]
+  },
+  "final_glyph": {
+    "name": "uniE713",
+    "contours": 8,
+    "points": 186,
+    "bbox": [
+      59,
+      -127,
+      1011,
+      848
+    ],
+    "hmtx": [
+      1024,
+      59
+    ],
+    "vmtx": [
+      1024,
+      22
+    ],
+    "compiled_sha256": "63714dbcc11993f609ac1f063eb9c046a58408836d831dff2dc9f82a8f436969"
+  },
+  "preserved_glyphs": 30812,
+  "all_previous_glyphs_and_metrics_unchanged": true,
+  "other_fonts": [
+    {
+      "path": "guji-preview-grid/public/fonts/guji-plane2.ttf",
+      "sha256": "80df094a2e63091b222706696a8b244c9dba45219af866226a097d0fbb2bf28d",
+      "bytes": 42717516,
+      "cmap": 61228,
+      "glyph_order": 61229,
+      "contains_E713": false,
+      "unmapped_count": 1,
+      "format14": false,
+      "gsub_features": []
+    },
+    {
+      "path": "guji-preview-grid/public/fonts/guji-planef.ttf",
+      "sha256": "cfeb8527cfc75fe244b1c773056ed8e8896e67918f368999d12f6bd86dee323b",
+      "bytes": 26189728,
+      "cmap": 42620,
+      "glyph_order": 42621,
+      "contains_E713": false,
+      "unmapped_count": 1,
+      "format14": false,
+      "gsub_features": []
+    },
+    {
+      "path": "guji-preview-grid/public/fonts/guji-large.ttf",
+      "sha256": "447a77da5078b9654499c954df651d821b7e1a284606022fa03eaa69d4f8f199",
+      "bytes": 46625740,
+      "cmap": 49410,
+      "glyph_order": 49413,
+      "contains_E713": false,
+      "unmapped_count": 3,
+      "format14": false,
+      "gsub_features": [
+        "vert"
+      ]
+    }
+  ],
+  "complete_donor_contours": true,
+  "component_gap_units": 16.0,
+  "non_overlap": "Disjoint x bounds with at least 16 units of gap; both donors internal to plane0.",
+  "rebuild_matches_production": true,
+  "corruption_rejected": [
+    "donor-hash-60DD",
+    "donor-hash-3489",
+    "frozen-outline"
+  ],
+  "registry_shared_hashes_match": true,
+  "rollback": {
+    "git_head": "dab5ae981cf69c3f51668f82d90d916d8fd0c155",
+    "font_git_blob": "e2db3b398f476107163c3c67cf2b7b895e43a186"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "checked_at": "2026-11-20T16:48:18+08:00",
+  "app": "guji-preview-grid dev (vite, localhost:5173), page @519 草稿",
+  "cell": {
+    "selector": ".m-cell containing U+E713",
+    "count": 1,
+    "font_size_px": 16.0642,
+    "cell_rect": [
+      418.7,
+      195.3,
+      20.1,
+      20.8
+    ],
+    "css_font_stack_head": "GujiPlane0"
+  },
+  "canvas_probe": {
+    "method": "page canvas, font 100px GujiPlane0 only (no fallback); ink = alpha>40 pixels in 128x128",
+    "E713": {
+      "ink": 2339,
+      "verdict": "real glyph"
+    },
+    "E714_unmapped_control": {
+      "ink": 0,
+      "verdict": "blank"
+    },
+    "U+60DD 惝 control": {
+      "ink": 2493
+    },
+    "U+3489 㒉 control": {
+      "ink": 2620
+    },
+    "conclusion": "E713 renders real ink between the two siblings; unmapped E714 draws zero — the cell renders the patched glyph itself.",
+    "stale_cache_note": "First probe (before the index.css stamp bump) returned 0 ink for E713: the browser still held the E712-era font under the old ?v= URL. After updating the cache stamp and reloading, the probe reads real ink. Lesson: bump the CSS stamp BEFORE the browser gate, or force a reload."
+  },
+  "screenshot": "evidence/e713/browser-cell.png"
+}

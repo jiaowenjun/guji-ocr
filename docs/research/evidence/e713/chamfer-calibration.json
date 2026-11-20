@@ -1,0 +1,16 @@
+{
+  "checked_at": "2026-11-20T16:41:08+08:00",
+  "method": "norm_ink128 and PIL220 at (44,44), matching patcher; temporary diagnostic slots in memory only",
+  "input": "tools/dataset/font-sources/e713-scan-mask.png",
+  "input_sha256": "f6341991e120f9063b1cbae7cc31acf2f2969d31214b757c750f859914165dc6",
+  "provisional_gate": 4.0,
+  "scores": {
+    "composition": 2.5160026218379854,
+    "left-only": 9.187127584709692,
+    "right-only": 3.3335001584005592,
+    "wrong-尚-惝": 2.8639091955722784,
+    "tang-standalone": 3.130300360875712
+  },
+  "glyph_sha256": "63714dbcc11993f609ac1f063eb9c046a58408836d831dff2dc9f82a8f436969",
+  "decision": "Crisp screenshot: the composition should beat the wrong-right sibling 惝 (⿰忄尚) and the standalone 棠. Identity rests on the site paragraph 〈忄棠〉 (real-component transcription), the user transcription and complete-component provenance."
+}
