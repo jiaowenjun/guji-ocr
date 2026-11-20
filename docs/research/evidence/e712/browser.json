@@ -1,0 +1,37 @@
+{
+  "checked_at": "2026-11-20T16:29:09+08:00",
+  "app": "guji-preview-grid dev (vite, localhost:5173), page @512 草稿",
+  "cell": {
+    "selector": ".m-cell containing U+E712",
+    "count": 1,
+    "font_size_px": 16.1041,
+    "cell_rect": [
+      620.1,
+      548.7,
+      20.1,
+      20.8
+    ],
+    "css_font_stack_head": "GujiPlane0"
+  },
+  "document_fonts": "GujiPlane0 loaded (probe family)",
+  "canvas_probe": {
+    "method": "page canvas, font 100px GujiPlane0 only (no fallback); ink = alpha>40 pixels in 128x128",
+    "E712": {
+      "ink": 2424,
+      "verdict": "real glyph"
+    },
+    "E713_unmapped_control": {
+      "ink": 0,
+      "verdict": "blank"
+    },
+    "U+2033E 𠌾 via GujiPlane2 control": {
+      "ink": 1721
+    },
+    "U+2B1EE 𫇮 via GujiPlane2 control": {
+      "ink": 1518
+    },
+    "conclusion": "E712 renders real ink above both donors (radical + compressed component); unmapped E713 draws zero — the cell renders the patched glyph itself."
+  },
+  "interaction_note": "Radix dropdown via in-page pointer event sequence; page-count regex dynamic.",
+  "screenshot": "evidence/e712/browser-cell.png"
+}

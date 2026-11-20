@@ -1,0 +1,16 @@
+{
+  "checked_at": "2026-11-20T16:23:36+08:00",
+  "method": "norm_ink128 and PIL220 at (44,44), matching patcher; temporary diagnostic slots in memory only",
+  "input": "tools/dataset/font-sources/e712-scan-mask.png",
+  "input_sha256": "2ed0d7ee4a376919f9ae97896d0fbd7c89e970c04fb404bb30fd7786a8fa38e6",
+  "provisional_gate": 4.5,
+  "scores": {
+    "composition": 3.672448821852382,
+    "left-only": 11.355336521830774,
+    "right-only": 3.9733716659772993,
+    "wrong-莪-𠌾": 2.969197766574223,
+    "yi-alone-plane2": 3.9901429159171387
+  },
+  "glyph_sha256": "52127b0ad42ede9085e020ab506d0d0974fc5e5e7b717f018c07835f5fd3e971",
+  "decision": "As in E711 the woodblock draws a short 亻 while the donor radical is full-height; the composition keeps the donor as-is per the user instruction and the stylistic gap is documented, not hidden. Identity rests on the user transcription, the screenshot structure (亻 + sheep-over-我 component) and the complete-component provenance; the station paragraph lazily repeats 𠌾 for the variant and cannot arbitrate here."
+}

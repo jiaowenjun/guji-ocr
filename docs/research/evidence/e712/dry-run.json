@@ -1,0 +1,19 @@
+{
+  "ran_at": "2026-11-20 (terminal capture; formal insert logged in patch-verification.json)",
+  "command": "python3 tools/dataset/guji_pua_patch.py --cp E712 --dry-run --cache-version e701-4-e704-1-e705-1-e706-1-e707-3-e708-1-e709-1-e710-1-e711-1-e712-1",
+  "result": {
+    "font": "guji-preview-grid/public/fonts/guji-plane0.ttf",
+    "scheme": "compose",
+    "source": "tools/dataset/font-sources/e712-songti-v1.json",
+    "sha256_before": "9e949d43f2938c9113312a59525731e0fffcc78faa40b97f52cb37820dd48626",
+    "sha256_after": "61167a2a733c20ab5e71486cb3b205f0e9f20ce4f565bee84174392740d11912",
+    "bytes_before": 17255760,
+    "bytes_after": 17256376,
+    "chamfer": 3.672,
+    "chamfer_gate": 4.4,
+    "cmap_before": 30715,
+    "cmap_after": 30716,
+    "other_glyphs_and_metrics_unchanged": true
+  },
+  "note": "Dry-run hashes identical to the formal insert."
+}

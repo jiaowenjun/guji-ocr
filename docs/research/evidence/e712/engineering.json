@@ -1,0 +1,17 @@
+{
+  "checked_at": "2026-11-20T16:29:09+08:00",
+  "environment": "ProductVersion:\t\t27.2.1",
+  "python": "Python 3.9.6",
+  "fontTools": "4.60.2",
+  "commands": [
+    "python3 tools/dataset/guji_ren_yi_components.py  (frozen recipe rebuild: PASS, digest 52127b0a...)",
+    "python3 tools/dataset/verify_e712.py  (structure+glyph verification: PASS)",
+    "npm test  (22 files: 1206 passed, 2 failed — see failure_attribution)",
+    "npm run build  (passed; pre-existing large-chunk warning retained)",
+    "dist/fonts vs public/fonts: plane0/plane2/planef/large all sha256-equal",
+    "git diff --check: clean"
+  ],
+  "registry_json_valid": true,
+  "note": "Tests ran on the current workspace with parallel modifications and untracked drafts; not a clean-tree result.",
+  "failure_attribution": "The two failures are in the COMMITTED test/dataset-preview.spec.ts (\"原图字格紧邻字格开关，两个开关独立控制\" and \"渲染空格对照独立显示…\"), asserting toolbar-button adjacency and disabled state of the DatasetView toolbar. During this E712 run the user was actively editing src/components/dataset/DatasetView.tsx (uncommitted, 84-line diff present in the workspace) — the failures track that in-flight refactor, not E712: the E712 change set (guji-plane0.ttf, pua-registry.json, index.css, README) is not imported by that spec, and the same suite was fully green (1,176/1,176) at E711 time before DatasetView.tsx was touched. E712-specific surface is the verification scripts above, all green."
+}

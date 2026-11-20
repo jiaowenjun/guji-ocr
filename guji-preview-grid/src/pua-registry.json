@@ -18,7 +18,7 @@
         "guji-preview-grid/public/fonts/guji-plane0.ttf"
       ],
       "sha256_after": {
-        "guji-plane0.ttf": "9e949d43f2938c9113312a59525731e0fffcc78faa40b97f52cb37820dd48626"
+        "guji-plane0.ttf": "61167a2a733c20ab5e71486cb3b205f0e9f20ce4f565bee84174392740d11912"
       },
       "history": [
         {
@@ -138,7 +138,7 @@
         "guji-preview-grid/public/fonts/guji-plane0.ttf"
       ],
       "sha256_after": {
-        "guji-plane0.ttf": "9e949d43f2938c9113312a59525731e0fffcc78faa40b97f52cb37820dd48626"
+        "guji-plane0.ttf": "61167a2a733c20ab5e71486cb3b205f0e9f20ce4f565bee84174392740d11912"
       },
       "history": [
         {
@@ -251,7 +251,7 @@
         "guji-plane0.ttf": 1
       },
       "sha256_after": {
-        "guji-plane0.ttf": "9e949d43f2938c9113312a59525731e0fffcc78faa40b97f52cb37820dd48626"
+        "guji-plane0.ttf": "61167a2a733c20ab5e71486cb3b205f0e9f20ce4f565bee84174392740d11912"
       },
       "patched_at": "2026-11-18"
     },
@@ -270,7 +270,7 @@
         "guji-preview-grid/public/fonts/guji-plane0.ttf"
       ],
       "sha256_after": {
-        "guji-plane0.ttf": "9e949d43f2938c9113312a59525731e0fffcc78faa40b97f52cb37820dd48626"
+        "guji-plane0.ttf": "61167a2a733c20ab5e71486cb3b205f0e9f20ce4f565bee84174392740d11912"
       },
       "history": [
         {
@@ -329,7 +329,7 @@
         "guji-preview-grid/public/fonts/guji-plane0.ttf"
       ],
       "sha256_after": {
-        "guji-plane0.ttf": "9e949d43f2938c9113312a59525731e0fffcc78faa40b97f52cb37820dd48626"
+        "guji-plane0.ttf": "61167a2a733c20ab5e71486cb3b205f0e9f20ce4f565bee84174392740d11912"
       },
       "history": [
         {
@@ -441,7 +441,7 @@
         "guji-preview-grid/public/fonts/guji-plane0.ttf"
       ],
       "sha256_after": {
-        "guji-plane0.ttf": "9e949d43f2938c9113312a59525731e0fffcc78faa40b97f52cb37820dd48626"
+        "guji-plane0.ttf": "61167a2a733c20ab5e71486cb3b205f0e9f20ce4f565bee84174392740d11912"
       },
       "history": [
         {
@@ -540,7 +540,7 @@
       "report": "docs/research/2026-11-20-U+E709亻亨补录报告.md",
       "allocation_note": "E702、E703为历史试验保留位；E709是E708后的首个未占用正式字位。",
       "sha256_after": {
-        "guji-plane0.ttf": "9e949d43f2938c9113312a59525731e0fffcc78faa40b97f52cb37820dd48626"
+        "guji-plane0.ttf": "61167a2a733c20ab5e71486cb3b205f0e9f20ce4f565bee84174392740d11912"
       },
       "patched_at": "2026-11-20",
       "history": [
@@ -625,7 +625,7 @@
       "report": "docs/research/2026-11-20-U+E710𠦝一补录报告.md",
       "allocation_note": "E702、E703为历史试验保留位；E710是E709后的首个未占用正式字位。",
       "sha256_after": {
-        "guji-plane0.ttf": "9e949d43f2938c9113312a59525731e0fffcc78faa40b97f52cb37820dd48626"
+        "guji-plane0.ttf": "61167a2a733c20ab5e71486cb3b205f0e9f20ce4f565bee84174392740d11912"
       },
       "patched_at": "2026-11-20",
       "history": [
@@ -694,7 +694,7 @@
       "report": "docs/research/2026-11-20-U+E711亻𠨟补录报告.md",
       "allocation_note": "E702、E703为历史试验保留位；E711是E710后的首个未占用正式字位。",
       "sha256_after": {
-        "guji-plane0.ttf": "9e949d43f2938c9113312a59525731e0fffcc78faa40b97f52cb37820dd48626"
+        "guji-plane0.ttf": "61167a2a733c20ab5e71486cb3b205f0e9f20ce4f565bee84174392740d11912"
       },
       "patched_at": "2026-11-20",
       "history": [
@@ -720,6 +720,76 @@
             }
           ],
           "cache_version": "e701-4-e704-1-e705-1-e706-1-e707-3-e708-1-e709-1-e710-1-e711-1"
+        }
+      ]
+    },
+    {
+      "cp": "E712",
+      "char": "⿰亻𫇮",
+      "description": "康熙 @512 𠌾 U+2033E 条「或作〈亻𫇮〉」的异体形；CHISE 无 ⿰亻𫇮 已编码字（𫇮 U+2B1EE 标准编码在 plane2，𠌾 自身 IDS ⿰亻莪）。站方段落将「或作」后字形懒代为𠌾，金标转写与截图结构（亻+上羊下我）定为此形。尚未确认独立标准 Unicode 码位。",
+      "first_seen": "kangxi-gold @512 𠌾条，子集中人部",
+      "scheme": "compose",
+      "version": 1,
+      "source": "tools/dataset/font-sources/e712-songti-v1.json",
+      "source_note": "左亻取 plane2 𠌾 U+2033E 第 1 轮廓（撇竖连体单轮廓，恒等并入全局+5竖向平移使 yMax=848）；右𫇮取 plane2 U+2B1EE 全部四轮廓（x 压 0.697 入家族右半宽、y 近恒等）。首例双外部供体（左右均出自 plane2）。原刻为短亻形（撇头约 24% 高度起），形差如实存档。",
+      "verify_image": "tools/dataset/font-sources/e712-scan-mask.png",
+      "verify_note": "用户提供站方缩放截图，灰度阈值128、去小于8像素孤立墨点；短亻形差使 chamfer 无判别力（组合 3.672 vs 错右𠌾 2.969），闸 4.4 仅作弱回归。",
+      "fonts": [
+        "guji-preview-grid/public/fonts/guji-plane0.ttf"
+      ],
+      "font_versions": {
+        "guji-plane0.ttf": 1
+      },
+      "usage": "small-only",
+      "usage_note": "仅用于512页小字正文，不写大字、plane2、planeF或系统字体；不得替换标准U+2033E𠌾或U+2B1EE𫇮。",
+      "unicode_status": "independent-codepoint-not-confirmed",
+      "station_record": "站方 𠌾 词条 pua_other=[]，段落原文「或作𠌾。」——「或作」后字形被懒代为字头𠌾 本身，与金标转写〈亻𫇮〉及截图结构不符；本字位以用户转写+截图为准。",
+      "related_characters": [
+        {
+          "char": "𠌾",
+          "cp": "2033E",
+          "relation": "来源字头兼左亻供体（plane2）；自身 IDS ⿰亻莪，右部非𫇮"
+        },
+        {
+          "char": "𫇮",
+          "cp": "2B1EE",
+          "relation": "右部整字供体（plane2 在库）；单独非目标"
+        },
+        {
+          "char": "義",
+          "cp": "7FA9",
+          "relation": "𠌾 为其古文字（字彙補），非本字位对象"
+        }
+      ],
+      "report": "docs/research/2026-11-20-U+E712亻𫇮补录报告.md",
+      "allocation_note": "E702、E703为历史试验保留位；E712是E711后的首个未占用正式字位。",
+      "sha256_after": {
+        "guji-plane0.ttf": "61167a2a733c20ab5e71486cb3b205f0e9f20ce4f565bee84174392740d11912"
+      },
+      "patched_at": "2026-11-20",
+      "history": [
+        {
+          "version": 1,
+          "at": "2026-11-20T16:27:02+08:00",
+          "operation": "insert",
+          "results": [
+            {
+              "font": "guji-preview-grid/public/fonts/guji-plane0.ttf",
+              "scheme": "compose",
+              "source": "tools/dataset/font-sources/e712-songti-v1.json",
+              "sha256_before": "9e949d43f2938c9113312a59525731e0fffcc78faa40b97f52cb37820dd48626",
+              "sha256_after": "61167a2a733c20ab5e71486cb3b205f0e9f20ce4f565bee84174392740d11912",
+              "bytes_before": 17255760,
+              "bytes_after": 17256376,
+              "chamfer": 3.672,
+              "chamfer_gate": 4.4,
+              "cmap_before": 30715,
+              "cmap_after": 30716,
+              "other_glyphs_and_metrics_unchanged": true,
+              "backup": "var/unencoded/kangxi-unencoded/font-backups/guji-plane0.ttf.9e949d43f2938c9113312a59525731e0fffcc78faa40b97f52cb37820dd48626.ttf"
+            }
+          ],
+          "cache_version": "e701-4-e704-1-e705-1-e706-1-e707-3-e708-1-e709-1-e710-1-e711-1-e712-1"
         }
       ]
     }

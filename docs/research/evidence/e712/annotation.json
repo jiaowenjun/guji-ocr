@@ -1,0 +1,13 @@
+{
+  "checked_at": "2026-11-20T16:28:13+08:00",
+  "page": 512,
+  "path": "kangxi-gold/annotations/0512.gj",
+  "sha256_before": "a6cb06a9d14b7554b6a886ef3b37504f0099ef87856bd3d251ea7a2bee5bb0e9",
+  "sha256_after": "8ebc7fca2dff3c01c2b1d3c5172d6ac655d92ac22c21ebbef195ec03463223a3",
+  "old": "或作〈亻𫇮〉。",
+  "new": "或作。",
+  "replacements": 1,
+  "E712_count": 1,
+  "other_text_unchanged": true,
+  "git_scope": "One local draft edit only; full untracked page excluded from font commit."
+}
