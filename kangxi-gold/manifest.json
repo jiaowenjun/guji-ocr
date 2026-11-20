@@ -3411,7 +3411,7 @@
       "width": 1130,
       "height": 1656,
       "downloaded_at": "2026-11-20",
-      "status": "draft",
+      "status": "first",
       "annotations": {
         "gj": "0512.gj",
         "json": "0512.json",
@@ -3530,11 +3530,62 @@
       "width": 1130,
       "height": 1662,
       "downloaded_at": "2026-11-20",
-      "status": "draft",
+      "status": "first",
       "annotations": {
         "gj": "0519.gj",
         "json": "0519.json",
         "txt": "0519.txt"
+      },
+      "origin": "kangxizidian.com 爬取草稿（kangxi_page_tool.py add）"
+    },
+    {
+      "page": 520,
+      "image": "0520.jpg",
+      "url": "https://p.kangxizidian.com/kangxi2/0520.jpg",
+      "size_bytes": 517772,
+      "sha256": "74183231eefe55e3fc6d6da1d1039355f1d1286c8a2c3688454c67e88ba61a59",
+      "width": 1130,
+      "height": 1662,
+      "downloaded_at": "2026-11-20",
+      "status": "first",
+      "annotations": {
+        "gj": "0520.gj",
+        "json": "0520.json",
+        "txt": "0520.txt"
+      },
+      "origin": "kangxizidian.com 爬取草稿（kangxi_page_tool.py add）"
+    },
+    {
+      "page": 521,
+      "image": "0521.jpg",
+      "url": "https://p.kangxizidian.com/kangxi2/0521.jpg",
+      "size_bytes": 529947,
+      "sha256": "0da7d475802df6f6947e8b7b4307ca81d9cf0ad2fbfffef1b7e5258697ac7e6e",
+      "width": 1130,
+      "height": 1670,
+      "downloaded_at": "2026-11-20",
+      "status": "first",
+      "annotations": {
+        "gj": "0521.gj",
+        "json": "0521.json",
+        "txt": "0521.txt"
+      },
+      "origin": "kangxizidian.com 爬取草稿（kangxi_page_tool.py add）"
+    },
+    {
+      "page": 522,
+      "image": "0522.jpg",
+      "url": "https://p.kangxizidian.com/kangxi2/0522.jpg",
+      "size_bytes": 526992,
+      "sha256": "389476b6467e46db6aa60301e590d5975f91298f10d621589ff13c1799b7204f",
+      "width": 1130,
+      "height": 1670,
+      "downloaded_at": "2026-11-20",
+      "status": "first",
+      "annotations": {
+        "gj": "0522.gj",
+        "json": "0522.json",
+        "txt": "0522.txt"
       },
       "origin": "kangxizidian.com 爬取草稿（kangxi_page_tool.py add）"
     }
