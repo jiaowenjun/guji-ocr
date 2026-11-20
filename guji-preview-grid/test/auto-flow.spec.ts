@@ -36,6 +36,26 @@ describe("flow large columns and balance small groups", () => {
     expect(runs(a)).toEqual([["𠀀甲 ", "乙丙", "戊己庚", "辛壬"]]);
     expect(formatGj(a)).toBe(formatGj(b));
   });
+  it.each([
+    ["甲乙。\n《書》丙", "甲乙。\n《書》丙"],
+    ["《甲乙》。\n《丙丁》", "《甲乙》。\n《丙丁》"],
+    ["甲𠀀。《\n【書】》乙", "甲𠀀。\n《【書】》乙"],
+    ["甲".repeat(48) + "。《書》丙", "甲".repeat(24) + "\n" + "甲".repeat(24) + "。\n\n《書》\n丙"],
+  ])("keeps opening book punctuation with the following cell across automatic folds: %s", (text, expected) => {
+    const source = `@1\n${text}`;
+    const formatted = formatGj(source);
+    expect(formatted).toBe(`@1\n\n${expected}\n`);
+    expect(geometry(formatted)).toEqual(geometry(source));
+    expect(formatGj(formatted)).toBe(formatted);
+    const doc = parse(source);
+    expect(visibleLayout(flowDocument(doc))).toEqual(visibleLayout(doc));
+    const index = buildCharIndex(doc);
+    expect(index.map(e => e.src)).toEqual(index.map(e => e.src).sort((a, b) => a - b));
+    for (const e of index) {
+      const ch = String.fromCodePoint(source.codePointAt(e.src)!);
+      expect(charHighlightAt(index, source, e.src + ch.length)).toEqual(e.target);
+    }
+  });
   it("places a one-character ordinary group in the front small column", () => {
     const page = layout3(parse("@1\n甲\n#乙"))[0];
     const first = page.bands[0].items.find(i => i.kind === "run" && i.cells.length)!;

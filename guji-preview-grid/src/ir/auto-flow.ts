@@ -69,8 +69,12 @@ export function flowDocument(doc: IRDocument): IRDocument {
           const length = Math.floor(count / width) + (col < count % width ? 1 : 0);
           if (!length) { newLine().emptyRun = true; continue; }
           const end = offset + used + length;
-          // Attach stripped punctuation to the preceding cell. Never lose original text.
-          const rawEnd = end === cells.length ? small.length : ranges[end][0];
+          // Closing marks and sentence punctuation follow the preceding cell;
+          // stripped opening book marks belong to the following cell instead.
+          let rawEnd = end === cells.length ? small.length : ranges[end][0];
+          if (end < cells.length) {
+            while (rawEnd > ranges[end - 1][1] && small[rawEnd - 1].ch === "《") rawEnd--;
+          }
           const points = small.slice(rawStart, rawEnd);
           if (points.length) append(newLine(), points, { id: "", class: "small", text: points.map(p => p.ch).join("") });
           rawStart = rawEnd; used += length;

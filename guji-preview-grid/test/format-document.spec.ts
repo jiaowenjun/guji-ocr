@@ -50,6 +50,18 @@ describe("formatDocument preserves type-size scopes", () => {
   it("normalizes circle shorthand and redundant size markers", () => {
     expect(fmt("@1\n\n#（z）#丹\n古文：\n#𠁿#㣋\n")).toBe("@1\n\n#(增)丹\n古文：\n#𠁿㣋\n");
   });
+  it("keeps the page 409 Zhuangzi opening mark with its title without changing the 17/16 split", () => {
+    const expected = "@409\n\n今度之一寸，又減二分，應劭之說據漢尺也。\n"
+      + "《莊子·庚桑楚》步仞之丘註：七尺曰仞，亦非。\n"
+      + "#仟\n【廣韻】【集韻】【韻\n會】【正韻】𠀤蒼\n";
+    const source = expected.replace("也。\n《莊", "也。《\n莊");
+    expect(fmt(source)).toBe(expected);
+    expect(fmt(expected)).toBe(expected);
+    expect(visibleLayout(gj2ir(expected))).toEqual(visibleLayout(gj2ir(source)));
+    const runs = layout3(gj2ir(expected))[0].bands[0].items
+      .flatMap(i => i.kind === "run" ? [i.cells.length] : []);
+    expect(runs).toEqual([17, 16, 5, 5]);
+  });
   it("keeps ordinary words large after # and preserves comments", () => {
     expect(fmt("@1\n\n#甲古文乙// 附注 ◎\n")).toBe("@1\n\n#甲古文乙// 附注 ◎\n");
     expect(fmt("@1\n\n#甲，\n古文：\n#乙\n")).toBe("@1\n\n#甲，\n古文：\n#乙\n");
