@@ -277,3 +277,11 @@
 .m-char-active {
   box-shadow: inset 0 0 0 2px rgb(217 119 6);
 }
+
+/* 原图侧同款光标字格描边：百分比定位到识别出的大列内，屏幕空间 2px；
+ * DOM 序在空白格底色与格线之后，描边盖在其上 */
+.scan-char-active {
+  position: absolute;
+  pointer-events: none;
+  box-shadow: inset 0 0 0 2px rgb(217 119 6);
+}

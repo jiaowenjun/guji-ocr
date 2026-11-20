@@ -1,8 +1,8 @@
-import type { ScanGrid } from "./scan-grid";
+import type { PageCellRect, ScanGrid } from "./scan-grid";
 import type { ScanGridState } from "./use-scan-grid";
 
-export function ScanGridOverlay({ state, cells = true }: { state: ScanGridState; cells?: boolean }) {
-  if (state.grid) return <ScanGridLines grid={state.grid} cells={cells} />;
+export function ScanGridOverlay({ state, cells = true, active }: { state: ScanGridState; cells?: boolean; active?: PageCellRect | null }) {
+  if (state.grid) return <ScanGridLines grid={state.grid} cells={cells} active={active} />;
   return <ScanGridStatus state={state} label={cells ? "原图字格" : "原图空格"} />;
 }
 
@@ -16,7 +16,7 @@ export function ScanGridStatus({ state, label }: { state: ScanGridState; label: 
 }
 
 /** 整列均匀投影所有网格线，包含空列/空格；不使用 region 或 glyph 候选框。 */
-export function ScanGridLines({ grid, cells = true }: { grid: ScanGrid; cells?: boolean }) {
+export function ScanGridLines({ grid, cells = true, active }: { grid: ScanGrid; cells?: boolean; active?: PageCellRect | null }) {
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden" data-scan-grid aria-hidden="true">
       {grid.bands.map(([x1, y1, x2, y2], band) => (
@@ -36,8 +36,30 @@ export function ScanGridLines({ grid, cells = true }: { grid: ScanGrid; cells?: 
             <span key={`h${row}`} className={`scan-cell-rule scan-cell-rule-h${row % 2 ? " scan-cell-rule-minor" : ""}`}
               style={{ top: `${row / 24 * 100}%` }} />
           ))}
+          <ScanActiveCell active={active} band={band} />
         </div>
       ))}
     </div>
+  );
+}
+
+/** 光标字格描边（与矩阵侧同款）：页面小格矩形 → 本大列内的局部列段；
+ *  半格居中跨两列/大字 2×2 时合并为一个框，跨大列时各画各的。 */
+function ScanActiveCell({ active, band }: { active?: PageCellRect | null; band: number }) {
+  if (!active) return null;
+  let localFirst = -1;
+  let localLast = -1;
+  for (let col = active.colStart; col < active.colEnd; col++) {
+    if (7 - Math.floor(col / 2) !== band) continue;
+    const local = col % 2;
+    if (localFirst < 0 || local < localFirst) localFirst = local;
+    if (local > localLast) localLast = local;
+  }
+  if (localFirst < 0) return null;
+  return (
+    <span data-scan-active={band} className="scan-char-active" style={{
+      left: `${localFirst / 2 * 100}%`, width: `${(localLast - localFirst + 1) / 2 * 100}%`,
+      top: `${active.rowStart / 24 * 100}%`, height: `${(active.rowEnd - active.rowStart) / 24 * 100}%`,
+    }} />
   );
 }

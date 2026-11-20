@@ -16,7 +16,7 @@ import { resolvePageScan, type DatasetConfig } from "@/datasets/config";
 import type { PageEntry } from "./DatasetView";
 import { ScanGridOverlay, ScanGridStatus } from "./ScanGridOverlay";
 import { useScanGrid } from "./use-scan-grid";
-import { compareBlankCells } from "./scan-grid";
+import { activeCellRect, compareBlankCells } from "./scan-grid";
 
 const SAVE_SHORTCUT_HINT = /Mac|iPod|iPhone|iPad/.test(navigator.platform) ? "⌘S" : "Ctrl+S";
 const stem = (page: number) => String(page).padStart(4, "0");
@@ -113,6 +113,11 @@ export function DatasetWorkspace({
     }),
     [irDoc, charIndex, text, cursor],
   );
+  // 原图侧光标字格描边：网格定位成功且当前渲染页即本页时才有坐标可映射
+  const scanActive = useMemo(
+    () => scanGrid.grid && laidPages[0]?.no === page ? activeCellRect(laidPages[0], highlight.char) : null,
+    [scanGrid.grid, laidPages, page, highlight.char],
+  );
   const onBandClick = useCallback(
     (p: number, i: number) => {
       const target = bandCursorTarget(irDoc, text ?? "", p, i);
@@ -179,7 +184,7 @@ export function DatasetWorkspace({
                   className="block w-full select-none"
                   draggable={false}
                 />
-                {scanCells || blanksOnly ? <ScanGridOverlay state={scanGrid} cells={!blanksOnly} /> : null}
+                {scanCells || blanksOnly ? <ScanGridOverlay state={scanGrid} cells={!blanksOnly} active={scanActive} /> : null}
               </div>
             ) : null}
           </div>

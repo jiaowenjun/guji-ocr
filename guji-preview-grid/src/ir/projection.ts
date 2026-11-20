@@ -89,14 +89,14 @@ export function projectBooks(pages: L3Page[], overlays: IROverlay[], index = ind
 }
 
 /** A line can contain multiple runs separated by large glyphs. Select one item. */
-export function locateCell(index: Map<string, LocatedRun[]>, lineId: string, cp: number): { item: L3RunItem; index: number } | null {
-  let hit: { item: L3RunItem; index: number } | null = null;
+export function locateCell(index: Map<string, LocatedRun[]>, lineId: string, cp: number): { page: L3Page; bandIdx: number; item: L3RunItem; index: number } | null {
+  let hit: { page: L3Page; bandIdx: number; item: L3RunItem; index: number } | null = null;
   let best = -1;
-  for (const { item } of index.get(lineId) ?? []) {
+  for (const { page, bandIdx, item } of index.get(lineId) ?? []) {
     if (item.kind !== "run") continue;
     for (const [i, [offset]] of item.rawRanges.entries()) {
       if (offset <= cp && offset >= best) {
-        hit = { item, index: i };
+        hit = { page, bandIdx, item, index: i };
         best = offset;
       }
     }
