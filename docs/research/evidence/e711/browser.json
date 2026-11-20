@@ -1,0 +1,61 @@
+{
+  "checked_at": "2026-11-20T15:46:42+08:00",
+  "app": "guji-preview-grid dev (vite, localhost:5173), page @480 草稿",
+  "cell": {
+    "selector": ".m-cell containing U+E711",
+    "count": 1,
+    "font_size_px": 16.9422,
+    "cell_rect": [
+      696.4,
+      428.9,
+      21.2,
+      22.1
+    ],
+    "css_font_stack_head": "GujiPlane0"
+  },
+  "document_fonts": [
+    "GujiLarge loaded",
+    "GujiPlane0 loaded",
+    "GujiPlane2 loaded",
+    "GujiPlaneF unloaded"
+  ],
+  "canvas_probe": {
+    "method": "page canvas, font 100px GujiPlane0 only (no fallback); ink = alpha>40 pixels in 128x128",
+    "E711": {
+      "ink": 2633,
+      "bbox": [
+        16,
+        16,
+        112,
+        112
+      ],
+      "verdict": "real glyph"
+    },
+    "E712_unmapped_control": {
+      "ink": 0,
+      "bbox": null,
+      "verdict": "blank"
+    },
+    "U+5026 倦 control": {
+      "ink": 2543,
+      "bbox": [
+        16,
+        16,
+        112,
+        112
+      ]
+    },
+    "U+20A1F 𠨟 via GujiPlane2 control": {
+      "ink": 2320,
+      "bbox": [
+        20,
+        35,
+        113,
+        110
+      ]
+    },
+    "conclusion": "E711 renders real ink between the 倦 sibling and the bare component; unmapped E712 draws zero — the cell renders the patched glyph itself."
+  },
+  "interaction_note": "Radix dropdown opened via in-page full pointer event sequence; page count regex must not hard-code 193 (manifest grew to 200 during this session).",
+  "screenshot": "evidence/e711/browser-cell.png"
+}

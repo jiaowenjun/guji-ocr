@@ -1,5 +1,7 @@
 # 资料核查证据说明
 
+新增字体证据：**[E711〈亻𠨟〉补录报告](../2026-11-20-U+E711亻𠨟补录报告.md)**（@480 倦条按语「人部作〈亻𠨟〉」），对应 [补前身份／字体审计](e711/audit.json)（部件𠨟 U+20A1F 标准编码与 E710 站方 E854 案的类型区分）、[候选检索](e711/font-search.json)、[干跑](e711/dry-run.json)、[扫描距离校准（短亻形差如实存档）](e711/chamfer-calibration.json)、[正式写入／完整供体／全量保护](e711/patch-verification.json)、[480 页单点替换](e711/annotation.json)、[浏览器渲染与 canvas 墨迹探针](e711/browser.json)、[工程回归](e711/engineering.json)。左部取倦的完整亻，右部取 plane2 完整𠨟；原刻短亻形，构形按供体原样取件并记录形差。
+
 新增字体证据：**[E710〈𠦝一〉补录报告](../2026-11-20-U+E710𠦝一补录报告.md)**（@478 倝条「本作〈𠦝一〉」），对应 [补前身份／字体审计](e710/audit.json)（含站方 E854=𠦝单字槽、整字两字符转写的记录）、[候选检索](e710/font-search.json)、[干跑](e710/dry-run.json)、[扫描距离校准](e710/chamfer-calibration.json)（清晰截图恢复判别力）、[正式写入／完整供体／全量保护](e710/patch-verification.json)、[478 页单点替换](e710/annotation.json)、[浏览器渲染与 canvas 墨迹探针](e710/browser.json)、[工程回归](e710/engineering.json)。左部取朝的完整𠦝，右部取示的顶部短横；倝（⿰𠦝人）、朝、𠦝整字均不能代替目标。
 
 新增字体证据：**[E709〈亻亨〉补录报告](../2026-11-20-U+E709亻亨补录报告.md)**（@471 倀条「倀〈亻亨〉，疎率也」），对应 [补前身份／字体审计](e709/audit.json)（含站方库 pua_other=[] 硬证据）、[候选检索](e709/font-search.json)、[干跑](e709/dry-run.json)、[扫描距离校准（同页真值带）](e709/chamfer-calibration.json)、[正式写入／完整供体／全量保护](e709/patch-verification.json)、[471 页单点替换](e709/annotation.json)、[浏览器渲染与 canvas 墨迹探针](e709/browser.json)、[工程回归](e709/engineering.json)。左部仅取𠆼的完整亻，右部取悙的完整右亨；无标准码位（WS2024 UK-30044），停形经笔画级排除。

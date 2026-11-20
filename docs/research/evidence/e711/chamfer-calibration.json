@@ -1,0 +1,16 @@
+{
+  "checked_at": "2026-11-20T15:39:27+08:00",
+  "method": "norm_ink128 and PIL220 at (44,44), matching patcher; temporary diagnostic slots in memory only",
+  "input": "tools/dataset/font-sources/e711-scan-mask.png",
+  "input_sha256": "e45b5cb15d066eaec21d7f0744fe98836390bb88e588e248129e6e295363de80",
+  "provisional_gate": 5.5,
+  "scores": {
+    "composition": 3.376702937600049,
+    "left-only": 9.762817149918424,
+    "right-only": 2.3214987805349505,
+    "wrong-卷-倦": 3.310591113529294,
+    "zao-alone-plane2": 2.4405485423846405
+  },
+  "glyph_sha256": "4fc10c675722299e827aa9aa6d32293f06682f5efd2d7a6a205f7ef19b91ef75",
+  "decision": "The woodblock form draws a short 亻 (head ~27% down); the composition keeps the full-height 倦 donor radical per the user instruction, so the composition score carries that documented stylistic gap and is not expected to reach E710-class margins. Identity rests on the site paragraph 〈亻𠨟〉, the user transcription and the complete-component provenance."
+}

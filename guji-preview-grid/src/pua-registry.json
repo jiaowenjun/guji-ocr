@@ -18,7 +18,7 @@
         "guji-preview-grid/public/fonts/guji-plane0.ttf"
       ],
       "sha256_after": {
-        "guji-plane0.ttf": "80da57fa51b66fc3c09ee690326a0967e06da76dd00ef660d25feec06afcbb45"
+        "guji-plane0.ttf": "9e949d43f2938c9113312a59525731e0fffcc78faa40b97f52cb37820dd48626"
       },
       "history": [
         {
@@ -138,7 +138,7 @@
         "guji-preview-grid/public/fonts/guji-plane0.ttf"
       ],
       "sha256_after": {
-        "guji-plane0.ttf": "80da57fa51b66fc3c09ee690326a0967e06da76dd00ef660d25feec06afcbb45"
+        "guji-plane0.ttf": "9e949d43f2938c9113312a59525731e0fffcc78faa40b97f52cb37820dd48626"
       },
       "history": [
         {
@@ -251,7 +251,7 @@
         "guji-plane0.ttf": 1
       },
       "sha256_after": {
-        "guji-plane0.ttf": "80da57fa51b66fc3c09ee690326a0967e06da76dd00ef660d25feec06afcbb45"
+        "guji-plane0.ttf": "9e949d43f2938c9113312a59525731e0fffcc78faa40b97f52cb37820dd48626"
       },
       "patched_at": "2026-11-18"
     },
@@ -270,7 +270,7 @@
         "guji-preview-grid/public/fonts/guji-plane0.ttf"
       ],
       "sha256_after": {
-        "guji-plane0.ttf": "80da57fa51b66fc3c09ee690326a0967e06da76dd00ef660d25feec06afcbb45"
+        "guji-plane0.ttf": "9e949d43f2938c9113312a59525731e0fffcc78faa40b97f52cb37820dd48626"
       },
       "history": [
         {
@@ -329,7 +329,7 @@
         "guji-preview-grid/public/fonts/guji-plane0.ttf"
       ],
       "sha256_after": {
-        "guji-plane0.ttf": "80da57fa51b66fc3c09ee690326a0967e06da76dd00ef660d25feec06afcbb45"
+        "guji-plane0.ttf": "9e949d43f2938c9113312a59525731e0fffcc78faa40b97f52cb37820dd48626"
       },
       "history": [
         {
@@ -441,7 +441,7 @@
         "guji-preview-grid/public/fonts/guji-plane0.ttf"
       ],
       "sha256_after": {
-        "guji-plane0.ttf": "80da57fa51b66fc3c09ee690326a0967e06da76dd00ef660d25feec06afcbb45"
+        "guji-plane0.ttf": "9e949d43f2938c9113312a59525731e0fffcc78faa40b97f52cb37820dd48626"
       },
       "history": [
         {
@@ -540,7 +540,7 @@
       "report": "docs/research/2026-11-20-U+E709亻亨补录报告.md",
       "allocation_note": "E702、E703为历史试验保留位；E709是E708后的首个未占用正式字位。",
       "sha256_after": {
-        "guji-plane0.ttf": "80da57fa51b66fc3c09ee690326a0967e06da76dd00ef660d25feec06afcbb45"
+        "guji-plane0.ttf": "9e949d43f2938c9113312a59525731e0fffcc78faa40b97f52cb37820dd48626"
       },
       "patched_at": "2026-11-20",
       "history": [
@@ -625,7 +625,7 @@
       "report": "docs/research/2026-11-20-U+E710𠦝一补录报告.md",
       "allocation_note": "E702、E703为历史试验保留位；E710是E709后的首个未占用正式字位。",
       "sha256_after": {
-        "guji-plane0.ttf": "80da57fa51b66fc3c09ee690326a0967e06da76dd00ef660d25feec06afcbb45"
+        "guji-plane0.ttf": "9e949d43f2938c9113312a59525731e0fffcc78faa40b97f52cb37820dd48626"
       },
       "patched_at": "2026-11-20",
       "history": [
@@ -651,6 +651,75 @@
             }
           ],
           "cache_version": "e701-4-e704-1-e705-1-e706-1-e707-3-e708-1-e709-1-e710-1"
+        }
+      ]
+    },
+    {
+      "cp": "E711",
+      "char": "⿰亻𠨟",
+      "description": "康熙 @480 倦 U+5026 条按语「【說文】力部作𠢏，人部作〈亻𠨟〉，音義同」的說文人部形；CHISE 无 ⿰亻𠨟 已编码字（𠨟 U+20A1F 自身 IDS ⿵⿱釆大㔾 已编码）。尚未确认独立标准 Unicode 码位。",
+      "first_seen": "kangxi-gold @480 倦条按语，子集中人部",
+      "scheme": "compose",
+      "version": 1,
+      "source": "tools/dataset/font-sources/e711-songti-v1.json",
+      "source_note": "左亻取 plane0 倦 U+5026 第 1 轮廓（撇竖连体单轮廓，恒等变换）；右𠨟取 plane2 U+20A1F 全部三轮廓，整体正向仿射压入家族右半宽（x 缩 0.66、y 近恒等）。原刻为短亻形（头部约 27% 高度起），本构形按用户指定供体原样取通高倦亻，形差已在校准记录如实存档。",
+      "verify_image": "tools/dataset/font-sources/e711-scan-mask.png",
+      "verify_note": "用户提供站方缩放截图，灰度阈值128、去小于8像素孤立墨点；短亻形差使 chamfer 无身份判别力（组合 3.377 vs 裸𠨟 2.321/倦 3.311），闸 4.0 仅作弱回归。",
+      "fonts": [
+        "guji-preview-grid/public/fonts/guji-plane0.ttf"
+      ],
+      "font_versions": {
+        "guji-plane0.ttf": 1
+      },
+      "usage": "small-only",
+      "usage_note": "仅用于480页小字正文，不写大字、plane2、planeF或系统字体；不得替换标准U+5026倦、U+20A1F𠨟或U+2088F𠢏。",
+      "unicode_status": "independent-codepoint-not-confirmed",
+      "related_characters": [
+        {
+          "char": "倦",
+          "cp": "5026",
+          "relation": "来源字头；左亻供体，其右部为卷非𠨟"
+        },
+        {
+          "char": "𠨟",
+          "cp": "20A1F",
+          "relation": "右部整字供体（plane2 在库）；单独非目标"
+        },
+        {
+          "char": "𠢏",
+          "cp": "2088F",
+          "relation": "同按语力部形，plane2 在库，无需补录"
+        }
+      ],
+      "report": "docs/research/2026-11-20-U+E711亻𠨟补录报告.md",
+      "allocation_note": "E702、E703为历史试验保留位；E711是E710后的首个未占用正式字位。",
+      "sha256_after": {
+        "guji-plane0.ttf": "9e949d43f2938c9113312a59525731e0fffcc78faa40b97f52cb37820dd48626"
+      },
+      "patched_at": "2026-11-20",
+      "history": [
+        {
+          "version": 1,
+          "at": "2026-11-20T15:43:39+08:00",
+          "operation": "insert",
+          "results": [
+            {
+              "font": "guji-preview-grid/public/fonts/guji-plane0.ttf",
+              "scheme": "compose",
+              "source": "tools/dataset/font-sources/e711-songti-v1.json",
+              "sha256_before": "80da57fa51b66fc3c09ee690326a0967e06da76dd00ef660d25feec06afcbb45",
+              "sha256_after": "9e949d43f2938c9113312a59525731e0fffcc78faa40b97f52cb37820dd48626",
+              "bytes_before": 17255056,
+              "bytes_after": 17255760,
+              "chamfer": 3.377,
+              "chamfer_gate": 4.0,
+              "cmap_before": 30714,
+              "cmap_after": 30715,
+              "other_glyphs_and_metrics_unchanged": true,
+              "backup": "var/unencoded/kangxi-unencoded/font-backups/guji-plane0.ttf.80da57fa51b66fc3c09ee690326a0967e06da76dd00ef660d25feec06afcbb45.ttf"
+            }
+          ],
+          "cache_version": "e701-4-e704-1-e705-1-e706-1-e707-3-e708-1-e709-1-e710-1-e711-1"
         }
       ]
     }

@@ -1,0 +1,13 @@
+{
+  "checked_at": "2026-11-20T15:44:49+08:00",
+  "page": 480,
+  "path": "kangxi-gold/annotations/0480.gj",
+  "sha256_before": "b5c3121639b8273da965c14353976a2d7363bb1b36df2dfbd84374028369ede1",
+  "sha256_after": "6ac197eaba47954474d01fee56be86bde65f31b4d557a4d589a25c215ad0734e",
+  "old": "人部作〈亻𠨟〉，",
+  "new": "人部作，",
+  "replacements": 1,
+  "E711_count": 1,
+  "other_text_unchanged": true,
+  "git_scope": "One local draft edit only; full untracked page excluded from font commit."
+}

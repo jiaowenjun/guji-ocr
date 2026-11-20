@@ -1,0 +1,16 @@
+{
+  "checked_at": "2026-11-20T15:47:15+08:00",
+  "environment": "ProductVersion:\t\t27.2.1",
+  "python": "Python 3.9.6",
+  "fontTools": "4.60.2",
+  "commands": [
+    "python3 tools/dataset/guji_ren_juan_components.py  (frozen recipe rebuild: PASS, digest 4fc10c67...)",
+    "python3 tools/dataset/verify_e711.py  (structure+glyph verification: PASS)",
+    "npm test  (22 files, 1176 tests passed; includes 28 tests added by parallel workspace WIP)",
+    "npm run build  (passed; pre-existing large-chunk warning retained)",
+    "dist/fonts vs public/fonts: plane0/plane2/planef/large all sha256-equal",
+    "git diff --check: clean"
+  ],
+  "registry_json_valid": true,
+  "note": "Tests ran on the current workspace with parallel auto-flow modifications and untracked page drafts; not a clean-tree result."
+}
