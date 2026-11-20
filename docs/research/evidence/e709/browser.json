@@ -1,0 +1,61 @@
+{
+  "checked_at": "2026-11-20T11:43:30+08:00",
+  "app": "guji-preview-grid dev (vite, localhost:5173), page @471 草稿",
+  "cell": {
+    "selector": ".m-cell containing U+E709",
+    "count": 1,
+    "font_size_px": 16.0242,
+    "cell_rect": [
+      418.6,
+      361.4,
+      20.0,
+      20.8
+    ],
+    "css_font_stack": "GujiPlane0, GujiPlane2, GujiPlaneF, 中华书局宋体00平面, 中华书局宋体02平面, 中华书局宋体15平面, HanaMinA, serif"
+  },
+  "document_fonts": [
+    "GujiLarge loaded",
+    "GujiPlane0 loaded",
+    "GujiPlane2 loaded",
+    "GujiPlaneF unloaded (not needed on this page)"
+  ],
+  "canvas_probe": {
+    "method": "page canvas, font 100px GujiPlane0 only (no fallback); ink = alpha>40 pixels in 128x128",
+    "E709": {
+      "ink": 2118,
+      "bbox": [
+        14,
+        16,
+        113,
+        112
+      ],
+      "verdict": "real glyph"
+    },
+    "E70A_unmapped_control": {
+      "ink": 0,
+      "bbox": null,
+      "verdict": "blank - unmapped codes draw nothing under single-family canvas font"
+    },
+    "U+4EA8 亨 control": {
+      "ink": 1653,
+      "bbox": [
+        18,
+        15,
+        107,
+        113
+      ]
+    },
+    "U+5000 倀 control": {
+      "ink": 2316,
+      "bbox": [
+        16,
+        17,
+        112,
+        111
+      ]
+    },
+    "conclusion": "E709 ink mass (2118) sits between 亨 (1653) and 倀 (2316), and unmapped E70A draws zero ink; the cell therefore renders the patched glyph itself, not a fallback or tofu."
+  },
+  "screenshot": "evidence/e709/browser-cell.png (140x140 clip around the cell)",
+  "note": "CDP getPlatformFontsForNode was not available in the IAB session; the canvas single-family probe is the platform-font evidence. Screenshot surface timed out on wider clips; the saved cell clip plus ink probe cover the rendering gate."
+}

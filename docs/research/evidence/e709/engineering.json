@@ -1,0 +1,16 @@
+{
+  "checked_at": "2026-11-20T11:44:56+08:00",
+  "environment": "ProductVersion:\t\t27.2.1",
+  "python": "Python 3.9.6",
+  "fontTools": "4.60.2",
+  "commands": [
+    "python3 tools/dataset/guji_ren_heng_components.py  (frozen recipe rebuild: PASS, digest 5a458792...)",
+    "python3 tools/dataset/verify_e709.py  (structure+glyph verification: PASS)",
+    "npm test  (22 files, 1148 tests passed)",
+    "npm run build  (passed; pre-existing large-chunk warning retained)",
+    "dist/fonts vs public/fonts: plane0/plane2/planef/large all sha256-equal",
+    "git diff --check: clean"
+  ],
+  "registry_json_valid": true,
+  "note": "Tests ran on the current workspace, which includes parallel auto-flow/layout modifications and untracked page drafts; not a clean-tree result. The E709 test surface itself is the verification scripts above."
+}

@@ -18,7 +18,7 @@
         "guji-preview-grid/public/fonts/guji-plane0.ttf"
       ],
       "sha256_after": {
-        "guji-plane0.ttf": "740842c631185be99d889f5e1f2a535ddf5f1526ba3a17fa519aeb361f06a0e4"
+        "guji-plane0.ttf": "936f79433f8624b0e69cd93ab13712b14c72bd59679026ea95b73112f48dcba8"
       },
       "history": [
         {
@@ -138,7 +138,7 @@
         "guji-preview-grid/public/fonts/guji-plane0.ttf"
       ],
       "sha256_after": {
-        "guji-plane0.ttf": "740842c631185be99d889f5e1f2a535ddf5f1526ba3a17fa519aeb361f06a0e4"
+        "guji-plane0.ttf": "936f79433f8624b0e69cd93ab13712b14c72bd59679026ea95b73112f48dcba8"
       },
       "history": [
         {
@@ -251,7 +251,7 @@
         "guji-plane0.ttf": 1
       },
       "sha256_after": {
-        "guji-plane0.ttf": "740842c631185be99d889f5e1f2a535ddf5f1526ba3a17fa519aeb361f06a0e4"
+        "guji-plane0.ttf": "936f79433f8624b0e69cd93ab13712b14c72bd59679026ea95b73112f48dcba8"
       },
       "patched_at": "2026-11-18"
     },
@@ -270,7 +270,7 @@
         "guji-preview-grid/public/fonts/guji-plane0.ttf"
       ],
       "sha256_after": {
-        "guji-plane0.ttf": "740842c631185be99d889f5e1f2a535ddf5f1526ba3a17fa519aeb361f06a0e4"
+        "guji-plane0.ttf": "936f79433f8624b0e69cd93ab13712b14c72bd59679026ea95b73112f48dcba8"
       },
       "history": [
         {
@@ -329,7 +329,7 @@
         "guji-preview-grid/public/fonts/guji-plane0.ttf"
       ],
       "sha256_after": {
-        "guji-plane0.ttf": "740842c631185be99d889f5e1f2a535ddf5f1526ba3a17fa519aeb361f06a0e4"
+        "guji-plane0.ttf": "936f79433f8624b0e69cd93ab13712b14c72bd59679026ea95b73112f48dcba8"
       },
       "history": [
         {
@@ -441,7 +441,7 @@
         "guji-preview-grid/public/fonts/guji-plane0.ttf"
       ],
       "sha256_after": {
-        "guji-plane0.ttf": "740842c631185be99d889f5e1f2a535ddf5f1526ba3a17fa519aeb361f06a0e4"
+        "guji-plane0.ttf": "936f79433f8624b0e69cd93ab13712b14c72bd59679026ea95b73112f48dcba8"
       },
       "history": [
         {
@@ -494,6 +494,80 @@
         "guji-plane0.ttf": 1
       },
       "patched_at": "2026-11-19"
+    },
+    {
+      "cp": "E709",
+      "char": "⿰亻亨",
+      "description": "康熙 @471 倀 U+5000 条释文末句「【集韻】倀〈亻亨〉，疎率也。」的联绵词用字；IRG WS2024 候选 UK-30044（序列00127，人部九画）证据 2025-11 受理，尚未确认独立标准 Unicode 码位。",
+      "first_seen": "kangxi-gold @471 倀条，子集中人部",
+      "scheme": "compose",
+      "version": 1,
+      "source": "tools/dataset/font-sources/e709-songti-v1.json",
+      "source_note": "左亻取同系列 plane2 𠆼 U+201BC 的完整单人旁（撇竖连体单轮廓，恒等变换）；右亨取 plane0 悙 U+6059 的完整右部五轮廓，近恒等仿射入框（缩放不超过0.06%）；两部件均不切笔、不镜像、不重绘。",
+      "verify_image": "tools/dataset/font-sources/e709-scan-mask.png",
+      "verify_note": "@471 原刻裁片灰度阈值120、去小于8像素孤立墨点、剔除x99-100界栏残线；原页扫描各向异性挤压（邻字真值带5.19-7.04），chamfer 仅作弱回归闸，不能判定身份。",
+      "fonts": [
+        "guji-preview-grid/public/fonts/guji-plane0.ttf"
+      ],
+      "font_versions": {
+        "guji-plane0.ttf": 1
+      },
+      "usage": "small-only",
+      "usage_note": "仅用于471页小字正文，不写大字、plane2、planeF或系统字体；不得替换标准U+505C停、U+6059悙或U+4EA8亨。",
+      "unicode_status": "independent-codepoint-not-confirmed",
+      "related_characters": [
+        {
+          "char": "倀",
+          "cp": "5000",
+          "relation": "来源字头；引《集韵》以联绵词倀⿰亻亨训疎率"
+        },
+        {
+          "char": "𠆼",
+          "cp": "201BC",
+          "relation": "左亻供体（plane2在库）；其整字总六画，kRSUnicode 9.4，非九画目标"
+        },
+        {
+          "char": "悙",
+          "cp": "6059",
+          "relation": "右亨供体（plane0整字右部）；其忄旁不属于目标"
+        },
+        {
+          "char": "停",
+          "cp": "505C",
+          "relation": "⿰亻亭形近混淆字；原刻口下一横加亅，无冖丁两层，已在笔画级排除"
+        }
+      ],
+      "report": "docs/research/2026-11-20-U+E709亻亨补录报告.md",
+      "allocation_note": "E702、E703为历史试验保留位；E709是E708后的首个未占用正式字位。",
+      "sha256_after": {
+        "guji-plane0.ttf": "936f79433f8624b0e69cd93ab13712b14c72bd59679026ea95b73112f48dcba8"
+      },
+      "patched_at": "2026-11-20",
+      "history": [
+        {
+          "version": 1,
+          "at": "2026-11-20T11:35:47+08:00",
+          "operation": "insert",
+          "results": [
+            {
+              "font": "guji-preview-grid/public/fonts/guji-plane0.ttf",
+              "scheme": "compose",
+              "source": "tools/dataset/font-sources/e709-songti-v1.json",
+              "sha256_before": "740842c631185be99d889f5e1f2a535ddf5f1526ba3a17fa519aeb361f06a0e4",
+              "sha256_after": "936f79433f8624b0e69cd93ab13712b14c72bd59679026ea95b73112f48dcba8",
+              "bytes_before": 17254352,
+              "bytes_after": 17254744,
+              "chamfer": 6.412,
+              "chamfer_gate": 7.5,
+              "cmap_before": 30712,
+              "cmap_after": 30713,
+              "other_glyphs_and_metrics_unchanged": true,
+              "backup": "var/unencoded/kangxi-unencoded/font-backups/guji-plane0.ttf.740842c631185be99d889f5e1f2a535ddf5f1526ba3a17fa519aeb361f06a0e4.ttf"
+            }
+          ],
+          "cache_version": "e701-4-e704-1-e705-1-e706-1-e707-3-e708-1-e709-1"
+        }
+      ]
     }
   ]
 }

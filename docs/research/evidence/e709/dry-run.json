@@ -1,0 +1,19 @@
+{
+  "ran_at": "2026-11-20T11:34:30+08:00 (approx; terminal capture before formal insert at 11:35:47+08:00)",
+  "command": "python3 tools/dataset/guji_pua_patch.py --cp E709 --dry-run --cache-version e701-4-e704-1-e705-1-e706-1-e707-3-e708-1-e709-1",
+  "result": {
+    "font": "guji-preview-grid/public/fonts/guji-plane0.ttf",
+    "scheme": "compose",
+    "source": "tools/dataset/font-sources/e709-songti-v1.json",
+    "sha256_before": "740842c631185be99d889f5e1f2a535ddf5f1526ba3a17fa519aeb361f06a0e4",
+    "sha256_after": "936f79433f8624b0e69cd93ab13712b14c72bd59679026ea95b73112f48dcba8",
+    "bytes_before": 17254352,
+    "bytes_after": 17254744,
+    "chamfer": 6.412,
+    "chamfer_gate": 7.5,
+    "cmap_before": 30712,
+    "cmap_after": 30713,
+    "other_glyphs_and_metrics_unchanged": true
+  },
+  "note": "Dry-run hashes identical to the formal insert; font, registry and jsonl untouched during dry-run."
+}

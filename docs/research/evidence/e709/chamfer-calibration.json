@@ -1,0 +1,21 @@
+{
+  "checked_at": "2026-11-20T11:30:00+08:00",
+  "method": "norm_ink128 and PIL220 at (44,44), matching patcher; temporary diagnostic slots in memory only",
+  "input": "tools/dataset/font-sources/e709-scan-mask.png",
+  "input_sha256": "3811129e15fc069a5495a303143d15b8b6eeb317ae2611579d7139491f85f901",
+  "final_weak_regression_gate": 7.5,
+  "scores": {
+    "composition": 6.412115450279629,
+    "left-only": 7.103023376534154,
+    "right-only": 3.786479591951992,
+    "wrong-亭-停": 5.125501938266819,
+    "wrong-radical-悙": 7.558788105812031
+  },
+  "same_page_true_identity_band": {
+    "倀-own-scan": 6.491847515671455,
+    "疎-own-scan": 5.185798757890644,
+    "率-own-scan": 7.036362791400498
+  },
+  "glyph_sha256": "5a45879271c1622de3d61f4123ee9a195af94620f341cd97a3b1482bc17ffd2e",
+  "decision": "The raw page scan is anisotropically squeezed (neighbour ink aspect 0.55-0.67 vs font ~1.0), so scan distance cannot arbitrate identity here: the composition (6.41) sits inside the true-identity band (5.19-7.04) and the ⿰亻亭 confusable 停 (5.13) also falls within it. Identity rests on the site paragraph 〈亻亨〉, the user transcription and stroke-level review (one horizontal plus hook below the 口, no 冖 layer); visual models produced three different readings of the same crop. The 7.5 gate only rejects gross geometric regression."
+}

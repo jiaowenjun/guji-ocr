@@ -1,0 +1,13 @@
+{
+  "checked_at": "2026-11-20T11:37:37+08:00",
+  "page": 471,
+  "path": "kangxi-gold/annotations/0471.gj",
+  "sha256_before": "a788a4372874bb471a64b86486f68a081465711b834d0994e11aeaaab7acf3b9",
+  "sha256_after": "f75eb4d5bd23967a9d21f70836220d883d34cad2a3b80a30f7de75f3c306b500",
+  "old": "倀〈亻亨〉，疎率也。",
+  "new": "倀，疎率也。",
+  "replacements": 1,
+  "E709_count": 1,
+  "other_text_unchanged": true,
+  "git_scope": "One local draft edit only; full untracked page excluded from font commit."
+}
