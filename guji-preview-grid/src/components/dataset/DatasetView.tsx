@@ -11,7 +11,7 @@ import {
   useState,
 } from "react";
 import { createPortal } from "react-dom";
-import { ChevronLeft, ChevronRight, Database, Minus, Plus, ScanText } from "lucide-react";
+import { ChevronLeft, ChevronRight, Database, Plus, ScanText } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
@@ -116,13 +116,11 @@ export function DatasetView({
   const [idx, setIdx] = useState(0);
   const [edits, setEdits] = useState<Record<number, string>>({});
   const { texts, ensure, put } = useDatasetText();
-  const [cells, setCells] = useState(false); // 整页字格默认关
-  const [scanCells, setScanCells] = useState(false); // 原图投影字格独立开关
+  const [cells, setCells] = useState(true); // 整页字格默认开
+  const [scanCells, setScanCells] = useState(true); // 原图投影字格独立开关，默认开
   const [blanksOnly, setBlanksOnly] = useState(false); // 暂时隐藏两栏格线，保留原开关状态
   const [busy, setBusy] = useState(false);
   const [ocrView, setOcrView] = useState<string | null>(null); // OCR 结果弹窗内容
-  const [adding, setAdding] = useState(false); // 添加新页表单开合
-  const [pageInput, setPageInput] = useState("");
   const [addBusy, setAddBusy] = useState(false); // 添加新页进行中
   const [jumpTo, setJumpTo] = useState<number | null>(null); // 添加成功后跳转
   const toolbarSlot = useToolbarSlot(); // 工具栏注入壳层插槽（见 JSX 内 portal）
@@ -194,10 +192,9 @@ export function DatasetView({
   };
 
   /** 添加新页：桥接 kangxi_page_tool.py（sqlite 优先，缺则增量爬取），完成后刷新清单并跳转 */
-  const addPage = async () => {
-    const n = Number(pageInput);
-    if (!/^\d{1,4}$/.test(pageInput) || n < 1 || n > 7738) {
-      toast.error(`页码应为 1-7738 的整数（当前输入：${pageInput || "空"}）`, { duration: Infinity });
+  const addPage = async (n: number) => {
+    if (!Number.isInteger(n) || n < 1 || n > 7738) {
+      toast.error(`页码应为 1-7738 的整数（当前：${n}）`, { duration: Infinity });
       return;
     }
     setAddBusy(true);
@@ -210,8 +207,6 @@ export function DatasetView({
       const { counts, summaries } = data;
       reload();
       setJumpTo(n);
-      setAdding(false);
-      setPageInput("");
       toast.success(`已添加 @${n}`, {
         id: notification,
         description: `字头 ${counts?.chars ?? "?"} 个，含释义 ${counts?.with_text ?? "?"}，未编码 ${counts?.unencoded ?? 0}${summaries?.length ? "；" + summaries.join("；") : ""}`,
@@ -378,59 +373,20 @@ export function DatasetView({
                 </DropdownMenuContent>
               </DropdownMenu>
 
-              {adding ? (
-                <div className="flex items-center gap-1">
-                  <Button
-                    variant="outline"
-                    size="icon-sm"
-                    aria-label="页码减一"
-                    disabled={addBusy}
-                    onClick={() => setPageInput(String(Math.max(1, (Number(pageInput) || 1) - 1)))}
-                  >
-                    <Minus />
-                  </Button>
-                  <input
-                    value={pageInput}
-                    onChange={(e) => setPageInput(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") addPage();
-                    }}
-                    disabled={addBusy}
-                    placeholder="页码 1-7738"
-                    inputMode="numeric"
-                    className="border-input bg-background h-7 w-16 rounded-md border px-2 text-center text-xs tabular-nums outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                  />
-                  <Button
-                    variant="outline"
-                    size="icon-sm"
-                    aria-label="页码加一"
-                    disabled={addBusy}
-                    onClick={() => setPageInput(String(Math.min(7738, (Number(pageInput) || 0) + 1)))}
-                  >
-                    <Plus />
-                  </Button>
-                  <Button size="sm" onClick={addPage} disabled={addBusy}>
-                    确认添加
-                  </Button>
-                  <Button size="sm" variant="ghost" onClick={() => setAdding(false)} disabled={addBusy}>
-                    取消
-                  </Button>
-                </div>
-              ) : (
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => {
-                    // 预填下一页（清单最大页 +1，封顶 7738）；可用 −/+ 或直接输入调整
-                    const maxPage = index?.length ? index[index.length - 1].page : 312;
-                    setPageInput(String(Math.min(7738, maxPage + 1)));
-                    setAdding(true);
-                  }}
-                >
-                  <Plus data-icon="inline-start" />
-                  添加新页
-                </Button>
-              )}
+              <Button
+                size="sm"
+                variant="outline"
+                disabled={addBusy}
+                title={`直接添加下一页 @${index.length ? index[index.length - 1].page + 1 : 313}（封顶 7738）`}
+                onClick={() => {
+                  // 直接添加下一页（清单最大页 +1，封顶 7738），无需二次确认
+                  const maxPage = index.length ? index[index.length - 1].page : 312;
+                  void addPage(Math.min(7738, maxPage + 1));
+                }}
+              >
+                <Plus data-icon="inline-start" />
+                {addBusy ? "添加中…" : "添加新页"}
+              </Button>
 
 
         <Separator orientation="vertical" className="h-5" />

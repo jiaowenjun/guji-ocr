@@ -129,18 +129,19 @@ describe("数据集预览使用当前文档快照", () => {
   });
 
   it("原图字格紧邻字格开关，两个开关独立控制", async () => {
-    const button = [...document.querySelectorAll<HTMLButtonElement>("button")].find((b) => b.textContent === "原图字格关")!;
+    const button = [...document.querySelectorAll<HTMLButtonElement>("button")].find((b) => b.textContent === "原图字格开")!;
     const matrixButton = button.previousElementSibling as HTMLButtonElement;
-    expect(matrixButton.textContent).toBe("字格关");
-    expect(button.getAttribute("aria-pressed")).toBe("false");
+    expect(matrixButton.textContent).toBe("字格开");
+    expect(button.getAttribute("aria-pressed")).toBe("true");
     await act(async () => button.click());
-    expect(button.textContent).toBe("原图字格开");
+    expect(button.textContent).toBe("原图字格关");
+    expect(container.querySelector("[data-scan-grid]")).toBeNull();
+    expect(container.querySelector(".m-lines")?.getAttribute("data-cells")).toBe("on");
+    await act(async () => matrixButton.click());
+    expect(container.querySelector(".m-lines")?.getAttribute("data-cells")).toBe("off");
+    await act(async () => button.click());
     expect(container.textContent).toContain("正在定位原图字格");
     expect(container.querySelector(".m-lines")?.getAttribute("data-cells")).toBe("off");
-    await act(async () => matrixButton.click());
-    await act(async () => button.click());
-    expect(container.textContent).not.toContain("正在定位原图字格");
-    expect(container.querySelector(".m-lines")?.getAttribute("data-cells")).toBe("on");
   });
 
   it("渲染空格对照独立显示、与原图共用请求，同占格编辑即时更新且切页清除旧结果", async () => {
@@ -153,7 +154,9 @@ describe("数据集预览使用当前文档快照", () => {
     await act(async () => editor.onChange(source));
     const button = (label: string) => [...document.querySelectorAll<HTMLButtonElement>("button")].find(b => b.textContent === label)!;
     expect([...document.querySelectorAll("button")].some(b => b.textContent?.startsWith("界栏"))).toBe(false);
-    // 两个格线开关全关时，也能一键打开两栏空格。
+    // 默认开的两个格线开关先拨回全关基线，再验证全关时也能一键打开两栏空格。
+    await act(async () => button("字格开").click());
+    await act(async () => button("原图字格开").click());
     await act(async () => button("仅显示空格").click());
     expect(button("仅显示空格").getAttribute("aria-pressed")).toBe("true");
     expect(button("字格关").disabled).toBe(true);

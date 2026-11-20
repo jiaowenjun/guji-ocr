@@ -136,7 +136,6 @@ describe("字头栏按需查询当前爬取库", () => {
     });
     await clickText("测试编辑");
     await clickText("添加新页");
-    await clickText("确认添加");
     expect(container.querySelector('button[title="爬取字头详情：互"]')).not.toBeNull();
     expect(queries).toContainEqual({ action: "add", page: 367 });
     expect(queries).toContainEqual({ action: "crawl-heads", page: 367 });
