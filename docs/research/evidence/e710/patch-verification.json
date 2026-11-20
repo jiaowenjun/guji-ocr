@@ -108,5 +108,10 @@
   "rollback": {
     "git_head": "74db71413b2f25749a2018732d516ccef3d3e9ba",
     "font_git_blob": "c4c7027380907d9f26094ca1227b55fc8fabe68c"
+  },
+  "git_commits": {
+    "font": "8c553c838dff53f8354e4b6e0b381898ff101d1d",
+    "docs_backfill": "3affb4ef32091d34cf27d6fa578591dab00019fb",
+    "docs_finalize": "da4d4ef9083affc450e6f1cef850d1ae51662e04"
   }
 }
